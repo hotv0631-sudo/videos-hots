@@ -39,7 +39,7 @@
             color: #ff6600;
             font-weight: bold;
         }
-        /* Grille de 2 conteneurs par ligne */
+        /* Grille de 2 conteneurs à l'infini */
         .grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -57,7 +57,7 @@
             flex-direction: column;
             justify-content: space-between;
         }
-        /* Format Média 9:16 Portrait */
+        /* Format 9:16 Portrait */
         .media-container {
             width: 100%;
             border-radius: 8px;
@@ -70,7 +70,7 @@
             align-items: center;
             justify-content: center;
         }
-        .preview-image {
+        video.preview-video {
             width: 100%;
             height: 100%;
             object-fit: cover;
@@ -186,52 +186,58 @@
     <script>
         const whatsappNumber = "2250105553740";
 
-        // Banques de modèles pour générer les cartes dynamiquement en scroll infini
-        const baseImages = [
-            "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800&auto=format&fit=crop",
-            "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=800&auto=format&fit=crop",
-            "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=800&auto=format&fit=crop",
-            "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=800&auto=format&fit=crop",
-            "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&auto=format&fit=crop"
-        ];
-
-        const baseMegas = [
-            "https://mega.nz/file/61Zh2QwY#BCqsGy36QmkqhR6KL8rhU_HPY3Mt2doV6vMe1ioQkLY",
-            "https://mega.nz/file/b0AHSBZb#AeLR3rKCOOF4m54VHvfdNkvUzq0DjtZkiyqspQNo3g4",
-            "https://mega.nz/file/Hx5kBbKD#OQKM2Kk5S0D6bhGcT4_52qJdjnRAzZ7t4bM8UAtpWQk"
+        // Exemple de configuration avec miniature (image) ET vidéo d'aperçu
+        const baseContent = [
+            {
+                image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800&auto=format&fit=crop",
+                preview: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+                mega: "https://mega.nz/file/61Zh2QwY#BCqsGy36QmkqhR6KL8rhU_HPY3Mt2doV6vMe1ioQkLY"
+            },
+            {
+                image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=800&auto=format&fit=crop",
+                preview: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+                mega: "https://mega.nz/file/b0AHSBZb#AeLR3rKCOOF4m54VHvfdNkvUzq0DjtZkiyqspQNo3g4"
+            },
+            {
+                image: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=800&auto=format&fit=crop",
+                preview: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
+                mega: "https://mega.nz/file/Hx5kBbKD#OQKM2Kk5S0D6bhGcT4_52qJdjnRAzZ7t4bM8UAtpWQk"
+            }
         ];
 
         const grid = document.getElementById("video-grid");
-        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v12")) || [];
+        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v13")) || [];
 
         function saveState() {
-            localStorage.setItem("vip_scenes_data_v12", JSON.stringify(scenesData));
+            localStorage.setItem("vip_scenes_data_v13", JSON.stringify(scenesData));
         }
 
-        // Fonction pour générer une nouvelle scène
         function createSceneData(index) {
             const randomId = Math.floor(Math.random() * (90000 - 10000 + 1)) + 10000;
-            const img = baseImages[index % baseImages.length];
-            const mega = baseMegas[index % baseMegas.length];
+            const item = baseContent[index % baseContent.length];
             return {
                 id: randomId,
                 nom: `Dossier_Baby_${index + 1}`,
-                mega: mega,
-                image: img,
+                mega: item.mega,
+                preview: item.preview,
+                image: item.image,
                 deverrouille: false
             };
         }
 
-        // Affiche une carte dans la grille
         function renderCard(scene, index) {
             const cleAttendue = Math.floor((scene.id * 2026) / 360);
             const card = document.createElement("div");
             card.className = "card";
             card.id = `card-${index}`;
 
+            // Balise vidéo HTML5 avec l'attribut poster pour afficher l'image de couverture
             const mediaHtml = `
                 <div class="media-container">
-                    <img class="preview-image" src="${scene.image}" alt="${scene.nom}">
+                    <video class="preview-video" controls playsinline preload="metadata" poster="${scene.image}">
+                        <source src="${scene.preview}" type="video/mp4">
+                        Votre navigateur ne supporte pas la lecture vidéo.
+                    </video>
                 </div>
             `;
 
@@ -263,7 +269,6 @@
             grid.appendChild(card);
         }
 
-        // Chargement par lots (2 par 2 pour garder la grille symétrique)
         function loadMoreCards(batchSize = 4) {
             const startIndex = scenesData.length;
             for (let i = 0; i < batchSize; i++) {
@@ -275,14 +280,12 @@
             saveState();
         }
 
-        // Initialisation : charge les cartes existantes ou crée un premier lot de 6
         if (scenesData.length === 0) {
             loadMoreCards(6);
         } else {
             scenesData.forEach((scene, index) => renderCard(scene, index));
         }
 
-        // Fonction de vérification de clé
         function verifier(index, cleAttendue) {
             const inputElem = document.getElementById(`input-${index}`);
             const msg = document.getElementById(`msg-${index}`);
@@ -295,7 +298,9 @@
                 const card = document.getElementById(`card-${index}`);
                 card.innerHTML = `
                     <div class="media-container">
-                        <img class="preview-image" src="${scenesData[index].image}" alt="${scenesData[index].nom}">
+                        <video class="preview-video" controls playsinline preload="metadata" poster="${scenesData[index].image}">
+                            <source src="${scenesData[index].preview}" type="video/mp4">
+                        </video>
                     </div>
                     <h3>${scenesData[index].nom}</h3>
                     <div class="info-id">ID : <b>${scenesData[index].id}</b></div>
@@ -310,11 +315,10 @@
             }
         }
 
-        // Scroll infini automatique via IntersectionObserver
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    loadMoreCards(4); // Ajoute 4 nouveaux dossiers dès que le bas de page est atteint
+                    loadMoreCards(4);
                 }
             });
         }, { rootMargin: '200px' });
