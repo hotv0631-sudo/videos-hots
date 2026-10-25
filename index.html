@@ -41,6 +41,15 @@
             border-radius: 12px;
             padding: 12px;
             box-shadow: 0 4px 15px rgba(168, 85, 247, 0.2);
+            overflow: hidden;
+        }
+        .preview-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: block;
         }
         .card h3 {
             margin: 0 0 8px 0;
@@ -118,24 +127,39 @@
     <div class="grid" id="video-grid"></div>
 
     <script>
+        // Liste de vos 3 scènes avec vos vrais liens MEGA
         const scenes = [
-            { id: 49216, nom: "Scene_Hot_X79_crypt.mp4", mega: "https://mega.nz/file/61Zh2QwY#BCqsGy36QmkqhR6KL8rhU_HPY3Mt2doV6vMe1ioQkLY" },
-            { id: 62541, nom: "Private_Z99_crypt.jpg", mega: "#" },
-            { id: 63555, nom: "Exclusive_008_crypt.mp4", mega: "#" },
-            { id: 64135, nom: "Sensual_048_crypt.mp4", mega: "#" }
+            { 
+                id: 49216, 
+                nom: "Scene_Hot_X79", 
+                apercu: "https://mega.nz/file/61Zh2QwY#BCqsGy36QmkqhR6KL8rhU_HPY3Mt2doV6vMe1ioQkLY", 
+                mega: "https://mega.nz/file/61Zh2QwY#BCqsGy36QmkqhR6KL8rhU_HPY3Mt2doV6vMe1ioQkLY" 
+            },
+            { 
+                id: 62541, 
+                nom: "Private_Z99", 
+                apercu: "https://mega.nz/file/b0AHSBZb#AeLR3rKCOOF4m54VHvfdNkvUzq0DjtZkiyqspQNo3g4", 
+                mega: "https://mega.nz/file/b0AHSBZb#AeLR3rKCOOF4m54VHvfdNkvUzq0DjtZkiyqspQNo3g4" 
+            },
+            { 
+                id: 63555, 
+                nom: "Exclusive_008", 
+                apercu: "https://mega.nz/file/Hx5kBbKD#OQKM2Kk5S0D6bhGcT4_52qJdjnRAzZ7t4bM8UAtpWQk", 
+                mega: "https://mega.nz/file/Hx5kBbKD#OQKM2Kk5S0D6bhGcT4_52qJdjnRAzZ7t4bM8UAtpWQk" 
+            }
         ];
 
         const grid = document.getElementById("video-grid");
         const whatsappNumber = "2250105553740";
 
         scenes.forEach(scene => {
-            // Clé arrondie à un nombre entier pour éviter les erreurs de virgule
+            // Calcul de la clé (arrondi entier pour simplifier la saisie)
             const cleAttendue = Math.round((scene.id * 2026) / 360);
 
             const card = document.createElement("div");
             card.className = "card";
             card.innerHTML = `
-                <h3>${scene.nom.replace(/_crypt\..*/, '')}</h3>
+                <h3>${scene.nom}</h3>
                 <div class="info-id">ID unique : <b>${scene.id}</b></div>
                 <a class="whatsapp-btn" href="https://wa.me/${whatsappNumber}?text=Bonjour,%20je%20veux%20acheter%20la%20scène%20ID:%20${scene.id}" target="_blank">
                     💬 Commander la clé sur WhatsApp
@@ -156,11 +180,7 @@
 
             if (saisie === cleAttendue) {
                 msg.style.color = "#ff2a85";
-                if(lienMega !== "#") {
-                    msg.innerHTML = `Clé valide !<br><a class="mega-link" href="${lienMega}" target="_blank">📥 Accéder à la vidéo MEGA</a>`;
-                } else {
-                    msg.innerHTML = "Clé valide ! (Lien bientôt disponible)";
-                }
+                msg.innerHTML = `Clé valide !<br><a class="mega-link" href="${lienMega}" target="_blank">📥 Accéder à la vidéo MEGA</a>`;
             } else {
                 msg.style.color = "#a855f7";
                 msg.innerText = "Clé incorrecte. Réessayez.";
