@@ -9,7 +9,7 @@
             box-sizing: border-box;
         }
         body {
-            background-color: #ffffff;
+            background-color: #f2f4f7; /* Fond gris clair moderne */
             color: #333333;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             margin: 0;
@@ -20,6 +20,9 @@
             padding: 15px 0;
             border-bottom: 3px solid #ff6600;
             margin-bottom: 20px;
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
         h1 {
             color: #ff6600;
@@ -48,7 +51,7 @@
             border: 2px solid #ff6600;
             border-radius: 14px;
             padding: 14px;
-            box-shadow: 0 4px 15px rgba(255, 102, 0, 0.15);
+            box-shadow: 0 4px 15px rgba(255, 102, 0, 0.1);
             overflow: hidden;
         }
         .media-container {
@@ -187,7 +190,7 @@
         const grid = document.getElementById("video-grid");
 
         // Stockage et récupération des ID aléatoires par appareil
-        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v3"));
+        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v4"));
 
         if (!scenesData) {
             scenesData = sourceScenes.map(scene => {
@@ -200,7 +203,7 @@
                     deverrouille: false
                 };
             });
-            localStorage.setItem("vip_scenes_data_v3", JSON.stringify(scenesData));
+            localStorage.setItem("vip_scenes_data_v4", JSON.stringify(scenesData));
         }
 
         scenesData.forEach((scene, index) => {
@@ -255,7 +258,7 @@
 
             if (saisie === cleAttendue) {
                 scenesData[index].deverrouille = true;
-                localStorage.setItem("vip_scenes_data_v3", JSON.stringify(scenesData));
+                localStorage.setItem("vip_scenes_data_v4", JSON.stringify(scenesData));
 
                 const card = document.getElementById(`card-${index}`);
                 card.innerHTML = `
