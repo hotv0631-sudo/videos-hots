@@ -9,7 +9,7 @@
             box-sizing: border-box;
         }
         body {
-            background-color: #d1d5db !important; /* Fond gris */
+            background-color: #d1d5db !important;
             color: #333333;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             margin: 0;
@@ -32,14 +32,13 @@
             text-transform: uppercase;
         }
         .folder-icon {
-            color: #eab308; /* Jaune */
+            color: #eab308;
         }
         .subtitle {
             font-size: 11px;
             color: #ff6600;
             font-weight: bold;
         }
-        /* Grille de 2 conteneurs à l'infini */
         .grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -48,7 +47,7 @@
             margin: 0 auto;
         }
         .card {
-            background: #e5e7eb; /* Conteneur gris */
+            background: #e5e7eb;
             border: 2px solid #ff6600;
             border-radius: 12px;
             padding: 8px;
@@ -100,7 +99,7 @@
             align-items: center;
             justify-content: center;
             gap: 4px;
-            background: #25d366; /* Vert */
+            background: #25d366;
             color: #ffffff;
             text-align: center;
             padding: 8px 4px;
@@ -135,7 +134,7 @@
         }
         button.verify-btn {
             width: 100%;
-            background: #25d366; /* Vert */
+            background: #25d366;
             color: #ffffff;
             border: none;
             padding: 8px;
@@ -153,7 +152,7 @@
         }
         .mega-link {
             display: block;
-            background: #25d366; /* Vert */
+            background: #25d366;
             color: #ffffff;
             padding: 8px;
             border-radius: 6px;
@@ -164,68 +163,56 @@
             text-align: center;
             box-shadow: 0 2px 8px rgba(37, 211, 102, 0.4);
         }
-        .loading-sentinel {
-            text-align: center;
-            padding: 20px;
-            font-weight: bold;
-            color: #ff6600;
-            grid-column: span 2;
-        }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>NOUVEAU DOSSIER <span class="folder-icon">📂</span> DE BABY</h1>
+        <h1>NOUVEAU DOSSIER 📂 DE BABY</h1>
         <div class="subtitle">Aperçus 9:16 • Clé Sécurisée • WhatsApp Direct</div>
     </header>
 
     <div class="grid" id="video-grid"></div>
-    <div id="sentinel" class="loading-sentinel">Chargement des dossiers suivants...</div>
 
     <script>
         const whatsappNumber = "2250105553740";
 
-        // Configuration avec de vraies images de couverture 9:16 valides
-        const baseContent = [
+        /* 
+          VOS VIDÉOS D'APERÇU (hébergées sur GitHub) ET LIENS MEGA COMPLETS :
+          Ajoutez ou modifiez vos scènes ici au cas par cas.
+        */
+        const myScenes = [
             {
-                image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800&auto=format&fit=crop",
-                preview: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+                nom: "Dossier_Baby_01",
+                preview: "METTRE_ICI_LE_LIEN_RAW_DE_VOTRE_VIDEO_SUR_GITHUB.mp4", 
                 mega: "https://mega.nz/file/61Zh2QwY#BCqsGy36QmkqhR6KL8rhU_HPY3Mt2doV6vMe1ioQkLY"
-            },
-            {
-                image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=800&auto=format&fit=crop",
-                preview: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
-                mega: "https://mega.nz/file/b0AHSBZb#AeLR3rKCOOF4m54VHvfdNkvUzq0DjtZkiyqspQNo3g4"
-            },
-            {
-                image: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=800&auto=format&fit=crop",
-                preview: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
-                mega: "https://mega.nz/file/Hx5kBbKD#OQKM2Kk5S0D6bhGcT4_52qJdjnRAzZ7t4bM8UAtpWQk"
             }
+            // Pour ajouter un autre dossier, ajoutez simplement une ligne ici :
+            // , { nom: "Dossier_Baby_02", preview: "...", mega: "..." }
         ];
 
         const grid = document.getElementById("video-grid");
-        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v14")) || [];
+        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v16")) || [];
 
         function saveState() {
-            localStorage.setItem("vip_scenes_data_v14", JSON.stringify(scenesData));
+            localStorage.setItem("vip_scenes_data_v16", JSON.stringify(scenesData));
         }
 
-        function createSceneData(index) {
-            const randomId = Math.floor(Math.random() * (90000 - 10000 + 1)) + 10000;
-            const item = baseContent[index % baseContent.length];
-            return {
-                id: randomId,
-                nom: `Dossier_Baby_${index + 1}`,
-                mega: item.mega,
-                preview: item.preview,
-                image: item.image,
-                deverrouille: false
-            };
+        if (scenesData.length === 0) {
+            scenesData = myScenes.map((item) => {
+                const randomId = Math.floor(Math.random() * (90000 - 10000 + 1)) + 10000;
+                return {
+                    id: randomId,
+                    nom: item.nom,
+                    mega: item.mega,
+                    preview: item.preview,
+                    deverrouille: false
+                };
+            });
+            saveState();
         }
 
-        function renderCard(scene, index) {
+        scenesData.forEach((scene, index) => {
             const cleAttendue = Math.floor((scene.id * 2026) / 360);
             const card = document.createElement("div");
             card.className = "card";
@@ -233,7 +220,7 @@
 
             const mediaHtml = `
                 <div class="media-container">
-                    <video class="preview-video" controls playsinline preload="metadata" poster="${scene.image}">
+                    <video class="preview-video" controls playsinline preload="metadata">
                         <source src="${scene.preview}" type="video/mp4">
                         Votre navigateur ne supporte pas la lecture vidéo.
                     </video>
@@ -266,24 +253,7 @@
                 `;
             }
             grid.appendChild(card);
-        }
-
-        function loadMoreCards(batchSize = 4) {
-            const startIndex = scenesData.length;
-            for (let i = 0; i < batchSize; i++) {
-                const newIndex = startIndex + i;
-                const newScene = createSceneData(newIndex);
-                scenesData.push(newScene);
-                renderCard(newScene, newIndex);
-            }
-            saveState();
-        }
-
-        if (scenesData.length === 0) {
-            loadMoreCards(6);
-        } else {
-            scenesData.forEach((scene, index) => renderCard(scene, index));
-        }
+        });
 
         function verifier(index, cleAttendue) {
             const inputElem = document.getElementById(`input-${index}`);
@@ -297,7 +267,7 @@
                 const card = document.getElementById(`card-${index}`);
                 card.innerHTML = `
                     <div class="media-container">
-                        <video class="preview-video" controls playsinline preload="metadata" poster="${scenesData[index].image}">
+                        <video class="preview-video" controls playsinline preload="metadata">
                             <source src="${scenesData[index].preview}" type="video/mp4">
                         </video>
                     </div>
@@ -313,16 +283,6 @@
                 msg.innerText = "Clé incorrecte.";
             }
         }
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    loadMoreCards(4);
-                }
-            });
-        }, { rootMargin: '200px' });
-
-        observer.observe(document.getElementById('sentinel'));
     </script>
 
 </body>
