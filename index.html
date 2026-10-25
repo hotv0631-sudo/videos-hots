@@ -9,7 +9,7 @@
             box-sizing: border-box;
         }
         body {
-            background-color: #d1d5db !important; /* Fond gris de la page */
+            background-color: #d1d5db !important;
             color: #333333;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             margin: 0;
@@ -20,7 +20,7 @@
             padding: 15px 0;
             border-bottom: 3px solid #ff6600;
             margin-bottom: 20px;
-            background: #e5e7eb; /* Fond gris pour l'en-tête */
+            background: #e5e7eb;
             border-radius: 10px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
@@ -47,7 +47,7 @@
             margin: 0 auto;
         }
         .card {
-            background: #e5e7eb; /* Fond gris à l'intérieur des conteneurs / cartes */
+            background: #e5e7eb;
             border: 2px solid #ff6600;
             border-radius: 14px;
             padding: 14px;
@@ -168,27 +168,31 @@
     <script>
         const whatsappNumber = "2250105553740";
 
+        // Configuration de vos 3 scènes avec leur image de couverture (poster)
         const sourceScenes = [
             { 
                 nom: "Scene_Hot_X79", 
                 mega: "https://mega.nz/file/61Zh2QwY#BCqsGy36QmkqhR6KL8rhU_HPY3Mt2doV6vMe1ioQkLY",
-                preview: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" 
+                preview: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+                image: "https://images.unsplash.com/photo-1518173946687-a4c8a383392e?w=800&auto=format&fit=crop" // Lien de votre photo 1
             },
             { 
                 nom: "Private_Z99", 
                 mega: "https://mega.nz/file/b0AHSBZb#AeLR3rKCOOF4m54VHvfdNkvUzq0DjtZkiyqspQNo3g4",
-                preview: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4"
+                preview: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+                image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&auto=format&fit=crop" // Lien de votre photo 2
             },
             { 
                 nom: "Exclusive_008", 
                 mega: "https://mega.nz/file/Hx5kBbKD#OQKM2Kk5S0D6bhGcT4_52qJdjnRAzZ7t4bM8UAtpWQk",
-                preview: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4"
+                preview: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
+                image: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=800&auto=format&fit=crop" // Lien de votre photo 3
             }
         ];
 
         const grid = document.getElementById("video-grid");
 
-        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v7"));
+        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v9"));
 
         if (!scenesData) {
             scenesData = sourceScenes.map(scene => {
@@ -198,10 +202,11 @@
                     nom: scene.nom,
                     mega: scene.mega,
                     preview: scene.preview,
+                    image: scene.image,
                     deverrouille: false
                 };
             });
-            localStorage.setItem("vip_scenes_data_v7", JSON.stringify(scenesData));
+            localStorage.setItem("vip_scenes_data_v9", JSON.stringify(scenesData));
         }
 
         scenesData.forEach((scene, index) => {
@@ -213,7 +218,7 @@
 
             const mediaHtml = `
                 <div class="media-container">
-                    <video class="preview-video" controls playsinline preload="metadata">
+                    <video class="preview-video" controls playsinline preload="metadata" poster="${scene.image}">
                         <source src="${scene.preview}" type="video/mp4">
                         Votre navigateur ne supporte pas la lecture vidéo.
                     </video>
@@ -255,12 +260,12 @@
 
             if (saisie === cleAttendue) {
                 scenesData[index].deverrouille = true;
-                localStorage.setItem("vip_scenes_data_v7", JSON.stringify(scenesData));
+                localStorage.setItem("vip_scenes_data_v9", JSON.stringify(scenesData));
 
                 const card = document.getElementById(`card-${index}`);
                 card.innerHTML = `
                     <div class="media-container">
-                        <video class="preview-video" controls playsinline preload="metadata">
+                        <video class="preview-video" controls playsinline preload="metadata" poster="${scenesData[index].image}">
                             <source src="${scenesData[index].preview}" type="video/mp4">
                         </video>
                     </div>
