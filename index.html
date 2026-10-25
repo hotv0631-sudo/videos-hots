@@ -3,139 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Exclusivités Privées</title>
+    <title>Private VIP - Exclusivités</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { 
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
-            background: linear-gradient(135deg, #0d0614, #1a0b2e); 
-            color: #fff; 
-            padding: 10px; 
-            min-height: 100vh;
-        }
-        
-        header { 
-            text-align: center; 
-            padding: 20px 0; 
-            border-bottom: 1px solid rgba(255, 0, 128, 0.2); 
-            margin-bottom: 20px; 
-        }
-        header h1 { 
-            font-size: 1.6rem; 
-            color: #ff2a85; 
-            text-shadow: 0 0 10px rgba(255, 42, 133, 0.5);
-            letter-spacing: 1px;
-        }
-        header p { 
-            font-size: 0.8rem; 
-            color: #d1b3e0; 
-            margin-top: 6px; 
-        }
-
-        /* Grille mobile : 2 dossiers côte à côte */
-        .grid-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            padding-bottom: 40px;
-        }
-
-        .folder-card {
-            background: rgba(26, 11, 46, 0.8);
-            border-radius: 12px;
-            overflow: hidden;
-            border: 1px solid rgba(189, 0, 255, 0.3);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .media-preview {
-            width: 100%;
-            height: 120px;
-            object-fit: cover;
-            background: #111;
-            filter: brightness(0.9);
-        }
-
-        .folder-info {
+        body {
+            background-color: #0b0610;
+            color: #ffffff;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            margin: 0;
             padding: 10px;
         }
-
-        .folder-title {
-            font-size: 0.75rem;
-            font-weight: bold;
-            color: #f3e6ff;
-            margin-bottom: 6px;
-            word-break: break-all;
-            line-height: 1.2;
-        }
-
-        .id-badge {
-            font-size: 0.65rem;
-            color: #e066ff;
-            margin-bottom: 8px;
-            font-weight: bold;
-        }
-
-        .whatsapp-btn {
-            display: block;
-            width: 100%;
-            background: linear-gradient(135deg, #ff2a85, #bd00ff);
-            color: white;
+        header {
             text-align: center;
-            padding: 8px 4px;
-            font-size: 0.7rem;
-            font-weight: bold;
-            text-decoration: none;
-            border-radius: 6px;
-            margin-bottom: 8px;
-            box-shadow: 0 2px 8px rgba(255, 42, 133, 0.4);
+            padding: 15px 0;
+            border-bottom: 2px solid #ff2a85;
+            margin-bottom: 20px;
         }
-
-        .unlock-section {
+        h1 {
+            color: #ff2a85;
+            font-size: 22px;
+            margin: 0 0 5px 0;
+            letter-spacing: 1px;
+        }
+        .subtitle {
+            font-size: 11px;
+            color: #d8b4fe;
+        }
+        .grid {
             display: flex;
             flex-direction: column;
-            gap: 5px;
+            gap: 15px;
+            max-width: 500px;
+            margin: 0 auto;
         }
-
-        .unlock-input {
-            width: 100%;
-            padding: 6px;
-            font-size: 0.7rem;
-            background: #0d0614;
-            border: 1px solid rgba(189, 0, 255, 0.4);
-            color: #fff;
-            border-radius: 4px;
+        .card {
+            background: #1a0b2e;
+            border: 1px solid #a855f7;
+            border-radius: 12px;
+            padding: 12px;
+            box-shadow: 0 4px 15px rgba(168, 85, 247, 0.2);
+        }
+        .card h3 {
+            margin: 0 0 8px 0;
+            color: #ff2a85;
+            font-size: 16px;
             text-align: center;
         }
-
-        .unlock-input:focus {
-            outline: none;
-            border-color: #ff2a85;
+        .info-id {
+            font-size: 12px;
+            color: #e9d5ff;
+            margin-bottom: 8px;
+            text-align: center;
         }
-
-        .unlock-btn {
-            background: #2b134d;
-            color: #f3e6ff;
-            border: 1px solid rgba(189, 0, 255, 0.3);
-            padding: 5px;
-            font-size: 0.7rem;
-            border-radius: 4px;
+        .whatsapp-btn {
+            display: block;
+            background: #25d366;
+            color: white;
+            text-align: center;
+            padding: 8px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+        .input-group {
+            display: flex;
+            gap: 8px;
+        }
+        input {
+            flex: 1;
+            background: #0b0610;
+            border: 1px solid #ff2a85;
+            border-radius: 6px;
+            padding: 8px;
+            color: white;
+            font-size: 13px;
+        }
+        button.verify-btn {
+            background: #ff2a85;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-weight: bold;
             cursor: pointer;
-            font-weight: bold;
+            font-size: 13px;
         }
-
-        .unlock-btn:active {
-            background: #bd00ff;
-        }
-
-        .status-msg {
-            font-size: 0.65rem;
-            margin-top: 5px;
+        .message {
+            margin-top: 8px;
+            font-size: 12px;
             text-align: center;
             font-weight: bold;
+        }
+        .mega-link {
+            display: inline-block;
+            background: #ff2a85;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 8px;
+            font-size: 13px;
         }
     </style>
 </head>
@@ -143,70 +112,62 @@
 
     <header>
         <h1>PRIVATE VIP</h1>
-        <p>Scènes exclusives • Défilement infini • Commande WhatsApp</p>
+        <div class="subtitle">Scènes exclusives • Défilement infini • Commande WhatsApp</div>
     </header>
 
-    <!-- Grille infinie de dossiers -->
-    <div class="grid-container" id="catalogGrid">
-        <!-- Les éléments seront injectés dynamiquement ici -->
-    </div>
+    <div class="grid" id="video-grid"></div>
 
     <script>
-        // Remplacez par votre numéro WhatsApp (indicatif + numéro sans le +)
-        const numeroWhatsApp = "22500000000";
-
-        // Votre base de données externe simulée (noms exacts cryptés, non floutés)
-        const listeDossiers = [
-            { id: 1024, nom: "Scene_Hot_X79_crypt.mp4", apercu: "https://via.placeholder.com/300x200/2b134d/ff2a85?text=Scene+01" },
-            { id: 2541, nom: "Private_Z99_crypt.jpg", apercu: "https://via.placeholder.com/300x200/1a0b2e/e066ff?text=Scene+02" },
-            { id: 3892, nom: "Exclusive_H45_crypt.mp4", apercu: "https://via.placeholder.com/300x200/3a105c/ff2a85?text=Scene+03" },
-            { id: 4120, nom: "Sensual_A12_crypt.mp4", apercu: "https://via.placeholder.com/300x200/2b134d/e066ff?text=Scene+04" },
-            { id: 5634, nom: "Night_B88_crypt.jpg", apercu: "https://via.placeholder.com/300x200/1a0b2e/ff2a85?text=Scene+05" },
-            { id: 6781, nom: "Secret_C33_crypt.mp4", apercu: "https://via.placeholder.com/300x200/3a105c/e066ff?text=Scene+06" }
+        // Liste de vos scènes (ID, Nom, et Lien MEGA pour la scène 1)
+        const scenes = [
+            { id: 49216, nom: "Scene_Hot_X79_crypt.mp4", mega: "https://mega.nz/file/61Zh2QwY#BCqsGy36QmkqhR6KL8rhU_HPY3Mt2doV6vMe1ioQkLY" },
+            { id: 62541, nom: "Private_Z99_crypt.jpg", mega: "#" },
+            { id: 63555, nom: "Exclusive_008_crypt.mp4", mega: "#" },
+            { id: 64135, nom: "Sensual_048_crypt.mp4", mega: "#" }
         ];
 
-        const gridContainer = document.getElementById("catalogGrid");
+        const grid = document.getElementById("video-grid");
+        const whatsappNumber = "2250105553740"; // Numéro WhatsApp configuré
 
-        // Génération automatique des éléments
-        listeDossiers.forEach(item => {
-            const bonneCle = Math.round(((item.id * 2026) / 360) * 100) / 100;
-            
+        scenes.forEach(scene => {
+            // Calcul automatique de la clé attendue : (ID * 2026) / 360 arrondi à 2 décimales
+            const cleAttendue = Math.round(((scene.id * 2026) / 360) * 100) / 100;
+
             const card = document.createElement("div");
-            card.className = "folder-card";
-            
+            card.className = "card";
             card.innerHTML = `
-                <img src="${item.apercu}" class="media-preview" alt="Aperçu">
-                <div class="folder-info">
-                    <div class="folder-title">${item.nom}</div>
-                    <div class="id-badge">ID : #${item.id}</div>
-                    
-                    <a class="whatsapp-btn" href="https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent('Bonjour, je veux déverrouiller la scène ID #' + item.id + ' (' + item.nom + ')')}" target="_blank">
-                        Commander
-                    </a>
-
-                    <div class="unlock-section">
-                        <input type="text" class="unlock-input" id="input-${item.id}" placeholder="Clé...">
-                        <button class="unlock-btn" onclick="verifier(${item.id}, ${bonneCle})">Valider</button>
-                    </div>
-                    <div class="status-msg" id="msg-${item.id}"></div>
+                <h3>${scene.nom.replace(/_crypt\..*/, '')}</h3>
+                <div class="info-id">ID unique : <b>${scene.id}</b></div>
+                <a class="whatsapp-btn" href="https://wa.me/${whatsappNumber}?text=Bonjour,%20je%20veux%20acheter%20la%20scène%20ID:%20${scene.id}" target="_blank">
+                    💬 Commander la clé sur WhatsApp
+                </a>
+                <div class="input-group">
+                    <input type="number" id="input-${scene.id}" placeholder="Entrez la clé...">
+                    <button class="verify-btn" onclick="verifier(${scene.id}, ${cleAttendue}, '${scene.mega}')">Valider</button>
                 </div>
+                <div class="message" id="msg-${scene.id}"></div>
             `;
-            gridContainer.appendChild(card);
+            grid.appendChild(card);
         });
 
-        // Fonction de vérification de la clé
-        function verifier(id, cleAttendue) {
-            const saisie = parseFloat(document.getElementById(`input-${id}`).value);
+        function verifier(id, cleAttendue, lienMega) {
+            const saisieInput = document.getElementById(`input-${id}`).value;
             const msg = document.getElementById(`msg-${id}`);
+            const saisie = parseFloat(saisieInput);
 
             if (saisie === cleAttendue) {
                 msg.style.color = "#ff2a85";
-                msg.innerText = "Déverrouillé ! Lien : [VOTRE_LIEN]";
+                if(lienMega !== "#") {
+                    msg.innerHTML = `Clé valide !<br><a class="mega-link" href="${lienMega}" target="_blank">📥 Accéder à la vidéo MEGA</a>`;
+                } else {
+                    msg.innerHTML = "Clé valide ! (Lien bientôt disponible)";
+                }
             } else {
                 msg.style.color = "#a855f7";
-                msg.innerText = "Clé incorrecte.";
+                msg.innerText = "Clé incorrecte. Réessayez.";
             }
         }
     </script>
+
 </body>
 </html>
