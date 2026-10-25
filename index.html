@@ -177,28 +177,25 @@
     <script>
         const whatsappNumber = "2250105553740";
 
-        // Vos scènes avec votre vidéo GitHub et votre lien MEGA
+        // Vos scènes avec les liens RAW GitHub complets
         const myScenes = [
             {
                 nom: "Baise anal TS",
                 preview: "https://raw.githubusercontent.com/hotv0631-sudo/vidéos-hots/main/lv_0_20261025164010.mp4", 
                 mega: "https://mega.nz/file/3pBVRaaK#XWWcvhHx47C_mHD60pB-C66HO-dob1dJkBTKmW99prs"
             },
-
             {
                 nom: "Rafle Abidjan",
-                preview: "lv_0_20261025164010.mp4", 
+                preview: "https://raw.githubusercontent.com/hotv0631-sudo/vidéos-hots/main/lv_0_20261025164010.mp4", 
                 mega: "https://mega.nz/file/T4JCTR7J#_dc2vjkSPrNL5NHb98SZ4rNsVM8rpc6jZuT83TsPcs0"
             }
-            // Pour ajouter d'autres dossiers à l'avenir, rajoutez-les simplement ici :
-            // , { nom: "Dossier_Baby_02", preview: "LIEN_RAW_GITHUB", mega: "LIEN_MEGA" }
         ];
 
         const grid = document.getElementById("video-grid");
-        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v18")) || [];
+        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v19")) || [];
 
         function saveState() {
-            localStorage.setItem("vip_scenes_data_v18", JSON.stringify(scenesData));
+            localStorage.setItem("vip_scenes_data_v19", JSON.stringify(scenesData));
         }
 
         if (scenesData.length === 0) {
@@ -221,7 +218,6 @@
             card.className = "card";
             card.id = `card-${index}`;
 
-            // Ajout de "loop" pour que la vidéo tourne en boucle automatiquement
             const mediaHtml = `
                 <div class="media-container">
                     <video class="preview-video" controls autoplay muted loop playsinline preload="metadata">
