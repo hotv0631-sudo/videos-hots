@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Private VIP - Exclusivités</title>
+    <title>NOUVEAU DOSSIER 📂 DE BABY</title>
     <style>
         * {
             box-sizing: border-box;
         }
         body {
-            background-color: #0b0610;
-            color: #ffffff;
+            background-color: #ffffff;
+            color: #333333;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             margin: 0;
             padding: 12px;
@@ -18,19 +18,23 @@
         header {
             text-align: center;
             padding: 15px 0;
-            border-bottom: 2px solid #ff2a85;
+            border-bottom: 3px solid #ff6600;
             margin-bottom: 20px;
         }
         h1 {
-            color: #ff2a85;
-            font-size: 24px;
+            color: #ff6600;
+            font-size: 22px;
             margin: 0 0 5px 0;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
             text-transform: uppercase;
         }
+        .folder-icon {
+            color: #ffcc00;
+        }
         .subtitle {
-            font-size: 11px;
-            color: #d8b4fe;
+            font-size: 12px;
+            color: #ff6600;
+            font-weight: bold;
         }
         .grid {
             display: flex;
@@ -40,20 +44,20 @@
             margin: 0 auto;
         }
         .card {
-            background: #1a0b2e;
-            border: 1px solid #a855f7;
+            background: #ffffff;
+            border: 2px solid #ff6600;
             border-radius: 14px;
-            padding: 12px;
-            box-shadow: 0 6px 20px rgba(168, 85, 247, 0.25);
+            padding: 14px;
+            box-shadow: 0 4px 15px rgba(255, 102, 0, 0.15);
             overflow: hidden;
         }
         .media-container {
             width: 100%;
             border-radius: 10px;
             overflow: hidden;
-            background: #000;
+            background: #000000;
             margin-bottom: 12px;
-            border: 1px solid #ff2a85;
+            border: 1px solid #ff6600;
             aspect-ratio: 16/9;
             display: flex;
             align-items: center;
@@ -66,19 +70,20 @@
             display: block;
         }
         .card h3 {
-            margin: 0 0 6px 0;
-            color: #ff2a85;
-            font-size: 17px;
+            margin: 0 0 8px 0;
+            color: #ff6600;
+            font-size: 18px;
             text-align: center;
         }
         .info-id {
-            font-size: 12px;
-            color: #e9d5ff;
+            font-size: 13px;
+            color: #ff6600;
             margin-bottom: 12px;
             text-align: center;
-            background: rgba(255, 42, 133, 0.1);
-            padding: 4px;
+            background: #fff5ee;
+            padding: 6px;
             border-radius: 6px;
+            border: 1px dashed #ff6600;
         }
         .whatsapp-btn {
             display: flex;
@@ -86,18 +91,18 @@
             justify-content: center;
             gap: 6px;
             background: #25d366;
-            color: white;
+            color: #ffffff;
             text-align: center;
-            padding: 10px;
+            padding: 12px;
             border-radius: 8px;
             text-decoration: none;
             font-weight: bold;
-            font-size: 13px;
+            font-size: 14px;
             margin-bottom: 12px;
-            transition: opacity 0.2s;
+            box-shadow: 0 3px 8px rgba(37, 211, 102, 0.3);
         }
         .whatsapp-btn:active {
-            opacity: 0.8;
+            opacity: 0.85;
         }
         .input-group {
             display: flex;
@@ -105,26 +110,27 @@
         }
         input {
             flex: 1;
-            background: #0b0610;
-            border: 1px solid #ff2a85;
+            background: #ffffff;
+            border: 2px solid #ff6600;
             border-radius: 8px;
             padding: 10px;
-            color: white;
+            color: #333333;
             font-size: 14px;
             outline: none;
         }
         input::placeholder {
-            color: #a855f7;
+            color: #ffaa66;
         }
         button.verify-btn {
-            background: #ff2a85;
-            color: white;
+            background: #25d366;
+            color: #ffffff;
             border: none;
-            padding: 10px 16px;
+            padding: 10px 18px;
             border-radius: 8px;
             font-weight: bold;
             cursor: pointer;
-            font-size: 13px;
+            font-size: 14px;
+            box-shadow: 0 3px 8px rgba(37, 211, 102, 0.3);
         }
         .message {
             margin-top: 10px;
@@ -134,8 +140,8 @@
         }
         .mega-link {
             display: block;
-            background: #ff2a85;
-            color: white;
+            background: #25d366;
+            color: #ffffff;
             padding: 12px;
             border-radius: 8px;
             text-decoration: none;
@@ -143,14 +149,14 @@
             margin-top: 8px;
             font-size: 14px;
             text-align: center;
-            box-shadow: 0 0 10px rgba(255, 42, 133, 0.5);
+            box-shadow: 0 3px 10px rgba(37, 211, 102, 0.4);
         }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>PRIVATE VIP</h1>
+        <h1>NOUVEAU DOSSIER <span class="folder-icon">📂</span> DE BABY</h1>
         <div class="subtitle">Aperçus Vidéo HD • Clé Sécurisée • WhatsApp Direct</div>
     </header>
 
@@ -159,7 +165,7 @@
     <script>
         const whatsappNumber = "2250105553740";
 
-        // Configuration des scènes avec lien MEGA et lien vidéo d'aperçu direct
+        // Configuration de vos 3 scènes
         const sourceScenes = [
             { 
                 nom: "Scene_Hot_X79", 
@@ -180,8 +186,8 @@
 
         const grid = document.getElementById("video-grid");
 
-        // Gestion des ID aléatoires par appareil
-        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v2"));
+        // Stockage et récupération des ID aléatoires par appareil
+        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v3"));
 
         if (!scenesData) {
             scenesData = sourceScenes.map(scene => {
@@ -194,11 +200,11 @@
                     deverrouille: false
                 };
             });
-            localStorage.setItem("vip_scenes_data_v2", JSON.stringify(scenesData));
+            localStorage.setItem("vip_scenes_data_v3", JSON.stringify(scenesData));
         }
 
         scenesData.forEach((scene, index) => {
-            // Formule : ID * 2026 / 360 sans aucune virgule (Math.floor)
+            // Formule : ID * 2026 / 360 arrondi au nombre entier inférieur (Math.floor)
             const cleAttendue = Math.floor((scene.id * 2026) / 360);
 
             const card = document.createElement("div");
@@ -219,7 +225,7 @@
                     ${mediaHtml}
                     <h3>${scene.nom}</h3>
                     <div class="info-id">ID unique : <b>${scene.id}</b></div>
-                    <div class="message" style="color: #ff2a85;">
+                    <div class="message" style="color: #ff6600;">
                         ✅ Scène Déverrouillée<br>
                         <a class="mega-link" href="${scene.mega}" target="_blank">📥 Regarder sur MEGA</a>
                     </div>
@@ -249,7 +255,7 @@
 
             if (saisie === cleAttendue) {
                 scenesData[index].deverrouille = true;
-                localStorage.setItem("vip_scenes_data_v2", JSON.stringify(scenesData));
+                localStorage.setItem("vip_scenes_data_v3", JSON.stringify(scenesData));
 
                 const card = document.getElementById(`card-${index}`);
                 card.innerHTML = `
@@ -260,13 +266,13 @@
                     </div>
                     <h3>${scenesData[index].nom}</h3>
                     <div class="info-id">ID unique : <b>${scenesData[index].id}</b></div>
-                    <div class="message" style="color: #ff2a85;">
+                    <div class="message" style="color: #ff6600;">
                         🎉 Clé Valide !<br>
                         <a class="mega-link" href="${scenesData[index].mega}" target="_blank">📥 Regarder la vidéo sur MEGA</a>
                     </div>
                 `;
             } else {
-                msg.style.color = "#a855f7";
+                msg.style.color = "#ff6600";
                 msg.innerText = "Clé incorrecte. Vérifiez et réessayez.";
             }
         }
