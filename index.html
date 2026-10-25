@@ -26,41 +26,44 @@
         }
         h1 {
             color: #ff6600;
-            font-size: 22px;
+            font-size: 20px;
             margin: 0 0 5px 0;
             letter-spacing: 0.5px;
             text-transform: uppercase;
         }
         .folder-icon {
-            color: #eab308;
+            color: #eab308; /* Jaune */
         }
         .subtitle {
-            font-size: 12px;
+            font-size: 11px;
             color: #ff6600;
             font-weight: bold;
         }
+        /* Grille de 2 conteneurs par ligne */
         .grid {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            max-width: 380px; /* Taille adaptée pour écran mobile */
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            max-width: 800px;
             margin: 0 auto;
         }
         .card {
             background: #e5e7eb; /* Conteneur gris */
             border: 2px solid #ff6600;
-            border-radius: 14px;
-            padding: 14px;
-            box-shadow: 0 4px 15px rgba(255, 102, 0, 0.15);
-            overflow: hidden;
+            border-radius: 12px;
+            padding: 8px;
+            box-shadow: 0 4px 12px rgba(255, 102, 0, 0.15);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
-        /* Conteneur Média au format 9:16 (Portrait Smartphone) */
+        /* Format Média 9:16 Portrait */
         .media-container {
             width: 100%;
-            border-radius: 10px;
+            border-radius: 8px;
             overflow: hidden;
             background: #000000;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
             border: 1px solid #ff6600;
             aspect-ratio: 9 / 16;
             display: flex;
@@ -74,18 +77,21 @@
             display: block;
         }
         .card h3 {
-            margin: 0 0 8px 0;
+            margin: 0 0 6px 0;
             color: #ff6600;
-            font-size: 18px;
+            font-size: 14px;
             text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         .info-id {
-            font-size: 13px;
+            font-size: 11px;
             color: #ff6600;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
             text-align: center;
             background: #f3f4f6;
-            padding: 6px;
+            padding: 4px;
             border-radius: 6px;
             border: 1px dashed #ff6600;
         }
@@ -93,67 +99,77 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
-            background: #25d366;
+            gap: 4px;
+            background: #25d366; /* Vert */
             color: #ffffff;
             text-align: center;
-            padding: 12px;
-            border-radius: 8px;
+            padding: 8px 4px;
+            border-radius: 6px;
             text-decoration: none;
             font-weight: bold;
-            font-size: 14px;
-            margin-bottom: 12px;
-            box-shadow: 0 3px 8px rgba(37, 211, 102, 0.3);
+            font-size: 11px;
+            margin-bottom: 8px;
+            box-shadow: 0 2px 6px rgba(37, 211, 102, 0.3);
         }
         .whatsapp-btn:active {
             opacity: 0.85;
         }
         .input-group {
             display: flex;
-            gap: 8px;
+            flex-direction: column;
+            gap: 6px;
         }
         input {
-            flex: 1;
+            width: 100%;
             background: #f9fafb;
-            border: 2px solid #ff6600;
-            border-radius: 8px;
-            padding: 10px;
+            border: 1.5px solid #ff6600;
+            border-radius: 6px;
+            padding: 6px;
             color: #333333;
-            font-size: 14px;
+            font-size: 11px;
+            text-align: center;
             outline: none;
         }
         input::placeholder {
             color: #9ca3af;
         }
         button.verify-btn {
-            background: #25d366;
+            width: 100%;
+            background: #25d366; /* Vert */
             color: #ffffff;
             border: none;
-            padding: 10px 18px;
-            border-radius: 8px;
+            padding: 8px;
+            border-radius: 6px;
             font-weight: bold;
             cursor: pointer;
-            font-size: 14px;
-            box-shadow: 0 3px 8px rgba(37, 211, 102, 0.3);
+            font-size: 12px;
+            box-shadow: 0 2px 6px rgba(37, 211, 102, 0.3);
         }
         .message {
-            margin-top: 10px;
-            font-size: 13px;
+            margin-top: 6px;
+            font-size: 11px;
             text-align: center;
             font-weight: bold;
         }
         .mega-link {
             display: block;
-            background: #25d366;
+            background: #25d366; /* Vert */
             color: #ffffff;
-            padding: 12px;
-            border-radius: 8px;
+            padding: 8px;
+            border-radius: 6px;
             text-decoration: none;
             font-weight: bold;
-            margin-top: 8px;
-            font-size: 14px;
+            margin-top: 6px;
+            font-size: 12px;
             text-align: center;
-            box-shadow: 0 3px 10px rgba(37, 211, 102, 0.4);
+            box-shadow: 0 2px 8px rgba(37, 211, 102, 0.4);
+        }
+        .loading-sentinel {
+            text-align: center;
+            padding: 20px;
+            font-weight: bold;
+            color: #ff6600;
+            grid-column: span 2;
         }
     </style>
 </head>
@@ -165,50 +181,50 @@
     </header>
 
     <div class="grid" id="video-grid"></div>
+    <div id="sentinel" class="loading-sentinel">Chargement des dossiers suivants...</div>
 
     <script>
         const whatsappNumber = "2250105553740";
 
-        // Configuration de vos scènes avec miniature 9:16 et lien MEGA
-        const sourceScenes = [
-            { 
-                nom: "Scene_Hot_X79", 
-                mega: "https://mega.nz/file/61Zh2QwY#BCqsGy36QmkqhR6KL8rhU_HPY3Mt2doV6vMe1ioQkLY",
-                image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800&auto=format&fit=crop"
-            },
-            { 
-                nom: "Private_Z99", 
-                mega: "https://mega.nz/file/b0AHSBZb#AeLR3rKCOOF4m54VHvfdNkvUzq0DjtZkiyqspQNo3g4",
-                image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=800&auto=format&fit=crop"
-            },
-            { 
-                nom: "Exclusive_008", 
-                mega: "https://mega.nz/file/Hx5kBbKD#OQKM2Kk5S0D6bhGcT4_52qJdjnRAzZ7t4bM8UAtpWQk",
-                image: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=800&auto=format&fit=crop"
-            }
+        // Banques de modèles pour générer les cartes dynamiquement en scroll infini
+        const baseImages = [
+            "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=800&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=800&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=800&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&auto=format&fit=crop"
+        ];
+
+        const baseMegas = [
+            "https://mega.nz/file/61Zh2QwY#BCqsGy36QmkqhR6KL8rhU_HPY3Mt2doV6vMe1ioQkLY",
+            "https://mega.nz/file/b0AHSBZb#AeLR3rKCOOF4m54VHvfdNkvUzq0DjtZkiyqspQNo3g4",
+            "https://mega.nz/file/Hx5kBbKD#OQKM2Kk5S0D6bhGcT4_52qJdjnRAzZ7t4bM8UAtpWQk"
         ];
 
         const grid = document.getElementById("video-grid");
+        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v12")) || [];
 
-        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v11"));
-
-        if (!scenesData) {
-            scenesData = sourceScenes.map(scene => {
-                const randomId = Math.floor(Math.random() * (90000 - 10000 + 1)) + 10000;
-                return {
-                    id: randomId,
-                    nom: scene.nom,
-                    mega: scene.mega,
-                    image: scene.image,
-                    deverrouille: false
-                };
-            });
-            localStorage.setItem("vip_scenes_data_v11", JSON.stringify(scenesData));
+        function saveState() {
+            localStorage.setItem("vip_scenes_data_v12", JSON.stringify(scenesData));
         }
 
-        scenesData.forEach((scene, index) => {
-            const cleAttendue = Math.floor((scene.id * 2026) / 360);
+        // Fonction pour générer une nouvelle scène
+        function createSceneData(index) {
+            const randomId = Math.floor(Math.random() * (90000 - 10000 + 1)) + 10000;
+            const img = baseImages[index % baseImages.length];
+            const mega = baseMegas[index % baseMegas.length];
+            return {
+                id: randomId,
+                nom: `Dossier_Baby_${index + 1}`,
+                mega: mega,
+                image: img,
+                deverrouille: false
+            };
+        }
 
+        // Affiche une carte dans la grille
+        function renderCard(scene, index) {
+            const cleAttendue = Math.floor((scene.id * 2026) / 360);
             const card = document.createElement("div");
             card.className = "card";
             card.id = `card-${index}`;
@@ -223,9 +239,9 @@
                 card.innerHTML = `
                     ${mediaHtml}
                     <h3>${scene.nom}</h3>
-                    <div class="info-id">ID unique : <b>${scene.id}</b></div>
+                    <div class="info-id">ID : <b>${scene.id}</b></div>
                     <div class="message" style="color: #ff6600;">
-                        ✅ Scène Déverrouillée<br>
+                        ✅ Déverrouillé<br>
                         <a class="mega-link" href="${scene.mega}" target="_blank">📥 Regarder sur MEGA</a>
                     </div>
                 `;
@@ -233,28 +249,48 @@
                 card.innerHTML = `
                     ${mediaHtml}
                     <h3>${scene.nom}</h3>
-                    <div class="info-id">ID unique : <b>${scene.id}</b></div>
+                    <div class="info-id">ID : <b>${scene.id}</b></div>
                     <a class="whatsapp-btn" href="https://wa.me/${whatsappNumber}?text=Bonjour,%20je%20souhaite%20acheter%20la%20clé%20pour%20la%20scène%20ID:%20${scene.id}" target="_blank">
-                        💬 Commander la clé sur WhatsApp
+                        💬 Commander la clé
                     </a>
                     <div class="input-group">
-                        <input type="number" id="input-${index}" placeholder="Entrez la clé sans virgule...">
+                        <input type="number" id="input-${index}" placeholder="Code clé...">
                         <button class="verify-btn" onclick="verifier(${index}, ${cleAttendue})">Valider</button>
                     </div>
                     <div class="message" id="msg-${index}"></div>
                 `;
             }
             grid.appendChild(card);
-        });
+        }
 
+        // Chargement par lots (2 par 2 pour garder la grille symétrique)
+        function loadMoreCards(batchSize = 4) {
+            const startIndex = scenesData.length;
+            for (let i = 0; i < batchSize; i++) {
+                const newIndex = startIndex + i;
+                const newScene = createSceneData(newIndex);
+                scenesData.push(newScene);
+                renderCard(newScene, newIndex);
+            }
+            saveState();
+        }
+
+        // Initialisation : charge les cartes existantes ou crée un premier lot de 6
+        if (scenesData.length === 0) {
+            loadMoreCards(6);
+        } else {
+            scenesData.forEach((scene, index) => renderCard(scene, index));
+        }
+
+        // Fonction de vérification de clé
         function verifier(index, cleAttendue) {
-            const saisieVal = document.getElementById(`input-${index}`).value.trim();
+            const inputElem = document.getElementById(`input-${index}`);
             const msg = document.getElementById(`msg-${index}`);
-            const saisie = parseInt(saisieVal, 10);
+            const saisie = parseInt(inputElem.value.trim(), 10);
 
             if (saisie === cleAttendue) {
                 scenesData[index].deverrouille = true;
-                localStorage.setItem("vip_scenes_data_v11", JSON.stringify(scenesData));
+                saveState();
 
                 const card = document.getElementById(`card-${index}`);
                 card.innerHTML = `
@@ -262,17 +298,28 @@
                         <img class="preview-image" src="${scenesData[index].image}" alt="${scenesData[index].nom}">
                     </div>
                     <h3>${scenesData[index].nom}</h3>
-                    <div class="info-id">ID unique : <b>${scenesData[index].id}</b></div>
+                    <div class="info-id">ID : <b>${scenesData[index].id}</b></div>
                     <div class="message" style="color: #ff6600;">
                         🎉 Clé Valide !<br>
-                        <a class="mega-link" href="${scenesData[index].mega}" target="_blank">📥 Regarder la vidéo sur MEGA</a>
+                        <a class="mega-link" href="${scenesData[index].mega}" target="_blank">📥 Regarder sur MEGA</a>
                     </div>
                 `;
             } else {
                 msg.style.color = "#ff6600";
-                msg.innerText = "Clé incorrecte. Vérifiez et réessayez.";
+                msg.innerText = "Clé incorrecte.";
             }
         }
+
+        // Scroll infini automatique via IntersectionObserver
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    loadMoreCards(4); // Ajoute 4 nouveaux dossiers dès que le bas de page est atteint
+                }
+            });
+        }, { rootMargin: '200px' });
+
+        observer.observe(document.getElementById('sentinel'));
     </script>
 
 </body>
