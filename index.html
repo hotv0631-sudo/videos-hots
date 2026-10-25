@@ -9,7 +9,7 @@
             box-sizing: border-box;
         }
         body {
-            background-color: #e4e6eb !important; /* Gris moderne forcé */
+            background-color: #d1d5db !important; /* Fond gris bien visible */
             color: #333333;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             margin: 0;
@@ -22,7 +22,7 @@
             margin-bottom: 20px;
             background: #ffffff;
             border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
         h1 {
             color: #ff6600;
@@ -32,7 +32,7 @@
             text-transform: uppercase;
         }
         .folder-icon {
-            color: #ffcc00;
+            color: #eab308;
         }
         .subtitle {
             font-size: 12px;
@@ -51,7 +51,7 @@
             border: 2px solid #ff6600;
             border-radius: 14px;
             padding: 14px;
-            box-shadow: 0 4px 15px rgba(255, 102, 0, 0.1);
+            box-shadow: 0 4px 15px rgba(255, 102, 0, 0.15);
             overflow: hidden;
         }
         .media-container {
@@ -188,7 +188,7 @@
 
         const grid = document.getElementById("video-grid");
 
-        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v5"));
+        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v6"));
 
         if (!scenesData) {
             scenesData = sourceScenes.map(scene => {
@@ -201,7 +201,7 @@
                     deverrouille: false
                 };
             });
-            localStorage.setItem("vip_scenes_data_v5", JSON.stringify(scenesData));
+            localStorage.setItem("vip_scenes_data_v6", JSON.stringify(scenesData));
         }
 
         scenesData.forEach((scene, index) => {
@@ -255,7 +255,7 @@
 
             if (saisie === cleAttendue) {
                 scenesData[index].deverrouille = true;
-                localStorage.setItem("vip_scenes_data_v5", JSON.stringify(scenesData));
+                localStorage.setItem("vip_scenes_data_v6", JSON.stringify(scenesData));
 
                 const card = document.getElementById(`card-${index}`);
                 card.innerHTML = `
@@ -272,7 +272,7 @@
                     </div>
                 `;
             } else {
-                msg.style.color = #ff6600;
+                msg.style.color = "#ff6600";
                 msg.innerText = "Clé incorrecte. Vérifiez et réessayez.";
             }
         }
