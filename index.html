@@ -118,7 +118,6 @@
     <div class="grid" id="video-grid"></div>
 
     <script>
-        // Liste de vos scènes (ID, Nom, et Lien MEGA pour la scène 1)
         const scenes = [
             { id: 49216, nom: "Scene_Hot_X79_crypt.mp4", mega: "https://mega.nz/file/61Zh2QwY#BCqsGy36QmkqhR6KL8rhU_HPY3Mt2doV6vMe1ioQkLY" },
             { id: 62541, nom: "Private_Z99_crypt.jpg", mega: "#" },
@@ -127,11 +126,11 @@
         ];
 
         const grid = document.getElementById("video-grid");
-        const whatsappNumber = "2250105553740"; // Numéro WhatsApp configuré
+        const whatsappNumber = "2250105553740";
 
         scenes.forEach(scene => {
-            // Calcul automatique de la clé attendue : (ID * 2026) / 360 arrondi à 2 décimales
-            const cleAttendue = Math.round(((scene.id * 2026) / 360) * 100) / 100;
+            // Clé arrondie à un nombre entier pour éviter les erreurs de virgule
+            const cleAttendue = Math.round((scene.id * 2026) / 360);
 
             const card = document.createElement("div");
             card.className = "card";
@@ -151,9 +150,9 @@
         });
 
         function verifier(id, cleAttendue, lienMega) {
-            const saisieInput = document.getElementById(`input-${id}`).value;
+            const saisieVal = document.getElementById(`input-${id}`).value.trim();
             const msg = document.getElementById(`msg-${id}`);
-            const saisie = parseFloat(saisieInput);
+            const saisie = parseInt(saisieVal, 10);
 
             if (saisie === cleAttendue) {
                 msg.style.color = "#ff2a85";
