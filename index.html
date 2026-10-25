@@ -9,7 +9,7 @@
             box-sizing: border-box;
         }
         body {
-            background-color: #d1d5db !important; /* Fond gris bien visible */
+            background-color: #d1d5db !important; /* Fond gris de la page */
             color: #333333;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             margin: 0;
@@ -20,7 +20,7 @@
             padding: 15px 0;
             border-bottom: 3px solid #ff6600;
             margin-bottom: 20px;
-            background: #ffffff;
+            background: #e5e7eb; /* Fond gris pour l'en-tête */
             border-radius: 10px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
@@ -47,7 +47,7 @@
             margin: 0 auto;
         }
         .card {
-            background: #ffffff;
+            background: #e5e7eb; /* Fond gris à l'intérieur des conteneurs / cartes */
             border: 2px solid #ff6600;
             border-radius: 14px;
             padding: 14px;
@@ -83,7 +83,7 @@
             color: #ff6600;
             margin-bottom: 12px;
             text-align: center;
-            background: #fff5ee;
+            background: #f3f4f6;
             padding: 6px;
             border-radius: 6px;
             border: 1px dashed #ff6600;
@@ -113,7 +113,7 @@
         }
         input {
             flex: 1;
-            background: #ffffff;
+            background: #f9fafb;
             border: 2px solid #ff6600;
             border-radius: 8px;
             padding: 10px;
@@ -122,7 +122,7 @@
             outline: none;
         }
         input::placeholder {
-            color: #ffaa66;
+            color: #9ca3af;
         }
         button.verify-btn {
             background: #25d366;
@@ -188,7 +188,7 @@
 
         const grid = document.getElementById("video-grid");
 
-        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v6"));
+        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v7"));
 
         if (!scenesData) {
             scenesData = sourceScenes.map(scene => {
@@ -201,7 +201,7 @@
                     deverrouille: false
                 };
             });
-            localStorage.setItem("vip_scenes_data_v6", JSON.stringify(scenesData));
+            localStorage.setItem("vip_scenes_data_v7", JSON.stringify(scenesData));
         }
 
         scenesData.forEach((scene, index) => {
@@ -255,7 +255,7 @@
 
             if (saisie === cleAttendue) {
                 scenesData[index].deverrouille = true;
-                localStorage.setItem("vip_scenes_data_v6", JSON.stringify(scenesData));
+                localStorage.setItem("vip_scenes_data_v7", JSON.stringify(scenesData));
 
                 const card = document.getElementById(`card-${index}`);
                 card.innerHTML = `
