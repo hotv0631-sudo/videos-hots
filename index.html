@@ -30,14 +30,18 @@
             max-width: 600px;
             margin: 0 auto;
         }
+        /* En-tête fixe au défilement */
         header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
             text-align: center;
             padding: 14px 10px;
             border-bottom: 3px solid #ff6600;
             margin-bottom: 14px;
             background: #e5e7eb;
             border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             width: 100%;
         }
         h1 {
@@ -189,8 +193,8 @@
 
     <div class="container">
         <header>
-            <h1>🤤 VIDEO BIZI EN VENTE <span class="folder-icon">🤤</span> </h1>
-            <div class="subtitle"> 🤑 Commander par WhatsApp 🤑 </div>
+            <h1>🤤 VIDEO BIZI EN VENTE <span class="folder-icon">🤤</span></h1>
+            <div class="subtitle">🤑 Commander par WhatsApp 🤑</div>
         </header>
 
         <div class="grid" id="video-grid"></div>
@@ -259,10 +263,10 @@
         ];
 
         const grid = document.getElementById("video-grid");
-        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v29")) || [];
+        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v32")) || [];
 
         function saveState() {
-            localStorage.setItem("vip_scenes_data_v29", JSON.stringify(scenesData));
+            localStorage.setItem("vip_scenes_data_v32", JSON.stringify(scenesData));
         }
 
         if (scenesData.length === 0) {
@@ -346,7 +350,7 @@
                     </div>
                 `;
             } else {
-                msg.style.color = "#ff6600";
+                msg.style.color = #ff6600;
                 msg.innerText = "Clé incorrecte.";
             }
         }
