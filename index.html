@@ -200,7 +200,6 @@
             text-align: center;
             box-shadow: 0 2px 8px rgba(37, 211, 102, 0.4);
         }
-        /* Bouton Admin Flottant */
         .admin-fab {
             position: fixed;
             bottom: 15px;
@@ -219,7 +218,6 @@
             align-items: center;
             justify-content: center;
         }
-        /* Modal Admin */
         #admin-modal {
             display: none;
             position: fixed;
@@ -256,7 +254,7 @@
             display: block;
             margin-top: 6px;
         }
-        .modal-content input, .modal-content textarea {
+        .modal-content input {
             width: 100%;
             padding: 6px;
             margin-top: 3px;
@@ -296,15 +294,13 @@
         <div class="grid" id="video-grid"></div>
     </div>
 
-    <!-- Bouton pour ouvrir le panneau Partenaire/Admin -->
     <button class="admin-fab" onclick="ouvrirAdmin()" title="Ajouter une vidéo">⚙️</button>
 
-    <!-- Modal d'ajout de vidéo / Inscription Vendeur -->
     <div id="admin-modal">
         <div class="modal-content">
-            <h2>➕ Ajouter une Vidéo (Espace Vendeur)</h2>
+            <h2>➕ Inscription & Ajout (Partenaire)</h2>
             <label>Nom / Titre de la scène :</label>
-            <input type="text" id="new-nom" placeholder="Ex: Bizi Spéciale">
+            <input type="text" id="new-nom" placeholder="Ex: Vidéo Partenaire">
 
             <label>Fichier Aperçu (ex: Movie064.mp4) :</label>
             <input type="text" id="new-preview" placeholder="Movie064.mp4">
@@ -315,11 +311,8 @@
             <label>Prix (en Fr, multiple de 100) :</label>
             <input type="number" id="new-prix" placeholder="1500" step="100">
 
-            <label>Numéro WhatsApp du vendeur (sans le +) :</label>
+            <label>Numéro WhatsApp du partenaire (sans le +) :</label>
             <input type="text" id="new-whatsapp" placeholder="2250105553740">
-
-            <label>Formule de cryptage (ex: id * 2026 / 360) :</label>
-            <input type="text" id="new-formula" value="id * 2026 / 360">
 
             <div class="modal-buttons">
                 <button class="btn-save" onclick="ajouterScene()">Enregistrer</button>
@@ -331,7 +324,7 @@
     <script>
         const defaultWhatsApp = "2250105553740";
 
-        // Vos 61 vidéos initiales intégrées et sécurisées à leur place
+        // Vos 61 vidéos initiales avec votre formule personnelle fixe
         const baseScenes = [
             { nom: "Bizi sans capote", preview: "Movie002.mp4", mega: "https://mega.nz/file/P0g0FapT#Y2NlcHQtRW4VO2EhGursLgAAAAAAAAAAdlQFSHSN1g4", prix: 1200, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
             { nom: "Sextap", preview: "Movie003.mp4", mega: "https://mega.nz/file/KoZV0ZiJ#Ov3FwAQyhRPqJ18rklW4IQ2ofUG1mnwCy4cQx7VpPkY", prix: 1500, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
@@ -396,13 +389,12 @@
         ];
 
         const grid = document.getElementById("video-grid");
-        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v37")) || [];
+        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v38")) || [];
 
         function saveState() {
-            localStorage.setItem("vip_scenes_data_v37", JSON.stringify(scenesData));
+            localStorage.setItem("vip_scenes_data_v38", JSON.stringify(scenesData));
         }
 
-        // Initialisation si vide
         if (scenesData.length === 0) {
             scenesData = baseScenes.map((item) => {
                 const randomId = Math.floor(Math.random() * (90000 - 10000 + 1)) + 10000;
@@ -423,7 +415,6 @@
         function renderGrid() {
             grid.innerHTML = "";
             scenesData.forEach((scene, index) => {
-                // Évaluation sécurisée de la formule personnalisée (ex: id * 2026 / 360)
                 let cleAttendue;
                 try {
                     let evaluatedFormula = scene.formula.replace(/id/g, scene.id);
@@ -510,12 +501,16 @@
             const mega = document.getElementById("new-mega").value.trim();
             const prix = parseInt(document.getElementById("new-prix").value.trim(), 10);
             const wa = document.getElementById("new-whatsapp").value.trim() || defaultWhatsApp;
-            const formula = document.getElementById("new-formula").value.trim() || "id * 2026 / 360";
 
             if (!nom || !preview || !mega || isNaN(prix)) {
                 alert("Veuillez remplir tous les champs obligatoires correctement !");
                 return;
             }
+
+            // Génération automatique d'une formule aléatoire unique pour ce partenaire (ex: id * A / B)
+            const chiffreA = Math.floor(Math.random() * (9000 - 1000 + 1)) + 1000;
+            const chiffreB = Math.floor(Math.random() * (900 - 100 + 1)) + 100;
+            const formuleAleatoire = `id * ${chiffreA} / ${chiffreB}`;
 
             const randomId = Math.floor(Math.random() * (90000 - 10000 + 1)) + 10000;
 
@@ -526,7 +521,7 @@
                 mega: mega,
                 prix: prix,
                 wa: wa,
-                formula: formula,
+                formula: formuleAleatoire,
                 deverrouille: false
             };
 
@@ -540,10 +535,11 @@
             document.getElementById("new-preview").value = "";
             document.getElementById("new-mega").value = "";
             document.getElementById("new-prix").value = "";
-            alert("Scène ajoutée avec succès !");
+            document.getElementById("new-whatsapp").value = "";
+            
+            alert(`Partenaire inscrit avec succès !\nFormule de cryptage assignée : clé = ${formuleAleatoire}`);
         }
 
-        // Lancer l'affichage initial
         renderGrid();
     </script>
 
