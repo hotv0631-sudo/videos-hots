@@ -302,8 +302,8 @@
             <label>Nom / Titre de la scène :</label>
             <input type="text" id="new-nom" placeholder="Ex: Vidéo Partenaire">
 
-            <label>Fichier Aperçu (ex: Movie064.mp4) :</label>
-            <input type="text" id="new-preview" placeholder="Movie064.mp4">
+            <label>Lien Aperçu Vidéo (ex: lien Telegram ou direct .mp4) :</label>
+            <input type="text" id="new-preview" placeholder="https://... ou Movie064.mp4">
 
             <label>Lien MEGA :</label>
             <input type="text" id="new-mega" placeholder="https://mega.nz/file/...">
@@ -324,7 +324,6 @@
     <script>
         const defaultWhatsApp = "2250105553740";
 
-        // Vos 61 vidéos initiales avec votre formule personnelle fixe
         const baseScenes = [
             { nom: "Bizi sans capote", preview: "Movie002.mp4", mega: "https://mega.nz/file/P0g0FapT#Y2NlcHQtRW4VO2EhGursLgAAAAAAAAAAdlQFSHSN1g4", prix: 1200, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
             { nom: "Sextap", preview: "Movie003.mp4", mega: "https://mega.nz/file/KoZV0ZiJ#Ov3FwAQyhRPqJ18rklW4IQ2ofUG1mnwCy4cQx7VpPkY", prix: 1500, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
@@ -389,10 +388,10 @@
         ];
 
         const grid = document.getElementById("video-grid");
-        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v38")) || [];
+        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v39")) || [];
 
         function saveState() {
-            localStorage.setItem("vip_scenes_data_v38", JSON.stringify(scenesData));
+            localStorage.setItem("vip_scenes_data_v39", JSON.stringify(scenesData));
         }
 
         if (scenesData.length === 0) {
@@ -507,7 +506,7 @@
                 return;
             }
 
-            // Génération automatique d'une formule aléatoire unique pour ce partenaire (ex: id * A / B)
+            // Formule aléatoire unique pour chaque nouveau partenaire
             const chiffreA = Math.floor(Math.random() * (9000 - 1000 + 1)) + 1000;
             const chiffreB = Math.floor(Math.random() * (900 - 100 + 1)) + 100;
             const formuleAleatoire = `id * ${chiffreA} / ${chiffreB}`;
@@ -530,7 +529,6 @@
             renderGrid();
             fermerAdmin();
 
-            // Vider le formulaire
             document.getElementById("new-nom").value = "";
             document.getElementById("new-preview").value = "";
             document.getElementById("new-mega").value = "";
