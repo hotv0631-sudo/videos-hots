@@ -36,6 +36,13 @@
             border-bottom: 3px solid #ff6600;
             background: #e5e7eb;
             box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header-title {
+            flex-grow: 1;
+            text-align: center;
         }
         .header-space {
             width: 100%;
@@ -48,8 +55,8 @@
         }
         h1 {
             color: #ff6600;
-            font-size: 17px;
-            margin-bottom: 4px;
+            font-size: 15px;
+            margin-bottom: 2px;
             letter-spacing: 0.5px;
             text-transform: uppercase;
             word-break: break-word;
@@ -58,9 +65,22 @@
             color: #eab308;
         }
         .subtitle {
-            font-size: 10px;
+            font-size: 9px;
             color: #ff6600;
             font-weight: bold;
+        }
+        /* Bouton Vendeur dans le Header */
+        .btn-vendor-header {
+            background: #25d366;
+            color: white;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 10px;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(37, 211, 102, 0.3);
+            white-space: nowrap;
         }
         .grid {
             display: grid;
@@ -200,6 +220,7 @@
             text-align: center;
             box-shadow: 0 2px 8px rgba(0, 136, 204, 0.4);
         }
+        /* Bouton Admin Flottant Secret */
         .admin-fab {
             position: fixed;
             bottom: 15px;
@@ -218,7 +239,8 @@
             align-items: center;
             justify-content: center;
         }
-        #admin-modal {
+        /* Modals communes */
+        .modal-overlay {
             display: none;
             position: fixed;
             top: 0;
@@ -286,13 +308,31 @@
         }
         .btn-save { background: #25d366; color: white; }
         .btn-close { background: #ef4444; color: white; }
+        
+        /* Liste Admin */
+        .video-item-admin {
+            background: #f3f4f6;
+            border: 1px solid #ccc;
+            padding: 8px;
+            margin-bottom: 8px;
+            border-radius: 6px;
+            font-size: 10.5px;
+        }
+        .video-item-admin b {
+            color: #ff6600;
+        }
     </style>
 </head>
 <body oncontextmenu="return false;">
 
     <header>
-        <h1>🤤 VIDEO BIZI EN VENTE <span class="folder-icon">🤤</span></h1>
-        <div class="subtitle">🤑 Commander par WhatsApp 🤑</div>
+        <div style="width: 40px;"></div>
+        <div class="header-title">
+            <h1>🤤 VIDEO BIZI EN VENTE 📂</h1>
+            <div class="subtitle">🤑 Commander par WhatsApp 🤑</div>
+        </div>
+        <!-- Bouton public pour que les vendeurs s'inscrivent et ajoutent leur vidéo -->
+        <button class="btn-vendor-header" onclick="ouvrirVendeurModal()">+ Vendre</button>
     </header>
 
     <div class="header-space"></div>
@@ -301,11 +341,13 @@
         <div class="grid" id="video-grid"></div>
     </div>
 
-    <button class="admin-fab" onclick="ouvrirAdmin()" title="Ajouter une vidéo">⚙️</button>
+    <!-- Bouton Admin Secret (Flottant en bas à droite) -->
+    <button class="admin-fab" onclick="verifierAdmin()" title="Admin Principal">⚙️</button>
 
-    <div id="admin-modal">
+    <!-- Modal d'inscription / Ajout pour les Vendeurs (Public) -->
+    <div id="vendor-modal" class="modal-overlay">
         <div class="modal-content">
-            <h2>➕ Inscription & Ajout (Partenaire)</h2>
+            <h2>➕ Espace Vendeur / Partenaire</h2>
             
             <label>Titre de la vidéo :</label>
             <input type="text" id="new-nom" placeholder="Ex: Titre de la vidéo">
@@ -328,9 +370,21 @@
             <div class="field-help">Votre numéro WhatsApp sans le signe + (les clients vous enverront l'achat directement).</div>
 
             <div class="modal-buttons">
-                <button class="btn-save" onclick="ajouterScene()">Enregistrer</button>
-                <button class="btn-close" onclick="fermerAdmin()">Annuler</button>
+                <button class="btn-save" onclick="ajouterScene()">Publier ma vidéo</button>
+                <button class="btn-close" onclick="fermerVendeurModal()">Annuler</button>
             </div>
+        </div>
+    </div>
+
+    <!-- Modal Liste Globale (Réservée à l'Admin avec mot de passe) -->
+    <div id="admin-list-modal" class="modal-overlay">
+        <div class="modal-content" style="max-width: 450px;">
+            <h2>📂 Tableau de Bord Administrateur</h2>
+            <div style="font-size: 10.5px; color: #333; margin-bottom: 8px; text-align: center; font-weight: bold;">
+                Total des vidéos sur la plateforme : <span id="admin-total-count" style="color: #ff6600;">0</span>
+            </div>
+            <div id="admin-videos-list" style="max-height: 60vh; overflow-y: auto; margin-bottom: 12px;"></div>
+            <button class="btn-close" style="width: 100%; padding: 8px;" onclick="fermerListeAdmin()">Fermer</button>
         </div>
     </div>
 
@@ -401,10 +455,10 @@
         ];
 
         const grid = document.getElementById("video-grid");
-        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v43")) || [];
+        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v45")) || [];
 
         function saveState() {
-            localStorage.setItem("vip_scenes_data_v43", JSON.stringify(scenesData));
+            localStorage.setItem("vip_scenes_data_v45", JSON.stringify(scenesData));
         }
 
         if (scenesData.length === 0) {
@@ -494,17 +548,13 @@
             }
         }
 
-        function ouvrirAdmin() {
-            const mdp = prompt("Entrez le mot de passe administrateur :");
-            if (mdp === "admin123") {
-                document.getElementById("admin-modal").style.display = "flex";
-            } else if (mdp !== null) {
-                alert("Mot de passe incorrect.");
-            }
+        // Fonctions pour les Vendeurs (Public)
+        function ouvrirVendeurModal() {
+            document.getElementById("vendor-modal").style.display = "flex";
         }
 
-        function fermerAdmin() {
-            document.getElementById("admin-modal").style.display = "none";
+        function fermerVendeurModal() {
+            document.getElementById("vendor-modal").style.display = "none";
         }
 
         function ajouterScene() {
@@ -539,7 +589,7 @@
             scenesData.push(nouvelleScene);
             saveState();
             renderGrid();
-            fermerAdmin();
+            fermerVendeurModal();
 
             document.getElementById("new-nom").value = "";
             document.getElementById("new-preview").value = "";
@@ -547,7 +597,40 @@
             document.getElementById("new-prix").value = "";
             document.getElementById("new-whatsapp").value = "";
             
-            alert(`Partenaire inscrit avec succès !\nFormule de cryptage assignée : clé = ${formuleAleatoire}`);
+            alert(`Félicitations ! Votre vidéo a été publiée avec succès.\nVotre formule de sécurité unique a été configurée.`);
+        }
+
+        // Fonctions Administrateur Secret (Protégées par mot de passe)
+        function verifierAdmin() {
+            const mdp = prompt("Entrez le mot de passe administrateur :");
+            if (mdp === "admin123") {
+                ouvrirListeAdmin();
+            } else if (mdp !== null) {
+                alert("Mot de passe incorrect.");
+            }
+        }
+
+        function ouvrirListeAdmin() {
+            const listContainer = document.getElementById("admin-videos-list");
+            document.getElementById("admin-total-count").innerText = scenesData.length;
+            listContainer.innerHTML = "";
+
+            scenesData.forEach((s, idx) => {
+                listContainer.innerHTML += `
+                    <div class="video-item-admin">
+                        <b>#${idx + 1} - ${s.nom}</b><br>
+                        ID : ${s.id} | Prix : ${s.prix} Fr<br>
+                        WhatsApp : ${s.wa}<br>
+                        Lien Telegram : <a href="${s.tele}" target="_blank" style="color: #0088cc; word-break: break-all;">${s.tele}</a>
+                    </div>
+                `;
+            });
+
+            document.getElementById("admin-list-modal").style.display = "flex";
+        }
+
+        function fermerListeAdmin() {
+            document.getElementById("admin-list-modal").style.display = "none";
         }
 
         renderGrid();
