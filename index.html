@@ -254,7 +254,6 @@
             display: block;
             margin-top: 8px;
         }
-        /* Style des textes d'aide sous les champs */
         .field-help {
             font-size: 9.5px;
             color: #555;
@@ -270,7 +269,7 @@
             border-radius: 5px;
             font-size: 11px;
             background: #fff;
-    }
+        }
         .modal-buttons {
             display: flex;
             gap: 10px;
@@ -308,8 +307,8 @@
         <div class="modal-content">
             <h2>➕ Inscription & Ajout (Partenaire)</h2>
             
-            <label>Nom / Titre de la scène :</label>
-            <input type="text" id="new-nom" placeholder="Ex: Vidéo Partenaire">
+            <label>Titre de la vidéo :</label>
+            <input type="text" id="new-nom" placeholder="Ex: Titre de la vidéo">
             <div class="field-help">Donnez un titre accrocheur à votre vidéo.</div>
 
             <label>Lien Vidéo Aperçu :</label>
@@ -402,10 +401,10 @@
         ];
 
         const grid = document.getElementById("video-grid");
-        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v42")) || [];
+        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v43")) || [];
 
         function saveState() {
-            localStorage.setItem("vip_scenes_data_v42", JSON.stringify(scenesData));
+            localStorage.setItem("vip_scenes_data_v43", JSON.stringify(scenesData));
         }
 
         if (scenesData.length === 0) {
