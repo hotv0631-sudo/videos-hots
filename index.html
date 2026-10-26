@@ -252,7 +252,15 @@
             font-weight: bold;
             color: #333;
             display: block;
-            margin-top: 6px;
+            margin-top: 8px;
+        }
+        /* Style des textes d'aide sous les champs */
+        .field-help {
+            font-size: 9.5px;
+            color: #555;
+            margin-top: 2px;
+            font-style: italic;
+            line-height: 1.2;
         }
         .modal-content input {
             width: 100%;
@@ -262,11 +270,11 @@
             border-radius: 5px;
             font-size: 11px;
             background: #fff;
-        }
+    }
         .modal-buttons {
             display: flex;
             gap: 10px;
-            margin-top: 12px;
+            margin-top: 15px;
         }
         .modal-buttons button {
             flex: 1;
@@ -299,20 +307,26 @@
     <div id="admin-modal">
         <div class="modal-content">
             <h2>➕ Inscription & Ajout (Partenaire)</h2>
+            
             <label>Nom / Titre de la scène :</label>
             <input type="text" id="new-nom" placeholder="Ex: Vidéo Partenaire">
+            <div class="field-help">Donnez un titre accrocheur à votre vidéo.</div>
 
-            <label>Lien Vidéo Aperçu (Telegram ou direct) :</label>
-            <input type="text" id="new-preview" placeholder="Lien de l'aperçu...">
+            <label>Lien Vidéo Aperçu :</label>
+            <input type="text" id="new-preview" placeholder="Lien direct .mp4 ou lien Telegram...">
+            <div class="field-help">Collez ici le lien de la courte vidéo de démonstration qui s'affichera sur la carte.</div>
 
             <label>Lien Vidéo Complet Telegram :</label>
-            <input type="text" id="new-telegram" placeholder="https://t.me/... ou lien direct">
+            <input type="text" id="new-telegram" placeholder="https://t.me/..." >
+            <div class="field-help">Collez ici le lien Telegram de la vidéo complète que l'acheteur recevra après déverrouillage.</div>
 
-            <label>Prix (en Fr, multiple de 100) :</label>
+            <label>Prix (en Fr) :</label>
             <input type="number" id="new-prix" placeholder="1500" step="100">
+            <div class="field-help">Indiquez le prix de vente en multiples de 100 (ex: 1000, 1500, 2000...).</div>
 
-            <label>Numéro WhatsApp du partenaire (sans le +) :</label>
+            <label>Numéro WhatsApp :</label>
             <input type="text" id="new-whatsapp" placeholder="2250105553740">
+            <div class="field-help">Votre numéro WhatsApp sans le signe + (les clients vous enverront l'achat directement).</div>
 
             <div class="modal-buttons">
                 <button class="btn-save" onclick="ajouterScene()">Enregistrer</button>
@@ -388,10 +402,10 @@
         ];
 
         const grid = document.getElementById("video-grid");
-        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v41")) || [];
+        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v42")) || [];
 
         function saveState() {
-            localStorage.setItem("vip_scenes_data_v41", JSON.stringify(scenesData));
+            localStorage.setItem("vip_scenes_data_v42", JSON.stringify(scenesData));
         }
 
         if (scenesData.length === 0) {
