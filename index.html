@@ -323,7 +323,9 @@
     <div class="header-space"></div>
 
     <div class="container">
-        <div class="grid" id="video-grid"></div>
+        <div class="grid" id="video-grid">
+            <div style="grid-column: span 2; text-align:center; padding: 20px; font-weight:bold; color:#555;">Connexion à Supabase en cours...</div>
+        </div>
     </div>
 
     <button class="admin-fab" onclick="verifierAdmin()" title="Admin Principal">⚙️</button>
@@ -379,7 +381,7 @@
     <script>
         // Configuration Supabase
         const SUPABASE_URL = "https://dhjrpvryonkelwzuysoe.supabase.co";
-        const SUPABASE_ANON_KEY = "sb_publishable_14bRmc2ErKCiEBF7w7epg_p6nt2..."; // Remplacez par votre clé complète exacte si besoin
+        const SUPABASE_ANON_KEY = "sb_publishable_14bRmnC2ErKCiEBF7W7epg_p6nt2CHj";[span_2](start_span)[span_2](end_span)
 
         const { createClient } = supabase;
         const _supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -391,6 +393,8 @@
             const { data, error } = await _supabase.from('videos').select('*');
             if (error) {
                 console.error("Erreur de chargement Supabase:", error);
+                const grid = document.getElementById("video-grid");
+                grid.innerHTML = `<div style="grid-column: span 2; text-align:center; padding: 20px; font-weight:bold; color:red;">Erreur de connexion base de données. Vérifiez votre table 'videos'.</div>`;
                 return;
             }
             scenesData = data || [];
@@ -468,7 +472,7 @@
                 scenesData[index].deverrouille = true;
                 renderGrid();
             } else {
-                msg.style.color = "#ff6600";
+                msg.style.color = #ff6600;
                 msg.innerText = "Clé incorrecte.";
             }
         }
