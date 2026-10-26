@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>VIDEOS BIZI EN VENTE 📂</title>
-    <!-- Importation de Supabase JS Client -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         *, *::before, *::after {
             box-sizing: border-box;
@@ -323,9 +321,7 @@
     <div class="header-space"></div>
 
     <div class="container">
-        <div class="grid" id="video-grid">
-            <div style="grid-column: span 2; text-align:center; padding: 20px; font-weight:bold; color:#555;">Connexion à Supabase en cours...</div>
-        </div>
+        <div class="grid" id="video-grid"></div>
     </div>
 
     <button class="admin-fab" onclick="verifierAdmin()" title="Admin Principal">⚙️</button>
@@ -379,29 +375,26 @@
     </div>
 
     <script>
-        // Configuration Supabase
-        const SUPABASE_URL = "https://dhjrpvryonkelwzuysoe.supabase.co";
-        const SUPABASE_ANON_KEY = "sb_publishable_14bRmnC2ErKCiEBF7W7epg_p6nt2CHj";[span_2](start_span)[span_2](end_span)
-
-        const { createClient } = supabase;
-        const _supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
         const defaultWhatsApp = "2250105553740";
-        let scenesData = [];
 
-        async function chargerVideos() {
-            const { data, error } = await _supabase.from('videos').select('*');
-            if (error) {
-                console.error("Erreur de chargement Supabase:", error);
-                const grid = document.getElementById("video-grid");
-                grid.innerHTML = `<div style="grid-column: span 2; text-align:center; padding: 20px; font-weight:bold; color:red;">Erreur de connexion base de données. Vérifiez votre table 'videos'.</div>`;
-                return;
+        let scenesData = JSON.parse(localStorage.getItem('videos_bizi')) || [
+            {
+                id: 45892,
+                nom: "Démo Bizi Souriant",
+                preview: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+                tele: "https://t.me/+exemple_Lien_Telegram",
+                prix: 1000,
+                wa: defaultWhatsApp,
+                formula: "id * 2 / 1",
+                deverrouille: false
             }
-            scenesData = data || [];
-            renderGrid();
+        ];
+
+        function sauvegarderLocal() {
+            localStorage.setItem('videos_bizi', JSON.stringify(scenesData));
         }
 
-        async function renderGrid() {
+        function renderGrid() {
             const grid = document.getElementById("video-grid");
             grid.innerHTML = "";
 
@@ -470,9 +463,10 @@
 
             if (saisie === cleAttendue) {
                 scenesData[index].deverrouille = true;
+                sauvegarderLocal();
                 renderGrid();
             } else {
-                msg.style.color = #ff6600;
+                msg.style.color = "#ff6600";
                 msg.innerText = "Clé incorrecte.";
             }
         }
@@ -485,7 +479,7 @@
             document.getElementById("vendor-modal").style.display = "none";
         }
 
-        async function ajouterScene() {
+        function ajouterScene() {
             const nom = document.getElementById("new-nom").value.trim();
             const preview = document.getElementById("new-preview").value.trim();
             const tele = document.getElementById("new-telegram").value.trim();
@@ -532,15 +526,11 @@
                 deverrouille: false
             };
 
-            // Enregistrement dans Supabase
-            const { error } = await _supabase.from('videos').insert([nouvelleScene]);
-            if (error) {
-                alert("Erreur lors de l'enregistrement sur Supabase : " + error.message);
-                return;
-            }
-
+            // unshift() place la nouvelle vidéo tout en haut (en première position)
+            scenesData.unshift(nouvelleScene);
+            sauvegarderLocal();
             fermerVendeurModal();
-            await chargerVideos();
+            renderGrid();
 
             document.getElementById("new-nom").value = "";
             document.getElementById("new-preview").value = "";
@@ -549,7 +539,7 @@
             document.getElementById("new-whatsapp").value = "";
             document.getElementById("new-formula").value = "";
             
-            alert(`Félicitations ! Votre vidéo "${nom}" a été publiée avec succès.\n\nID généré : ${randomId}\nVotre Formule : ${formulaInput}\n\nExemple de clé pour cette vidéo : ${cleExemple}`);
+            alert(`Félicitations ! Votre vidéo "${nom}" a été publiée en première position.\n\nID généré : ${randomId}\nVotre Formule : ${formulaInput}\n\nExemple de clé pour cette vidéo : ${cleExemple}`);
         }
 
         function verifierAdmin() {
@@ -591,8 +581,7 @@
             document.getElementById("admin-list-modal").style.display = "none";
         }
 
-        // Chargement initial des vidéos depuis Supabase au démarrage
-        chargerVideos();
+        renderGrid();
     </script>
 
 </body>
