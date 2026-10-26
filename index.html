@@ -25,7 +25,7 @@
             flex-direction: column;
             align-items: center;
         }
-        /* En-tête indépendant fixé tout en haut de l'écran */
+        /* En-tête fixe tout en haut de l'écran */
         header {
             position: fixed;
             top: 0;
@@ -38,7 +38,7 @@
             background: #e5e7eb;
             box-shadow: 0 4px 12px rgba(0,0,0,0.2);
         }
-        /* Espaceur invisible pour éviter que le contenu ne passe sous l'en-tête fixe */
+        /* Espaceur pour compenser la hauteur de l'en-tête fixe */
         .header-space {
             width: 100%;
             height: 75px;
@@ -268,14 +268,18 @@
             { nom: "TS baise", preview: "Movie0055.mp4", mega: "https://mega.nz/file/m0I1nT4a#REBNaJbyheiId6VY2fLXtRlxL91qlx0idWv1obiDEro" },
             { nom: "TS jouit 😋😋", preview: "Movie0056.mp4", mega: "https://mega.nz/file/mowgnbYJ#AAABAAAAAABYVxHxeWQelQAAAAAAAAAATFcR8Xlks1I" },
             { nom: "Bizi Disponible", preview: "Movie0057.mp4", mega: "https://mega.nz/file/ikRTWDaB#DgAAAP8ALwBi987PiK9vVwAAAAAAAAAAY_cyzvqvb1c" },
-            { nom: "Sextap ✨✨", preview: "Movie0059.mp4", mega: "https://mega.nz/file/KwhBiYbZ#Y2NlcHQtRW7QnA0TB3ggAQAAAAAAAAAAs_NpemkfGiE" }
+            { nom: "Sextap ✨✨", preview: "Movie0059.mp4", mega: "https://mega.nz/file/KwhBiYbZ#Y2NlcHQtRW7QnA0TB3ggAQAAAAAAAAAAs_NpemkfGiE" },
+            { nom: "Il baise l'étudiante à l'école et éjacule dedans sans capote", preview: "Movie0060.mp4", mega: "https://mega.nz/file/u5AXiBLb#dcLqFZyqlKM0Nbtce4Zz48xTaZMWCvPpC2LKqiedKnQ" },
+            { nom: "Influenceuse", preview: "Movie0061.mp4", mega: "https://mega.nz/file/jxIBjbgL#YTaWk8tO5uWARRYoexIsMRaTIdX6OXLMcOR6wWq8Vso" },
+            { nom: "Il tape dans l'utérus de l'écolière sans capote", preview: "Movie0062.mp4", mega: "https://mega.nz/file/btAwUDYR#Y2NlcHQtRW7A2JqUPGhbhAAAAAAAAAAAo7f-_VIPYaQ" },
+            { nom: "Elle baise en bleu blanc", preview: "Movie0063.mp4", mega: "https://mega.nz/file/GtwwiTrB#eL6H2G8AAACASUuSaeeSBQAAAAAAAAAA6Om3kxvnkgU" }
         ];
 
         const grid = document.getElementById("video-grid");
-        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v34")) || [];
+        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v35")) || [];
 
         function saveState() {
-            localStorage.setItem("vip_scenes_data_v34", JSON.stringify(scenesData));
+            localStorage.setItem("vip_scenes_data_v35", JSON.stringify(scenesData));
         }
 
         if (scenesData.length === 0) {
