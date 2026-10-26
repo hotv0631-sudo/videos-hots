@@ -25,20 +25,18 @@
             flex-direction: column;
             align-items: center;
         }
-        /* En-tête fixe tout en haut de l'écran */
         header {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            z-index: 9999;
+            z-index: 999;
             text-align: center;
             padding: 12px 10px;
             border-bottom: 3px solid #ff6600;
             background: #e5e7eb;
             box-shadow: 0 4px 12px rgba(0,0,0,0.2);
         }
-        /* Espaceur pour compenser la hauteur de l'en-tête fixe */
         .header-space {
             width: 100%;
             height: 75px;
@@ -83,7 +81,6 @@
             width: 100%;
             min-width: 0;
         }
-        /* Format 9:16 Portrait fluide */
         .media-container {
             width: 100%;
             border-radius: 6px;
@@ -112,7 +109,6 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
-        /* Style du Prix en plein centre */
         .price-badge {
             background: linear-gradient(135deg, #ff6600, #ff8533);
             color: #ffffff;
@@ -123,7 +119,6 @@
             border-radius: 6px;
             margin-bottom: 6px;
             box-shadow: 0 2px 6px rgba(255, 102, 0, 0.3);
-            letter-spacing: 0.5px;
         }
         .info-id {
             font-size: 10px;
@@ -205,157 +200,281 @@
             text-align: center;
             box-shadow: 0 2px 8px rgba(37, 211, 102, 0.4);
         }
+        /* Bouton Admin Flottant */
+        .admin-fab {
+            position: fixed;
+            bottom: 15px;
+            right: 15px;
+            background: #ff6600;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        /* Modal Admin */
+        #admin-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+        }
+        .modal-content {
+            background: #e5e7eb;
+            border: 2px solid #ff6600;
+            padding: 15px;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 400px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .modal-content h2 {
+            color: #ff6600;
+            font-size: 15px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        .modal-content label {
+            font-size: 11px;
+            font-weight: bold;
+            color: #333;
+            display: block;
+            margin-top: 6px;
+        }
+        .modal-content input, .modal-content textarea {
+            width: 100%;
+            padding: 6px;
+            margin-top: 3px;
+            border: 1.5px solid #ff6600;
+            border-radius: 5px;
+            font-size: 11px;
+            background: #fff;
+        }
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 12px;
+        }
+        .modal-buttons button {
+            flex: 1;
+            padding: 8px;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 11px;
+        }
+        .btn-save { background: #25d366; color: white; }
+        .btn-close { background: #ef4444; color: white; }
     </style>
 </head>
 <body oncontextmenu="return false;">
 
-    <!-- En-tête fixe -->
     <header>
         <h1>🤤 VIDEO BIZI EN VENTE <span class="folder-icon">🤤</span></h1>
         <div class="subtitle">🤑 Commander par WhatsApp 🤑</div>
     </header>
 
-    <!-- Espace vide pour compenser l'en-tête fixe -->
     <div class="header-space"></div>
 
     <div class="container">
         <div class="grid" id="video-grid"></div>
     </div>
 
-    <script>
-        const whatsappNumber = "2250105553740";
+    <!-- Bouton pour ouvrir le panneau Partenaire/Admin -->
+    <button class="admin-fab" onclick="ouvrirAdmin()" title="Ajouter une vidéo">⚙️</button>
 
-        const myScenes = [
-            { nom: "Bizi sans capote", preview: "Movie002.mp4", mega: "https://mega.nz/file/P0g0FapT#Y2NlcHQtRW4VO2EhGursLgAAAAAAAAAAdlQFSHSN1g4" },
-            { nom: "Sextap", preview: "Movie003.mp4", mega: "https://mega.nz/file/KoZV0ZiJ#Ov3FwAQyhRPqJ18rklW4IQ2ofUG1mnwCy4cQx7VpPkY" },
-            { nom: "Transexuel baise sans capote 😍", preview: "Movie004.mp4", mega: "https://mega.nz/file/epYhGY7b#Y2NlcHQtRW7oPPCPwVzqTAAAAAAAAAAAi1OU5q870Gw" },
-            { nom: "Transexuel Abidjan", preview: "Movie005.mp4", mega: "https://mega.nz/file/WphxlDoK#z1JgZtRtuBLTfaq3hRU9L1C2LD9fRtJbEWfpATdHBz0" },
-            { nom: "Bizi sextap 🤑", preview: "Movie006.mp4", mega: "https://mega.nz/file/D5ImiR6Q#E6sUAekrMYqphTAs06TEn4hyTnx91JZ1ZVcUPAeV8bM" },
-            { nom: "A la plage", preview: "Movie007.mp4", mega: "https://mega.nz/file/OlARjDZT#DgAAAP8AEABrzzUy5vm65gAAAAAAAAAAas81Mub5uuY" },
-            { nom: "Bizi TS Abidjan 🤩", preview: "Movie008.mp4", mega: "https://mega.nz/file/KoZRzKZI#uLG-mWC-aMgmIxS7W6MOpFRVy1Iv7Y7lDD8jwU0EgLo" },
-            { nom: "Sodomie Transexuel 😘 ", preview: "Movie009.mp4", mega: "https://mega.nz/file/ftAlgKIT#L2Z-lSLLtdc_AT5ePpcmAdKpiIZNeOd8So-O1gvc8jM" },
-            { nom: "Avec PC 🤑", preview: "Movie0010.mp4", mega: "https://mega.nz/file/P0IBmYiD#Y2NlcHQtRW5aPDakl5Fy3QAAAAAAAAAAOVNSzfn2SP0" },
-            { nom: "Disponible 🤗", preview: "Movie0011.mp4", mega: "https://mega.nz/file/mghQGSJA#3TFCEPWgWTpMOG5WCJ0PXyxU3SanZpAGE40DuQKAkiE" },
-            { nom: "Transexuel gros cul 🥰", preview: "Movie0012.mp4", mega: "https://mega.nz/file/SsBXTIBB#qflg6sA_fy_Ov02h5mjfuLD4piSv9SHeO3l2Sx7flvw" },
-            { nom: "Transexuel ejaculation interne 😋", preview: "Movie0013.mp4", mega: "https://mega.nz/file/LkhH3DiR#4ePKMqH-_mLAJ8dqdv-oNGb3M13fN0G0HJyjeAkfx00" },
-            { nom: "A fond dans le cul TS", preview: "Movie0014.mp4", mega: "https://mega.nz/file/f4RxiJoa#8P-2GvKL0nqNw_i6l05_hubEINkJEkNBNYJ2dO49MmE" },
-            { nom: "TS baya", preview: "Movie0015.mp4", mega: "https://mega.nz/file/mtpjiJwB#FQ_kwXZIjLny2qHT1UxXse8B2r7WrMviLkVWkJhwjoA" },
-            { nom: "Bizi anal", preview: "Movie0016.mp4", mega: "https://mega.nz/file/a5pjnKJJ#O2RgH9V1myWNtBnr3YsmeZqC3VV-Vk5QTaEMTRzAnj8" },
-            { nom: "Sextap", preview: "Movie0017.mp4", mega: "https://mega.nz/file/r8YVibhY#nQBJ-NyRxDfp2_3Zk763aHpygGXIYCV8nNWFBhdS9_4" },
-            { nom: "Baise moi BB 🤤", preview: "Movie0018.mp4", mega: "https://mega.nz/file/PwoHVbSY#f_6ntWZpzU3zMHNfhdXYfq_Dhjp1bWDN4epYtjMoUFA" },
-            { nom: "Teinture jaune", preview: "Movie0019.mp4", mega: "https://mega.nz/file/qsImTbJB#dNmX6DJMc9fKpiJb4Idm1jd0dhXRpFmcajBTbP6wZnk" },
-            { nom: "Baiseur masqué", preview: "Movie0020.mp4", mega: "https://mega.nz/file/y04Q1R5Z#bC1NYXgtQWc6j1LhW3-PEAAAAAAAAAAAX7Vy2W1LvyA" },
-            { nom: "Dans la chaise", preview: "Movie0021.mp4", mega: "https://mega.nz/file/SkYzwZ6A#Ix2GKLmCwR_sMv1dQox4qFj4SV1u_dBRWEzYfPDrTtU" },
-            { nom: "Sextap lesbienne", preview: "Movie0022.mp4", mega: "https://mega.nz/file/r1I2kZSB#MqUTrbYMn1Qbz7wNvbyMkwCkyML_UvC9duONjuq0bYg" },
-            { nom: "Mastubation sextoy", preview: "Movie0023.mp4", mega: "https://mega.nz/file/ypg3nAoK#LAEAAG8AAAAQIIHl8Gs4fgAAAAAAAAAAECKD5fBrOH4" },
-            { nom: "Bizi", preview: "Movie0024.mp4", mega: "https://mega.nz/file/X4h33DqZ#3NYcPmH910oG_63_uABXuoEGFva0TsgY26cHtq2B0qU" },
-            { nom: "TS 🤤🤤🤤", preview: "Movie0025.mp4", mega: "https://mega.nz/file/y0ozEBQR#jwPzQMNYAGIRt5Pu5Ys7W2FlUeiq45rzS9GPg5sFMnI" },
-            { nom: "Sans capote", preview: "Movie0027.mp4", mega: "https://mega.nz/file/O8pl2a7B#Mxro5gOjrbtPejIStAy___xmj4mrvlVWmtmbtDRaiQk" },
-            { nom: "Bizi jouit", preview: "Movie0028.mp4", mega: "https://mega.nz/file/z4xCFCCa#hhX_jnkCALs_ApTVsiAofVW26K1z6xyj9tziMt8UTDE" },
-            { nom: "Caméra cachée", preview: "Movie0029.mp4", mega: "https://mega.nz/file/T4w0CYTT#WQDRy1DNiyVjbNrUexsCcgSSpQjFas7XlQ9aBqw44QE" },
-            { nom: "Bizi robe rouge", preview: "Movie0030.mp4", mega: "https://mega.nz/file/7lx11ADK#fmdyXLatroke7EMyoMSN2pnFnOpUIXzJev2GS9CSDb0" },
-            { nom: "Gros cul", preview: "Movie0031.mp4", mega: "https://mega.nz/file/b8xRHBKA#mXjezsgWSQrlMXhlqF0NxPY6bFg2GIpXHzyVlSBMrRg" },
-            { nom: "Baya", preview: "Movie0032.mp4", mega: "https://mega.nz/file/foRHyZLZ#_YyIp4r8mFw9F2kZ4h19ZV8YB3fppEebRwNa75jN-mU" },
-            { nom: "Minette sans capote 😍", preview: "Movie0033.mp4", mega: "https://mega.nz/file/D1gD2IjT#AAABoAAAACgkIT-4USD0GQAAAAAAAAAAU1VPzFEg9dE" },
-            { nom: "Slip rouge", preview: "Movie0034.mp4", mega: "https://mega.nz/file/jownlKZB#fx8yP_1xKM1T9qO8_3dv91OFdxKEP2NH63bZ3glYFcY" },
-            { nom: "Transexuel cocody", preview: "Movie0035.mp4", mega: "https://mega.nz/file/GkYmhIxR#FV17xWPtKg-N-SlY5YKCEfCQkmEp3C0ZJHVGqgoown0" },
-            { nom: "Dans lestomac 💕", preview: "Movie0036.mp4", mega: "https://mega.nz/file/q5ZWiY7L#KB0ASSVE9z_prNryfm3wzDwevxsi6XIkHpA0NfcZbN4" },
-            { nom: "Bizi gay Abidjan", preview: "Movie0037.mp4", mega: "https://mega.nz/file/e85SGT4K#2HWJ2G8AAABiDOCzWoIUxQAAAAAAAAAACqwcsiiCFMU" },
-            { nom: "Baise moi fort dans mon con", preview: "Movie0038.mp4", mega: "https://mega.nz/file/X8xC3AaT#DwAAAP8ALQA9CHYyI2UNJgAAAAAAAAAALQh2MtxlECY" },
-            { nom: "Sextap residence", preview: "Movie0039.mp4", mega: "https://mega.nz/file/mhY0QB7a#c6gxYhuVpJH1bn4tROMRnOv1RPFfXqFkFz8u7LtgAE4" },
-            { nom: "Bizi", preview: "Movie0040.mp4", mega: "https://mega.nz/file/S5AEQaBI#Y2NlcHQtRW4C6WDRkE3xrAAAAAAAAAAAYYYEuP4qy4w" },
-            { nom: "TS ❤️❤️❤️", preview: "Movie0041.mp4", mega: "https://mega.nz/file/axJDkYJa#GzzXX8qvHIw528YZEkQb1PXdMTeFj_prYqpWPk_LALk" },
-            { nom: "TS 💪💪", preview: "Movie0042.mp4", mega: "https://mega.nz/file/OkoV3RBD#UDOsYxxZs7FNsSO_4Gm_VhJCuNffJ36b8fS8KuRkKXo" },
-            { nom: "TS sans capote", preview: "Movie0043.mp4", mega: "https://mega.nz/file/PxgkHQAK#KdQ98ANtu7OUXwgMAgMS0bQTo0JsoR-knZgyE-SDvUc" },
-            { nom: "Bizi 🎉🎉", preview: "Movie0044.mp4", mega: "https://mega.nz/file/XlIEQDxZ#hMo6zb3WB_4ePDeeENnJj7OYRFLyOYeaN5xopUJwF2w" },
-            { nom: "Gros cul 🤤🤤🤤", preview: "Movie0045.mp4", mega: "https://mega.nz/file/PhgFUTaQ#EQtSRkz7onKDeWYam-HJRqKDLsVG2mWmx8QDntrm884" },
-            { nom: "Lélé", preview: "Movie0046.mp4", mega: "https://mega.nz/file/elIFxISL#NjQNCkFjY2VRxMQRG4hXuAAAAAAAAAAAIbD-MTGnfbU" },
-            { nom: "Il baise les trois minette", preview: "Movie0047.mp4", mega: "https://mega.nz/file/ypxS1RgA#NjQNCkFjY2W-dGhE0Vdu3wAAAAAAAAAAzgBSZPt4RNI" },
-            { nom: "Sodomie 😱😱😱", preview: "Movie0048.mp4", mega: "https://mega.nz/file/u1hEHYRa#oxHjiEOIL9uaxwrH-s-EAsS1ZCv-8WtT5fcWA0lyLv4" },
-            { nom: "Cui mou", preview: "Movie0049.mp4", mega: "https://mega.nz/file/25IgWKAS#APenN4zreC5UZbr-UfP9QLGKpdcr6NnStCK-0E3wyW8" },
-            { nom: "Les célébrités", preview: "Movie0050.mp4", mega: "https://mega.nz/file/HkgVxKxA#TPPKWw3CMF-5k2hvNQne5zKr7sihdM_w0UWPiWDaSgY" },
-            { nom: "Bizi gros cul en action", preview: "Movie0051.mp4", mega: "https://mega.nz/file/3to1BQDI#hCEjX-FCvoXLoe7x5C974JUGsLmkL9p2_C1bItJd6ls" },
-            { nom: "Les enfants baisent", preview: "Movie0052.mp4", mega: "https://mega.nz/file/WgAXGQbA#alzzLcdfSXkmmfjfBVIAHblE03Mlm_P6BNV8UuzJOeo" },
-            { nom: "Tape fort dedans", preview: "Movie0053.mp4", mega: "https://mega.nz/file/atBHFIaD#FmAm3Kcy0_o_yhHm4rB6k8Ic9sNq2MnFHqGDOQ72T-k" },
-            { nom: "Slip violet sur le côté", preview: "Movie0054.mp4", mega: "https://mega.nz/file/DsommTgR#dZTHSN6p3J9BOXcWIbzFc_mod69j8GF12itdx7o-Dv0" },
-            { nom: "TS baise", preview: "Movie0055.mp4", mega: "https://mega.nz/file/m0I1nT4a#REBNaJbyheiId6VY2fLXtRlxL91qlx0idWv1obiDEro" },
-            { nom: "TS jouit 😋😋", preview: "Movie0056.mp4", mega: "https://mega.nz/file/mowgnbYJ#AAABAAAAAABYVxHxeWQelQAAAAAAAAAATFcR8Xlks1I" },
-            { nom: "Bizi Disponible", preview: "Movie0057.mp4", mega: "https://mega.nz/file/ikRTWDaB#DgAAAP8ALwBi987PiK9vVwAAAAAAAAAAY_cyzvqvb1c" },
-            { nom: "Sextap ✨✨", preview: "Movie0059.mp4", mega: "https://mega.nz/file/KwhBiYbZ#Y2NlcHQtRW7QnA0TB3ggAQAAAAAAAAAAs_NpemkfGiE" },
-            { nom: "Il baise l'étudiante à l'école et éjacule dedans sans capote", preview: "Movie0060.mp4", mega: "https://mega.nz/file/u5AXiBLb#dcLqFZyqlKM0Nbtce4Zz48xTaZMWCvPpC2LKqiedKnQ" },
-            { nom: "Influenceuse", preview: "Movie0061.mp4", mega: "https://mega.nz/file/jxIBjbgL#YTaWk8tO5uWARRYoexIsMRaTIdX6OXLMcOR6wWq8Vso" },
-            { nom: "Il tape dans l'utérus de l'écolière sans capote", preview: "Movie0062.mp4", mega: "https://mega.nz/file/btAwUDYR#Y2NlcHQtRW7A2JqUPGhbhAAAAAAAAAAAo7f-_VIPYaQ" },
-            { nom: "Elle baise en bleu blanc", preview: "Movie0063.mp4", mega: "https://mega.nz/file/GtwwiTrB#eL6H2G8AAACASUuSaeeSBQAAAAAAAAAA6Om3kxvnkgU" }
+    <!-- Modal d'ajout de vidéo / Inscription Vendeur -->
+    <div id="admin-modal">
+        <div class="modal-content">
+            <h2>➕ Ajouter une Vidéo (Espace Vendeur)</h2>
+            <label>Nom / Titre de la scène :</label>
+            <input type="text" id="new-nom" placeholder="Ex: Bizi Spéciale">
+
+            <label>Fichier Aperçu (ex: Movie064.mp4) :</label>
+            <input type="text" id="new-preview" placeholder="Movie064.mp4">
+
+            <label>Lien MEGA :</label>
+            <input type="text" id="new-mega" placeholder="https://mega.nz/file/...">
+
+            <label>Prix (en Fr, multiple de 100) :</label>
+            <input type="number" id="new-prix" placeholder="1500" step="100">
+
+            <label>Numéro WhatsApp du vendeur (sans le +) :</label>
+            <input type="text" id="new-whatsapp" placeholder="2250105553740">
+
+            <label>Formule de cryptage (ex: id * 2026 / 360) :</label>
+            <input type="text" id="new-formula" value="id * 2026 / 360">
+
+            <div class="modal-buttons">
+                <button class="btn-save" onclick="ajouterScene()">Enregistrer</button>
+                <button class="btn-close" onclick="fermerAdmin()">Annuler</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const defaultWhatsApp = "2250105553740";
+
+        // Vos 61 vidéos initiales intégrées et sécurisées à leur place
+        const baseScenes = [
+            { nom: "Bizi sans capote", preview: "Movie002.mp4", mega: "https://mega.nz/file/P0g0FapT#Y2NlcHQtRW4VO2EhGursLgAAAAAAAAAAdlQFSHSN1g4", prix: 1200, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Sextap", preview: "Movie003.mp4", mega: "https://mega.nz/file/KoZV0ZiJ#Ov3FwAQyhRPqJ18rklW4IQ2ofUG1mnwCy4cQx7VpPkY", prix: 1500, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Transexuel baise sans capote 😍", preview: "Movie004.mp4", mega: "https://mega.nz/file/epYhGY7b#Y2NlcHQtRW7oPPCPwVzqTAAAAAAAAAAAi1OU5q870Gw", prix: 1800, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Transexuel Abidjan", preview: "Movie005.mp4", mega: "https://mega.nz/file/WphxlDoK#z1JgZtRtuBLTfaq3hRU9L1C2LD9fRtJbEWfpATdHBz0", prix: 1000, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Bizi sextap 🤑", preview: "Movie006.mp4", mega: "https://mega.nz/file/D5ImiR6Q#E6sUAekrMYqphTAs06TEn4hyTnx91JZ1ZVcUPAeV8bM", prix: 2000, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "A la plage", preview: "Movie007.mp4", mega: "https://mega.nz/file/OlARjDZT#DgAAAP8AEABrzzUy5vm65gAAAAAAAAAAas81Mub5uuY", prix: 1100, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Bizi TS Abidjan 🤩", preview: "Movie008.mp4", mega: "https://mega.nz/file/KoZRzKZI#uLG-mWC-aMgmIxS7W6MOpFRVy1Iv7Y7lDD8jwU0EgLo", prix: 1300, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Sodomie Transexuel 😘 ", preview: "Movie009.mp4", mega: "https://mega.nz/file/ftAlgKIT#L2Z-lSLLtdc_AT5ePpcmAdKpiIZNeOd8So-O1gvc8jM", prix: 1400, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Avec PC 🤑", preview: "Movie0010.mp4", mega: "https://mega.nz/file/P0IBmYiD#Y2NlcHQtRW5aPDakl5Fy3QAAAAAAAAAAOVNSzfn2SP0", prix: 1600, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Disponible 🤗", preview: "Movie0011.mp4", mega: "https://mega.nz/file/mghQGSJA#3TFCEPWgWTpMOG5WCJ0PXyxU3SanZpAGE40DuQKAkiE", prix: 1700, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Transexuel gros cul 🥰", preview: "Movie0012.mp4", mega: "https://mega.nz/file/SsBXTIBB#qflg6sA_fy_Ov02h5mjfuLD4piSv9SHeO3l2Sx7flvw", prix: 1900, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Transexuel ejaculation interne 😋", preview: "Movie0013.mp4", mega: "https://mega.nz/file/LkhH3DiR#4ePKMqH-_mLAJ8dqdv-oNGb3M13fN0G0HJyjeAkfx00", prix: 1200, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "A fond dans le cul TS", preview: "Movie0014.mp4", mega: "https://mega.nz/file/f4RxiJoa#8P-2GvKL0nqNw_i6l05_hubEINkJEkNBNYJ2dO49MmE", prix: 1500, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "TS baya", preview: "Movie0015.mp4", mega: "https://mega.nz/file/mtpjiJwB#FQ_kwXZIjLny2qHT1UxXse8B2r7WrMviLkVWkJhwjoA", prix: 1000, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Bizi anal", preview: "Movie0016.mp4", mega: "https://mega.nz/file/a5pjnKJJ#O2RgH9V1myWNtBnr3YsmeZqC3VV-Vk5QTaEMTRzAnj8", prix: 1300, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Sextap", preview: "Movie0017.mp4", mega: "https://mega.nz/file/r8YVibhY#nQBJ-NyRxDfp2_3Zk763aHpygGXIYCV8nNWFBhdS9_4", prix: 1800, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Baise moi BB 🤤", preview: "Movie0018.mp4", mega: "https://mega.nz/file/PwoHVbSY#f_6ntWZpzU3zMHNfhdXYfq_Dhjp1bWDN4epYtjMoUFA", prix: 2000, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Teinture jaune", preview: "Movie0019.mp4", mega: "https://mega.nz/file/qsImTbJB#dNmX6DJMc9fKpiJb4Idm1jd0dhXRpFmcajBTbP6wZnk", prix: 1100, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Baiseur masqué", preview: "Movie0020.mp4", mega: "https://mega.nz/file/y04Q1R5Z#bC1NYXgtQWc6j1LhW3-PEAAAAAAAAAAAX7Vy2W1LvyA", prix: 1400, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Dans la chaise", preview: "Movie0021.mp4", mega: "https://mega.nz/file/SkYzwZ6A#Ix2GKLmCwR_sMv1dQox4qFj4SV1u_dBRWEzYfPDrTtU", prix: 1600, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Sextap lesbienne", preview: "Movie0022.mp4", mega: "https://mega.nz/file/r1I2kZSB#MqUTrbYMn1Qbz7wNvbyMkwCkyML_UvC9duONjuq0bYg", prix: 1700, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Mastubation sextoy", preview: "Movie0023.mp4", mega: "https://mega.nz/file/ypg3nAoK#LAEAAG8AAAAQIIHl8Gs4fgAAAAAAAAAAECKD5fBrOH4", prix: 1900, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Bizi", preview: "Movie0024.mp4", mega: "https://mega.nz/file/X4h33DqZ#3NYcPmH910oG_63_uABXuoEGFva0TsgY26cHtq2B0qU", prix: 1200, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "TS 🤤🤤🤤", preview: "Movie0025.mp4", mega: "https://mega.nz/file/y0ozEBQR#jwPzQMNYAGIRt5Pu5Ys7W2FlUeiq45rzS9GPg5sFMnI", prix: 1500, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Sans capote", preview: "Movie0027.mp4", mega: "https://mega.nz/file/O8pl2a7B#Mxro5gOjrbtPejIStAy___xmj4mrvlVWmtmbtDRaiQk", prix: 1000, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Bizi jouit", preview: "Movie0028.mp4", mega: "https://mega.nz/file/z4xCFCCa#hhX_jnkCALs_ApTVsiAofVW26K1z6xyj9tziMt8UTDE", prix: 1300, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Caméra cachée", preview: "Movie0029.mp4", mega: "https://mega.nz/file/T4w0CYTT#WQDRy1DNiyVjbNrUexsCcgSSpQjFas7XlQ9aBqw44QE", prix: 1800, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Bizi robe rouge", preview: "Movie0030.mp4", mega: "https://mega.nz/file/7lx11ADK#fmdyXLatroke7EMyoMSN2pnFnOpUIXzJev2GS9CSDb0", prix: 2000, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Gros cul", preview: "Movie0031.mp4", mega: "https://mega.nz/file/b8xRHBKA#mXjezsgWSQrlMXhlqF0NxPY6bFg2GIpXHzyVlSBMrRg", prix: 1100, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Baya", preview: "Movie0032.mp4", mega: "https://mega.nz/file/foRHyZLZ#_YyIp4r8mFw9F2kZ4h19ZV8YB3fppEebRwNa75jN-mU", prix: 1400, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Minette sans capote 😍", preview: "Movie0033.mp4", mega: "https://mega.nz/file/D1gD2IjT#AAABoAAAACgkIT-4USD0GQAAAAAAAAAAU1VPzFEg9dE", prix: 1600, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Slip rouge", preview: "Movie0034.mp4", mega: "https://mega.nz/file/jownlKZB#fx8yP_1xKM1T9qO8_3dv91OFdxKEP2NH63bZ3glYFcY", prix: 1700, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Transexuel cocody", preview: "Movie0035.mp4", mega: "https://mega.nz/file/GkYmhIxR#FV17xWPtKg-N-SlY5YKCEfCQkmEp3C0ZJHVGqgoown0", prix: 1900, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Dans lestomac 💕", preview: "Movie0036.mp4", mega: "https://mega.nz/file/q5ZWiY7L#KB0ASSVE9z_prNryfm3wzDwevxsi6XIkHpA0NfcZbN4", prix: 1200, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Bizi gay Abidjan", preview: "Movie0037.mp4", mega: "https://mega.nz/file/e85SGT4K#2HWJ2G8AAABiDOCzWoIUxQAAAAAAAAAACqwcsiiCFMU", prix: 1500, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Baise moi fort dans mon con", preview: "Movie0038.mp4", mega: "https://mega.nz/file/X8xC3AaT#DwAAAP8ALQA9CHYyI2UNJgAAAAAAAAAALQh2MtxlECY", prix: 1000, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Sextap residence", preview: "Movie0039.mp4", mega: "https://mega.nz/file/mhY0QB7a#c6gxYhuVpJH1bn4tROMRnOv1RPFfXqFkFz8u7LtgAE4", prix: 1300, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Bizi", preview: "Movie0040.mp4", mega: "https://mega.nz/file/S5AEQaBI#Y2NlcHQtRW4C6WDRkE3xrAAAAAAAAAAAYYYEuP4qy4w", prix: 1800, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "TS ❤️❤️❤️", preview: "Movie0041.mp4", mega: "https://mega.nz/file/axJDkYJa#GzzXX8qvHIw528YZEkQb1PXdMTeFj_prYqpWPk_LALk", prix: 2000, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "TS 💪💪", preview: "Movie0042.mp4", mega: "https://mega.nz/file/OkoV3RBD#UDOsYxxZs7FNsSO_4Gm_VhJCuNffJ36b8fS8KuRkKXo", prix: 1100, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "TS sans capote", preview: "Movie0043.mp4", mega: "https://mega.nz/file/PxgkHQAK#KdQ98ANtu7OUXwgMAgMS0bQTo0JsoR-knZgyE-SDvUc", prix: 1400, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Bizi 🎉🎉", preview: "Movie0044.mp4", mega: "https://mega.nz/file/XlIEQDxZ#hMo6zb3WB_4ePDeeENnJj7OYRFLyOYeaN5xopUJwF2w", prix: 1600, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Gros cul 🤤🤤🤤", preview: "Movie0045.mp4", mega: "https://mega.nz/file/PhgFUTaQ#EQtSRkz7onKDeWYam-HJRqKDLsVG2mWmx8QDntrm884", prix: 1700, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Lélé", preview: "Movie0046.mp4", mega: "https://mega.nz/file/elIFxISL#NjQNCkFjY2VRxMQRG4hXuAAAAAAAAAAAIbD-MTGnfbU", prix: 1900, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Il baise les trois minette", preview: "Movie0047.mp4", mega: "https://mega.nz/file/ypxS1RgA#NjQNCkFjY2W-dGhE0Vdu3wAAAAAAAAAAzgBSZPt4RNI", prix: 1200, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Sodomie 😱😱😱", preview: "Movie0048.mp4", mega: "https://mega.nz/file/u1hEHYRa#oxHjiEOIL9uaxwrH-s-EAsS1ZCv-8WtT5fcWA0lyLv4", prix: 1500, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Cui mou", preview: "Movie0049.mp4", mega: "https://mega.nz/file/25IgWKAS#APenN4zreC5UZbr-UfP9QLGKpdcr6NnStCK-0E3wyW8", prix: 1000, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Les célébrités", preview: "Movie0050.mp4", mega: "https://mega.nz/file/HkgVxKxA#TPPKWw3CMF-5k2hvNQne5zKr7sihdM_w0UWPiWDaSgY", prix: 1300, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Bizi gros cul en action", preview: "Movie0051.mp4", mega: "https://mega.nz/file/3to1BQDI#hCEjX-FCvoXLoe7x5C974JUGsLmkL9p2_C1bItJd6ls", prix: 1800, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Les enfants baisent", preview: "Movie0052.mp4", mega: "https://mega.nz/file/WgAXGQbA#alzzLcdfSXkmmfjfBVIAHblE03Mlm_P6BNV8UuzJOeo", prix: 2000, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Tape fort dedans", preview: "Movie0053.mp4", mega: "https://mega.nz/file/atBHFIaD#FmAm3Kcy0_o_yhHm4rB6k8Ic9sNq2MnFHqGDOQ72T-k", prix: 1100, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Slip violet sur le côté", preview: "Movie0054.mp4", mega: "https://mega.nz/file/DsommTgR#dZTHSN6p3J9BOXcWIbzFc_mod69j8GF12itdx7o-Dv0", prix: 1400, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "TS baise", preview: "Movie0055.mp4", mega: "https://mega.nz/file/m0I1nT4a#REBNaJbyheiId6VY2fLXtRlxL91qlx0idWv1obiDEro", prix: 1600, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "TS jouit 😋😋", preview: "Movie0056.mp4", mega: "https://mega.nz/file/mowgnbYJ#AAABAAAAAABYVxHxeWQelQAAAAAAAAAATFcR8Xlks1I", prix: 1700, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Bizi Disponible", preview: "Movie0057.mp4", mega: "https://mega.nz/file/ikRTWDaB#DgAAAP8ALwBi987PiK9vVwAAAAAAAAAAY_cyzvqvb1c", prix: 1900, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Sextap ✨✨", preview: "Movie0059.mp4", mega: "https://mega.nz/file/KwhBiYbZ#Y2NlcHQtRW7QnA0TB3ggAQAAAAAAAAAAs_NpemkfGiE", prix: 1200, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Il baise l'étudiante à l'école et éjacule dedans sans capote", preview: "Movie0060.mp4", mega: "https://mega.nz/file/u5AXiBLb#dcLqFZyqlKM0Nbtce4Zz48xTaZMWCvPpC2LKqiedKnQ", prix: 1500, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Influenceuse", preview: "Movie0061.mp4", mega: "https://mega.nz/file/jxIBjbgL#YTaWk8tO5uWARRYoexIsMRaTIdX6OXLMcOR6wWq8Vso", prix: 1000, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Il tape dans l'utérus de l'écolière sans capote", preview: "Movie0062.mp4", mega: "https://mega.nz/file/btAwUDYR#Y2NlcHQtRW7A2JqUPGhbhAAAAAAAAAAAo7f-_VIPYaQ", prix: 1300, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Elle baise en bleu blanc", preview: "Movie0063.mp4", mega: "https://mega.nz/file/GtwwiTrB#eL6H2G8AAACASUuSaeeSBQAAAAAAAAAA6Om3kxvnkgU", prix: 1800, wa: defaultWhatsApp, formula: "id * 2026 / 360" }
         ];
 
         const grid = document.getElementById("video-grid");
-        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v36")) || [];
+        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v37")) || [];
 
         function saveState() {
-            localStorage.setItem("vip_scenes_data_v36", JSON.stringify(scenesData));
+            localStorage.setItem("vip_scenes_data_v37", JSON.stringify(scenesData));
         }
 
+        // Initialisation si vide
         if (scenesData.length === 0) {
-            scenesData = myScenes.map((item, index) => {
+            scenesData = baseScenes.map((item) => {
                 const randomId = Math.floor(Math.random() * (90000 - 10000 + 1)) + 10000;
-                // Génération aléatoire d'un prix entre 1000 et 2000 en multiple de 100
-                const randomPrice = Math.floor(Math.random() * 11) * 100 + 1000;
                 return {
                     id: randomId,
                     nom: item.nom,
                     mega: item.mega,
                     preview: item.preview,
-                    prix: randomPrice,
+                    prix: item.prix,
+                    wa: item.wa,
+                    formula: item.formula,
                     deverrouille: false
                 };
             });
             saveState();
         }
 
-        scenesData.forEach((scene, index) => {
-            const cleAttendue = Math.floor((scene.id * 2026) / 360);
-            const card = document.createElement("div");
-            card.className = "card";
-            card.id = `card-${index}`;
+        function renderGrid() {
+            grid.innerHTML = "";
+            scenesData.forEach((scene, index) => {
+                // Évaluation sécurisée de la formule personnalisée (ex: id * 2026 / 360)
+                let cleAttendue;
+                try {
+                    let evaluatedFormula = scene.formula.replace(/id/g, scene.id);
+                    cleAttendue = Math.floor(eval(evaluatedFormula));
+                } catch(e) {
+                    cleAttendue = Math.floor((scene.id * 2026) / 360);
+                }
 
-            const mediaHtml = `
-                <div class="media-container">
-                    <video class="preview-video" controls autoplay muted loop playsinline preload="metadata" controlsList="nodownload">
-                        <source src="${scene.preview}" type="video/mp4">
-                        Votre navigateur ne supporte pas la lecture vidéo.
-                    </video>
-                </div>
-            `;
+                const card = document.createElement("div");
+                card.className = "card";
+                card.id = `card-${index}`;
 
-            if (scene.deverrouille) {
-                card.innerHTML = `
-                    ${mediaHtml}
-                    <h3>${scene.nom}</h3>
-                    <div class="price-badge">💎 ${scene.prix} Fr</div>
-                    <div class="info-id">ID : <b>${scene.id}</b></div>
-                    <div class="message" style="color: #ff6600;">
-                        ✅ Déverrouillé<br>
-                        <a class="mega-link" href="${scene.mega}" target="_blank">📥 Regarder sur MEGA</a>
+                const mediaHtml = `
+                    <div class="media-container">
+                        <video class="preview-video" controls autoplay muted loop playsinline preload="metadata" controlsList="nodownload">
+                            <source src="${scene.preview}" type="video/mp4">
+                            Votre navigateur ne supporte pas la lecture vidéo.
+                        </video>
                     </div>
                 `;
-            } else {
-                card.innerHTML = `
-                    ${mediaHtml}
-                    <h3>${scene.nom}</h3>
-                    <div class="price-badge">💎 ${scene.prix} Fr</div>
-                    <div class="info-id">ID : <b>${scene.id}</b></div>
-                    <a class="whatsapp-btn" href="https://wa.me/${whatsappNumber}?text=Bonjour,%20je%20veux%20acheter%20la%20clé%20pour%20la%20scène:%20${encodeURIComponent(scene.nom)}%20(ID:%20${scene.id})%20au%20prix%20de%20${scene.prix}Fr" target="_blank">
-                        💬 Commander la clé (${scene.prix} Fr)
-                    </a>
-                    <div class="input-group">
-                        <input type="number" id="input-${index}" placeholder="Code clé...">
-                        <button class="verify-btn" onclick="verifier(${index}, ${cleAttendue})">Valider</button>
-                    </div>
-                    <div class="message" id="msg-${index}"></div>
-                `;
-            }
-            grid.appendChild(card);
-        });
+
+                if (scene.deverrouille) {
+                    card.innerHTML = `
+                        ${mediaHtml}
+                        <h3>${scene.nom}</h3>
+                        <div class="price-badge">💎 ${scene.prix} Fr</div>
+                        <div class="info-id">ID : <b>${scene.id}</b></div>
+                        <div class="message" style="color: #ff6600;">
+                            ✅ Déverrouillé<br>
+                            <a class="mega-link" href="${scene.mega}" target="_blank">📥 Regarder sur MEGA</a>
+                        </div>
+                    `;
+                } else {
+                    card.innerHTML = `
+                        ${mediaHtml}
+                        <h3>${scene.nom}</h3>
+                        <div class="price-badge">💎 ${scene.prix} Fr</div>
+                        <div class="info-id">ID : <b>${scene.id}</b></div>
+                        <a class="whatsapp-btn" href="https://wa.me/${scene.wa}?text=Bonjour,%20je%20veux%20acheter%20la%20clé%20pour%20la%20scène:%20${encodeURIComponent(scene.nom)}%20(ID:%20${scene.id})%20au%20prix%20de%20${scene.prix}Fr" target="_blank">
+                            💬 Commander (${scene.prix} Fr)
+                        </a>
+                        <div class="input-group">
+                            <input type="number" id="input-${index}" placeholder="Code clé...">
+                            <button class="verify-btn" onclick="verifier(${index}, ${cleAttendue})">Valider</button>
+                        </div>
+                        <div class="message" id="msg-${index}"></div>
+                    `;
+                }
+                grid.appendChild(card);
+            });
+        }
 
         function verifier(index, cleAttendue) {
             const inputElem = document.getElementById(`input-${index}`);
@@ -365,27 +484,67 @@
             if (saisie === cleAttendue) {
                 scenesData[index].deverrouille = true;
                 saveState();
-
-                const card = document.getElementById(`card-${index}`);
-                card.innerHTML = `
-                    <div class="media-container">
-                        <video class="preview-video" controls autoplay muted loop playsinline preload="metadata" controlsList="nodownload">
-                            <source src="${scenesData[index].preview}" type="video/mp4">
-                        </video>
-                    </div>
-                    <h3>${scenesData[index].nom}</h3>
-                    <div class="price-badge">💎 ${scenesData[index].prix} Fr</div>
-                    <div class="info-id">ID : <b>${scenesData[index].id}</b></div>
-                    <div class="message" style="color: #ff6600;">
-                        🎉 Clé Valide !<br>
-                        <a class="mega-link" href="${scenesData[index].mega}" target="_blank">📥 Regarder sur MEGA</a>
-                    </div>
-                `;
+                renderGrid();
             } else {
                 msg.style.color = "#ff6600";
                 msg.innerText = "Clé incorrecte.";
             }
         }
+
+        function ouvrirAdmin() {
+            const mdp = prompt("Entrez le mot de passe administrateur :");
+            if (mdp === "admin123") {
+                document.getElementById("admin-modal").style.display = "flex";
+            } else if (mdp !== null) {
+                alert("Mot de passe incorrect.");
+            }
+        }
+
+        function fermerAdmin() {
+            document.getElementById("admin-modal").style.display = "none";
+        }
+
+        function ajouterScene() {
+            const nom = document.getElementById("new-nom").value.trim();
+            const preview = document.getElementById("new-preview").value.trim();
+            const mega = document.getElementById("new-mega").value.trim();
+            const prix = parseInt(document.getElementById("new-prix").value.trim(), 10);
+            const wa = document.getElementById("new-whatsapp").value.trim() || defaultWhatsApp;
+            const formula = document.getElementById("new-formula").value.trim() || "id * 2026 / 360";
+
+            if (!nom || !preview || !mega || isNaN(prix)) {
+                alert("Veuillez remplir tous les champs obligatoires correctement !");
+                return;
+            }
+
+            const randomId = Math.floor(Math.random() * (90000 - 10000 + 1)) + 10000;
+
+            const nouvelleScene = {
+                id: randomId,
+                nom: nom,
+                preview: preview,
+                mega: mega,
+                prix: prix,
+                wa: wa,
+                formula: formula,
+                deverrouille: false
+            };
+
+            scenesData.push(nouvelleScene);
+            saveState();
+            renderGrid();
+            fermerAdmin();
+
+            // Vider le formulaire
+            document.getElementById("new-nom").value = "";
+            document.getElementById("new-preview").value = "";
+            document.getElementById("new-mega").value = "";
+            document.getElementById("new-prix").value = "";
+            alert("Scène ajoutée avec succès !");
+        }
+
+        // Lancer l'affichage initial
+        renderGrid();
     </script>
 
 </body>
