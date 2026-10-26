@@ -16,8 +16,6 @@
             background-color: #d1d5db !important;
             color: #333333;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            -webkit-user-select: none;
-            user-select: none;
         }
         body {
             padding: 0 10px 10px 10px;
@@ -318,7 +316,7 @@
         }
     </style>
 </head>
-<body oncontextmenu="return false;">
+<body>
 
     <header>
         <div style="width: 40px;"></div>
@@ -337,7 +335,7 @@
 
     <button class="admin-fab" onclick="verifierAdmin()" title="Admin Principal">⚙️</button>
 
-    <!-- Modal Vendeur avec champ de formule vide par défaut (obligation d'écrire) -->
+    <!-- Modal Vendeur -->
     <div id="vendor-modal" class="modal-overlay">
         <div class="modal-content">
             <h2>➕ Espace Vendeur / Partenaire</h2>
@@ -364,7 +362,7 @@
 
             <label>Votre formule personnalisée :</label>
             <input type="text" id="new-formula" placeholder="Ex: id * 3 / 2 ou id * 5">
-            <div class="field-help"><b>Obligatoire :</b> Écrivez votre propre formule en utilisant impérativement le mot <b>id</b> et des multiplications (ex: <i>id * 4 / 3</i>).</div>
+            <div class="field-help"><b>Obligatoire :</b> Écrivez votre propre formule en utilisant impérativement le mot <b>id</b> (ex: <i>id * 4 / 3</i>).</div>
 
             <div class="modal-buttons">
                 <button class="btn-save" onclick="ajouterScene()">Publier ma vidéo</button>
@@ -452,10 +450,10 @@
         ];
 
         const grid = document.getElementById("video-grid");
-        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v48")) || [];
+        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v49")) || [];
 
         function saveState() {
-            localStorage.setItem("vip_scenes_data_v48", JSON.stringify(scenesData));
+            localStorage.setItem("vip_scenes_data_v49", JSON.stringify(scenesData));
         }
 
         if (scenesData.length === 0) {
