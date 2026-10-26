@@ -69,7 +69,6 @@
             color: #ff6600;
             font-weight: bold;
         }
-        /* Bouton Vendeur dans le Header */
         .btn-vendor-header {
             background: #25d366;
             color: white;
@@ -220,7 +219,6 @@
             text-align: center;
             box-shadow: 0 2px 8px rgba(0, 136, 204, 0.4);
         }
-        /* Bouton Admin Flottant Secret */
         .admin-fab {
             position: fixed;
             bottom: 15px;
@@ -239,7 +237,6 @@
             align-items: center;
             justify-content: center;
         }
-        /* Modals communes */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -308,8 +305,6 @@
         }
         .btn-save { background: #25d366; color: white; }
         .btn-close { background: #ef4444; color: white; }
-        
-        /* Liste Admin */
         .video-item-admin {
             background: #f3f4f6;
             border: 1px solid #ccc;
@@ -331,7 +326,6 @@
             <h1>🤤 VIDEO BIZI EN VENTE 📂</h1>
             <div class="subtitle">🤑 Commander par WhatsApp 🤑</div>
         </div>
-        <!-- Bouton public pour que les vendeurs s'inscrivent et ajoutent leur vidéo -->
         <button class="btn-vendor-header" onclick="ouvrirVendeurModal()">+ Vendre</button>
     </header>
 
@@ -341,33 +335,36 @@
         <div class="grid" id="video-grid"></div>
     </div>
 
-    <!-- Bouton Admin Secret (Flottant en bas à droite) -->
     <button class="admin-fab" onclick="verifierAdmin()" title="Admin Principal">⚙️</button>
 
-    <!-- Modal d'inscription / Ajout pour les Vendeurs (Public) -->
+    <!-- Modal Vendeur avec formule pré-remplie id * A / B -->
     <div id="vendor-modal" class="modal-overlay">
         <div class="modal-content">
             <h2>➕ Espace Vendeur / Partenaire</h2>
             
             <label>Titre de la vidéo :</label>
-            <input type="text" id="new-nom" placeholder="Ex: Titre de la vidéo">
+            <input type="text" id="new-nom" placeholder="Ex: Bizi souriant">
             <div class="field-help">Donnez un titre accrocheur à votre vidéo.</div>
 
             <label>Lien Vidéo Aperçu :</label>
             <input type="text" id="new-preview" placeholder="Lien direct .mp4 ou lien Telegram...">
-            <div class="field-help">Collez ici le lien de la courte vidéo de démonstration qui s'affichera sur la carte.</div>
+            <div class="field-help">Collez le lien de la courte vidéo d'aperçu.</div>
 
             <label>Lien Vidéo Complet Telegram :</label>
-            <input type="text" id="new-telegram" placeholder="https://t.me/..." >
-            <div class="field-help">Collez ici le lien Telegram de la vidéo complète que l'acheteur recevra après déverrouillage.</div>
+            <input type="text" id="new-telegram" placeholder="https://t.me/...">
+            <div class="field-help">Lien Telegram de la vidéo complète.</div>
 
             <label>Prix (en Fr) :</label>
             <input type="number" id="new-prix" placeholder="1500" step="100">
-            <div class="field-help">Indiquez le prix de vente en multiples de 100 (ex: 1000, 1500, 2000...).</div>
+            <div class="field-help">Prix de vente en multiples de 100.</div>
 
             <label>Numéro WhatsApp :</label>
             <input type="text" id="new-whatsapp" placeholder="2250105553740">
-            <div class="field-help">Votre numéro WhatsApp sans le signe + (les clients vous enverront l'achat directement).</div>
+            <div class="field-help">Votre numéro WhatsApp sans le +.</div>
+
+            <label>Formule de calcul de la clé :</label>
+            <input type="text" id="new-formula" value="id * 2026 / 360" placeholder="id * A / B">
+            <div class="field-help">Personnalisez votre formule en modifiant les chiffres (gardez bien le mot <b>id</b>).</div>
 
             <div class="modal-buttons">
                 <button class="btn-save" onclick="ajouterScene()">Publier ma vidéo</button>
@@ -376,7 +373,7 @@
         </div>
     </div>
 
-    <!-- Modal Liste Globale (Réservée à l'Admin avec mot de passe) -->
+    <!-- Modal Admin -->
     <div id="admin-list-modal" class="modal-overlay">
         <div class="modal-content" style="max-width: 450px;">
             <h2>📂 Tableau de Bord Administrateur</h2>
@@ -455,10 +452,10 @@
         ];
 
         const grid = document.getElementById("video-grid");
-        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v45")) || [];
+        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v47")) || [];
 
         function saveState() {
-            localStorage.setItem("vip_scenes_data_v45", JSON.stringify(scenesData));
+            localStorage.setItem("vip_scenes_data_v47", JSON.stringify(scenesData));
         }
 
         if (scenesData.length === 0) {
@@ -548,7 +545,6 @@
             }
         }
 
-        // Fonctions pour les Vendeurs (Public)
         function ouvrirVendeurModal() {
             document.getElementById("vendor-modal").style.display = "flex";
         }
@@ -563,17 +559,22 @@
             const tele = document.getElementById("new-telegram").value.trim();
             const prix = parseInt(document.getElementById("new-prix").value.trim(), 10);
             const wa = document.getElementById("new-whatsapp").value.trim() || defaultWhatsApp;
+            const formulaInput = document.getElementById("new-formula").value.trim() || "id * 2026 / 360";
 
             if (!nom || !preview || !tele || isNaN(prix)) {
                 alert("Veuillez remplir tous les champs obligatoires correctement !");
                 return;
             }
 
-            const chiffreA = Math.floor(Math.random() * (9000 - 1000 + 1)) + 1000;
-            const chiffreB = Math.floor(Math.random() * (900 - 100 + 1)) + 100;
-            const formuleAleatoire = `id * ${chiffreA} / ${chiffreB}`;
-
             const randomId = Math.floor(Math.random() * (90000 - 10000 + 1)) + 10000;
+
+            let cleExemple = 0;
+            try {
+                let testEval = formulaInput.replace(/id/g, randomId);
+                cleExemple = Math.floor(eval(testEval));
+            } catch(e) {
+                cleExemple = Math.floor((randomId * 2026) / 360);
+            }
 
             const nouvelleScene = {
                 id: randomId,
@@ -582,7 +583,7 @@
                 tele: tele,
                 prix: prix,
                 wa: wa,
-                formula: formuleAleatoire,
+                formula: formulaInput,
                 deverrouille: false
             };
 
@@ -596,11 +597,11 @@
             document.getElementById("new-telegram").value = "";
             document.getElementById("new-prix").value = "";
             document.getElementById("new-whatsapp").value = "";
+            document.getElementById("new-formula").value = "id * 2026 / 360";
             
-            alert(`Félicitations ! Votre vidéo a été publiée avec succès.\nVotre formule de sécurité unique a été configurée.`);
+            alert(`Félicitations ! Votre vidéo "${nom}" a été publiée.\n\nID généré : ${randomId}\nFormule enregistrée : ${formulaInput}\n\nExemple de clé pour cette vidéo : ${cleExemple}`);
         }
 
-        // Fonctions Administrateur Secret (Protégées par mot de passe)
         function verifierAdmin() {
             const mdp = prompt("Entrez le mot de passe administrateur :");
             if (mdp === "admin123") {
@@ -616,10 +617,17 @@
             listContainer.innerHTML = "";
 
             scenesData.forEach((s, idx) => {
+                let cleCalculee = "Erreur";
+                try {
+                    cleCalculee = Math.floor(eval(s.formula.replace(/id/g, s.id)));
+                } catch(e){}
+
                 listContainer.innerHTML += `
                     <div class="video-item-admin">
                         <b>#${idx + 1} - ${s.nom}</b><br>
                         ID : ${s.id} | Prix : ${s.prix} Fr<br>
+                        Formule : <code>${s.formula}</code><br>
+                        Clé actuelle : <b>${cleCalculee}</b><br>
                         WhatsApp : ${s.wa}<br>
                         Lien Telegram : <a href="${s.tele}" target="_blank" style="color: #0088cc; word-break: break-all;">${s.tele}</a>
                     </div>
