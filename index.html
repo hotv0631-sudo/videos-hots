@@ -302,8 +302,8 @@
             <label>Nom / Titre de la scène :</label>
             <input type="text" id="new-nom" placeholder="Ex: Vidéo Partenaire">
 
-            <label>Lien Aperçu Vidéo (ex: lien Telegram ou direct .mp4) :</label>
-            <input type="text" id="new-preview" placeholder="https://... ou Movie064.mp4">
+            <label>Lien Vidéo Aperçu (Lien direct .mp4 ou Telegram) :</label>
+            <input type="text" id="new-preview" placeholder="Coller le lien de l'aperçu ici...">
 
             <label>Lien MEGA :</label>
             <input type="text" id="new-mega" placeholder="https://mega.nz/file/...">
@@ -388,10 +388,10 @@
         ];
 
         const grid = document.getElementById("video-grid");
-        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v39")) || [];
+        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v40")) || [];
 
         function saveState() {
-            localStorage.setItem("vip_scenes_data_v39", JSON.stringify(scenesData));
+            localStorage.setItem("vip_scenes_data_v40", JSON.stringify(scenesData));
         }
 
         if (scenesData.length === 0) {
@@ -506,7 +506,6 @@
                 return;
             }
 
-            // Formule aléatoire unique pour chaque nouveau partenaire
             const chiffreA = Math.floor(Math.random() * (9000 - 1000 + 1)) + 1000;
             const chiffreB = Math.floor(Math.random() * (900 - 100 + 1)) + 100;
             const formuleAleatoire = `id * ${chiffreA} / ${chiffreB}`;
