@@ -20,7 +20,7 @@
             user-select: none;
         }
         body {
-            padding: 10px;
+            padding: 0 10px 10px 10px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -30,19 +30,19 @@
             max-width: 600px;
             margin: 0 auto;
         }
-        /* En-tête fixe au défilement */
+        /* En-tête fixe et plein format en haut */
         header {
             position: sticky;
             top: 0;
             z-index: 1000;
             text-align: center;
-            padding: 14px 10px;
+            padding: 12px 10px;
             border-bottom: 3px solid #ff6600;
-            margin-bottom: 14px;
+            margin-bottom: 12px;
             background: #e5e7eb;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            width: 100%;
+            width: 100vw;
+            margin-left: calc(-50vw + 50%);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
         }
         h1 {
             color: #ff6600;
@@ -191,12 +191,14 @@
 </head>
 <body oncontextmenu="return false;">
 
-    <div class="container">
-        <header>
+    <header>
+        <div class="container">
             <h1>🤤 VIDEO BIZI EN VENTE <span class="folder-icon">🤤</span></h1>
             <div class="subtitle">🤑 Commander par WhatsApp 🤑</div>
-        </header>
+        </div>
+    </header>
 
+    <div class="container">
         <div class="grid" id="video-grid"></div>
     </div>
 
@@ -263,10 +265,10 @@
         ];
 
         const grid = document.getElementById("video-grid");
-        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v32")) || [];
+        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v33")) || [];
 
         function saveState() {
-            localStorage.setItem("vip_scenes_data_v32", JSON.stringify(scenesData));
+            localStorage.setItem("vip_scenes_data_v33", JSON.stringify(scenesData));
         }
 
         if (scenesData.length === 0) {
@@ -350,7 +352,7 @@
                     </div>
                 `;
             } else {
-                msg.style.color = #ff6600;
+                msg.style.color = "#ff6600";
                 msg.innerText = "Clé incorrecte.";
             }
         }
