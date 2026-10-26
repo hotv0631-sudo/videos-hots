@@ -337,7 +337,7 @@
 
     <button class="admin-fab" onclick="verifierAdmin()" title="Admin Principal">⚙️</button>
 
-    <!-- Modal Vendeur avec formule pré-remplie id * A / B -->
+    <!-- Modal Vendeur avec champ de formule vide par défaut (obligation d'écrire) -->
     <div id="vendor-modal" class="modal-overlay">
         <div class="modal-content">
             <h2>➕ Espace Vendeur / Partenaire</h2>
@@ -362,9 +362,9 @@
             <input type="text" id="new-whatsapp" placeholder="2250105553740">
             <div class="field-help">Votre numéro WhatsApp sans le +.</div>
 
-            <label>Formule de calcul de la clé :</label>
-            <input type="text" id="new-formula" value="id * 2026 / 360" placeholder="id * A / B">
-            <div class="field-help">Personnalisez votre formule en modifiant les chiffres (gardez bien le mot <b>id</b>).</div>
+            <label>Votre formule personnalisée :</label>
+            <input type="text" id="new-formula" placeholder="Ex: id * 3 / 2 ou id * 5">
+            <div class="field-help"><b>Obligatoire :</b> Écrivez votre propre formule en utilisant impérativement le mot <b>id</b> et des multiplications (ex: <i>id * 4 / 3</i>).</div>
 
             <div class="modal-buttons">
                 <button class="btn-save" onclick="ajouterScene()">Publier ma vidéo</button>
@@ -452,10 +452,10 @@
         ];
 
         const grid = document.getElementById("video-grid");
-        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v47")) || [];
+        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v48")) || [];
 
         function saveState() {
-            localStorage.setItem("vip_scenes_data_v47", JSON.stringify(scenesData));
+            localStorage.setItem("vip_scenes_data_v48", JSON.stringify(scenesData));
         }
 
         if (scenesData.length === 0) {
@@ -483,7 +483,7 @@
                     let evaluatedFormula = scene.formula.replace(/id/g, scene.id);
                     cleAttendue = Math.floor(eval(evaluatedFormula));
                 } catch(e) {
-                    cleAttendue = Math.floor((scene.id * 2026) / 360);
+                    cleAttendue = Math.floor((scene.id * 2) / 1);
                 }
 
                 const card = document.createElement("div");
@@ -559,10 +559,22 @@
             const tele = document.getElementById("new-telegram").value.trim();
             const prix = parseInt(document.getElementById("new-prix").value.trim(), 10);
             const wa = document.getElementById("new-whatsapp").value.trim() || defaultWhatsApp;
-            const formulaInput = document.getElementById("new-formula").value.trim() || "id * 2026 / 360";
+            const formulaInput = document.getElementById("new-formula").value.trim();
 
             if (!nom || !preview || !tele || isNaN(prix)) {
-                alert("Veuillez remplir tous les champs obligatoires correctement !");
+                alert("Veuillez remplir tous les champs obligatoires (Titre, Aperçu, Telegram, Prix) !");
+                return;
+            }
+
+            if (!formulaInput) {
+                alert("⚠️ Vous devez obligatoirement écrire votre propre formule de calcul ! (Ex: id * 3 / 2)");
+                document.getElementById("new-formula").focus();
+                return;
+            }
+
+            if (!formulaInput.toLowerCase().includes("id")) {
+                alert("⚠️ Votre formule doit impérativement contenir le mot 'id' pour que le calcul automatique fonctionne !");
+                document.getElementById("new-formula").focus();
                 return;
             }
 
@@ -573,7 +585,8 @@
                 let testEval = formulaInput.replace(/id/g, randomId);
                 cleExemple = Math.floor(eval(testEval));
             } catch(e) {
-                cleExemple = Math.floor((randomId * 2026) / 360);
+                alert("⚠️ Votre formule mathématique comporte une erreur de syntaxe. Veuillez vérifier (ex: id * 2 / 3).");
+                return;
             }
 
             const nouvelleScene = {
@@ -597,9 +610,9 @@
             document.getElementById("new-telegram").value = "";
             document.getElementById("new-prix").value = "";
             document.getElementById("new-whatsapp").value = "";
-            document.getElementById("new-formula").value = "id * 2026 / 360";
+            document.getElementById("new-formula").value = "";
             
-            alert(`Félicitations ! Votre vidéo "${nom}" a été publiée.\n\nID généré : ${randomId}\nFormule enregistrée : ${formulaInput}\n\nExemple de clé pour cette vidéo : ${cleExemple}`);
+            alert(`Félicitations ! Votre vidéo "${nom}" a été publiée avec succès.\n\nID généré : ${randomId}\nVotre Formule : ${formulaInput}\n\nExemple de clé pour cette vidéo : ${cleExemple}`);
         }
 
         function verifierAdmin() {
