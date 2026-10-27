@@ -30,21 +30,21 @@
             width: 100%;
             z-index: 999;
             text-align: center;
-            padding: 12px 10px;
+            padding: 10px;
             border-bottom: 3px solid #ff6600;
             background: #e5e7eb;
             box-shadow: 0 4px 12px rgba(0,0,0,0.2);
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
             align-items: center;
+            gap: 6px;
         }
         .header-title {
-            flex-grow: 1;
             text-align: center;
         }
         .header-space {
             width: 100%;
-            height: 75px;
+            height: 95px;
         }
         .container {
             width: 100%;
@@ -68,13 +68,14 @@
             background: #25d366;
             color: white;
             border: none;
-            padding: 6px 10px;
+            padding: 6px 14px;
             border-radius: 6px;
             font-weight: bold;
             font-size: 10px;
             cursor: pointer;
             box-shadow: 0 2px 6px rgba(37, 211, 102, 0.3);
-            white-space: nowrap;
+            width: 100%;
+            max-width: 250px;
         }
         .grid {
             display: grid;
@@ -322,12 +323,11 @@
 <body>
 
     <header>
-        <div style="width: 40px;"></div>
         <div class="header-title">
             <h1>🤤 VIDEO BIZI EN VENTE 📂</h1>
             <div class="subtitle">🤑 Commander par WhatsApp 🤑</div>
         </div>
-        <button class="btn-vendor-header" onclick="demanderSecuriteAdmin('publier')">Vendre une vidéo en Ultra HD</button>
+        <button class="btn-vendor-header" onclick="demanderSecuriteAdmin('publier')">🎬 Vendre une vidéo en Ultra HD 🎥</button>
     </header>
 
     <div class="header-space"></div>
@@ -341,7 +341,7 @@
     <!-- Modal Vendeur (Sécurisé Admin 2FA) -->
     <div id="vendor-modal" class="modal-overlay">
         <div class="modal-content">
-            <h2>➕ Vendre une vidéo en Ultra HD</h2>
+            <h2>🎬 Vendre une vidéo en Ultra HD 🎥</h2>
             
             <label>Titre de la vidéo :</label>
             <input type="text" id="new-nom" placeholder="Ex: Bizi souriant">
@@ -387,9 +387,9 @@
     <script>
         const defaultWhatsApp = "2250105553740";
 
-        // Vos identifiants de sécurité à double facteur (modifiables ici)
-        const ADMIN_PASS_1 = "BiziMaster2026!"; // Mot de passe principal complexe
-        const ADMIN_CODE_2 = "9988";              // Code PIN de validation à 4 chiffres (2ème facteur)
+        // Double authentification sécurisée
+        const ADMIN_PASS_1 = "07091527admin"; 
+        const ADMIN_CODE_2 = "Boli"; 
 
         const baseScenes = [
             { nom: "Bizi sans capote", preview: "Movie002.mp4", tele: "https://t.me/", prix: 1200, wa: defaultWhatsApp },
@@ -455,10 +455,10 @@
         ];
 
         const grid = document.getElementById("video-grid");
-        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v56")) || [];
+        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v59")) || [];
 
         function saveState() {
-            localStorage.setItem("vip_scenes_data_v56", JSON.stringify(scenesData));
+            localStorage.setItem("vip_scenes_data_v59", JSON.stringify(scenesData));
         }
 
         if (scenesData.length === 0) {
@@ -541,9 +541,9 @@
             }
         }
 
-        // Système d'authentification à deux facteurs (2FA) administrateur
+        // Double authentification sécurisée
         function demanderSecuriteAdmin(actionCible) {
-            const mdpSaisi = prompt("🔒 Étape 1/2 - Entrez le mot de passe administrateur complexe :");
+            const mdpSaisi = prompt("🔒 Étape 1/2 - Entrez le mot de passe administrateur :");
             if (mdpSaisi === null) return;
 
             if (mdpSaisi !== ADMIN_PASS_1) {
@@ -551,15 +551,15 @@
                 return;
             }
 
-            const pinSaisi = prompt("🔐 Étape 2/2 (2FA) - Entrez votre code PIN secret à 4 chiffres :");
+            const pinSaisi = prompt("🔐 Étape 2/2 (2FA) - Entrez le nom de votre ville de naissance :");
             if (pinSaisi === null) return;
 
             if (pinSaisi !== ADMIN_CODE_2) {
-                alert("❌ Code PIN de sécurité incorrect.");
+                alert("❌ Ville de naissance incorrecte.");
                 return;
             }
 
-            // Accès autorisé avec succès
+            // Accès validé
             if (actionCible === 'publier') {
                 ouvrirVendeurModal();
             } else if (actionCible === 'tableau') {
