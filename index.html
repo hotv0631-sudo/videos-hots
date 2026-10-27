@@ -262,7 +262,7 @@
             padding: 15px;
             border-radius: 10px;
             width: 100%;
-            max-width: 450px;
+            max-width: 550px;
             max-height: 90vh;
             overflow-y: auto;
         }
@@ -312,31 +312,25 @@
         .btn-save { background: #25d366; color: white; }
         .btn-close { background: #ef4444; color: white; }
         
+        /* Grille admin sur 2 colonnes comme la page d'accueil */
+        .admin-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            width: 100%;
+            margin-bottom: 12px;
+        }
         .admin-card-item {
-            background: #ffffff;
-            border: 1.5px solid #ff6600;
-            border-radius: 8px;
-            padding: 10px;
-            margin-bottom: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        .admin-card-item .admin-media-box {
-            width: 100%;
-            border-radius: 5px;
-            overflow: hidden;
-            background: #000;
-            margin-bottom: 6px;
-            border: 1px solid #ff6600;
-            aspect-ratio: 9 / 16;
+            background: #e5e7eb;
+            border: 2px solid #ff6600;
+            border-radius: 10px;
+            padding: 8px;
+            box-shadow: 0 4px 12px rgba(255, 102, 0, 0.15);
             display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .admin-card-item video {
+            flex-direction: column;
+            justify-content: space-between;
             width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
+            min-width: 0;
         }
     </style>
 </head>
@@ -347,7 +341,6 @@
             <h1>🤤 VIDEO BIZI EN VENTE 📂</h1>
             <div class="subtitle">🤑 Commander par WhatsApp 🤑</div>
         </div>
-        <!-- Bouton avec le texte exact demandé -->
         <button class="btn-vendor-header" onclick="ouvrirVendeurModal()">🎬 Vendre une vidéo en HD, cliquez ici 🎥</button>
     </header>
 
@@ -362,7 +355,7 @@
 
     <!-- Modal Vendeur -->
     <div id="vendor-modal" class="modal-overlay">
-        <div class="modal-content">
+        <div class="modal-content" style="max-width: 450px;">
             <h2>🎬 Vendre une vidéo en HD, cliquez ici 🎥</h2>
             
             <label>Nom du Partenaire / Vendeur :</label>
@@ -398,13 +391,14 @@
 
     <!-- Modal Admin -->
     <div id="admin-list-modal" class="modal-overlay">
-        <div class="modal-content" style="max-width: 500px;">
+        <div class="modal-content" style="max-width: 600px;">
             <h2>📂 Tableau de Bord VIP (Accès Direct Admin)</h2>
             <div style="font-size: 11px; color: #333; margin-bottom: 10px; text-align: center; font-weight: bold;">
                 Total des vidéos : <span id="admin-total-count" style="color: #ff6600;">0</span> (Lecture libre sans code)
             </div>
             
-            <div id="admin-videos-list" style="max-height: 65vh; overflow-y: auto; margin-bottom: 12px; padding-right: 5px;"></div>
+            <!-- Grille admin sur 2 colonnes -->
+            <div class="admin-grid" id="admin-videos-list"></div>
             
             <button class="btn-close" style="width: 100%; padding: 8px;" onclick="fermerListeAdmin()">Fermer</button>
         </div>
@@ -482,10 +476,10 @@
         ];
 
         const grid = document.getElementById("video-grid");
-        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v65")) || [];
+        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v66")) || [];
 
         function saveState() {
-            localStorage.setItem("vip_scenes_data_v65", JSON.stringify(scenesData));
+            localStorage.setItem("vip_scenes_data_v66", JSON.stringify(scenesData));
         }
 
         if (scenesData.length === 0) {
@@ -646,7 +640,7 @@
             scenesData.forEach((s, idx) => {
                 listContainer.innerHTML += `
                     <div class="admin-card-item">
-                        <div class="admin-media-box">
+                        <div class="media-container">
                             <video class="preview-video" autoplay muted loop playsinline preload="metadata" controlsList="nodownload">
                                 <source src="${s.preview}" type="video/mp4">
                                 Votre navigateur ne supporte pas la vidéo.
