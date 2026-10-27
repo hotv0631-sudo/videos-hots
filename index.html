@@ -378,8 +378,9 @@
     </div>
 
     <script>
+        // Configuration Supabase avec votre vraie clé publique
         const SUPABASE_URL = "https://dhjrpvryonkeiwzuystoe.supabase.co";
-        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRoanJwdnJ5b25rZWl3enV5c3RvZSIsInJvbGUiOiJhbm9uIiwiaWF0IjoxNzg0Mzg3NzM5fQ.vجهز_ta_vraie_cle_anon_ici";
+        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRoanJwdnJ5b25rZWl3enV5c3RvZSIsInJvbGUiOiJhbm9uIiwiaWF0IjoxNzkzMDM2MzY2LCJleHAiOjIxMDg2MTIzNjZ9.5FFuaI627JDJ5SCorwFrr1DhvwqHi0CiUWJkhwCkZV4";
         
         let supabaseClient = null;
         try {
@@ -399,7 +400,6 @@
             }
 
             try {
-                // Correction ici : la requête attend bien la réponse de Supabase
                 const { data, error } = await supabaseClient.from('videos').select('*');
 
                 if (error) throw error;
