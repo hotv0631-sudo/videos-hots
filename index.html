@@ -354,7 +354,7 @@
     <!-- Bouton Engrenage sécurisé par 2FA (Admin uniquement) -->
     <button class="admin-fab" onclick="demanderSecuriteAdmin()" title="Tableau de Bord Admin">⚙️</button>
 
-    <!-- Modal Vendeur (Réservé aux vendeurs pour contacter l'Admin) -->
+    <!-- Modal Vendeur -->
     <div id="vendor-modal" class="modal-overlay">
         <div class="modal-content" style="max-width: 450px;">
             <h2>🎬 Proposer une vidéo à l'Admin 🎥</h2>
@@ -395,7 +395,7 @@
         </div>
     </div>
 
-    <!-- Modal Admin (Tableau de bord sécurisé avec formulaire d'upload admin) -->
+    <!-- Modal Admin -->
     <div id="admin-list-modal" class="modal-overlay">
         <div class="modal-content" style="max-width: 650px;">
             <h2>📂 Tableau de Bord VIP (Admin)</h2>
@@ -506,10 +506,10 @@
         ];
 
         const grid = document.getElementById("video-grid");
-        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v73")) || [];
+        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v74")) || [];
 
         function saveState() {
-            localStorage.setItem("vip_scenes_data_v73", JSON.stringify(scenesData));
+            localStorage.setItem("vip_scenes_data_v74", JSON.stringify(scenesData));
         }
 
         if (scenesData.length === 0) {
@@ -575,6 +575,11 @@
                     `;
                 }
                 grid.appendChild(card);
+            });
+
+            // Sécurité additionnelle pour forcer la lecture automatique sur toutes les vidéos de la page
+            document.querySelectorAll('video.preview-video').forEach(v => {
+                v.play().catch(() => {});
             });
         }
 
@@ -672,6 +677,11 @@
                         </div>
                     </div>
                 `;
+            });
+
+            // Force également la lecture automatique des aperçus à l'intérieur de la fenêtre modale Admin
+            document.querySelectorAll('#admin-videos-list video.preview-video').forEach(v => {
+                v.play().catch(() => {});
             });
 
             document.getElementById("admin-list-modal").style.display = "flex";
