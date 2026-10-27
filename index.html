@@ -261,7 +261,7 @@
             padding: 15px;
             border-radius: 10px;
             width: 100%;
-            max-width: 600px;
+            max-width: 450px;
             max-height: 90vh;
             overflow-y: auto;
         }
@@ -270,6 +270,17 @@
             font-size: 15px;
             margin-bottom: 10px;
             text-align: center;
+        }
+        .info-box-important {
+            background: #fffbeb;
+            border: 2px dashed #f59e0b;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 12px;
+            font-size: 10.5px;
+            color: #92400e;
+            line-height: 1.4;
+            text-align: left;
         }
         .modal-content label {
             font-size: 11px;
@@ -299,17 +310,8 @@
             gap: 10px;
             margin-top: 15px;
         }
-        .modal-buttons button {
-            flex: 1;
-            padding: 8px;
-            border: none;
-            border-radius: 5px;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 11px;
-        }
-        .btn-save { background: #25d366; color: white; }
-        .btn-close { background: #ef4444; color: white; }
+        .btn-contact-admin { background: #25d366; color: white; text-decoration: none; display: flex; align-items: center; justify-content: center; text-align: center; border-radius: 5px; font-weight: bold; font-size: 11px; padding: 8px; box-shadow: 0 2px 6px rgba(37, 211, 102, 0.3); flex: 1; }
+        .btn-close { background: #ef4444; color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 11px; padding: 8px; flex: 1; }
         
         .admin-grid {
             display: grid;
@@ -351,38 +353,44 @@
     <!-- Bouton Engrenage sécurisé par 2FA (Admin uniquement) -->
     <button class="admin-fab" onclick="demanderSecuriteAdmin()" title="Tableau de Bord Admin">⚙️</button>
 
-    <!-- Modal Vendeur -->
+    <!-- Modal Vendeur / Contact Admin -->
     <div id="vendor-modal" class="modal-overlay">
         <div class="modal-content" style="max-width: 450px;">
-            <h2>🎬 Vendre une vidéo en HD, cliquez ici 🎥</h2>
+            <h2>🎬 Proposer une vidéo à l'Admin 🎥</h2>
             
+            <!-- Encadré d'information capitale visible directement -->
+            <div class="info-box-important">
+                <b>⚠️ INFORMATION IMPORTANTE :</b><br>
+                Seul l'administrateur peut uploader et héberger une vidéo. Remplissez vos informations ci-dessous puis cliquez sur <b>"Contacter l'administrateur"</b> pour lui envoyer les détails. Le paiement se fera via votre WhatsApp (Wave) et l'administrateur vous enverra la clé pour votre client.
+            </div>
+
             <label>Nom du Partenaire / Vendeur :</label>
             <input type="text" id="new-partenaire" placeholder="Ex: Jean Kouassi">
-            <div class="field-help">Nom de la personne à qui appartient cette vidéo.</div>
+            <div class="field-help">Votre nom de vendeur.</div>
 
             <label>Titre de la vidéo :</label>
             <input type="text" id="new-nom" placeholder="Ex: Bizi souriant">
-            <div class="field-help">Donnez un titre accrocheur à votre vidéo.</div>
+            <div class="field-help">Le titre accrocheur de la vidéo.</div>
 
-            <label>Lien Vidéo Aperçu (Lien direct .mp4) :</label>
-            <input type="text" id="new-preview" placeholder="Movie002.mp4 ou lien direct...">
-            <div class="field-help">Collez le lien de la courte vidéo d'aperçu.</div>
+            <label>Nom de l'Aperçu (Ex: Movie00X.mp4) :</label>
+            <input type="text" id="new-preview" placeholder="Movie002.mp4">
+            <div class="field-help">Le nom du fichier vidéo d'aperçu.</div>
 
             <label>Lien Vidéo Complet (Lien Mega direct) :</label>
             <input type="text" id="new-telegram" placeholder="https://mega.nz/file/...">
-            <div class="field-help">Le vrai lien Mega complet de la vidéo.</div>
+            <div class="field-help">Votre lien Mega complet.</div>
 
             <label>Prix (en Fr) :</label>
             <input type="number" id="new-prix" placeholder="1500" step="100">
-            <div class="field-help">Prix de vente en multiples de 100.</div>
+            <div class="field-help">Prix de vente souhaité.</div>
 
-            <label>Numéro WhatsApp du Vendeur / Partenaire :</label>
+            <label>Votre Numéro WhatsApp (pour recevoir vos paiements Wave) :</label>
             <input type="text" id="new-whatsapp" placeholder="2250105553740">
-            <div class="field-help">Le numéro WhatsApp du vendeur qui recevra les commandes.</div>
+            <div class="field-help">Le numéro où vos clients vous contacteront et vous enverront la capture Wave.</div>
 
             <div class="modal-buttons">
-                <button class="btn-save" onclick="ajouterScene()">Publier sur le site</button>
-                <button class="btn-close" onclick="fermerVendeurModal()">Annuler</button>
+                <a id="whatsapp-admin-link" class="btn-contact-admin" href="#" target="_blank" onclick="preparerMessageAdmin(event)">💬 Contacter l'administrateur</a>
+                <button class="btn-close" onclick="fermerVendeurModal()">Fermer</button>
             </div>
         </div>
     </div>
@@ -402,7 +410,7 @@
     </div>
 
     <script>
-        const defaultWhatsApp = "2250105553740";
+        const defaultWhatsApp = "2250105553740"; 
         const defaultPartenaire = "Admin Principal";
 
         const ADMIN_PASS_1 = "07091527admin"; 
@@ -472,10 +480,10 @@
         ];
 
         const grid = document.getElementById("video-grid");
-        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v68")) || [];
+        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v72")) || [];
 
         function saveState() {
-            localStorage.setItem("vip_scenes_data_v68", JSON.stringify(scenesData));
+            localStorage.setItem("vip_scenes_data_v72", JSON.stringify(scenesData));
         }
 
         if (scenesData.length === 0) {
@@ -560,6 +568,7 @@
         }
 
         function ouvrirVendeurModal() {
+            // Ouvre directement le formulaire avec l'encadré d'information bien visible en haut
             document.getElementById("vendor-modal").style.display = "flex";
         }
 
@@ -567,45 +576,31 @@
             document.getElementById("vendor-modal").style.display = "none";
         }
 
-        function ajouterScene() {
-            const partenaire = document.getElementById("new-partenaire").value.trim() || defaultPartenaire;
-            const nom = document.getElementById("new-nom").value.trim();
-            const preview = document.getElementById("new-preview").value.trim();
-            const mega = document.getElementById("new-telegram").value.trim();
-            const prix = parseInt(document.getElementById("new-prix").value.trim(), 10);
-            const wa = document.getElementById("new-whatsapp").value.trim() || defaultWhatsApp;
+        function preparerMessageAdmin(e) {
+            const partenaire = document.getElementById("new-partenaire").value.trim() || "Inconnu";
+            const nom = document.getElementById("new-nom").value.trim() || "Sans titre";
+            const preview = document.getElementById("new-preview").value.trim() || "Non spécifié";
+            const mega = document.getElementById("new-telegram").value.trim() || "Non spécifié";
+            const prix = document.getElementById("new-prix").value.trim() || "0";
+            const wa = document.getElementById("new-whatsapp").value.trim() || "Non spécifié";
 
-            if (!nom || !preview || !mega || isNaN(prix)) {
-                alert("Veuillez remplir tous les champs obligatoires (Titre, Aperçu, Lien Mega, Prix) !");
+            if (!document.getElementById("new-nom").value.trim() || !document.getElementById("new-telegram").value.trim()) {
+                alert("Veuillez au moins remplir le titre et le lien Mega de la vidéo !");
+                e.preventDefault();
                 return;
             }
 
-            const randomId = Math.floor(Math.random() * (90000 - 10000 + 1)) + 10000;
+            const texteMessage = `Bonjour Administrateur, un vendeur veut ajouter sa vidéo :\n\n` +
+                `👤 *Vendeur* : ${partenaire}\n` +
+                `🎬 *Titre* : ${nom}\n` +
+                `📂 *Aperçu* : ${preview}\n` +
+                `🔗 *Lien Mega* : ${mega}\n` +
+                `💎 *Prix* : ${prix} Fr\n` +
+                `💬 *WhatsApp Wave du vendeur* : ${wa}\n\n` +
+                `Merci de l'ajouter sur le site !`;
 
-            const nouvelleScene = {
-                id: randomId,
-                partenaire: partenaire,
-                nom: nom,
-                preview: preview,
-                mega: mega,
-                prix: prix,
-                wa: wa,
-                deverrouille: false
-            };
-
-            scenesData.unshift(nouvelleScene);
-            saveState();
-            renderGrid();
-            fermerVendeurModal();
-
-            document.getElementById("new-partenaire").value = "";
-            document.getElementById("new-nom").value = "";
-            document.getElementById("new-preview").value = "";
-            document.getElementById("new-telegram").value = "";
-            document.getElementById("new-prix").value = "";
-            document.getElementById("new-whatsapp").value = "";
-            
-            alert(`✅ Vidéo publiée avec succès pour ${partenaire} !\nID généré : ${randomId}`);
+            const urlWhatsApp = `https://wa.me/${defaultWhatsApp}?text=` + encodeURIComponent(texteMessage);
+            document.getElementById("whatsapp-admin-link").setAttribute("href", urlWhatsApp);
         }
 
         function demanderSecuriteAdmin() {
@@ -639,7 +634,7 @@
                         <div class="media-container">
                             <video class="preview-video" autoplay muted loop playsinline preload="auto">
                                 <source src="${s.preview}" type="video/mp4">
-                                Votre navigateur ne supporte pas la lecture vidéo.
+                                Votre navigateur ne supporte pas la vidéo.
                             </video>
                         </div>
                         <h3 style="color: #ff6600; font-size: 12px; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">#${idx + 1} - ${s.nom}</h3>
