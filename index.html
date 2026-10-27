@@ -78,15 +78,6 @@
             max-width: 290px;
             transition: all 0.2s ease;
         }
-        .btn-vendor-header:hover {
-            background: linear-gradient(135deg, #16a34a, #15803d);
-            transform: translateY(-1px);
-            box-shadow: 0 6px 14px rgba(34, 197, 94, 0.6);
-        }
-        .btn-vendor-header:active {
-            transform: translateY(1px);
-        }
-
         .grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -170,14 +161,6 @@
             margin-bottom: 6px;
             box-shadow: 0 2px 6px rgba(37, 211, 102, 0.3);
         }
-        .whatsapp-btn:active {
-            opacity: 0.85;
-        }
-        .input-group {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
         input {
             width: 100%;
             background: #f9fafb;
@@ -188,9 +171,6 @@
             font-size: 11px;
             text-align: center;
             outline: none;
-        }
-        input::placeholder {
-            color: #9ca3af;
         }
         button.verify-btn {
             width: 100%;
@@ -310,7 +290,7 @@
             gap: 10px;
             margin-top: 15px;
         }
-        .btn-contact-admin { background: #25d366; color: white; text-decoration: none; display: flex; align-items: center; justify-content: center; text-align: center; border-radius: 5px; font-weight: bold; font-size: 11px; padding: 8px; box-shadow: 0 2px 6px rgba(37, 211, 102, 0.3); flex: 1; }
+        .btn-contact-admin { background: #25d366; color: white; text-decoration: none; display: flex; align-items: center; justify-content: center; text-align: center; border-radius: 5px; font-weight: bold; font-size: 11px; padding: 8px; flex: 1; }
         .btn-save { background: #25d366; color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 11px; padding: 8px; flex: 1; }
         .btn-close { background: #ef4444; color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 11px; padding: 8px; flex: 1; }
         
@@ -361,32 +341,26 @@
             
             <div class="info-box-important">
                 <b>⚠️ INFORMATION IMPORTANTE :</b><br>
-                Remplissez vos informations ci-dessous puis cliquez sur <b>"Contacter l'administrateur"</b> pour lui envoyer les détails. L'administrateur se chargera d'uploader et de publier la vidéo sur le site.
+                Remplissez vos informations ci-dessous puis cliquez sur <b>"Contacter l'administrateur"</b> pour lui envoyer les détails.
             </div>
 
             <label>Nom du Partenaire / Vendeur :</label>
             <input type="text" id="new-partenaire" placeholder="Ex: Jean Kouassi">
-            <div class="field-help">Votre nom de vendeur.</div>
 
             <label>Titre de la vidéo :</label>
             <input type="text" id="new-nom" placeholder="Ex: Bizi souriant">
-            <div class="field-help">Le titre accrocheur de la vidéo.</div>
 
-            <label>Nom de l'Aperçu (Ex: Movie00X.mp4) :</label>
+            <label>Nom de l'Aperçu (Ex: Movie002.mp4) :</label>
             <input type="text" id="new-preview" placeholder="Movie002.mp4">
-            <div class="field-help">Le nom du fichier vidéo d'aperçu.</div>
 
             <label>Lien Vidéo Complet (Lien Mega direct) :</label>
             <input type="text" id="new-telegram" placeholder="https://mega.nz/file/...">
-            <div class="field-help">Votre lien Mega complet.</div>
 
             <label>Prix (en Fr) :</label>
             <input type="number" id="new-prix" placeholder="1500" step="100">
-            <div class="field-help">Prix de vente souhaité.</div>
 
-            <label>Votre Numéro WhatsApp (pour recevoir vos paiements Wave) :</label>
+            <label>Votre Numéro WhatsApp (Wave) :</label>
             <input type="text" id="new-whatsapp" placeholder="2250105553740">
-            <div class="field-help">Le numéro où vos clients vous contacteront et vous enverront la capture Wave.</div>
 
             <div class="modal-buttons">
                 <a id="whatsapp-admin-link" class="btn-contact-admin" href="#" target="_blank" onclick="preparerMessageAdmin(event)">💬 Contacter l'administrateur</a>
@@ -403,7 +377,6 @@
                 Total des vidéos : <span id="admin-total-count" style="color: #ff6600;">0</span>
             </div>
 
-            <!-- Formulaire d'upload exclusif pour l'Admin -->
             <div style="background: #f3f4f6; border: 2px solid #ff6600; padding: 10px; border-radius: 8px; margin-bottom: 15px;">
                 <h3 style="color: #ff6600; font-size: 13px; margin-bottom: 8px; text-align: center;">➕ Uploader une nouvelle vidéo</h3>
                 
@@ -413,16 +386,16 @@
                 <label>Titre de la vidéo :</label>
                 <input type="text" id="admin-nom" placeholder="Ex: Bizi souriant">
 
-                <label>Lien Vidéo Aperçu (Nom du fichier .mp4) :</label>
+                <label>Nom de l'Aperçu (.mp4) :</label>
                 <input type="text" id="admin-preview" placeholder="Movie002.mp4">
 
-                <label>Lien Vidéo Complet (Lien Mega direct) :</label>
+                <label>Lien Vidéo Complet (Mega) :</label>
                 <input type="text" id="admin-mega" placeholder="https://mega.nz/file/...">
 
                 <label>Prix (en Fr) :</label>
                 <input type="number" id="admin-prix" placeholder="1500" step="100">
 
-                <label>Numéro WhatsApp du Vendeur (Wave) :</label>
+                <label>Numéro WhatsApp du Vendeur :</label>
                 <input type="text" id="admin-whatsapp" placeholder="2250105553740">
 
                 <button class="btn-save" style="width: 100%; margin-top: 10px; padding: 8px;" onclick="uploaderSceneAdmin()">🚀 Publier la vidéo sur le site</button>
@@ -506,10 +479,10 @@
         ];
 
         const grid = document.getElementById("video-grid");
-        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v75")) || [];
+        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v77")) || [];
 
         function saveState() {
-            localStorage.setItem("vip_scenes_data_v75", JSON.stringify(scenesData));
+            localStorage.setItem("vip_scenes_data_v77", JSON.stringify(scenesData));
         }
 
         if (scenesData.length === 0) {
@@ -536,13 +509,11 @@
 
                 const card = document.createElement("div");
                 card.className = "card";
-                card.id = `card-${index}`;
 
                 const mediaHtml = `
                     <div class="media-container">
                         <video class="preview-video" autoplay muted loop playsinline preload="auto">
                             <source src="${scene.preview}" type="video/mp4">
-                            Votre navigateur ne supporte pas la lecture vidéo.
                         </video>
                     </div>
                 `;
@@ -576,13 +547,6 @@
                 }
                 grid.appendChild(card);
             });
-
-            // Forçage de lecture globale pour tous les navigateurs mobiles
-            setTimeout(() => {
-                document.querySelectorAll('video.preview-video').forEach(v => {
-                    v.play().catch(e => console.log("Autoplay bloqué par le navigateur:", e));
-                });
-            }, 100);
         }
 
         function verifier(index, cleAttendue) {
@@ -617,7 +581,7 @@
             const wa = document.getElementById("new-whatsapp").value.trim() || "Non spécifié";
 
             if (!document.getElementById("new-nom").value.trim() || !document.getElementById("new-telegram").value.trim()) {
-                alert("Veuillez au moins remplir le titre et le lien Mega de la vidéo !");
+                alert("Veuillez au moins remplir le titre et le lien Mega !");
                 e.preventDefault();
                 return;
             }
@@ -628,27 +592,24 @@
                 `📂 *Aperçu* : ${preview}\n` +
                 `🔗 *Lien Mega* : ${mega}\n` +
                 `💎 *Prix* : ${prix} Fr\n` +
-                `💬 *WhatsApp Wave du vendeur* : ${wa}\n\n` +
-                `Merci de l'ajouter sur le site !`;
+                `💬 *WhatsApp* : ${wa}`;
 
             const urlWhatsApp = `https://wa.me/${defaultWhatsApp}?text=` + encodeURIComponent(texteMessage);
             document.getElementById("whatsapp-admin-link").setAttribute("href", urlWhatsApp);
         }
 
         function demanderSecuriteAdmin() {
-            const mdpSaisi = prompt("🔒 Étape 1/2 - Entrez le mot de passe administrateur :");
+            const mdpSaisi = prompt("🔒 Étape 1/2 - Mot de passe admin :");
             if (mdpSaisi === null) return;
-
             if (mdpSaisi !== ADMIN_PASS_1) {
                 alert("❌ Mot de passe incorrect.");
                 return;
             }
 
-            const pinSaisi = prompt("🔐 Étape 2/2 (2FA) - Entrez le nom de votre ville de naissance :");
+            const pinSaisi = prompt("🔐 Étape 2/2 - Ville de naissance :");
             if (pinSaisi === null) return;
-
             if (pinSaisi !== ADMIN_CODE_2) {
-                alert("❌ Ville de naissance incorrecte.");
+                alert("❌ Ville incorrecte.");
                 return;
             }
 
@@ -666,27 +627,19 @@
                         <div class="media-container">
                             <video class="preview-video" autoplay muted loop playsinline preload="auto">
                                 <source src="${s.preview}" type="video/mp4">
-                                Votre navigateur ne supporte pas la vidéo.
                             </video>
                         </div>
                         <h3 style="color: #ff6600; font-size: 12px; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">#${idx + 1} - ${s.nom}</h3>
                         <div style="font-size: 10px; color: #333; line-height: 1.4;">
-                            👤 <b>Partenaire :</b> <span style="color: #25d366; font-weight: bold;">${s.partenaire || 'Admin Principal'}</span><br>
+                            👤 <b>Vendeur :</b> <span style="color: #25d366; font-weight: bold;">${s.partenaire || 'Admin Principal'}</span><br>
                             🔑 <b>ID :</b> ${s.id} | 💎 <b>Prix :</b> ${s.prix} Fr<br>
                             💬 <b>WhatsApp :</b> ${s.wa}<br>
-                            🔗 <b>Lien direct Mega :</b><br>
+                            🔗 <b>Mega :</b><br>
                             <a href="${s.mega}" target="_blank" style="color: #0088cc; word-break: break-all; font-weight: bold;">${s.mega}</a>
                         </div>
                     </div>
                 `;
             });
-
-            // Forçage de lecture dans la modale Admin pour éviter les écrans noirs
-            setTimeout(() => {
-                listContainer.querySelectorAll('video.preview-video').forEach(v => {
-                    v.play().catch(e => console.log("Autoplay admin bloqué:", e));
-                });
-            }, 100);
 
             document.getElementById("admin-list-modal").style.display = "flex";
         }
@@ -704,7 +657,7 @@
             const wa = document.getElementById("admin-whatsapp").value.trim() || defaultWhatsApp;
 
             if (!nom || !preview || !mega || isNaN(prix)) {
-                alert("Veuillez remplir tous les champs obligatoires (Titre, Aperçu, Lien Mega, Prix) !");
+                alert("Veuillez remplir tous les champs (Titre, Aperçu, Mega, Prix) !");
                 return;
             }
 
@@ -733,7 +686,7 @@
             document.getElementById("admin-prix").value = "";
             document.getElementById("admin-whatsapp").value = "";
             
-            alert(`✅ Vidéo uploadée et publiée avec succès sur le site !\nID généré : ${randomId}`);
+            alert(`✅ Vidéo publiée avec succès !\nID généré : ${randomId}`);
         }
 
         renderGrid();
