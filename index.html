@@ -471,10 +471,10 @@
         ];
 
         const grid = document.getElementById("video-grid");
-        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v63")) || [];
+        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v64")) || [];
 
         function saveState() {
-            localStorage.setItem("vip_scenes_data_v63", JSON.stringify(scenesData));
+            localStorage.setItem("vip_scenes_data_v64", JSON.stringify(scenesData));
         }
 
         if (scenesData.length === 0) {
@@ -635,7 +635,7 @@
             scenesData.forEach((s, idx) => {
                 listContainer.innerHTML += `
                     <div class="admin-card-item">
-                        <video controls preload="metadata" controlsList="nodownload">
+                        <video class="preview-video" controls autoplay muted loop playsinline preload="metadata" controlsList="nodownload" style="width: 100%; max-height: 180px; object-fit: cover; border-radius: 5px; background: #000; margin-bottom: 6px;">
                             <source src="${s.preview}" type="video/mp4">
                             Votre navigateur ne supporte pas la vidéo.
                         </video>
