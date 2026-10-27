@@ -399,8 +399,8 @@
             }
 
             try {
-                // Requête simple sans tri complexe pour éviter tout blocage
-                const { data, error } = await SUPABASE_URL ? supabaseClient.from('videos').select('*') : { data: [], error: null };
+                // Correction ici : la requête attend bien la réponse de Supabase
+                const { data, error } = await supabaseClient.from('videos').select('*');
 
                 if (error) throw error;
 
@@ -555,7 +555,7 @@
                 document.getElementById("new-whatsapp").value = "";
                 document.getElementById("new-formula").value = "";
                 
-                alert(`Félicitations ! Votre vidéo "${nom}" a été publiée en première position.\n\nID généré : ${randomId}\nFormule : ${formulaInput}\nClé exemple : ${cleExemple}`);
+                alert(`Félicitations ! Votre vidéo "${nom}" a été publiée en première position.`);
             } catch (err) {
                 console.error("Erreur d'insertion:", err);
                 alert("Erreur lors de la publication sur Supabase.");
