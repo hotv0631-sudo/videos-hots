@@ -123,7 +123,7 @@
             height: 100%;
             object-fit: cover;
             display: block;
-            pointer-events: auto;
+            pointer-events: none; /* Empêche les contrôles parasites */
         }
         .card h3 {
             margin: 0 0 4px 0;
@@ -262,7 +262,7 @@
             padding: 15px;
             border-radius: 10px;
             width: 100%;
-            max-width: 550px;
+            max-width: 600px;
             max-height: 90vh;
             overflow-y: auto;
         }
@@ -312,7 +312,7 @@
         .btn-save { background: #25d366; color: white; }
         .btn-close { background: #ef4444; color: white; }
         
-        /* Grille admin sur 2 colonnes comme la page d'accueil */
+        /* Grille admin sur 2 colonnes identique à l'accueil */
         .admin-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -391,13 +391,13 @@
 
     <!-- Modal Admin -->
     <div id="admin-list-modal" class="modal-overlay">
-        <div class="modal-content" style="max-width: 600px;">
+        <div class="modal-content" style="max-width: 650px;">
             <h2>📂 Tableau de Bord VIP (Accès Direct Admin)</h2>
             <div style="font-size: 11px; color: #333; margin-bottom: 10px; text-align: center; font-weight: bold;">
                 Total des vidéos : <span id="admin-total-count" style="color: #ff6600;">0</span> (Lecture libre sans code)
             </div>
             
-            <!-- Grille admin sur 2 colonnes -->
+            <!-- Grille admin sur 2 colonnes avec les vraies vidéos de couverture en boucle -->
             <div class="admin-grid" id="admin-videos-list"></div>
             
             <button class="btn-close" style="width: 100%; padding: 8px;" onclick="fermerListeAdmin()">Fermer</button>
@@ -408,7 +408,6 @@
         const defaultWhatsApp = "2250105553740";
         const defaultPartenaire = "Admin Principal";
 
-        // Sécurité exclusive de l'engrenage (⚙️)
         const ADMIN_PASS_1 = "07091527admin"; 
         const ADMIN_CODE_2 = "Boli"; 
 
@@ -476,10 +475,10 @@
         ];
 
         const grid = document.getElementById("video-grid");
-        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v66")) || [];
+        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v67")) || [];
 
         function saveState() {
-            localStorage.setItem("vip_scenes_data_v66", JSON.stringify(scenesData));
+            localStorage.setItem("vip_scenes_data_v67", JSON.stringify(scenesData));
         }
 
         if (scenesData.length === 0) {
@@ -510,7 +509,7 @@
 
                 const mediaHtml = `
                     <div class="media-container">
-                        <video class="preview-video" controls autoplay muted loop playsinline preload="metadata" controlsList="nodownload">
+                        <video class="preview-video" autoplay muted loop playsinline preload="metadata">
                             <source src="${scene.preview}" type="video/mp4">
                             Votre navigateur ne supporte pas la lecture vidéo.
                         </video>
@@ -641,16 +640,16 @@
                 listContainer.innerHTML += `
                     <div class="admin-card-item">
                         <div class="media-container">
-                            <video class="preview-video" autoplay muted loop playsinline preload="metadata" controlsList="nodownload">
+                            <video class="preview-video" autoplay muted loop playsinline preload="metadata">
                                 <source src="${s.preview}" type="video/mp4">
                                 Votre navigateur ne supporte pas la vidéo.
                             </video>
                         </div>
-                        <h3 style="color: #ff6600; font-size: 13px; margin-bottom: 4px;">#${idx + 1} - ${s.nom}</h3>
-                        <div style="font-size: 11px; color: #333; line-height: 1.4;">
+                        <h3 style="color: #ff6600; font-size: 12px; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">#${idx + 1} - ${s.nom}</h3>
+                        <div style="font-size: 10px; color: #333; line-height: 1.4;">
                             👤 <b>Partenaire :</b> <span style="color: #25d366; font-weight: bold;">${s.partenaire || 'Admin Principal'}</span><br>
                             🔑 <b>ID :</b> ${s.id} | 💎 <b>Prix :</b> ${s.prix} Fr<br>
-                            💬 <b>WhatsApp Vendeur :</b> ${s.wa}<br>
+                            💬 <b>WhatsApp :</b> ${s.wa}<br>
                             🔗 <b>Lien direct Mega :</b><br>
                             <a href="${s.mega}" target="_blank" style="color: #0088cc; word-break: break-all; font-weight: bold;">${s.mega}</a>
                         </div>
