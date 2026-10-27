@@ -2,120 +2,658 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Marketplace Anonyme</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>VIDEOS BIZI EN VENTE 📂</title>
     <style>
-        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; background: #f4f4f9; }
-        .video-card { background: white; padding: 15px; margin-bottom: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        video { width: 100%; border-radius: 5px; }
-        form { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        input, button { display: block; width: 100%; margin-bottom: 10px; padding: 10px; box-sizing: border-box; }
-        button { background: #0070f3; color: white; border: none; border-radius: 5px; cursor: pointer; }
-        button:hover { background: #0051a2; }
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        html, body {
+            width: 100%;
+            overflow-x: hidden;
+            background-color: #d1d5db !important;
+            color: #333333;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+        body {
+            padding: 0 10px 10px 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 999;
+            text-align: center;
+            padding: 12px 10px;
+            border-bottom: 3px solid #ff6600;
+            background: #e5e7eb;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header-title {
+            flex-grow: 1;
+            text-align: center;
+        }
+        .header-space {
+            width: 100%;
+            height: 75px;
+        }
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #ff6600;
+            font-size: 15px;
+            margin-bottom: 2px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            word-break: break-word;
+        }
+        .folder-icon {
+            color: #eab308;
+        }
+        .subtitle {
+            font-size: 9px;
+            color: #ff6600;
+            font-weight: bold;
+        }
+        .btn-vendor-header {
+            background: #25d366;
+            color: white;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 10px;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(37, 211, 102, 0.3);
+            white-space: nowrap;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            width: 100%;
+            margin-top: 10px;
+        }
+        .card {
+            background: #e5e7eb;
+            border: 2px solid #ff6600;
+            border-radius: 10px;
+            padding: 8px;
+            box-shadow: 0 4px 12px rgba(255, 102, 0, 0.15);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 100%;
+            min-width: 0;
+        }
+        .media-container {
+            width: 100%;
+            border-radius: 6px;
+            overflow: hidden;
+            background: #000000;
+            margin-bottom: 6px;
+            border: 1px solid #ff6600;
+            aspect-ratio: 9 / 16;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        video.preview-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            pointer-events: auto;
+        }
+        .card h3 {
+            margin: 0 0 4px 0;
+            color: #ff6600;
+            font-size: 12px;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .price-badge {
+            background: linear-gradient(135deg, #ff6600, #ff8533);
+            color: #ffffff;
+            font-size: 13px;
+            font-weight: bold;
+            text-align: center;
+            padding: 5px;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            box-shadow: 0 2px 6px rgba(255, 102, 0, 0.3);
+        }
+        .info-id {
+            font-size: 10px;
+            color: #ff6600;
+            margin-bottom: 6px;
+            text-align: center;
+            background: #f3f4f6;
+            padding: 3px;
+            border-radius: 4px;
+            border: 1.5px dashed #ff6600;
+        }
+        .whatsapp-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            background: #25d366;
+            color: #ffffff;
+            text-align: center;
+            padding: 6px 4px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 10px;
+            margin-bottom: 6px;
+            box-shadow: 0 2px 6px rgba(37, 211, 102, 0.3);
+        }
+        .whatsapp-btn:active {
+            opacity: 0.85;
+        }
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        input {
+            width: 100%;
+            background: #f9fafb;
+            border: 1.5px solid #ff6600;
+            border-radius: 5px;
+            padding: 5px;
+            color: #333333;
+            font-size: 11px;
+            text-align: center;
+            outline: none;
+        }
+        input::placeholder {
+            color: #9ca3af;
+        }
+        button.verify-btn {
+            width: 100%;
+            background: #25d366;
+            color: #ffffff;
+            border: none;
+            padding: 6px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 11px;
+            box-shadow: 0 2px 6px rgba(37, 211, 102, 0.3);
+        }
+        .message {
+            margin-top: 4px;
+            font-size: 10px;
+            text-align: center;
+            font-weight: bold;
+            word-break: break-word;
+        }
+        .telegram-link {
+            display: block;
+            background: #0088cc;
+            color: #ffffff;
+            padding: 6px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 4px;
+            font-size: 11px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0, 136, 204, 0.4);
+        }
+        .admin-fab {
+            position: fixed;
+            bottom: 15px;
+            right: 15px;
+            background: #ff6600;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+        }
+        .modal-content {
+            background: #e5e7eb;
+            border: 2px solid #ff6600;
+            padding: 15px;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 400px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .modal-content h2 {
+            color: #ff6600;
+            font-size: 15px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        .modal-content label {
+            font-size: 11px;
+            font-weight: bold;
+            color: #333;
+            display: block;
+            margin-top: 8px;
+        }
+        .field-help {
+            font-size: 9.5px;
+            color: #555;
+            margin-top: 2px;
+            font-style: italic;
+            line-height: 1.2;
+        }
+        .modal-content input {
+            width: 100%;
+            padding: 6px;
+            margin-top: 3px;
+            border: 1.5px solid #ff6600;
+            border-radius: 5px;
+            font-size: 11px;
+            background: #fff;
+        }
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .modal-buttons button {
+            flex: 1;
+            padding: 8px;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 11px;
+        }
+        .btn-save { background: #25d366; color: white; }
+        .btn-close { background: #ef4444; color: white; }
+        .video-item-admin {
+            background: #f3f4f6;
+            border: 1px solid #ccc;
+            padding: 8px;
+            margin-bottom: 8px;
+            border-radius: 6px;
+            font-size: 10.5px;
+        }
+        .video-item-admin b {
+            color: #ff6600;
+        }
     </style>
 </head>
 <body>
 
-    <h1>Marketplace de Vidéos</h1>
+    <header>
+        <div style="width: 40px;"></div>
+        <div class="header-title">
+            <h1>🤤 VIDEO BIZI EN VENTE 📂</h1>
+            <div class="subtitle">🤑 Commander par WhatsApp 🤑</div>
+        </div>
+        <button class="btn-vendor-header" onclick="ouvrirVendeurModal()">+ Vendre</button>
+    </header>
 
-    <!-- Formulaire d'ajout de vidéo -->
-    <form id="uploadForm" onsubmit="ajouterVideo(event)">
-        <h3>Ajouter une vidéo</h3>
-        <input type="text" id="nom" placeholder="Titre de la vidéo" required>
-        <input type="text" id="tele" placeholder="Contact Telegram" required>
-        <input type="number" id="prix" placeholder="Prix (ex: 5000)" required>
-        <input type="text" id="wa" placeholder="Contact WhatsApp" required>
-        <input type="text" id="formula" placeholder="Formule / Description" required>
-        <input type="file" id="video_file" accept="video/mp4" required>
-        <button type="submit">Uploader et publier</button>
-    </form>
+    <div class="header-space"></div>
 
-    <h2>Catalogue des vidéos</h2>
-    <div id="video-container">
-        <p>Chargement des vidéos depuis le serveur distant...</p>
+    <div class="container">
+        <div class="grid" id="video-grid"></div>
     </div>
 
-    <!-- Script de connexion à l'API Hostinger via l'adresse IP -->
+    <button class="admin-fab" onclick="verifierAdmin()" title="Admin Principal">⚙️</button>
+
+    <!-- Modal Vendeur -->
+    <div id="vendor-modal" class="modal-overlay">
+        <div class="modal-content">
+            <h2>➕ Espace Vendeur / Partenaire</h2>
+            
+            <label>Titre de la vidéo :</label>
+            <input type="text" id="new-nom" placeholder="Ex: Bizi souriant">
+            <div class="field-help">Donnez un titre accrocheur à votre vidéo.</div>
+
+            <label>Lien Vidéo Aperçu :</label>
+            <input type="text" id="new-preview" placeholder="Lien direct .mp4 ou lien Telegram...">
+            <div class="field-help">Collez le lien de la courte vidéo d'aperçu.</div>
+
+            <label>Lien Vidéo Complet Telegram :</label>
+            <input type="text" id="new-telegram" placeholder="https://t.me/...">
+            <div class="field-help">Lien Telegram de la vidéo complète.</div>
+
+            <label>Prix (en Fr) :</label>
+            <input type="number" id="new-prix" placeholder="1500" step="100">
+            <div class="field-help">Prix de vente en multiples de 100.</div>
+
+            <label>Numéro WhatsApp :</label>
+            <input type="text" id="new-whatsapp" placeholder="2250105553740">
+            <div class="field-help">Votre numéro WhatsApp sans le +.</div>
+
+            <label>Votre formule personnalisée :</label>
+            <input type="text" id="new-formula" placeholder="Ex: id * 3 / 2 ou id * 5">
+            <div class="field-help"><b>Obligatoire :</b> Écrivez votre propre formule en utilisant impérativement le mot <b>id</b> (ex: <i>id * 4 / 3</i>).</div>
+
+            <div class="modal-buttons">
+                <button class="btn-save" onclick="ajouterScene()">Publier ma vidéo</button>
+                <button class="btn-close" onclick="fermerVendeurModal()">Annuler</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Admin -->
+    <div id="admin-list-modal" class="modal-overlay">
+        <div class="modal-content" style="max-width: 450px;">
+            <h2>📂 Tableau de Bord Administrateur</h2>
+            <div style="font-size: 10.5px; color: #333; margin-bottom: 8px; text-align: center; font-weight: bold;">
+                Total des vidéos sur la plateforme : <span id="admin-total-count" style="color: #ff6600;">0</span>
+            </div>
+            <div id="admin-videos-list" style="max-height: 60vh; overflow-y: auto; margin-bottom: 12px;"></div>
+            <button class="btn-close" style="width: 100%; padding: 8px;" onclick="fermerListeAdmin()">Fermer</button>
+        </div>
+    </div>
+
     <script>
-        const API_URL = "http://212.85.28.247/api.php";
+        const defaultWhatsApp = "2250105553740";
 
-        // 1. Charger et afficher toutes les vidéos depuis le coffre Hostinger
-        async function chargerVideos() {
-            try {
-                const reponse = await fetch(`${API_URL}?action=get`);
-                const videos = await reponse.json();
-                
-                const container = document.getElementById('video-container');
-                container.innerHTML = '';
+        const baseScenes = [
+            { nom: "Bizi sans capote", preview: "Movie002.mp4", tele: "https://t.me/", prix: 1200, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Sextap", preview: "Movie003.mp4", tele: "https://t.me/", prix: 1500, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Transexuel baise sans capote 😍", preview: "Movie004.mp4", tele: "https://t.me/", prix: 1800, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Transexuel Abidjan", preview: "Movie005.mp4", tele: "https://t.me/", prix: 1000, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Bizi sextap 🤑", preview: "Movie006.mp4", tele: "https://t.me/", prix: 2000, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "A la plage", preview: "Movie007.mp4", tele: "https://t.me/", prix: 1100, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Bizi TS Abidjan 🤩", preview: "Movie008.mp4", tele: "https://t.me/", prix: 1300, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Sodomie Transexuel 😘 ", preview: "Movie009.mp4", tele: "https://t.me/", prix: 1400, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Avec PC 🤑", preview: "Movie0010.mp4", tele: "https://t.me/", prix: 1600, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Disponible 🤗", preview: "Movie0011.mp4", tele: "https://t.me/", prix: 1700, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Transexuel gros cul 🥰", preview: "Movie0012.mp4", tele: "https://t.me/", prix: 1900, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Transexuel ejaculation interne 😋", preview: "Movie0013.mp4", tele: "https://t.me/", prix: 1200, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "A fond dans le cul TS", preview: "Movie0014.mp4", tele: "https://t.me/", prix: 1500, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "TS baya", preview: "Movie0015.mp4", tele: "https://t.me/", prix: 1000, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Bizi anal", preview: "Movie0016.mp4", tele: "https://t.me/", prix: 1300, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Sextap", preview: "Movie0017.mp4", tele: "https://t.me/", prix: 1800, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Baise moi BB 🤤", preview: "Movie0018.mp4", tele: "https://t.me/", prix: 2000, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Teinture jaune", preview: "Movie0019.mp4", tele: "https://t.me/", prix: 1100, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Baiseur masqué", preview: "Movie0020.mp4", tele: "https://t.me/", prix: 1400, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Dans la chaise", preview: "Movie0021.mp4", tele: "https://t.me/", prix: 1600, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Sextap lesbienne", preview: "Movie0022.mp4", tele: "https://t.me/", prix: 1700, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Mastubation sextoy", preview: "Movie0023.mp4", tele: "https://t.me/", prix: 1900, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Bizi", preview: "Movie0024.mp4", tele: "https://t.me/", prix: 1200, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "TS 🤤🤤🤤", preview: "Movie0025.mp4", tele: "https://t.me/", prix: 1500, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Sans capote", preview: "Movie0027.mp4", tele: "https://t.me/", prix: 1000, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Bizi jouit", preview: "Movie0028.mp4", tele: "https://t.me/", prix: 1300, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Caméra cachée", preview: "Movie0029.mp4", tele: "https://t.me/", prix: 1800, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Bizi robe rouge", preview: "Movie0030.mp4", tele: "https://t.me/", prix: 2000, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Gros cul", preview: "Movie0031.mp4", tele: "https://t.me/", prix: 1100, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Baya", preview: "Movie0032.mp4", tele: "https://t.me/", prix: 1400, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Minette sans capote 😍", preview: "Movie0033.mp4", tele: "https://t.me/", prix: 1600, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Slip rouge", preview: "Movie0034.mp4", tele: "https://t.me/", prix: 1700, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Transexuel cocody", preview: "Movie0035.mp4", tele: "https://t.me/", prix: 1900, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Dans lestomac 💕", preview: "Movie0036.mp4", tele: "https://t.me/", prix: 1200, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Bizi gay Abidjan", preview: "Movie0037.mp4", tele: "https://t.me/", prix: 1500, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Baise moi fort dans mon con", preview: "Movie0038.mp4", tele: "https://t.me/", prix: 1000, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Sextap residence", preview: "Movie0039.mp4", tele: "https://t.me/", prix: 1300, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Bizi", preview: "Movie0040.mp4", tele: "https://t.me/", prix: 1800, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "TS ❤️❤️❤️", preview: "Movie0041.mp4", tele: "https://t.me/", prix: 2000, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "TS 💪💪", preview: "Movie0042.mp4", tele: "https://t.me/", prix: 1100, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "TS sans capote", preview: "Movie0043.mp4", tele: "https://t.me/", prix: 1400, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Bizi 🎉🎉", preview: "Movie0044.mp4", tele: "https://t.me/", prix: 1600, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Gros cul 🤤🤤🤤", preview: "Movie0045.mp4", tele: "https://t.me/", prix: 1700, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Lélé", preview: "Movie0046.mp4", tele: "https://t.me/", prix: 1900, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Il baise les trois minette", preview: "Movie0047.mp4", tele: "https://t.me/", prix: 1200, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Sodomie 😱😱😱", preview: "Movie0048.mp4", tele: "https://t.me/", prix: 1500, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Cui mou", preview: "Movie0049.mp4", tele: "https://t.me/", prix: 1000, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Les célébrités", preview: "Movie0050.mp4", tele: "https://t.me/", prix: 1300, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Bizi gros cul en action", preview: "Movie0051.mp4", tele: "https://t.me/", prix: 1800, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Les enfants baisent", preview: "Movie0052.mp4", tele: "https://t.me/", prix: 2000, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Tape fort dedans", preview: "Movie0053.mp4", tele: "https://t.me/", prix: 1100, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Slip violet sur le côté", preview: "Movie0054.mp4", tele: "https://t.me/", prix: 1400, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "TS baise", preview: "Movie0055.mp4", tele: "https://t.me/", prix: 1600, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "TS jouit 😋😋", preview: "Movie0056.mp4", tele: "https://t.me/", prix: 1700, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Bizi Disponible", preview: "Movie0057.mp4", tele: "https://t.me/", prix: 1900, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Sextap ✨✨", preview: "Movie0059.mp4", tele: "https://t.me/", prix: 1200, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Il baise l'étudiante à l'école et éjacule dedans sans capote", preview: "Movie0060.mp4", tele: "https://t.me/", prix: 1500, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Influenceuse", preview: "Movie0061.mp4", tele: "https://t.me/", prix: 1000, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Il tape dans l'utérus de l'écolière sans capote", preview: "Movie0062.mp4", tele: "https://t.me/", prix: 1300, wa: defaultWhatsApp, formula: "id * 2026 / 360" },
+            { nom: "Elle baise en bleu blanc", preview: "Movie0063.mp4", tele: "https://t.me/", prix: 1800, wa: defaultWhatsApp, formula: "id * 2026 / 360" }
+        ];
 
-                if (videos.length === 0) {
-                    container.innerHTML = '<p>Aucune vidéo pour le moment.</p>';
-                    return;
+        const grid = document.getElementById("video-grid");
+        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v49")) || [];
+
+        function saveState() {
+            localStorage.setItem("vip_scenes_data_v49", JSON.stringify(scenesData));
+        }
+
+        if (scenesData.length === 0) {
+            scenesData = baseScenes.map((item) => {
+                const randomId = Math.floor(Math.random() * (90000 - 10000 + 1)) + 10000;
+                return {
+                    id: randomId,
+                    nom: item.nom,
+                    tele: item.tele,
+                    preview: item.preview,
+                    prix: item.prix,
+                    wa: item.wa,
+                    formula: item.formula,
+                    deverrouille: false
+                };
+            });
+            saveState();
+        }
+
+        function renderGrid() {
+            grid.innerHTML = "";
+            scenesData.forEach((scene, index) => {
+                let cleAttendue;
+                try {
+                    let evaluatedFormula = scene.formula.replace(/id/g, scene.id);
+                    cleAttendue = Math.floor(eval(evaluatedFormula));
+                } catch(e) {
+                    cleAttendue = Math.floor((scene.id * 2) / 1);
                 }
 
-                videos.forEach(video => {
-                    container.innerHTML += `
-                        <div class="video-card">
-                            <h3>${video.nom}</h3>
-                            <video src="${video.preview}" controls></video>
-                            <p><strong>Prix :</strong> ${video.prix} F</p>
-                            <p><strong>Telegram :</strong> ${video.tele} | <strong>WhatsApp :</strong> ${video.wa}</p>
+                const card = document.createElement("div");
+                card.className = "card";
+                card.id = `card-${index}`;
+
+                const mediaHtml = `
+                    <div class="media-container">
+                        <video class="preview-video" controls autoplay muted loop playsinline preload="metadata" controlsList="nodownload">
+                            <source src="${scene.preview}" type="video/mp4">
+                            Votre navigateur ne supporte pas la lecture vidéo.
+                        </video>
+                    </div>
+                `;
+
+                if (scene.deverrouille) {
+                    card.innerHTML = `
+                        ${mediaHtml}
+                        <h3>${scene.nom}</h3>
+                        <div class="price-badge">💎 ${scene.prix} Fr</div>
+                        <div class="info-id">ID : <b>${scene.id}</b></div>
+                        <div class="message" style="color: #ff6600;">
+                            ✅ Déverrouillé<br>
+                            <a class="telegram-link" href="${scene.tele}" target="_blank">📥 Regarder sur Telegram</a>
                         </div>
                     `;
-                });
-            } catch (erreur) {
-                console.error("Erreur lors du chargement des vidéos :", erreur);
-                document.getElementById('video-container').innerHTML = '<p>Erreur de connexion avec le serveur distant.</p>';
-            }
-        }
-
-        // 2. Envoyer une nouvelle vidéo vers Hostinger
-        async function ajouterVideo(event) {
-            event.preventDefault();
-
-            const nomInput = document.getElementById('nom');
-            const teleInput = document.getElementById('tele');
-            const prixInput = document.getElementById('prix');
-            const waInput = document.getElementById('wa');
-            const formulaInput = document.getElementById('formula');
-            const fileInput = document.getElementById('video_file');
-
-            const formData = new FormData();
-            formData.append('nom', nomInput.value);
-            formData.append('tele', teleInput.value);
-            formData.append('prix', prixInput.value);
-            formData.append('wa', waInput.value);
-            formData.append('formula', formulaInput.value);
-
-            if (fileInput.files[0]) {
-                formData.append('video_file', fileInput.files[0]);
-            }
-
-            try {
-                const reponse = await fetch(`${API_URL}?action=add`, {
-                    method: 'POST',
-                    body: formData
-                });
-                
-                const resultat = await reponse.json();
-                
-                if (resultat.status === 'success') {
-                    alert('Vidéo enregistrée avec succès sur le serveur distant !');
-                    document.getElementById('uploadForm').reset();
-                    chargerVideos();
                 } else {
-                    alert('Erreur : ' + (resultat.message || 'Action impossible'));
+                    card.innerHTML = `
+                        ${mediaHtml}
+                        <h3>${scene.nom}</h3>
+                        <div class="price-badge">💎 ${scene.prix} Fr</div>
+                        <div class="info-id">ID : <b>${scene.id}</b></div>
+                        <a class="whatsapp-btn" href="https://wa.me/${scene.wa}?text=Bonjour,%20je%20veux%20acheter%20la%20clé%20pour%20la%20scène:%20${encodeURIComponent(scene.nom)}%20(ID:%20${scene.id})%20au%20prix%20de%20${scene.prix}Fr" target="_blank">
+                            💬 Commander (${scene.prix} Fr)
+                        </a>
+                        <div class="input-group">
+                            <input type="number" id="input-${index}" placeholder="Code clé...">
+                            <button class="verify-btn" onclick="verifier(${index}, ${cleAttendue})">Valider</button>
+                        </div>
+                        <div class="message" id="msg-${index}"></div>
+                    `;
                 }
-            } catch (erreur) {
-                console.error("Erreur lors de l'envoi de la vidéo :", erreur);
-                alert("Erreur réseau lors de l'envoi.");
+                grid.appendChild(card);
+            });
+        }
+
+        function verifier(index, cleAttendue) {
+            const inputElem = document.getElementById(`input-${index}`);
+            const msg = document.getElementById(`msg-${index}`);
+            const saisie = parseInt(inputElem.value.trim(), 10);
+
+            if (saisie === cleAttendue) {
+                scenesData[index].deverrouille = true;
+                saveState();
+                renderGrid();
+            } else {
+                msg.style.color = "#ff6600";
+                msg.innerText = "Clé incorrecte.";
             }
         }
 
-        // Charger les vidéos dès l'ouverture de la page
-        document.addEventListener('DOMContentLoaded', () => {
-            chargerVideos();
-        });
+        function ouvrirVendeurModal() {
+            document.getElementById("vendor-modal").style.display = "flex";
+        }
+
+        function fermerVendeurModal() {
+            document.getElementById("vendor-modal").style.display = "none";
+        }
+
+        function ajouterScene() {
+            const nom = document.getElementById("new-nom").value.trim();
+            const preview = document.getElementById("new-preview").value.trim();
+            const tele = document.getElementById("new-telegram").value.trim();
+            const prix = parseInt(document.getElementById("new-prix").value.trim(), 10);
+            const wa = document.getElementById("new-whatsapp").value.trim() || defaultWhatsApp;
+            const formulaInput = document.getElementById("new-formula").value.trim();
+
+            if (!nom || !preview || !tele || isNaN(prix)) {
+                alert("Veuillez remplir tous les champs obligatoires (Titre, Aperçu, Telegram, Prix) !");
+                return;
+            }
+
+            if (!formulaInput) {
+                alert("⚠️ Vous devez obligatoirement écrire votre propre formule de calcul ! (Ex: id * 3 / 2)");
+                document.getElementById("new-formula").focus();
+                return;
+            }
+
+            if (!formulaInput.toLowerCase().includes("id")) {
+                alert("⚠️ Votre formule doit impérativement contenir le mot 'id' pour que le calcul automatique fonctionne !");
+                document.getElementById("new-formula").focus();
+                return;
+            }
+
+            const randomId = Math.floor(Math.random() * (90000 - 10000 + 1)) + 10000;
+
+            let cleExemple = 0;
+            try {
+                let testEval = formulaInput.replace(/id/g, randomId);
+                cleExemple = Math.floor(eval(testEval));
+            } catch(e) {
+                alert("⚠️ Votre formule mathématique comporte une erreur de syntaxe. Veuillez vérifier (ex: id * 2 / 3).");
+                return;
+            }
+
+            const nouvelleScene = {
+                id: randomId,
+                nom: nom,
+                preview: preview,
+                tele: tele,
+                prix: prix,
+                wa: wa,
+                formula: formulaInput,
+                deverrouille: false
+            };
+
+            scenesData.push(nouvelleScene);
+            saveState();
+            renderGrid();
+            fermerVendeurModal();
+
+            document.getElementById("new-nom").value = "";
+            document.getElementById("new-preview").value = "";
+            document.getElementById("new-telegram").value = "";
+            document.getElementById("new-prix").value = "";
+            document.getElementById("new-whatsapp").value = "";
+            document.getElementById("new-formula").value = "";
+            
+            alert(`Félicitations ! Votre vidéo "${nom}" a été publiée avec succès.\n\nID généré : ${randomId}\nVotre Formule : ${formulaInput}\n\nExemple de clé pour cette vidéo : ${cleExemple}`);
+        }
+
+        function verifierAdmin() {
+            const mdp = prompt("Entrez le mot de passe administrateur :");
+            if (mdp === "admin123") {
+                ouvrirListeAdmin();
+            } else if (mdp !== null) {
+                alert("Mot de passe incorrect.");
+            }
+        }
+
+        function ouvrirListeAdmin() {
+            const listContainer = document.getElementById("admin-videos-list");
+            document.getElementById("admin-total-count").innerText = scenesData.length;
+            listContainer.innerHTML = "";
+
+            scenesData.forEach((s, idx) => {
+                let cleCalculee = "Erreur";
+                try {
+                    cleCalculee = Math.floor(eval(s.formula.replace(/id/g, s.id)));
+                } catch(e){}
+
+                listContainer.innerHTML += `
+                    <div class="video-item-admin">
+                        <b>#${idx + 1} - ${s.nom}</b><br>
+                        ID : ${s.id} | Prix : ${s.prix} Fr<br>
+                        Formule : <code>${s.formula}</code><br>
+                        Clé actuelle : <b>${cleCalculee}</b><br>
+                        WhatsApp : ${s.wa}<br>
+                        Lien Telegram : <a href="${s.tele}" target="_blank" style="color: #0088cc; word-break: break-all;">${s.tele}</a>
+                    </div>
+                `;
+            });
+
+            document.getElementById("admin-list-modal").style.display = "flex";
+        }
+
+        function fermerListeAdmin() {
+            document.getElementById("admin-list-modal").style.display = "none";
+        }
+
+        renderGrid();
     </script>
+
 </body>
 </html>
