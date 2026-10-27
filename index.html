@@ -1,78 +1,121 @@
-// URL de votre API sécurisée sur Hostinger
-const API_URL = "https://srv534-files.hstgr.io/06806b0afc736282/files/public_html/api.php";
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marketplace Anonyme</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; background: #f4f4f9; }
+        .video-card { background: white; padding: 15px; margin-bottom: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        video { width: 100%; border-radius: 5px; }
+        form { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        input, button { display: block; width: 100%; margin-bottom: 10px; padding: 10px; box-sizing: border-box; }
+        button { background: #0070f3; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        button:hover { background: #0051a2; }
+    </style>
+</head>
+<body>
 
-// 1. Fonction pour charger et afficher toutes les vidéos depuis le coffre Hostinger
-async function chargerVideos() {
-    try {
-        const reponse = await fetch(`${API_URL}?action=get`);
-        const videos = await reponse.json();
-        
-        console.log("Vidéos récupérées depuis Hostinger :", videos);
-        
-        // --- INSÉREZ ICI VOTRE LOGIQUE D'AFFICHAGE SUR LE SITE ---
-        // Par exemple, si vous avez un conteneur HTML avec l'id "video-container" :
-        /*
-        const container = document.getElementById('video-container');
-        container.innerHTML = '';
-        videos.forEach(video => {
-            container.innerHTML += `
-                <div class="video-card">
-                    <h3>${video.nom}</h3>
-                    <video src="${video.preview}" controls width="100%"></video>
-                    <p>Prix : ${video.prix} F</p>
-                </div>
-            `;
-        });
-        */
-    } catch (erreur) {
-        console.error("Erreur lors du chargement des vidéos :", erreur);
-    }
-}
+    <h1>Marketplace de Vidéos</h1>
 
-// 2. Fonction pour envoyer une nouvelle vidéo vers Hostinger
-async function ajouterVideo(event) {
-    if (event) event.preventDefault();
+    <!-- Formulaire d'ajout de vidéo -->
+    <form id="uploadForm" onsubmit="ajouterVideo(event)">
+        <h3>Ajouter une vidéo</h3>
+        <input type="text" id="nom" placeholder="Titre de la vidéo" required>
+        <input type="text" id="tele" placeholder="Contact Telegram" required>
+        <input type="number" id="prix" placeholder="Prix (ex: 5000)" required>
+        <input type="text" id="wa" placeholder="Contact WhatsApp" required>
+        <input type="text" id="formula" placeholder="Formule / Description" required>
+        <input type="file" id="video_file" accept="video/mp4" required>
+        <button type="submit">Uploader et publier</button>
+    </form>
 
-    // Récupération des éléments du formulaire (adaptez les id selon vos inputs HTML)
-    const nomInput = document.getElementById('nom');
-    const teleInput = document.getElementById('tele');
-    const prixInput = document.getElementById('prix');
-    const waInput = document.getElementById('wa');
-    const formulaInput = document.getElementById('formula');
-    const fileInput = document.getElementById('video_file'); // Votre champ de fichier .mp4
+    <h2>Catalogue des vidéos</h2>
+    <div id="video-container">
+        <p>Chargement des vidéos depuis le serveur distant...</p>
+    </div>
 
-    const formData = new FormData();
-    formData.append('nom', nomInput.value);
-    formData.append('tele', teleInput.value);
-    formData.append('prix', prixInput.value);
-    formData.append('wa', waInput.value);
-    formData.append('formula', formulaInput.value);
+    <!-- Script de connexion à l'API Hostinger -->
+    <script>
+        const API_URL = "https://srv534-files.hstgr.io/06806b0afc736282/files/public_html/api.php";
 
-    // Ajout du fichier vidéo s'il est présent
-    if (fileInput && fileInput.files[0]) {
-        formData.append('video_file', fileInput.files[0]);
-    }
+        // 1. Charger et afficher toutes les vidéos depuis le coffre Hostinger
+        async function chargerVideos() {
+            try {
+                const reponse = await fetch(`${API_URL}?action=get`);
+                const videos = await reponse.json();
+                
+                const container = document.getElementById('video-container');
+                container.innerHTML = '';
 
-    try {
-        const reponse = await fetch(`${API_URL}?action=add`, {
-            method: 'POST',
-            body: formData
-        });
-        
-        const resultat = await reponse.json();
-        
-        if (resultat.status === 'success') {
-            alert('Vidéo enregistrée avec succès sur le serveur distant !');
-            chargerVideos(); // Recharge la liste mise à jour
-        } else {
-            alert('Erreur : ' + (resultat.message || 'Action impossible'));
+                if (videos.length === 0) {
+                    container.innerHTML = '<p>Aucune vidéo pour le moment.</p>';
+                    return;
+                }
+
+                videos.forEach(video => {
+                    container.innerHTML += `
+                        <div class="video-card">
+                            <h3>${video.nom}</h3>
+                            <video src="${video.preview}" controls></video>
+                            <p><strong>Prix :</strong> ${video.prix} F</p>
+                            <p><strong>Telegram :</strong> ${video.tele} | <strong>WhatsApp :</strong> ${video.wa}</p>
+                        </div>
+                    `;
+                });
+            } catch (erreur) {
+                console.error("Erreur lors du chargement des vidéos :", erreur);
+                document.getElementById('video-container').innerHTML = '<p>Erreur de connexion avec le serveur distant.</p>';
+            }
         }
-    } catch (erreur) {
-        console.error("Erreur lors de l'envoi de la vidéo :", erreur);
-    }
-}
 
-// Lancer le chargement des vidéos dès l'ouverture de la page
-document.addEventListener('DOMContentLoaded', () => {
-    chargerVideos();
-});
+        // 2. Envoyer une nouvelle vidéo vers Hostinger
+        async function ajouterVideo(event) {
+            event.preventDefault();
+
+            const nomInput = document.getElementById('nom');
+            const teleInput = document.getElementById('tele');
+            const prixInput = document.getElementById('prix');
+            const waInput = document.getElementById('wa');
+            const formulaInput = document.getElementById('formula');
+            const fileInput = document.getElementById('video_file');
+
+            const formData = new FormData();
+            formData.append('nom', nomInput.value);
+            formData.append('tele', teleInput.value);
+            formData.append('prix', prixInput.value);
+            formData.append('wa', waInput.value);
+            formData.append('formula', formulaInput.value);
+
+            if (fileInput.files[0]) {
+                formData.append('video_file', fileInput.files[0]);
+            }
+
+            try {
+                const reponse = await fetch(`${API_URL}?action=add`, {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const resultat = await reponse.json();
+                
+                if (resultat.status === 'success') {
+                    alert('Vidéo enregistrée avec succès sur le serveur distant !');
+                    document.getElementById('uploadForm').reset();
+                    chargerVideos();
+                } else {
+                    alert('Erreur : ' + (resultat.message || 'Action impossible'));
+                }
+            } catch (erreur) {
+                console.error("Erreur lors de l'envoi de la vidéo :", erreur);
+                alert("Erreur réseau lors de l'envoi.");
+            }
+        }
+
+        // Charger les vidéos dès l'ouverture de la page
+        document.addEventListener('DOMContentLoaded', () => {
+            chargerVideos();
+        });
+    </script>
+</body>
+</html>
