@@ -378,7 +378,7 @@
     </div>
 
     <script>
-        // Configuration Supabase avec votre vraie clé publique
+        // Configuration Supabase officielle
         const SUPABASE_URL = "https://dhjrpvryonkeiwzuystoe.supabase.co";
         const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRoanJwdnJ5b25rZWl3enV5c3RvZSIsInJvbGUiOiJhbm9uIiwiaWF0IjoxNzkzMDM2MzY2LCJleHAiOjIxMDg2MTIzNjZ9.5FFuaI627JDJ5SCorwFrr1DhvwqHi0CiUWJkhwCkZV4";
         
@@ -400,7 +400,8 @@
             }
 
             try {
-                const { data, error } = await supabaseClient.from('videos').select('*');
+                // Récupération sécurisée et triée des vidéos
+                const { data, error } = await supabaseClient.from('videos').select('*').order('id', { ascending: false });
 
                 if (error) throw error;
 
