@@ -13,7 +13,7 @@
         html, body {
             width: 100%;
             overflow-x: hidden;
-            background-color: #0f172a !important; /* Fond sombre ultra immersif type streaming */
+            background-color: #0f172a !important;
             color: #f8fafc;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         }
@@ -89,7 +89,6 @@
             margin-top: 10px;
         }
 
-        /* Cartes de base */
         .card {
             background: #1e293b;
             border-radius: 12px;
@@ -103,7 +102,6 @@
             transition: transform 0.2s ease;
         }
 
-        /* Styles dynamiques des contours de la carte selon la qualité */
         .card-premium {
             border: 2.5px solid #a855f7;
             box-shadow: 0 0 15px rgba(168, 85, 247, 0.35), 0 6px 16px rgba(0, 0, 0, 0.4);
@@ -154,7 +152,6 @@
             text-overflow: ellipsis;
         }
 
-        /* Badges de qualité */
         .quality-badge {
             font-size: 9px;
             font-weight: bold;
@@ -546,10 +543,10 @@
         ];
 
         const grid = document.getElementById("video-grid");
-        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v81")) || [];
+        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v82")) || [];
 
         function saveState() {
-            localStorage.setItem("vip_scenes_data_v81", JSON.stringify(scenesData));
+            localStorage.setItem("vip_scenes_data_v82", JSON.stringify(scenesData));
         }
 
         if (scenesData.length === 0) {
@@ -594,9 +591,10 @@
                 const card = document.createElement("div");
                 card.className = getCardClass(scene.qualite);
 
+                // Ajout de playsinline, webkit-playsinline et muted pour forcer la lecture sur iPhone
                 const mediaHtml = `
                     <div class="media-container">
-                        <video class="preview-video" autoplay muted loop playsinline preload="auto">
+                        <video class="preview-video" autoplay muted loop playsinline webkit-playsinline preload="auto">
                             <source src="${scene.preview}" type="video/mp4">
                         </video>
                     </div>
@@ -638,6 +636,16 @@
                 }
                 grid.appendChild(card);
             });
+
+            // Sécurité supplémentaire pour forcer le lancement de toutes les vidéos sur iOS
+            setTimeout(() => {
+                document.querySelectorAll('video.preview-video').forEach(video => {
+                    video.play().catch(e => {
+                        // En cas de blocage strict par le navigateur, un second essai ou écoute tactile
+                        console.log("Lecture auto en attente d'interaction utilisateur : ", e);
+                    });
+                });
+            }, 100);
         }
 
         function verifier(index, cleAttendue) {
@@ -719,7 +727,7 @@
                 listContainer.innerHTML += `
                     <div class="admin-card-item">
                         <div class="media-container">
-                            <video class="preview-video" autoplay muted loop playsinline preload="auto">
+                            <video class="preview-video" autoplay muted loop playsinline webkit-playsinline preload="auto">
                                 <source src="${s.preview}" type="video/mp4">
                             </video>
                         </div>
