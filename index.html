@@ -475,13 +475,11 @@
         const defaultWhatsApp = "2250105553740"; 
         const defaultPartenaire = "Admin Principal";
 
-        // Protection anti-curieux sans bug de validation
-        const ADMIN_PASS_1_ENCODED = "MDcwOTE1MjdhZG1pbg=="; // Équivalent encodé de votre mot de passe
-        const ADMIN_CODE_2_ENCODED = "Qm9saQ==";             // Équivalent encodé de Boli
+        const ADMIN_PASS_1_ENCODED = "MDcwOTE1MjdhZG1pbg=="; 
+        const ADMIN_CODE_2_ENCODED = "Qm9saQ==";             
 
         function verifierSecurite(saisi, encodeAttendu) {
             if (!saisi) return false;
-            // Nettoyage des espaces et encodage direct pour comparer
             const cleanSaisi = saisi.trim();
             try {
                 return btoa(cleanSaisi) === encodeAttendu;
@@ -555,10 +553,10 @@
         ];
 
         const grid = document.getElementById("video-grid");
-        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v85")) || [];
+        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v86")) || [];
 
         function saveState() {
-            localStorage.setItem("vip_scenes_data_v85", JSON.stringify(scenesData));
+            localStorage.setItem("vip_scenes_data_v86", JSON.stringify(scenesData));
         }
 
         if (scenesData.length === 0) {
@@ -750,6 +748,13 @@
                     </div>
                 `;
             });
+
+            // Forcer aussi la lecture en boucle dans la liste admin
+            setTimeout(() => {
+                listContainer.querySelectorAll('video.preview-video').forEach(video => {
+                    video.play().catch(e => {});
+                });
+            }, 100);
 
             document.getElementById("admin-list-modal").style.display = "flex";
         }
