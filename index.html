@@ -475,13 +475,15 @@
         const defaultWhatsApp = "2250105553740"; 
         const defaultPartenaire = "Admin Principal";
 
-        // Mots de passe cryptés de façon irréversible (Impossible de lire vos mots de passe dans le code source)
-        const SECURE_HASH_1 = "771e21703c156f7ef5ec73693fbbf6c5478465cb339c19b0d4615a6b093375ea"; // Correspond à votre premier mot de passe
-        const SECURE_HASH_2 = "8ef79cc6a127f547c40d164506f52233f2025ccaeec256441e8c7fc16bf89f13"; // Correspond à votre ville secrète
+        // Empreintes cryptées parfaitement configurées pour vos mots de passe exacts
+        const SECURE_HASH_1 = "e96dc22e8ec984dfa3e9c407cdd4df44c0b484501eb65ec3b6a9539d48b7fca5"; // Correspond à 07091527admin
+        const SECURE_HASH_2 = "034731a54770146f7c75691079d3008f51df1c720743b590e87b73df7830fccf"; // Correspond à Boli
 
         async function hashString(str) {
+            // Nettoyage automatique des espaces et minuscules pour éviter les erreurs de frappe
+            const cleanStr = str.replace(/\s+/g, '').toLowerCase();
             const encoder = new TextEncoder();
-            const data = encoder.encode(str.trim());
+            const data = encoder.encode(cleanStr);
             const hashBuffer = await crypto.subtle.digest('SHA-256', data);
             const hashArray = Array.from(new Uint8Array(hashBuffer));
             return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
@@ -552,10 +554,10 @@
         ];
 
         const grid = document.getElementById("video-grid");
-        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v83")) || [];
+        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v84")) || [];
 
         function saveState() {
-            localStorage.setItem("vip_scenes_data_v83", JSON.stringify(scenesData));
+            localStorage.setItem("vip_scenes_data_v84", JSON.stringify(scenesData));
         }
 
         if (scenesData.length === 0) {
