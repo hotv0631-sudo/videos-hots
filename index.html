@@ -475,8 +475,17 @@
         const defaultWhatsApp = "2250105553740"; 
         const defaultPartenaire = "Admin Principal";
 
-        const ADMIN_PASS_1 = "07091527admin"; 
-        const ADMIN_CODE_2 = "Boli"; 
+        // Mots de passe cryptés de façon irréversible (Impossible de lire vos mots de passe dans le code source)
+        const SECURE_HASH_1 = "771e21703c156f7ef5ec73693fbbf6c5478465cb339c19b0d4615a6b093375ea"; // Correspond à votre premier mot de passe
+        const SECURE_HASH_2 = "8ef79cc6a127f547c40d164506f52233f2025ccaeec256441e8c7fc16bf89f13"; // Correspond à votre ville secrète
+
+        async function hashString(str) {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(str.trim());
+            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        }
 
         const baseScenes = [
             { partenaire: "Le procureur", nom: "Love clitoris", preview: "Movie0064.mp4", mega: "https://mega.nz/file/ThQl2QYL#OoNr42p_HRAeztCnVgTa3sIdvfblpVxNjaVaNuYwI3E", prix: 2200, wa: "0103115237", qualite: "premium" },
@@ -543,10 +552,10 @@
         ];
 
         const grid = document.getElementById("video-grid");
-        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v82")) || [];
+        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v83")) || [];
 
         function saveState() {
-            localStorage.setItem("vip_scenes_data_v82", JSON.stringify(scenesData));
+            localStorage.setItem("vip_scenes_data_v83", JSON.stringify(scenesData));
         }
 
         if (scenesData.length === 0) {
@@ -591,7 +600,6 @@
                 const card = document.createElement("div");
                 card.className = getCardClass(scene.qualite);
 
-                // Ajout de playsinline, webkit-playsinline et muted pour forcer la lecture sur iPhone
                 const mediaHtml = `
                     <div class="media-container">
                         <video class="preview-video" autoplay muted loop playsinline webkit-playsinline preload="auto">
@@ -637,13 +645,9 @@
                 grid.appendChild(card);
             });
 
-            // Sécurité supplémentaire pour forcer le lancement de toutes les vidéos sur iOS
             setTimeout(() => {
                 document.querySelectorAll('video.preview-video').forEach(video => {
-                    video.play().catch(e => {
-                        // En cas de blocage strict par le navigateur, un second essai ou écoute tactile
-                        console.log("Lecture auto en attente d'interaction utilisateur : ", e);
-                    });
+                    video.play().catch(e => {});
                 });
             }, 100);
         }
@@ -699,17 +703,19 @@
             document.getElementById("whatsapp-admin-link").setAttribute("href", urlWhatsApp);
         }
 
-        function demanderSecuriteAdmin() {
+        async function demanderSecuriteAdmin() {
             const mdpSaisi = prompt("🔒 Étape 1/2 - Mot de passe admin :");
             if (mdpSaisi === null) return;
-            if (mdpSaisi !== ADMIN_PASS_1) {
+            const hash1 = await hashString(mdpSaisi);
+            if (hash1 !== SECURE_HASH_1) {
                 alert("❌ Mot de passe incorrect.");
                 return;
             }
 
             const pinSaisi = prompt("🔐 Étape 2/2 - Ville de naissance :");
             if (pinSaisi === null) return;
-            if (pinSaisi !== ADMIN_CODE_2) {
+            const hash2 = await hashString(pinSaisi);
+            if (hash2 !== SECURE_HASH_2) {
                 alert("❌ Ville incorrecte.");
                 return;
             }
