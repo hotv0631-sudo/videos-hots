@@ -116,7 +116,7 @@
             display: block;
         }
         .card h3 {
-            margin: 0 0 4px 0;
+            margin: 0 0 2px 0;
             color: #ff6600;
             font-size: 12px;
             text-align: center;
@@ -124,6 +124,45 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
+        .card-vendor {
+            font-size: 9px;
+            color: #25d366;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        /* Styles des badges de qualité */
+        .quality-badge {
+            font-size: 9.5px;
+            font-weight: bold;
+            text-align: center;
+            padding: 3px 6px;
+            border-radius: 4px;
+            margin-bottom: 6px;
+            display: inline-block;
+            width: 100%;
+        }
+        .badge-premium {
+            background: linear-gradient(135deg, #a855f7, #6366f1);
+            color: #ffffff;
+            border: 1px solid #c084fc;
+            box-shadow: 0 2px 5px rgba(168, 85, 247, 0.4);
+        }
+        .badge-moyen {
+            background: linear-gradient(135deg, #eab308, #ca8a04);
+            color: #ffffff;
+            border: 1px solid #fde047;
+            box-shadow: 0 2px 5px rgba(234, 179, 8, 0.4);
+        }
+        .badge-basique {
+            background: linear-gradient(135deg, #64748b, #475569);
+            color: #ffffff;
+            border: 1px solid #94a3b8;
+        }
+
         .price-badge {
             background: linear-gradient(135deg, #ff6600, #ff8533);
             color: #ffffff;
@@ -161,7 +200,7 @@
             margin-bottom: 6px;
             box-shadow: 0 2px 6px rgba(37, 211, 102, 0.3);
         }
-        input {
+        input, select {
             width: 100%;
             background: #f9fafb;
             border: 1.5px solid #ff6600;
@@ -269,14 +308,7 @@
             display: block;
             margin-top: 8px;
         }
-        .field-help {
-            font-size: 9.5px;
-            color: #555;
-            margin-top: 2px;
-            font-style: italic;
-            line-height: 1.2;
-        }
-        .modal-content input {
+        .modal-content input, .modal-content select {
             width: 100%;
             padding: 6px;
             margin-top: 3px;
@@ -359,6 +391,13 @@
             <label>Prix (en Fr) :</label>
             <input type="number" id="new-prix" placeholder="1500" step="100">
 
+            <label>Qualité / Niveau de la vidéo :</label>
+            <select id="new-qualite">
+                <option value="premium">💎 Ultra / Premium (Diamant)</option>
+                <option value="moyen">🥇 Moyen / Standard (Or)</option>
+                <option value="basique">🥉 Basique (Bronze)</option>
+            </select>
+
             <label>Votre Numéro WhatsApp (Wave) :</label>
             <input type="text" id="new-whatsapp" placeholder="2250105553740">
 
@@ -395,6 +434,13 @@
                 <label>Prix (en Fr) :</label>
                 <input type="number" id="admin-prix" placeholder="1500" step="100">
 
+                <label>Qualité / Niveau :</label>
+                <select id="admin-qualite">
+                    <option value="premium">💎 Ultra / Premium (Diamant)</option>
+                    <option value="moyen">🥇 Moyen / Standard (Or)</option>
+                    <option value="basique">🥉 Basique (Bronze)</option>
+                </select>
+
                 <label>Numéro WhatsApp du Vendeur :</label>
                 <input type="text" id="admin-whatsapp" placeholder="2250105553740">
 
@@ -416,74 +462,74 @@
         const ADMIN_CODE_2 = "Boli"; 
 
         const baseScenes = [
-            { partenaire: "Le procureur", nom: "Love clitoris", preview: "Movie0064.mp4", mega: "https://mega.nz/file/ThQl2QYL#OoNr42p_HRAeztCnVgTa3sIdvfblpVxNjaVaNuYwI3E", prix: 2200, wa: "0103115237" },
-            { partenaire: "Admin Principal", nom: "Bizi sans capote", preview: "Movie002.mp4", mega: "https://mega.nz/file/P0g0FapT#Y2NlcHQtRW4VO2EhGursLgAAAAAAAAAAdlQFSHSN1g4", prix: 1200, wa: defaultWhatsApp },
-            { partenaire: "Admin Principal", nom: "Sextap", preview: "Movie003.mp4", mega: "https://mega.nz/file/KoZV0ZiJ#Ov3FwAQyhRPqJ18rklW4IQ2ofUG1mnwCy4cQx7VpPkY", prix: 1500, wa: defaultWhatsApp },
-            { partenaire: "Admin Principal", nom: "Transexuel baise sans capote 😍", preview: "Movie004.mp4", mega: "https://mega.nz/file/epYhGY7b#Y2NlcHQtRW7oPPCPwVzqTAAAAAAAAAAAi1OU5q870Gw", prix: 1800, wa: defaultWhatsApp },
-            { partenaire: "Admin Principal", nom: "Transexuel Abidjan", preview: "Movie005.mp4", mega: "https://mega.nz/file/WphxlDoK#z1JgZtRtuBLTfaq3hRU9L1C2LD9fRtJbEWfpATdHBz0", prix: 1000, wa: defaultWhatsApp },
-            { partenaire: "Admin Principal", nom: "Bizi sextap 🤑", preview: "Movie006.mp4", mega: "https://mega.nz/file/D5ImiR6Q#E6sUAekrMYqphTAs06TEn4hyTnx91JZ1ZVcUPAeV8bM", prix: 2000, wa: defaultWhatsApp },
-            { partenaire: "Admin Principal", nom: "A la plage", preview: "Movie007.mp4", mega: "https://mega.nz/file/OlARjDZT#DgAAAP8AEABrzzUy5vm65gAAAAAAAAAAas81Mub5uuY", prix: 1100, wa: defaultWhatsApp },
-            { partenaire: "Admin Principal", nom: "Bizi TS Abidjan 🤩", preview: "Movie008.mp4", mega: "https://mega.nz/file/KoZRzKZI#uLG-mWC-aMgmIxS7W6MOpFRVy1Iv7Y7lDD8jwU0EgLo", prix: 1300, wa: defaultWhatsApp },
-            { partenaire: "Admin Principal", nom: "Sodomie Transexuel 😘 ", preview: "Movie009.mp4", mega: "https://mega.nz/file/ftAlgKIT#L2Z-lSLLtdc_AT5ePpcmAdKpiIZNeOd8So-O1gvc8jM", prix: 1400, wa: defaultWhatsApp },
-            { partenaire: "Admin Principal", nom: "Avec PC 🤑", preview: "Movie0010.mp4", mega: "https://mega.nz/file/P0IBmYiD#Y2NlcHQtRW5aPDakl5Fy3QAAAAAAAAAAOVNSzfn2SP0", prix: 1600, wa: defaultWhatsApp },
-            { partenaire: "Admin Principal", nom: "Disponible 🤗", preview: "Movie0011.mp4", mega: "https://mega.nz/file/mghQGSJA#3TFCEPWgWTpMOG5WCJ0PXyxU3SanZpAGE40DuQKAkiE", prix: 1700, wa: defaultWhatsApp },
-            { partenaire: "Admin Principal", nom: "Transexuel gros cul 🥰", preview: "Movie0012.mp4", mega: "https://mega.nz/file/SsBXTIBB#qflg6sA_fy_Ov02h5mjfuLD4piSv9SHeO3l2Sx7flvw", prix: 1900, wa: defaultWhatsApp },
-            { partenaire: "Admin Principal", nom: "Transexuel ejaculation interne 😋", preview: "Movie0013.mp4", mega: "https://mega.nz/file/LkhH3DiR#4ePKMqH-_mLAJ8dqdv-oNGb3M13fN0G0HJyjeAkfx00", prix: 1200, wa: defaultWhatsApp },
-            { partenaire: "Admin Principal", nom: "A fond dans le cul TS", preview: "Movie0014.mp4", mega: "https://mega.nz/file/f4RxiJoa#8P-2GvKL0nqNw_i6l05_hubEINkJEkNBNYJ2dO49MmE", prix: 1500, wa: defaultWhatsApp },
-            { partenaire: "Admin Principal", nom: "TS baya", preview: "Movie0015.mp4", mega: "https://mega.nz/file/mtpjiJwB#FQ_kwXZIjLny2qHT1UxXse8B2r7WrMviLkVWkJhwjoA", prix: 1000, wa: defaultWhatsApp },
-            { partenaire: "Admin Principal", nom: "Bizi anal", preview: "Movie0016.mp4", mega: "https://mega.nz/file/a5pjnKJJ#O2RgH9V1myWNtBnr3YsmeZqC3VV-Vk5QTaEMTRzAnj8", prix: 1300, wa: defaultWhatsApp },
-            { partenaire: "Admin Principal", nom: "Sextap", preview: "Movie0017.mp4", mega: "https://mega.nz/file/r8YVibhY#nQBJ-NyRxDfp2_3Zk763aHpygGXIYCV8nNWFBhdS9_4", prix: 1800, wa: defaultWhatsApp },
-            { partenaire: "Admin Principal", nom: "Baise moi BB 🤤", preview: "Movie0018.mp4", mega: "https://mega.nz/file/PwoHVbSY#f_6ntWZpzU3zMHNfhdXYfq_Dhjp1bWDN4epYtjMoUFA", prix: 2000, wa: defaultWhatsApp },
-            { partenaire: "Admin Principal", nom: "Teinture jaune", preview: "Movie0019.mp4", mega: "https://mega.nz/file/qsImTbJB#dNmX6DJMc9fKpiJb4Idm1jd0dhXRpFmcajBTbP6wZnk", prix: 1100, wa: defaultWhatsApp },
-            { partenaire: "Admin Principal", nom: "Baiseur masqué", preview: "Movie0020.mp4", mega: "https://mega.nz/file/y04Q1R5Z#bC1NYXgtQWc6j1LhW3-PEAAAAAAAAAAAX7Vy2W1LvyA", prix: 1400, wa: defaultWhatsApp },
-            { partenaire: "Admin Principal", nom: "Dans la chaise", preview: "Movie0021.mp4", mega: "https://mega.nz/file/SkYzwZ6A#Ix2GKLmCwR_sMv1dQox4qFj4SV1u_dBRWEzYfPDrTtU", prix: 1600, wa: defaultWhatsApp },
-            { partenaire: "Admin Principal", nom: "Sextap lesbienne", preview: "Movie0022.mp4", mega: "https://mega.nz/file/r1I2kZSB#MqUTrbYMn1Qbz7wNvbyMkwCkyML_UvC9duONjuq0bYg", prix: 1700, wa: defaultWhatsApp },
-            { partenaire: "Admin Principal", nom: "Mastubation sextoy", preview: "Movie0023.mp4", mega: "https://mega.nz/file/ypg3nAoK#LAEAAG8AAAAQIIHl8Gs4fgAAAAAAAAAAECKD5fBrOH4", prix: 1900, wa: defaultWhatsApp },
-            { partenaire: "Admin Principal", nom: "Bizi", preview: "Movie0024.mp4", mega: "https://mega.nz/file/X4h33DqZ#3NYcPmH910oG_63_uABXuoEGFva0TsgY26cHtq2B0qU", prix: 1200, wa: defaultWhatsApp },
-            { partenaire: "Admin Principal", nom: "TS 🤤🤤🤤", preview: "Movie0025.mp4", mega: "https://mega.nz/file/y0ozEBQR#jwPzQMNYAGIRt5Pu5Ys7W2FlUeiq45rzS9GPg5sFMnI", prix: 1500, wa: defaultWhatsApp },
-            { partenaire: "Admin Principal", nom: "Sans capote", preview: "Movie0027.mp4", mega: "https://mega.nz/file/O8pl2a7B#Mxro5gOjrbtPejIStAy___xmj4mrvlVWmtmbtDRaiQk", prix: 1000, wa: defaultWhatsApp },
-            { partenaire: "Admin Principal", nom: "Bizi jouit", preview: "Movie0028.mp4", mega: "https://mega.nz/file/z4xCFCCa#hhX_jnkCALs_ApTVsiAofVW26K1z6xyj9tziMt8UTDE", prix: 1300, wa: defaultWhatsApp },
-            { partenaire: "Admin Principal", nom: "Caméra cachée", preview: "Movie0029.mp4", mega: "https://mega.nz/file/T4w0CYTT#WQDRy1DNiyVjbNrUexsCcgSSpQjFas7XlQ9aBqw44QE", prix: 1800, wa: defaultWhatsApp },
-            { partenaire: "Admin Principal", nom: "Bizi robe rouge", preview: "Movie0030.mp4", mega: "https://mega.nz/file/7lx11ADK#fmdyXLatroke7EMyoMSN2pnFnOpUIXzJev2GS9CSDb0", prix: 2000, wa: defaultWhatsApp },
-            { partenaire: "Admin Principal", nom: "Gros cul", preview: "Movie0031.mp4", mega: "https://mega.nz/file/b8xRHBKA#mXjezsgWSQrlMXhlqF0NxPY6bFg2GIpXHzyVlSBMrRg", prix: 1100, wa: defaultWhatsApp },
-            { partenaire: "Admin Principal", nom: "Baya", preview: "Movie0032.mp4", mega: "https://mega.nz/file/foRHyZLZ#_YyIp4r8mFw9F2kZ4h19ZV8YB3fppEebRwNa75jN-mU", prix: 1400, wa: defaultWhatsApp },
-            { partenaire: "Admin Principal", nom: "Minette sans capote 😍", preview: "Movie0033.mp4", mega: "https://mega.nz/file/D1gD2IjT#AAABoAAAACgkIT-4USD0GQAAAAAAAAAAU1VPzFEg9dE", prix: 1600, wa: defaultWhatsApp },
-            { partenaire: "Admin Principal", nom: "Slip rouge", preview: "Movie0034.mp4", mega: "https://mega.nz/file/jownlKZB#fx8yP_1xKM1T9qO8_3dv91OFdxKEP2NH63bZ3glYFcY", prix: 1700, wa: defaultWhatsApp },
-            { partenaire: "Admin Principal", nom: "Transexuel cocody", preview: "Movie0035.mp4", mega: "https://mega.nz/file/GkYmhIxR#FV17xWPtKg-N-SlY5YKCEfCQkmEp3C0ZJHVGqgoown0", prix: 1900, wa: defaultWhatsApp },
-            { partenaire: "Admin Principal", nom: "Dans lestomac 💕", preview: "Movie0036.mp4", mega: "https://mega.nz/file/q5ZWiY7L#KB0ASSVE9z_prNryfm3wzDwevxsi6XIkHpA0NfcZbN4", prix: 1200, wa: defaultWhatsApp },
-            { partenaire: "Admin Principal", nom: "Bizi gay Abidjan", preview: "Movie0037.mp4", mega: "https://mega.nz/file/e85SGT4K#2HWJ2G8AAABiDOCzWoIUxQAAAAAAAAAACqwcsiiCFMU", prix: 1500, wa: defaultWhatsApp },
-            { partenaire: "Admin Principal", nom: "Baise moi fort dans mon con", preview: "Movie0038.mp4", mega: "https://mega.nz/file/X8xC3AaT#DwAAAP8ALQA9CHYyI2UNJgAAAAAAAAAALQh2MtxlECY", prix: 1000, wa: defaultWhatsApp },
-            { partenaire: "Admin Principal", nom: "Sextap residence", preview: "Movie0039.mp4", mega: "https://mega.nz/file/mhY0QB7a#c6gxYhuVpJH1bn4tROMRnOv1RPFfXqFkFz8u7LtgAE4", prix: 1300, wa: defaultWhatsApp },
-            { partenaire: "Admin Principal", nom: "Bizi", preview: "Movie0040.mp4", mega: "https://mega.nz/file/S5AEQaBI#Y2NlcHQtRW4C6WDRkE3xrAAAAAAAAAAAYYYEuP4qy4w", prix: 1800, wa: defaultWhatsApp },
-            { partenaire: "Admin Principal", nom: "TS ❤️❤️❤️", preview: "Movie0041.mp4", mega: "https://mega.nz/file/axJDkYJa#GzzXX8qvHIw528YZEkQb1PXdMTeFj_prYqpWPk_LALk", prix: 2000, wa: defaultWhatsApp },
-            { partenaire: "Admin Principal", nom: "TS 💪💪", preview: "Movie0042.mp4", mega: "https://mega.nz/file/OkoV3RBD#UDOsYxxZs7FNsSO_4Gm_VhJCuNffJ36b8fS8KuRkKXo", prix: 1100, wa: defaultWhatsApp },
-            { partenaire: "Admin Principal", nom: "TS sans capote", preview: "Movie0043.mp4", mega: "https://mega.nz/file/PxgkHQAK#KdQ98ANtu7OUXwgMAgMS0bQTo0JsoR-knZgyE-SDvUc", prix: 1400, wa: defaultWhatsApp },
-            { partenaire: "Admin Principal", nom: "Bizi 🎉🎉", preview: "Movie0044.mp4", mega: "https://mega.nz/file/XlIEQDxZ#hMo6zb3WB_4ePDeeENnJj7OYRFLyOYeaN5xopUJwF2w", prix: 1600, wa: defaultWhatsApp },
-            { partenaire: "Admin Principal", nom: "Gros cul 🤤🤤🤤", preview: "Movie0045.mp4", mega: "https://mega.nz/file/PhgFUTaQ#EQtSRkz7onKDeWYam-HJRqKDLsVG2mWmx8QDntrm884", prix: 1700, wa: defaultWhatsApp },
-            { partenaire: "Admin Principal", nom: "Lélé", preview: "Movie0046.mp4", mega: "https://mega.nz/file/elIFxISL#NjQNCkFjY2VRxMQRG4hXuAAAAAAAAAAAIbD-MTGnfbU", prix: 1900, wa: defaultWhatsApp },
-            { partenaire: "Admin Principal", nom: "Il baise les trois minette", preview: "Movie0047.mp4", mega: "https://mega.nz/file/ypxS1RgA#NjQNCkFjY2W-dGhE0Vdu3wAAAAAAAAAAzgBSZPt4RNI", prix: 1200, wa: defaultWhatsApp },
-            { partenaire: "Admin Principal", nom: "Sodomie 😱😱😱", preview: "Movie0048.mp4", mega: "https://mega.nz/file/u1hEHYRa#oxHjiEOIL9uaxwrH-s-EAsS1ZCv-8WtT5fcWA0lyLv4", prix: 1500, wa: defaultWhatsApp },
-            { partenaire: "Admin Principal", nom: "Cui mou", preview: "Movie0049.mp4", mega: "https://mega.nz/file/25IgWKAS#APenN4zreC5UZbr-UfP9QLGKpdcr6NnStCK-0E3wyW8", prix: 1000, wa: defaultWhatsApp },
-            { partenaire: "Admin Principal", nom: "Les célébrités", preview: "Movie0050.mp4", mega: "https://mega.nz/file/HkgVxKxA#TPPKWw3CMF-5k2hvNQne5zKr7sihdM_w0UWPiWDaSgY", prix: 1300, wa: defaultWhatsApp },
-            { partenaire: "Admin Principal", nom: "Bizi gros cul en action", preview: "Movie0051.mp4", mega: "https://mega.nz/file/3to1BQDI#hCEjX-FCvoXLoe7x5C974JUGsLmkL9p2_C1bItJd6ls", prix: 1800, wa: defaultWhatsApp },
-            { partenaire: "Admin Principal", nom: "Les enfants baisent", preview: "Movie0052.mp4", mega: "https://mega.nz/file/WgAXGQbA#alzzLcdfSXkmmfjfBVIAHblE03Mlm_P6BNV8UuzJOeo", prix: 2000, wa: defaultWhatsApp },
-            { partenaire: "Admin Principal", nom: "Tape fort dedans", preview: "Movie0053.mp4", mega: "https://mega.nz/file/atBHFIaD#FmAm3Kcy0_o_yhHm4rB6k8Ic9sNq2MnFHqGDOQ72T-k", prix: 1100, wa: defaultWhatsApp },
-            { partenaire: "Admin Principal", nom: "Slip violet sur le côté", preview: "Movie0054.mp4", mega: "https://mega.nz/file/DsommTgR#dZTHSN6p3J9BOXcWIbzFc_mod69j8GF12itdx7o-Dv0", prix: 1400, wa: defaultWhatsApp },
-            { partenaire: "Admin Principal", nom: "TS baise", preview: "Movie0055.mp4", mega: "https://mega.nz/file/m0I1nT4a#REBNaJbyheiId6VY2fLXtRlxL91qlx0idWv1obiDEro", prix: 1600, wa: defaultWhatsApp },
-            { partenaire: "Admin Principal", nom: "TS jouit 😋😋", preview: "Movie0056.mp4", mega: "https://mega.nz/file/mowgnbYJ#AAABAAAAAABYVxHxeWQelQAAAAAAAAAATFcR8Xlks1I", prix: 1700, wa: defaultWhatsApp },
-            { partenaire: "Admin Principal", nom: "Bizi Disponible", preview: "Movie0057.mp4", mega: "https://mega.nz/file/ikRTWDaB#DgAAAP8ALwBi987PiK9vVwAAAAAAAAAAY_cyzvqvb1c", prix: 1900, wa: defaultWhatsApp },
-            { partenaire: "Admin Principal", nom: "Sextap ✨✨", preview: "Movie0059.mp4", mega: "https://mega.nz/file/KwhBiYbZ#Y2NlcHQtRW7QnA0TB3ggAQAAAAAAAAAAs_NpemkfGiE", prix: 1200, wa: defaultWhatsApp },
-            { partenaire: "Admin Principal", nom: "Il baise l'étudiante à l'école et éjacule dedans sans capote", preview: "Movie0060.mp4", mega: "https://mega.nz/file/u5AXiBLb#dcLqFZyqlKM0Nbtce4Zz48xTaZMWCvPpC2LKqiedKnQ", prix: 1500, wa: defaultWhatsApp },
-            { partenaire: "Admin Principal", nom: "Influenceuse", preview: "Movie0061.mp4", mega: "https://mega.nz/file/jxIBjbgL#YTaWk8tO5uWARRYoexIsMRaTIdX6OXLMcOR6wWq8Vso", prix: 1000, wa: defaultWhatsApp },
-            { partenaire: "Admin Principal", nom: "Il tape dans l'utérus de l'écolière sans capote", preview: "Movie0062.mp4", mega: "https://mega.nz/file/btAwUDYR#Y2NlcHQtRW7A2JqUPGhbhAAAAAAAAAAAo7f-_VIPYaQ", prix: 1300, wa: defaultWhatsApp },
-            { partenaire: "Admin Principal", nom: "Elle baise en bleu blanc", preview: "Movie0063.mp4", mega: "https://mega.nz/file/GtwwiTrB#eL6H2G8AAACASUuSaeeSBQAAAAAAAAAA6Om3kxvnkgU", prix: 1800, wa: defaultWhatsApp }
+            { partenaire: "Le procureur", nom: "Love clitoris", preview: "Movie0064.mp4", mega: "https://mega.nz/file/ThQl2QYL#OoNr42p_HRAeztCnVgTa3sIdvfblpVxNjaVaNuYwI3E", prix: 2200, wa: "0103115237", qualite: "premium" },
+            { partenaire: "Admin Principal", nom: "Bizi sans capote", preview: "Movie002.mp4", mega: "https://mega.nz/file/P0g0FapT#Y2NlcHQtRW4VO2EhGursLgAAAAAAAAAAdlQFSHSN1g4", prix: 1200, wa: defaultWhatsApp, qualite: "moyen" },
+            { partenaire: "Admin Principal", nom: "Sextap", preview: "Movie003.mp4", mega: "https://mega.nz/file/KoZV0ZiJ#Ov3FwAQyhRPqJ18rklW4IQ2ofUG1mnwCy4cQx7VpPkY", prix: 1500, wa: defaultWhatsApp, qualite: "premium" },
+            { partenaire: "Admin Principal", nom: "Transexuel baise sans capote 😍", preview: "Movie004.mp4", mega: "https://mega.nz/file/epYhGY7b#Y2NlcHQtRW7oPPCPwVzqTAAAAAAAAAAAi1OU5q870Gw", prix: 1800, wa: defaultWhatsApp, qualite: "premium" },
+            { partenaire: "Admin Principal", nom: "Transexuel Abidjan", preview: "Movie005.mp4", mega: "https://mega.nz/file/WphxlDoK#z1JgZtRtuBLTfaq3hRU9L1C2LD9fRtJbEWfpATdHBz0", prix: 1000, wa: defaultWhatsApp, qualite: "basique" },
+            { partenaire: "Admin Principal", nom: "Bizi sextap 🤑", preview: "Movie006.mp4", mega: "https://mega.nz/file/D5ImiR6Q#E6sUAekrMYqphTAs06TEn4hyTnx91JZ1ZVcUPAeV8bM", prix: 2000, wa: defaultWhatsApp, qualite: "premium" },
+            { partenaire: "Admin Principal", nom: "A la plage", preview: "Movie007.mp4", mega: "https://mega.nz/file/OlARjDZT#DgAAAP8AEABrzzUy5vm65gAAAAAAAAAAas81Mub5uuY", prix: 1100, wa: defaultWhatsApp, qualite: "basique" },
+            { partenaire: "Admin Principal", nom: "Bizi TS Abidjan 🤩", preview: "Movie008.mp4", mega: "https://mega.nz/file/KoZRzKZI#uLG-mWC-aMgmIxS7W6MOpFRVy1Iv7Y7lDD8jwU0EgLo", prix: 1300, wa: defaultWhatsApp, qualite: "moyen" },
+            { partenaire: "Admin Principal", nom: "Sodomie Transexuel 😘 ", preview: "Movie009.mp4", mega: "https://mega.nz/file/ftAlgKIT#L2Z-lSLLtdc_AT5ePpcmAdKpiIZNeOd8So-O1gvc8jM", prix: 1400, wa: defaultWhatsApp, qualite: "moyen" },
+            { partenaire: "Admin Principal", nom: "Avec PC 🤑", preview: "Movie0010.mp4", mega: "https://mega.nz/file/P0IBmYiD#Y2NlcHQtRW5aPDakl5Fy3QAAAAAAAAAAOVNSzfn2SP0", prix: 1600, wa: defaultWhatsApp, qualite: "premium" },
+            { partenaire: "Admin Principal", nom: "Disponible 🤗", preview: "Movie0011.mp4", mega: "https://mega.nz/file/mghQGSJA#3TFCEPWgWTpMOG5WCJ0PXyxU3SanZpAGE40DuQKAkiE", prix: 1700, wa: defaultWhatsApp, qualite: "moyen" },
+            { partenaire: "Admin Principal", nom: "Transexuel gros cul 🥰", preview: "Movie0012.mp4", mega: "https://mega.nz/file/SsBXTIBB#qflg6sA_fy_Ov02h5mjfuLD4piSv9SHeO3l2Sx7flvw", prix: 1900, wa: defaultWhatsApp, qualite: "premium" },
+            { partenaire: "Admin Principal", nom: "Transexuel ejaculation interne 😋", preview: "Movie0013.mp4", mega: "https://mega.nz/file/LkhH3DiR#4ePKMqH-_mLAJ8dqdv-oNGb3M13fN0G0HJyjeAkfx00", prix: 1200, wa: defaultWhatsApp, qualite: "moyen" },
+            { partenaire: "Admin Principal", nom: "A fond dans le cul TS", preview: "Movie0014.mp4", mega: "https://mega.nz/file/f4RxiJoa#8P-2GvKL0nqNw_i6l05_hubEINkJEkNBNYJ2dO49MmE", prix: 1500, wa: defaultWhatsApp, qualite: "moyen" },
+            { partenaire: "Admin Principal", nom: "TS baya", preview: "Movie0015.mp4", mega: "https://mega.nz/file/mtpjiJwB#FQ_kwXZIjLny2qHT1UxXse8B2r7WrMviLkVWkJhwjoA", prix: 1000, wa: defaultWhatsApp, qualite: "basique" },
+            { partenaire: "Admin Principal", nom: "Bizi anal", preview: "Movie0016.mp4", mega: "https://mega.nz/file/a5pjnKJJ#O2RgH9V1myWNtBnr3YsmeZqC3VV-Vk5QTaEMTRzAnj8", prix: 1300, wa: defaultWhatsApp, qualite: "basique" },
+            { partenaire: "Admin Principal", nom: "Sextap", preview: "Movie0017.mp4", mega: "https://mega.nz/file/r8YVibhY#nQBJ-NyRxDfp2_3Zk763aHpygGXIYCV8nNWFBhdS9_4", prix: 1800, wa: defaultWhatsApp, qualite: "premium" },
+            { partenaire: "Admin Principal", nom: "Baise moi BB 🤤", preview: "Movie0018.mp4", mega: "https://mega.nz/file/PwoHVbSY#f_6ntWZpzU3zMHNfhdXYfq_Dhjp1bWDN4epYtjMoUFA", prix: 2000, wa: defaultWhatsApp, qualite: "premium" },
+            { partenaire: "Admin Principal", nom: "Teinture jaune", preview: "Movie0019.mp4", mega: "https://mega.nz/file/qsImTbJB#dNmX6DJMc9fKpiJb4Idm1jd0dhXRpFmcajBTbP6wZnk", prix: 1100, wa: defaultWhatsApp, qualite: "basique" },
+            { partenaire: "Admin Principal", nom: "Baiseur masqué", preview: "Movie0020.mp4", mega: "https://mega.nz/file/y04Q1R5Z#bC1NYXgtQWc6j1LhW3-PEAAAAAAAAAAAX7Vy2W1LvyA", prix: 1400, wa: defaultWhatsApp, qualite: "moyen" },
+            { partenaire: "Admin Principal", nom: "Dans la chaise", preview: "Movie0021.mp4", mega: "https://mega.nz/file/SkYzwZ6A#Ix2GKLmCwR_sMv1dQox4qFj4SV1u_dBRWEzYfPDrTtU", prix: 1600, wa: defaultWhatsApp, qualite: "moyen" },
+            { partenaire: "Admin Principal", nom: "Sextap lesbienne", preview: "Movie0022.mp4", mega: "https://mega.nz/file/r1I2kZSB#MqUTrbYMn1Qbz7wNvbyMkwCkyML_UvC9duONjuq0bYg", prix: 1700, wa: defaultWhatsApp, qualite: "premium" },
+            { partenaire: "Admin Principal", nom: "Mastubation sextoy", preview: "Movie0023.mp4", mega: "https://mega.nz/file/ypg3nAoK#LAEAAG8AAAAQIIHl8Gs4fgAAAAAAAAAAECKD5fBrOH4", prix: 1900, wa: defaultWhatsApp, qualite: "premium" },
+            { partenaire: "Admin Principal", nom: "Bizi", preview: "Movie0024.mp4", mega: "https://mega.nz/file/X4h33DqZ#3NYcPmH910oG_63_uABXuoEGFva0TsgY26cHtq2B0qU", prix: 1200, wa: defaultWhatsApp, qualite: "basique" },
+            { partenaire: "Admin Principal", nom: "TS 🤤🤤🤤", preview: "Movie0025.mp4", mega: "https://mega.nz/file/y0ozEBQR#jwPzQMNYAGIRt5Pu5Ys7W2FlUeiq45rzS9GPg5sFMnI", prix: 1500, wa: defaultWhatsApp, qualite: "moyen" },
+            { partenaire: "Admin Principal", nom: "Sans capote", preview: "Movie0027.mp4", mega: "https://mega.nz/file/O8pl2a7B#Mxro5gOjrbtPejIStAy___xmj4mrvlVWmtmbtDRaiQk", prix: 1000, wa: defaultWhatsApp, qualite: "basique" },
+            { partenaire: "Admin Principal", nom: "Bizi jouit", preview: "Movie0028.mp4", mega: "https://mega.nz/file/z4xCFCCa#hhX_jnkCALs_ApTVsiAofVW26K1z6xyj9tziMt8UTDE", prix: 1300, wa: defaultWhatsApp, qualite: "moyen" },
+            { partenaire: "Admin Principal", nom: "Caméra cachée", preview: "Movie0029.mp4", mega: "https://mega.nz/file/T4w0CYTT#WQDRy1DNiyVjbNrUexsCcgSSpQjFas7XlQ9aBqw44QE", prix: 1800, wa: defaultWhatsApp, qualite: "premium" },
+            { partenaire: "Admin Principal", nom: "Bizi robe rouge", preview: "Movie0030.mp4", mega: "https://mega.nz/file/7lx11ADK#fmdyXLatroke7EMyoMSN2pnFnOpUIXzJev2GS9CSDb0", prix: 2000, wa: defaultWhatsApp, qualite: "premium" },
+            { partenaire: "Admin Principal", nom: "Gros cul", preview: "Movie0031.mp4", mega: "https://mega.nz/file/b8xRHBKA#mXjezsgWSQrlMXhlqF0NxPY6bFg2GIpXHzyVlSBMrRg", prix: 1100, wa: defaultWhatsApp, qualite: "basique" },
+            { partenaire: "Admin Principal", nom: "Baya", preview: "Movie0032.mp4", mega: "https://mega.nz/file/foRHyZLZ#_YyIp4r8mFw9F2kZ4h19ZV8YB3fppEebRwNa75jN-mU", prix: 1400, wa: defaultWhatsApp, qualite: "moyen" },
+            { partenaire: "Admin Principal", nom: "Minette sans capote 😍", preview: "Movie0033.mp4", mega: "https://mega.nz/file/D1gD2IjT#AAABoAAAACgkIT-4USD0GQAAAAAAAAAAU1VPzFEg9dE", prix: 1600, wa: defaultWhatsApp, qualite: "premium" },
+            { partenaire: "Admin Principal", nom: "Slip rouge", preview: "Movie0034.mp4", mega: "https://mega.nz/file/jownlKZB#fx8yP_1xKM1T9qO8_3dv91OFdxKEP2NH63bZ3glYFcY", prix: 1700, wa: defaultWhatsApp, qualite: "moyen" },
+            { partenaire: "Admin Principal", nom: "Transexuel cocody", preview: "Movie0035.mp4", mega: "https://mega.nz/file/GkYmhIxR#FV17xWPtKg-N-SlY5YKCEfCQkmEp3C0ZJHVGqgoown0", prix: 1900, wa: defaultWhatsApp, qualite: "premium" },
+            { partenaire: "Admin Principal", nom: "Dans lestomac 💕", preview: "Movie0036.mp4", mega: "https://mega.nz/file/q5ZWiY7L#KB0ASSVE9z_prNryfm3wzDwevxsi6XIkHpA0NfcZbN4", prix: 1200, wa: defaultWhatsApp, qualite: "basique" },
+            { partenaire: "Admin Principal", nom: "Bizi gay Abidjan", preview: "Movie0037.mp4", mega: "https://mega.nz/file/e85SGT4K#2HWJ2G8AAABiDOCzWoIUxQAAAAAAAAAACqwcsiiCFMU", prix: 1500, wa: defaultWhatsApp, qualite: "moyen" },
+            { partenaire: "Admin Principal", nom: "Baise moi fort dans mon con", preview: "Movie0038.mp4", mega: "https://mega.nz/file/X8xC3AaT#DwAAAP8ALQA9CHYyI2UNJgAAAAAAAAAALQh2MtxlECY", prix: 1000, wa: defaultWhatsApp, qualite: "basique" },
+            { partenaire: "Admin Principal", nom: "Sextap residence", preview: "Movie0039.mp4", mega: "https://mega.nz/file/mhY0QB7a#c6gxYhuVpJH1bn4tROMRnOv1RPFfXqFkFz8u7LtgAE4", prix: 1300, wa: defaultWhatsApp, qualite: "moyen" },
+            { partenaire: "Admin Principal", nom: "Bizi", preview: "Movie0040.mp4", mega: "https://mega.nz/file/S5AEQaBI#Y2NlcHQtRW4C6WDRkE3xrAAAAAAAAAAAYYYEuP4qy4w", prix: 1800, wa: defaultWhatsApp, qualite: "premium" },
+            { partenaire: "Admin Principal", nom: "TS ❤️❤️❤️", preview: "Movie0041.mp4", mega: "https://mega.nz/file/axJDkYJa#GzzXX8qvHIw528YZEkQb1PXdMTeFj_prYqpWPk_LALk", prix: 2000, wa: defaultWhatsApp, qualite: "premium" },
+            { partenaire: "Admin Principal", nom: "TS 💪💪", preview: "Movie0042.mp4", mega: "https://mega.nz/file/OkoV3RBD#UDOsYxxZs7FNsSO_4Gm_VhJCuNffJ36b8fS8KuRkKXo", prix: 1100, wa: defaultWhatsApp, qualite: "basique" },
+            { partenaire: "Admin Principal", nom: "TS sans capote", preview: "Movie0043.mp4", mega: "https://mega.nz/file/PxgkHQAK#KdQ98ANtu7OUXwgMAgMS0bQTo0JsoR-knZgyE-SDvUc", prix: 1400, wa: defaultWhatsApp, qualite: "moyen" },
+            { partenaire: "Admin Principal", nom: "Bizi 🎉🎉", preview: "Movie0044.mp4", mega: "https://mega.nz/file/XlIEQDxZ#hMo6zb3WB_4ePDeeENnJj7OYRFLyOYeaN5xopUJwF2w", prix: 1600, wa: defaultWhatsApp, qualite: "moyen" },
+            { partenaire: "Admin Principal", nom: "Gros cul 🤤🤤🤤", preview: "Movie0045.mp4", mega: "https://mega.nz/file/PhgFUTaQ#EQtSRkz7onKDeWYam-HJRqKDLsVG2mWmx8QDntrm884", prix: 1700, wa: defaultWhatsApp, qualite: "premium" },
+            { partenaire: "Admin Principal", nom: "Lélé", preview: "Movie0046.mp4", mega: "https://mega.nz/file/elIFxISL#NjQNCkFjY2VRxMQRG4hXuAAAAAAAAAAAIbD-MTGnfbU", prix: 1900, wa: defaultWhatsApp, qualite: "premium" },
+            { partenaire: "Admin Principal", nom: "Il baise les trois minette", preview: "Movie0047.mp4", mega: "https://mega.nz/file/ypxS1RgA#NjQNCkFjY2W-dGhE0Vdu3wAAAAAAAAAAzgBSZPt4RNI", prix: 1200, wa: defaultWhatsApp, qualite: "basique" },
+            { partenaire: "Admin Principal", nom: "Sodomie 😱😱😱", preview: "Movie0048.mp4", mega: "https://mega.nz/file/u1hEHYRa#oxHjiEOIL9uaxwrH-s-EAsS1ZCv-8WtT5fcWA0lyLv4", prix: 1500, wa: defaultWhatsApp, qualite: "moyen" },
+            { partenaire: "Admin Principal", nom: "Cui mou", preview: "Movie0049.mp4", mega: "https://mega.nz/file/25IgWKAS#APenN4zreC5UZbr-UfP9QLGKpdcr6NnStCK-0E3wyW8", prix: 1000, wa: defaultWhatsApp, qualite: "basique" },
+            { partenaire: "Admin Principal", nom: "Les célébrités", preview: "Movie0050.mp4", mega: "https://mega.nz/file/HkgVxKxA#TPPKWw3CMF-5k2hvNQne5zKr7sihdM_w0UWPiWDaSgY", prix: 1300, wa: defaultWhatsApp, qualite: "moyen" },
+            { partenaire: "Admin Principal", nom: "Bizi gros cul en action", preview: "Movie0051.mp4", mega: "https://mega.nz/file/3to1BQDI#hCEjX-FCvoXLoe7x5C974JUGsLmkL9p2_C1bItJd6ls", prix: 1800, wa: defaultWhatsApp, qualite: "premium" },
+            { partenaire: "Admin Principal", nom: "Les enfants baisent", preview: "Movie0052.mp4", mega: "https://mega.nz/file/WgAXGQbA#alzzLcdfSXkmmfjfBVIAHblE03Mlm_P6BNV8UuzJOeo", prix: 2000, wa: defaultWhatsApp, qualite: "premium" },
+            { partenaire: "Admin Principal", nom: "Tape fort dedans", preview: "Movie0053.mp4", mega: "https://mega.nz/file/atBHFIaD#FmAm3Kcy0_o_yhHm4rB6k8Ic9sNq2MnFHqGDOQ72T-k", prix: 1100, wa: defaultWhatsApp, qualite: "basique" },
+            { partenaire: "Admin Principal", nom: "Slip violet sur le côté", preview: "Movie0054.mp4", mega: "https://mega.nz/file/DsommTgR#dZTHSN6p3J9BOXcWIbzFc_mod69j8GF12itdx7o-Dv0", prix: 1400, wa: defaultWhatsApp, qualite: "moyen" },
+            { partenaire: "Admin Principal", nom: "TS baise", preview: "Movie0055.mp4", mega: "https://mega.nz/file/m0I1nT4a#REBNaJbyheiId6VY2fLXtRlxL91qlx0idWv1obiDEro", prix: 1600, wa: defaultWhatsApp, qualite: "moyen" },
+            { partenaire: "Admin Principal", nom: "TS jouit 😋😋", preview: "Movie0056.mp4", mega: "https://mega.nz/file/mowgnbYJ#AAABAAAAAABYVxHxeWQelQAAAAAAAAAATFcR8Xlks1I", prix: 1700, wa: defaultWhatsApp, qualite: "premium" },
+            { partenaire: "Admin Principal", nom: "Bizi Disponible", preview: "Movie0057.mp4", mega: "https://mega.nz/file/ikRTWDaB#DgAAAP8ALwBi987PiK9vVwAAAAAAAAAAY_cyzvqvb1c", prix: 1900, wa: defaultWhatsApp, qualite: "premium" },
+            { partenaire: "Admin Principal", nom: "Sextap ✨✨", preview: "Movie0059.mp4", mega: "https://mega.nz/file/KwhBiYbZ#Y2NlcHQtRW7QnA0TB3ggAQAAAAAAAAAAs_NpemkfGiE", prix: 1200, wa: defaultWhatsApp, qualite: "basique" },
+            { partenaire: "Admin Principal", nom: "Il baise l'étudiante à l'école et éjacule dedans sans capote", preview: "Movie0060.mp4", mega: "https://mega.nz/file/u5AXiBLb#dcLqFZyqlKM0Nbtce4Zz48xTaZMWCvPpC2LKqiedKnQ", prix: 1500, wa: defaultWhatsApp, qualite: "moyen" },
+            { partenaire: "Admin Principal", nom: "Influenceuse", preview: "Movie0061.mp4", mega: "https://mega.nz/file/jxIBjbgL#YTaWk8tO5uWARRYoexIsMRaTIdX6OXLMcOR6wWq8Vso", prix: 1000, wa: defaultWhatsApp, qualite: "basique" },
+            { partenaire: "Admin Principal", nom: "Il tape dans l'utérus de l'écolière sans capote", preview: "Movie0062.mp4", mega: "https://mega.nz/file/btAwUDYR#Y2NlcHQtRW7A2JqUPGhbhAAAAAAAAAAAo7f-_VIPYaQ", prix: 1300, wa: defaultWhatsApp, qualite: "moyen" },
+            { partenaire: "Admin Principal", nom: "Elle baise en bleu blanc", preview: "Movie0063.mp4", mega: "https://mega.nz/file/GtwwiTrB#eL6H2G8AAACASUuSaeeSBQAAAAAAAAAA6Om3kxvnkgU", prix: 1800, wa: defaultWhatsApp, qualite: "premium" }
         ];
 
         const grid = document.getElementById("video-grid");
-        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v78")) || [];
+        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v80")) || [];
 
         function saveState() {
-            localStorage.setItem("vip_scenes_data_v78", JSON.stringify(scenesData));
+            localStorage.setItem("vip_scenes_data_v80", JSON.stringify(scenesData));
         }
 
         if (scenesData.length === 0) {
@@ -497,10 +543,21 @@
                     preview: item.preview,
                     prix: item.prix,
                     wa: item.wa,
+                    qualite: item.qualite || "moyen",
                     deverrouille: false
                 };
             });
             saveState();
+        }
+
+        function getQualityBadgeHtml(qualite) {
+            if (qualite === 'premium') {
+                return `<div class="quality-badge badge-premium">💎 ULTRA PREMIUM</div>`;
+            } else if (qualite === 'moyen') {
+                return `<div class="quality-badge badge-moyen">🥇 STANDARD (OR)</div>`;
+            } else {
+                return `<div class="quality-badge badge-basique">🥉 BASIQUE</div>`;
+            }
         }
 
         function renderGrid() {
@@ -519,10 +576,15 @@
                     </div>
                 `;
 
+                const vendorName = scene.partenaire || defaultPartenaire;
+                const badgeHtml = getQualityBadgeHtml(scene.qualite);
+
                 if (scene.deverrouille) {
                     card.innerHTML = `
                         ${mediaHtml}
                         <h3>${scene.nom}</h3>
+                        <div class="card-vendor">👤 ${vendorName}</div>
+                        ${badgeHtml}
                         <div class="price-badge">💎 ${scene.prix} Fr</div>
                         <div class="info-id">ID : <b>${scene.id}</b></div>
                         <div class="message" style="color: #ff6600;">
@@ -534,6 +596,8 @@
                     card.innerHTML = `
                         ${mediaHtml}
                         <h3>${scene.nom}</h3>
+                        <div class="card-vendor">👤 ${vendorName}</div>
+                        ${badgeHtml}
                         <div class="price-badge">💎 ${scene.prix} Fr</div>
                         <div class="info-id">ID : <b>${scene.id}</b></div>
                         <a class="whatsapp-btn" href="https://wa.me/${scene.wa}?text=Bonjour,%20je%20veux%20acheter%20la%20clé%20pour%20la%20scène:%20${encodeURIComponent(scene.nom)}%20(ID:%20${scene.id})%20au%20prix%20de%20${scene.prix}Fr" target="_blank">
@@ -579,6 +643,7 @@
             const preview = document.getElementById("new-preview").value.trim() || "Non spécifié";
             const mega = document.getElementById("new-telegram").value.trim() || "Non spécifié";
             const prix = document.getElementById("new-prix").value.trim() || "0";
+            const qualite = document.getElementById("new-qualite").value;
             const wa = document.getElementById("new-whatsapp").value.trim() || "Non spécifié";
 
             if (!document.getElementById("new-nom").value.trim() || !document.getElementById("new-telegram").value.trim()) {
@@ -593,6 +658,7 @@
                 `📂 *Aperçu* : ${preview}\n` +
                 `🔗 *Lien Mega* : ${mega}\n` +
                 `💎 *Prix* : ${prix} Fr\n` +
+                `🌟 *Qualité* : ${qualite}\n` +
                 `💬 *WhatsApp* : ${wa}`;
 
             const urlWhatsApp = `https://wa.me/${defaultWhatsApp}?text=` + encodeURIComponent(texteMessage);
@@ -623,6 +689,7 @@
             listContainer.innerHTML = "";
 
             scenesData.forEach((s, idx) => {
+                const badgeAdmin = getQualityBadgeHtml(s.qualite || 'moyen');
                 listContainer.innerHTML += `
                     <div class="admin-card-item">
                         <div class="media-container">
@@ -630,7 +697,8 @@
                                 <source src="${s.preview}" type="video/mp4">
                             </video>
                         </div>
-                        <h3 style="color: #ff6600; font-size: 12px; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">#${idx + 1} - ${s.nom}</h3>
+                        <h3 style="color: #ff6600; font-size: 12px; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">#${idx + 1} - ${s.nom}</h3>
+                        <div style="margin-bottom: 4px;">${badgeAdmin}</div>
                         <div style="font-size: 10px; color: #333; line-height: 1.4;">
                             👤 <b>Vendeur :</b> <span style="color: #25d366; font-weight: bold;">${s.partenaire || 'Admin Principal'}</span><br>
                             🔑 <b>ID :</b> ${s.id} | 💎 <b>Prix :</b> ${s.prix} Fr<br>
@@ -655,6 +723,7 @@
             const preview = document.getElementById("admin-preview").value.trim();
             const mega = document.getElementById("admin-mega").value.trim();
             const prix = parseInt(document.getElementById("admin-prix").value.trim(), 10);
+            const qualite = document.getElementById("admin-qualite").value;
             const wa = document.getElementById("admin-whatsapp").value.trim() || defaultWhatsApp;
 
             if (!nom || !preview || !mega || isNaN(prix)) {
@@ -672,6 +741,7 @@
                 mega: mega,
                 prix: prix,
                 wa: wa,
+                qualite: qualite,
                 deverrouille: false
             };
 
