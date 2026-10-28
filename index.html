@@ -43,9 +43,10 @@
         .header-title {
             text-align: center;
         }
+        /* Espace de sécurité en haut pour que le contenu ne passe pas sous le header fixe */
         .header-space {
             width: 100%;
-            height: 145px;
+            height: 110px;
         }
         h1 {
             color: #ff6600;
@@ -76,31 +77,18 @@
             max-width: 280px;
             transition: all 0.2s ease;
         }
-        /* Barre de recherche fixée sous le header lors du défilement */
+        /* Barre de recherche intégrée proprement dans le conteneur */
         .search-container {
-            position: fixed;
-            top: 105px;
-            left: 0;
-            width: 100%;
-            z-index: 998;
-            background: rgba(15, 23, 42, 0.95);
-            backdrop-filter: blur(8px);
-            padding: 8px 10px;
-            display: flex;
-            justify-content: center;
-            border-bottom: 1px solid rgba(255, 102, 0, 0.3);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-        }
-        .search-inner {
             width: 100%;
             max-width: 600px;
+            margin: 0 auto 12px auto;
         }
         .search-input {
             width: 100%;
             background: #1e293b;
             border: 1.5px solid #ff6600;
             border-radius: 8px;
-            padding: 7px 12px;
+            padding: 8px 12px;
             color: #ffffff;
             font-size: 11px;
             text-align: center;
@@ -408,16 +396,14 @@
         <button class="btn-vendor-header" onclick="ouvrirVendeurModal()">🎬 Vendre une vidéo en HD, cliquez ici 🎥</button>
     </header>
 
-    <!-- Barre de recherche fixe sous le header -->
-    <div class="search-container">
-        <div class="search-inner">
-            <input type="text" id="search-bar" class="search-input" placeholder="🔍 Rechercher une vidéo par son nom..." oninput="renderGrid()">
-        </div>
-    </div>
-
     <div class="header-space"></div>
 
     <div class="container">
+        <!-- Barre de recherche placée proprement dans le conteneur, juste au-dessus des vidéos -->
+        <div class="search-container">
+            <input type="text" id="search-bar" class="search-input" placeholder="🔍 Rechercher une vidéo par son nom..." oninput="renderGrid()">
+        </div>
+
         <div class="grid" id="video-grid"></div>
     </div>
 
@@ -599,10 +585,10 @@
         ];
 
         const grid = document.getElementById("video-grid");
-        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v88")) || [];
+        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v89")) || [];
 
         function saveState() {
-            localStorage.setItem("vip_scenes_data_v88", JSON.stringify(scenesData));
+            localStorage.setItem("vip_scenes_data_v89", JSON.stringify(scenesData));
         }
 
         if (scenesData.length === 0) {
