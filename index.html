@@ -631,11 +631,11 @@
         ];
 
         const grid = document.getElementById("video-grid");
-        /* Version mise à jour à v97 pour forcer le navigateur à recharger la liste complète avec les liens */
-        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v97")) || [];
+        /* Version mise à jour à v98 pour activer la lecture intelligente au scroll */
+        let scenesData = JSON.parse(localStorage.getItem("vip_scenes_data_v98")) || [];
 
         function saveState() {
-            localStorage.setItem("vip_scenes_data_v97", JSON.stringify(scenesData));
+            localStorage.setItem("vip_scenes_data_v98", JSON.stringify(scenesData));
         }
 
         if (scenesData.length === 0) {
@@ -672,6 +672,27 @@
             return 'card card-basique';
         }
 
+        let observer = null;
+
+        function initVideoObserver() {
+            if (observer) observer.disconnect();
+
+            observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const video = entry.target;
+                    if (entry.isIntersecting) {
+                        video.play().catch(() => {});
+                    } else {
+                        video.pause();
+                    }
+                });
+            }, { threshold: 0.5 }); // La vidéo se lance quand elle est visible à 50% sur l'écran
+
+            document.querySelectorAll('#video-grid video.preview-video').forEach(video => {
+                observer.observe(video);
+            });
+        }
+
         function renderGrid() {
             grid.innerHTML = "";
             const query = document.getElementById("search-bar").value.toLowerCase().trim();
@@ -688,7 +709,7 @@
 
                 const mediaHtml = `
                     <div class="media-container">
-                        <video class="preview-video" autoplay muted loop playsinline webkit-playsinline preload="auto">
+                        <video class="preview-video" muted loop playsinline webkit-playsinline preload="none">
                             <source src="${scene.preview}" type="video/mp4">
                         </video>
                     </div>
@@ -731,11 +752,8 @@
                 grid.appendChild(card);
             });
 
-            setTimeout(() => {
-                document.querySelectorAll('#video-grid video.preview-video').forEach(video => {
-                    video.play().catch(e => {});
-                });
-            }, 100);
+            // Activer la détection au scroll
+            setTimeout(initVideoObserver, 100);
         }
 
         function verifier(index, cleAttendue) {
@@ -828,7 +846,7 @@
                 listContainer.innerHTML += `
                     <div class="admin-card-item">
                         <div class="media-container">
-                            <video class="preview-video" autoplay muted loop playsinline webkit-playsinline preload="auto">
+                            <video class="preview-video" muted loop playsinline webkit-playsinline preload="none">
                                 <source src="${s.preview}" type="video/mp4">
                             </video>
                         </div>
@@ -844,12 +862,6 @@
                     </div>
                 `;
             });
-
-            setTimeout(() => {
-                listContainer.querySelectorAll('video.preview-video').forEach(video => {
-                    video.play().catch(e => {});
-                });
-            }, 100);
         }
 
         function fermerListeAdmin() {
