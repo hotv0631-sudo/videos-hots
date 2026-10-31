@@ -35,7 +35,6 @@
         video.preview-video { width: 100%; height: 100%; object-fit: cover; display: block; }
         .profil-img { width: 100%; height: 100%; object-fit: cover; display: block; }
         
-        /* FILIGRANE VISUEL SUR LA PAGE */
         .watermark-overlay { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-15deg); color: rgba(255, 255, 255, 0.35); font-size: 26px; font-weight: 900; letter-spacing: 2px; pointer-events: none; z-index: 10; text-transform: uppercase; white-space: nowrap; text-shadow: 0 2px 8px rgba(0,0,0,0.6); }
 
         .card h3 { margin: 0 0 3px 0; color: #f1f5f9; font-size: 11.5px; text-align: center; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -452,6 +451,7 @@
             { partenaire: "Admin Principal", nom: "Elle baise en bleu blanc", preview: "Movie0063.mp4", mega: "https://mega.nz/file/GtwwiTrB#eL6H2G8AAACASUuSaeeSBQAAAAAAAAAA6Om3kxvnkgU", prix: 1800, wa: adminWhatsAppNumber, qualite: "premium" }
         ];
 
+        // GESTION INTELLIGENTE DU STOCKAGE LOCAL (Conserve le temps exact des profils existants)
         let scenesData = JSON.parse(localStorage.getItem("local_vip_scenes_v118")) || [];
         let profilsData = JSON.parse(localStorage.getItem("local_vip_profils_v118")) || [];
 
@@ -463,7 +463,7 @@
         function verifierExpirationProfils() {
             const maintenant = Date.now();
             const avant = profilsData.length;
-            profilsData = profilsData.filter(p => p.expireAt > maintenant);
+            profilsData = profilDataFilter = profilsData.filter(p => p.expireAt > maintenant);
             if (profilsData.length !== avant) { saveState(); }
         }
 
@@ -476,8 +476,18 @@
             saveState();
         }
 
+        // Si le localStorage est vide pour les profils, on charge la base, 
+        // MAIS si des profils existent déjà, on les CONSERVE avec leurs vraies dates d'expiration !
         if (profilsData.length === 0) {
             profilsData = baseProfils;
+            saveState();
+        } else {
+            // S'assure que si de nouveaux profils par défaut sont ajoutés dans le code, ils s'ajoutent sans écraser les anciens
+            baseProfils.forEach(baseP => {
+                if (!profilsData.some(p => p.nom === baseP.nom)) {
+                    profilsData.push(baseP);
+                }
+            });
             saveState();
         }
 
@@ -679,7 +689,6 @@
             }
         }
 
-        // FONCTION POUR GRAVER LE FILIGRANE SUR L'IMAGE LORS D'UN TÉLÉCHARGEMENT VISITEUR
         function telechargerImageAvecFiligrane(e, imgUrl, nomProfil) {
             e.preventDefault(); 
             const img = new Image();
