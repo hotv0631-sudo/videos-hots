@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>VIDEO BIZI A VENDRE & BIZI DISPONIBLE</title>
+    <title>BIZI DISPONIBLE & VIDEO BIZI A VENDRE</title>
     <style>
         *, *::before, *::after {
             box-sizing: border-box;
@@ -31,7 +31,7 @@
             z-index: 999;
             text-align: center;
             padding: 8px 10px;
-            border-bottom: 3px solid #ff6600;
+            border-bottom: 3px solid #22c55e;
             background: rgba(15, 23, 42, 0.98);
             backdrop-filter: blur(8px);
             box-shadow: 0 4px 20px rgba(0,0,0,0.6);
@@ -42,7 +42,7 @@
         }
         .header-title { text-align: center; }
         h1 {
-            color: #ff6600;
+            color: #22c55e;
             font-size: 13.5px;
             margin-bottom: 1px;
             letter-spacing: 0.8px;
@@ -78,13 +78,13 @@
             transition: all 0.2s ease;
         }
         .tab-btn.active {
-            background: linear-gradient(135deg, #ff6600, #ff8533);
+            background: linear-gradient(135deg, #22c55e, #16a34a);
             color: white;
-            border-color: #ff6600;
-            box-shadow: 0 2px 8px rgba(255, 102, 0, 0.4);
+            border-color: #22c55e;
+            box-shadow: 0 2px 8px rgba(34, 197, 94, 0.4);
         }
         .subtabs-container {
-            display: none;
+            display: flex;
             gap: 4px;
             width: 100%;
             max-width: 600px;
@@ -130,7 +130,7 @@
         .search-input {
             width: 100%;
             background: #1e293b;
-            border: 1.5px solid #ff6600;
+            border: 1.5px solid #22c55e;
             border-radius: 8px;
             padding: 5px 12px;
             color: #ffffff;
@@ -142,7 +142,7 @@
         .search-input::placeholder { color: #94a3b8; }
         .header-space {
             width: 100%;
-            height: 155px;
+            height: 195px;
         }
         .container {
             width: 100%;
@@ -273,7 +273,7 @@
         input, select, textarea {
             width: 100%;
             background: #0f172a;
-            border: 1.5px solid #ff6600;
+            border: 1.5px solid #22c55e;
             border-radius: 5px;
             padding: 5px;
             color: #ffffff;
@@ -310,7 +310,7 @@
             position: fixed;
             bottom: 15px;
             right: 15px;
-            background: #ff6600;
+            background: #22c55e;
             color: white;
             border: none;
             border-radius: 50%;
@@ -336,7 +336,7 @@
         }
         .modal-content {
             background: #1e293b;
-            border: 2px solid #ff6600;
+            border: 2px solid #22c55e;
             padding: 15px;
             border-radius: 12px;
             width: 100%;
@@ -345,7 +345,7 @@
             overflow-y: auto;
             color: #f8fafc;
         }
-        .modal-content h2 { color: #ff6600; font-size: 15px; margin-bottom: 10px; text-align: center; }
+        .modal-content h2 { color: #22c55e; font-size: 15px; margin-bottom: 10px; text-align: center; }
         .info-box-important {
             background: rgba(34, 197, 94, 0.15);
             border: 2px dashed #22c55e;
@@ -362,7 +362,7 @@
         .btn-save { background: #22c55e; color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 11px; padding: 8px; flex: 1; }
         .btn-close { background: #ef4444; color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 11px; padding: 8px; flex: 1; }
 
-        /* PAGE PROFIL DÉDIÉE (SWIPE HORIZONTAL SÉCURISÉ) */
+        /* PAGE PROFIL DÉDIÉE (SWIPE HORIZONTAL UNIQUE) */
         #profile-detail-view {
             display: none;
             width: 100%;
@@ -395,10 +395,10 @@
             border-radius: 8px;
             background: #000;
             -webkit-overflow-scrolling: touch;
-            scrollbar-width: none; /* Firefox */
+            scrollbar-width: none;
         }
         .horizontal-slider-container::-webkit-scrollbar {
-            display: none; /* Chrome, Safari, Opera */
+            display: none;
         }
         .profile-slide-img {
             flex: 0 0 100%;
@@ -410,7 +410,6 @@
             scroll-snap-stop: always;
             border-radius: 8px;
         }
-        /* Boutons indicateurs sous les photos */
         .slider-dots {
             display: flex;
             justify-content: center;
@@ -483,13 +482,14 @@
 
     <header>
         <div class="header-title">
-            <h1>VIDEO BIZI A VENDRE & BIZI DISPONIBLE</h1>
+            <h1>BIZI DISPONIBLE & VIDEO BIZI A VENDRE</h1>
             <div class="subtitle">🤑 Commandes et rencontres sécurisées par WhatsApp 🤑</div>
         </div>
         
+        <!-- ONGLETS INVERSÉS : Bizi Disponible EN PREMIER -->
         <div class="tabs-container">
-            <button id="tab-videos" class="tab-btn active" onclick="changerOnglet('videos')">Vidéo a vendre</button>
-            <button id="tab-profils" class="tab-btn" onclick="changerOnglet('profils')">Bizi Disponible</button>
+            <button id="tab-profils" class="tab-btn active" onclick="changerOnglet('profils')">Bizi Disponible</button>
+            <button id="tab-videos" class="tab-btn" onclick="changerOnglet('videos')">Vidéo a vendre</button>
         </div>
 
         <div class="subtabs-container" id="subtabs-profils">
@@ -499,7 +499,7 @@
             <button id="subtab-trans" class="subtab-btn" onclick="changerSousOnglet('trans')">Bizi Trans</button>
         </div>
 
-        <button class="btn-vendor-header" id="btn-modal-action" onclick="ouvrirVendeurModal()">Cliquez ici pour vendre une vidéo</button>
+        <button class="btn-vendor-header" id="btn-modal-action" onclick="ouvrirVendeurModal()">Cliquez ici pour ajouter un Bizi</button>
         
         <div class="search-container-header">
             <input type="text" id="search-bar" class="search-input" placeholder="🔍 Rechercher..." oninput="renderGrid()">
@@ -527,11 +527,11 @@
             <h2 id="modal-title">🔥 Inscription Bizi Disponible 📸</h2>
             
             <div class="info-box-important">
-                <b>✨ SWIPE DE PHOTOS (Max 5) :</b><br>
-                Ajoutez jusqu'à 5 photos. Les visiteurs verront une seule photo à la fois et pourront scroller latéralement.
+                <b>✨ EXPIRATION 30 JOURS & SWIPE DE PHOTOS :</b><br>
+                Votre profil restera actif 30 jours. Vous pouvez ajouter jusqu'à 5 photos à faire défiler.
             </div>
 
-            <div id="form-videos-fields">
+            <div id="form-videos-fields" style="display: none;">
                 <label>Nom du Partenaire / Vendeur :</label>
                 <input type="text" id="new-partenaire" placeholder="Ex: Jean Kouassi">
                 <label>Titre de la vidéo :</label>
@@ -552,9 +552,9 @@
                 <input type="text" id="new-whatsapp" placeholder="2250105553740">
             </div>
 
-            <div id="form-profils-fields" style="display: none;">
+            <div id="form-profils-fields">
                 <label>Catégorie Bizi :</label>
-                <select id="profil-categorie" disabled style="background: #1e293b; color: #38bdf8; font-weight: bold;">
+                <select id="profil-categorie" disabled style="background: #1e293b; color: #22c55e; font-weight: bold;">
                     <option value="femme">Bizi Femme</option>
                     <option value="homme">Bizi Homme</option>
                     <option value="blanche">Bizi Blanche</option>
@@ -564,7 +564,7 @@
                 <label>Votre Nom / Pseudo :</label>
                 <input type="text" id="profil-nom" placeholder="Ex: Vanessa Bizi">
 
-                <label>Liens de vos Photos (Jusqu'à 5 liens, séparés par des virgules ou retours à la ligne) :</label>
+                <label>Liens de vos Photos (Jusqu'à 5 liens, séparés par virgules ou retours à la ligne) :</label>
                 <textarea id="profil-photos" placeholder="https://photo1.jpg, https://photo2.jpg..." style="height: 70px;"></textarea>
 
                 <label>Description (Quartier, dispos, etc.) :</label>
@@ -585,8 +585,8 @@
     <div id="admin-list-modal" class="modal-overlay">
         <div class="modal-content">
             <h2>📂 Tableau de Bord VIP (Admin)</h2>
-            <div style="background: #1e293b; border: 2px solid #ff6600; padding: 10px; border-radius: 8px; margin-bottom: 15px;">
-                <h3 style="color: #ff6600; font-size: 13px; margin-bottom: 8px; text-align: center;">🎬 Ajouter une Vidéo</h3>
+            <div style="background: #1e293b; border: 2px solid #22c55e; padding: 10px; border-radius: 8px; margin-bottom: 15px;">
+                <h3 style="color: #22c55e; font-size: 13px; margin-bottom: 8px; text-align: center;">🎬 Ajouter une Vidéo</h3>
                 <label>Nom du Partenaire :</label>
                 <input type="text" id="admin-v-partenaire" placeholder="Ex: Kouassi Pro">
                 <label>Titre de la vidéo :</label>
@@ -614,7 +614,9 @@
     <script>
         const defaultWhatsApp = "2250105553740"; 
         const defaultPartenaire = "Admin Principal";
-        let ongletActif = "videos";
+        
+        // ONGLET ACTIF PAR DÉFAUT : "profils" (Bizi Disponible en premier)
+        let ongletActif = "profils";
         let sousOngletActif = "femme";
         let vueDetailleeActive = false;
 
@@ -673,12 +675,12 @@
             { partenaire: "Le Procureur", nom: "Love clitoris Final", preview: "http://hc1.checker.in/file2link/documents/file_670698.mp4/Highlight0056.mp4", mega: "https://mega.nz/file/ThQl2QYL#OoNr42p_HRAeztCnVgTa3sIdvfblpVxNjaVaNuYwI3E", prix: 2200, wa: "0103115237", qualite: "premium" }
         ];
 
-        let scenesData = JSON.parse(localStorage.getItem("local_vip_scenes_v110")) || [];
-        let profilsData = JSON.parse(localStorage.getItem("local_vip_profils_v110")) || [];
+        let scenesData = JSON.parse(localStorage.getItem("local_vip_scenes_v111")) || [];
+        let profilsData = JSON.parse(localStorage.getItem("local_vip_profils_v111")) || [];
 
         function saveState() {
-            localStorage.setItem("local_vip_scenes_v110", JSON.stringify(scenesData));
-            localStorage.setItem("local_vip_profils_v110", JSON.stringify(profilsData));
+            localStorage.setItem("local_vip_scenes_v111", JSON.stringify(scenesData));
+            localStorage.setItem("local_vip_profils_v111", JSON.stringify(profilsData));
         }
 
         function verifierExpirationProfils() {
@@ -719,21 +721,21 @@
         function changerOnglet(nomOnglet) {
             ongletActif = nomOnglet;
             vueDetailleeActive = false;
-            document.getElementById("tab-videos").className = nomOnglet === "videos" ? "tab-btn active" : "tab-btn";
             document.getElementById("tab-profils").className = nomOnglet === "profils" ? "tab-btn active" : "tab-btn";
+            document.getElementById("tab-videos").className = nomOnglet === "videos" ? "tab-btn active" : "tab-btn";
             
             const subtabs = document.getElementById("subtabs-profils");
             const headerSpace = document.getElementById("header-space");
             const btnModalAction = document.getElementById("btn-modal-action");
 
-            if (nomOnglet === "videos") {
-                subtabs.style.display = "none";
-                headerSpace.style.height = "155px";
-                btnModalAction.innerText = "Cliquez ici pour vendre une vidéo";
-            } else {
+            if (nomOnglet === "profils") {
                 subtabs.style.display = "flex";
                 headerSpace.style.height = "195px";
                 btnModalAction.innerText = "Cliquez ici pour ajouter un Bizi";
+            } else {
+                subtabs.style.display = "none";
+                headerSpace.style.height = "155px";
+                btnModalAction.innerText = "Cliquez ici pour vendre une vidéo";
             }
             renderGrid();
         }
@@ -862,7 +864,33 @@
             grid.innerHTML = "";
             const query = document.getElementById("search-bar").value.toLowerCase().trim();
 
-            if (ongletActif === "videos") {
+            if (ongletActif === "profils") {
+                profilsData.forEach((profil) => {
+                    if (profil.cat !== sousOngletActif) return;
+                    if (query && !profil.nom.toLowerCase().includes(query) && !profil.desc.toLowerCase().includes(query)) return;
+
+                    const card = document.createElement("div");
+                    card.className = "card card-profil";
+
+                    const photosList = Array.isArray(profil.photos) ? profil.photos : [profil.photo];
+                    const premierePhoto = photosList[0] || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500';
+
+                    card.innerHTML = `
+                        <div class="media-container" onclick="afficherProfilDetail(${profil.id})" title="Cliquez pour voir le profil">
+                            <img class="profil-img" src="${premierePhoto}" alt="${profil.nom}" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500'">
+                        </div>
+                        <h3>${profil.nom}</h3>
+                        <div class="quality-badge badge-profil">🔥 BIZI DISPONIBLE (${photosList.length} photo${photosList.length > 1 ? 's' : ''})</div>
+                        <div class="profil-desc">${profil.desc}</div>
+                        <div class="countdown-badge">${formatTempsRestant(profil.expireAt)}</div>
+                        <button class="whatsapp-btn" style="border:none; width:100%; cursor:pointer;" onclick="afficherProfilDetail(${profil.id})">
+                            💬 Contacter
+                        </button>
+                    `;
+                    grid.appendChild(card);
+                });
+
+            } else {
                 scenesData.forEach((scene, index) => {
                     if (query && !scene.nom.toLowerCase().includes(query)) return;
 
@@ -917,32 +945,6 @@
                     grid.appendChild(card);
                 });
                 setTimeout(initVideoObserver, 100);
-
-            } else {
-                profilsData.forEach((profil) => {
-                    if (profil.cat !== sousOngletActif) return;
-                    if (query && !profil.nom.toLowerCase().includes(query) && !profil.desc.toLowerCase().includes(query)) return;
-
-                    const card = document.createElement("div");
-                    card.className = "card card-profil";
-
-                    const photosList = Array.isArray(profil.photos) ? profil.photos : [profil.photo];
-                    const premierePhoto = photosList[0] || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500';
-
-                    card.innerHTML = `
-                        <div class="media-container" onclick="afficherProfilDetail(${profil.id})" title="Cliquez pour voir le profil">
-                            <img class="profil-img" src="${premierePhoto}" alt="${profil.nom}" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500'">
-                        </div>
-                        <h3>${profil.nom}</h3>
-                        <div class="quality-badge badge-profil">🔥 BIZI DISPONIBLE (${photosList.length} photo${photosList.length > 1 ? 's' : ''})</div>
-                        <div class="profil-desc">${profil.desc}</div>
-                        <div class="countdown-badge">${formatTempsRestant(profil.expireAt)}</div>
-                        <button class="whatsapp-btn" style="border:none; width:100%; cursor:pointer;" onclick="afficherProfilDetail(${profil.id})">
-                            💬 Contacter
-                        </button>
-                    `;
-                    grid.appendChild(card);
-                });
             }
         }
 
@@ -973,17 +975,17 @@
             const formProfils = document.getElementById("form-profils-fields");
             const btnSubmit = document.getElementById("btn-submit-action");
 
-            if (ongletActif === "videos") {
-                modalTitle.innerText = "🎬 Proposer / Publier une Vidéo 🎥";
-                formVideos.style.display = "block";
-                formProfils.style.display = "none";
-                btnSubmit.innerText = "Publier la vidéo";
-            } else {
+            if (ongletActif === "profils") {
                 modalTitle.innerText = `🔥 Inscription Bizi (${sousOngletActif.toUpperCase()}) 📸`;
                 formVideos.style.display = "none";
                 formProfils.style.display = "block";
                 document.getElementById("profil-categorie").value = sousOngletActif;
                 btnSubmit.innerText = "Publier mon profil";
+            } else {
+                modalTitle.innerText = "🎬 Proposer / Publier une Vidéo 🎥";
+                formVideos.style.display = "block";
+                formProfils.style.display = "none";
+                btnSubmit.innerText = "Publier la vidéo";
             }
             document.getElementById("vendor-modal").style.display = "flex";
         }
