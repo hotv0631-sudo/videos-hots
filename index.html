@@ -35,7 +35,7 @@
         video.preview-video { width: 100%; height: 100%; object-fit: cover; display: block; }
         .profil-img { width: 100%; height: 100%; object-fit: cover; display: block; }
         
-        /* FILIGRANE GRAND, AU CENTRE, SANS ENCADREMENT ET TRANSPARENT */
+        /* FILIGRANE VISUEL SUR LA PAGE */
         .watermark-overlay { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-15deg); color: rgba(255, 255, 255, 0.35); font-size: 26px; font-weight: 900; letter-spacing: 2px; pointer-events: none; z-index: 10; text-transform: uppercase; white-space: nowrap; text-shadow: 0 2px 8px rgba(0,0,0,0.6); }
 
         .card h3 { margin: 0 0 3px 0; color: #f1f5f9; font-size: 11.5px; text-align: center; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -187,7 +187,7 @@
         </div>
     </div>
 
-    <!-- TABLEAU DE BORD ADMIN (SANS FILIGRANE) -->
+    <!-- TABLEAU DE BORD ADMIN -->
     <div id="admin-list-modal" class="modal-overlay">
         <div class="modal-content">
             <h2>📂 Tableau de Bord VIP (Admin)</h2>
@@ -561,7 +561,7 @@
                     const cleanUrl = imgUrl.trim();
                     galerieHtml += `
                         <div class="profile-slide-img-wrapper" id="slide-${id}-${idx}">
-                            <img class="profile-slide-img" src="${cleanUrl}" alt="${profil.nom}" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500'">
+                            <img class="profile-slide-img" src="${cleanUrl}" alt="${profil.nom}" crossorigin="anonymous" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500'">
                             <div class="watermark-overlay">Bizi 🤑</div>
                         </div>`;
                     dotsHtml += `<button class="dot-btn ${idx === 0 ? 'active' : ''}" onclick="scrollerVersSlide(${id}, ${idx})"></button>`;
@@ -641,8 +641,8 @@
                     const premierePhoto = photosList[0] || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500';
 
                     card.innerHTML = `
-                        <div class="media-container" onclick="afficherProfilDetail(${profil.id})" title="Cliquez pour voir le profil">
-                            <img class="profil-img" src="${premierePhoto}" alt="${profil.nom}" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500'">
+                        <div class="media-container" onclick="afficherProfilDetail(${profil.id})" title="Cliquez pour voir le profil" oncontextmenu="telechargerImageAvecFiligrane(event, '${premierePhoto}', '${profil.nom}')">
+                            <img class="profil-img" src="${premierePhoto}" alt="${profil.nom}" crossorigin="anonymous" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500'">
                             <div class="watermark-overlay">Bizi 🤑</div>
                         </div>
                         <h3>${profil.nom}</h3>
@@ -677,6 +677,45 @@
                 });
                 setTimeout(initVideoObserver, 100);
             }
+        }
+
+        // FONCTION POUR GRAVER LE FILIGRANE SUR L'IMAGE LORS D'UN TÉLÉCHARGEMENT VISITEUR
+        function telechargerImageAvecFiligrane(e, imgUrl, nomProfil) {
+            e.preventDefault(); // Empêche le menu par défaut pour forcer notre gravure
+            const img = new Image();
+            img.crossOrigin = "anonymous";
+            img.src = imgUrl;
+            img.onload = function() {
+                const canvas = document.createElement("canvas");
+                canvas.width = img.width;
+                canvas.height = img.height;
+                const ctx = canvas.getContext("2d");
+                
+                // Dessiner l'image originale
+                ctx.drawImage(img, 0, 0);
+
+                // Configurer le texte du filigrane gravé au centre
+                ctx.save();
+                ctx.translate(canvas.width / 2, canvas.height / 2);
+                ctx.rotate(-15 * Math.PI / 180);
+                
+                const fontSize = Math.max(24, Math.floor(canvas.width / 12));
+                ctx.font = `bold ${fontSize}px sans-serif`;
+                ctx.fillStyle = "rgba(255, 255, 255, 0.4)";
+                ctx.textAlign = "center";
+                ctx.textBaseline = "middle";
+                ctx.shadowColor = "rgba(0, 0, 0, 0.8)";
+                ctx.shadowBlur = 10;
+                
+                ctx.fillText("BIZI 🤑", 0, 0);
+                ctx.restore();
+
+                // Télécharger l'image modifiée avec le filigrane gravé
+                const link = document.createElement("a");
+                link.download = `bizi_${nomProfil.replace(/\s+/g, '_')}.jpg`;
+                link.href = canvas.toDataURL("image/jpeg", 0.9);
+                link.click();
+            };
         }
 
         setInterval(() => { if (ongletActif === "profils" && !vueDetailleeActive) { renderGrid(); } }, 1000);
@@ -979,7 +1018,7 @@
         }
 
         function supprimerProfilAdmin(id) {
-            if (confirm("Voulez-vous vraiment supprimer ce profil Bizi ?")) {
+            if (confirm("Voundriez-vous vraiment supprimer ce profil Bizi ?")) {
                 profilsData = profilsData.filter(item => item.id !== id);
                 saveState();
                 renderAdminProfilsList();
