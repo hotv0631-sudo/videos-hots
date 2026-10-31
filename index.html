@@ -583,12 +583,12 @@
             { partenaire: "Le Procureur", nom: "Love clitoris Final", preview: "http://hc1.checker.in/file2link/documents/file_670698.mp4/Highlight0056.mp4", mega: "https://mega.nz/file/ThQl2QYL#OoNr42p_HRAeztCnVgTa3sIdvfblpVxNjaVaNuYwI3E", prix: 2200, wa: "0103115237", qualite: "premium" }
         ];
 
-        let scenesData = JSON.parse(localStorage.getItem("local_vip_scenes_v103")) || [];
-        let profilsData = JSON.parse(localStorage.getItem("local_vip_profils_v103")) || [];
+        let scenesData = JSON.parse(localStorage.getItem("local_vip_scenes_v104")) || [];
+        let profilsData = JSON.parse(localStorage.getItem("local_vip_profils_v104")) || [];
 
         function saveState() {
-            localStorage.setItem("local_vip_scenes_v103", JSON.stringify(scenesData));
-            localStorage.setItem("local_vip_profils_v103", JSON.stringify(profilsData));
+            localStorage.setItem("local_vip_scenes_v104", JSON.stringify(scenesData));
+            localStorage.setItem("local_vip_profils_v104", JSON.stringify(profilsData));
         }
 
         if (scenesData.length === 0) {
@@ -721,7 +721,6 @@
                 setTimeout(initVideoObserver, 100);
 
             } else {
-                // FILTRE STRICT : Affiche uniquement les profils du sous-onglet actif
                 profilsData.forEach((profil) => {
                     if (profil.cat !== sousOngletActif) return;
                     if (query && !profil.nom.toLowerCase().includes(query) && !profil.desc.toLowerCase().includes(query)) return;
@@ -772,10 +771,9 @@
                 formProfils.style.display = "none";
                 btnSubmit.innerText = "Publier la vidéo";
             } else {
-                modalTitle.innerText = `🔥 Inscription Bizi (${sousOngletActif.toUpperCase())} 📸`;
+                modalTitle.innerText = `🔥 Inscription Bizi (${sousOngletActif.toUpperCase()}) 📸`;
                 formVideos.style.display = "none";
                 formProfils.style.display = "block";
-                // Verrouille automatiquement le select sur le sous-onglet actif pour éviter toute erreur
                 document.getElementById("profil-categorie").value = sousOngletActif;
                 btnSubmit.innerText = "Publier mon profil";
             }
@@ -811,7 +809,7 @@
                 alert("✅ Vidéo ajoutée avec succès !");
 
             } else {
-                const cat = sousOngletActif; // Force l'enregistrement dans le sous-onglet actuellement visité
+                const cat = sousOngletActif;
                 const nom = document.getElementById("profil-nom").value.trim();
                 const photo = document.getElementById("profil-photo").value.trim();
                 const desc = document.getElementById("profil-desc").value.trim();
