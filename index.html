@@ -560,7 +560,7 @@
                 if (imgUrl && imgUrl.trim() !== '') {
                     const cleanUrl = imgUrl.trim();
                     galerieHtml += `
-                        <div class="profile-slide-img-wrapper" id="slide-${id}-${idx}">
+                        <div class="profile-slide-img-wrapper" id="slide-${id}-${idx}" oncontextmenu="telechargerImageAvecFiligrane(event, '${cleanUrl}', '${profil.nom}')">
                             <img class="profile-slide-img" src="${cleanUrl}" alt="${profil.nom}" crossorigin="anonymous" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500'">
                             <div class="watermark-overlay">Bizi 🤑</div>
                         </div>`;
@@ -681,7 +681,7 @@
 
         // FONCTION POUR GRAVER LE FILIGRANE SUR L'IMAGE LORS D'UN TÉLÉCHARGEMENT VISITEUR
         function telechargerImageAvecFiligrane(e, imgUrl, nomProfil) {
-            e.preventDefault(); // Empêche le menu par défaut pour forcer notre gravure
+            e.preventDefault(); 
             const img = new Image();
             img.crossOrigin = "anonymous";
             img.src = imgUrl;
@@ -691,10 +691,8 @@
                 canvas.height = img.height;
                 const ctx = canvas.getContext("2d");
                 
-                // Dessiner l'image originale
                 ctx.drawImage(img, 0, 0);
 
-                // Configurer le texte du filigrane gravé au centre
                 ctx.save();
                 ctx.translate(canvas.width / 2, canvas.height / 2);
                 ctx.rotate(-15 * Math.PI / 180);
@@ -710,7 +708,6 @@
                 ctx.fillText("BIZI 🤑", 0, 0);
                 ctx.restore();
 
-                // Télécharger l'image modifiée avec le filigrane gravé
                 const link = document.createElement("a");
                 link.download = `bizi_${nomProfil.replace(/\s+/g, '_')}.jpg`;
                 link.href = canvas.toDataURL("image/jpeg", 0.9);
@@ -1018,7 +1015,7 @@
         }
 
         function supprimerProfilAdmin(id) {
-            if (confirm("Voundriez-vous vraiment supprimer ce profil Bizi ?")) {
+            if (confirm("Voulez-vous vraiment supprimer ce profil Bizi ?")) {
                 profilsData = profilsData.filter(item => item.id !== id);
                 saveState();
                 renderAdminProfilsList();
