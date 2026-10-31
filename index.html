@@ -35,8 +35,8 @@
         video.preview-video { width: 100%; height: 100%; object-fit: cover; display: block; }
         .profil-img { width: 100%; height: 100%; object-fit: cover; display: block; }
         
-        /* FILIGRANE "Bizi 🤑" TRANSPARENT SUR LES PHOTOS DE LA PAGE D'ACCUEIL */
-        .watermark-overlay { position: absolute; bottom: 8px; right: 8px; background: rgba(0, 0, 0, 0.45); border: 1px solid rgba(34, 197, 94, 0.5); color: rgba(34, 197, 94, 0.9); padding: 3px 8px; border-radius: 4px; font-size: 9.5px; font-weight: bold; letter-spacing: 0.5px; pointer-events: none; z-index: 10; backdrop-filter: blur(2px); }
+        /* FILIGRANE GRAND, AU CENTRE, SANS ENCADREMENT ET TRANSPARENT */
+        .watermark-overlay { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-15deg); color: rgba(255, 255, 255, 0.35); font-size: 26px; font-weight: 900; letter-spacing: 2px; pointer-events: none; z-index: 10; text-transform: uppercase; white-space: nowrap; text-shadow: 0 2px 8px rgba(0,0,0,0.6); }
 
         .card h3 { margin: 0 0 3px 0; color: #f1f5f9; font-size: 11.5px; text-align: center; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .card-vendor { font-size: 10px; color: #4ade80; font-weight: bold; text-align: center; margin-bottom: 5px; }
