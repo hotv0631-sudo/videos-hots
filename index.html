@@ -5,508 +5,80 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>BIZI DISPONIBLE & VIDEO BIZI A VENDRE</title>
     <style>
-        *, *::before, *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-        html, body {
-            width: 100%;
-            overflow-x: hidden;
-            background-color: #0f172a !important;
-            color: #f8fafc;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-        }
-        body {
-            padding: 0 10px 15px 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: 999;
-            text-align: center;
-            padding: 8px 10px;
-            border-bottom: 3px solid #22c55e;
-            background: rgba(15, 23, 42, 0.98);
-            backdrop-filter: blur(8px);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.6);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 5px;
-        }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html, body { width: 100%; overflow-x: hidden; background-color: #0f172a !important; color: #f8fafc; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        body { padding: 0 10px 15px 10px; display: flex; flex-direction: column; align-items: center; }
+        header { position: fixed; top: 0; left: 0; width: 100%; z-index: 999; text-align: center; padding: 8px 10px; border-bottom: 3px solid #22c55e; background: rgba(15, 23, 42, 0.98); backdrop-filter: blur(8px); box-shadow: 0 4px 20px rgba(0,0,0,0.6); display: flex; flex-direction: column; align-items: center; gap: 5px; }
         .header-title { text-align: center; }
-        h1 {
-            color: #22c55e;
-            font-size: 13.5px;
-            margin-bottom: 1px;
-            letter-spacing: 0.8px;
-            text-transform: uppercase;
-            word-break: break-word;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-        }
-        .subtitle {
-            font-size: 8px;
-            color: #38bdf8;
-            font-weight: bold;
-            letter-spacing: 0.5px;
-        }
-        .tabs-container {
-            display: flex;
-            gap: 6px;
-            width: 100%;
-            max-width: 600px;
-            justify-content: center;
-            padding: 2px 0;
-        }
-        .tab-btn {
-            flex: 1;
-            background: #1e293b;
-            color: #94a3b8;
-            border: 1.5px solid #475569;
-            padding: 6px 4px;
-            border-radius: 6px;
-            font-weight: bold;
-            font-size: 10px;
-            cursor: pointer;
-            text-align: center;
-            transition: all 0.2s ease;
-        }
-        .tab-btn.active {
-            background: linear-gradient(135deg, #22c55e, #16a34a);
-            color: white;
-            border-color: #22c55e;
-            box-shadow: 0 2px 8px rgba(34, 197, 94, 0.4);
-        }
-        .subtabs-container {
-            display: flex;
-            gap: 4px;
-            width: 100%;
-            max-width: 600px;
-            justify-content: center;
-            padding: 2px 0;
-        }
-        .subtab-btn {
-            flex: 1;
-            background: #0f172a;
-            color: #cbd5e1;
-            border: 1px solid #22c55e;
-            padding: 4px 2px;
-            border-radius: 5px;
-            font-weight: bold;
-            font-size: 8.5px;
-            cursor: pointer;
-            text-align: center;
-            transition: all 0.2s ease;
-        }
-        .subtab-btn.active {
-            background: #22c55e;
-            color: white;
-            box-shadow: 0 2px 6px rgba(34, 197, 94, 0.4);
-        }
-        .btn-vendor-header {
-            background: linear-gradient(135deg, #22c55e, #16a34a);
-            color: white;
-            border: 2px solid #15803d;
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-weight: bold;
-            font-size: 9.5px;
-            cursor: pointer;
-            box-shadow: 0 3px 8px rgba(34, 197, 94, 0.4);
-            width: 100%;
-            max-width: 280px;
-        }
-        .search-container-header {
-            width: 100%;
-            max-width: 600px;
-            padding: 2px 0;
-        }
-        .search-input {
-            width: 100%;
-            background: #1e293b;
-            border: 1.5px solid #22c55e;
-            border-radius: 8px;
-            padding: 5px 12px;
-            color: #ffffff;
-            font-size: 11px;
-            text-align: center;
-            outline: none;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-        }
+        h1 { color: #22c55e; font-size: 13.5px; margin-bottom: 1px; letter-spacing: 0.8px; text-transform: uppercase; word-break: break-word; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+        .subtitle { font-size: 8px; color: #38bdf8; font-weight: bold; letter-spacing: 0.5px; }
+        .tabs-container { display: flex; gap: 6px; width: 100%; max-width: 600px; justify-content: center; padding: 2px 0; }
+        .tab-btn { flex: 1; background: #1e293b; color: #94a3b8; border: 1.5px solid #475569; padding: 6px 4px; border-radius: 6px; font-weight: bold; font-size: 10px; cursor: pointer; text-align: center; transition: all 0.2s ease; }
+        .tab-btn.active { background: linear-gradient(135deg, #22c55e, #16a34a); color: white; border-color: #22c55e; box-shadow: 0 2px 8px rgba(34, 197, 94, 0.4); }
+        .subtabs-container { display: flex; gap: 4px; width: 100%; max-width: 600px; justify-content: center; padding: 2px 0; }
+        .subtab-btn { flex: 1; background: #0f172a; color: #cbd5e1; border: 1px solid #22c55e; padding: 4px 2px; border-radius: 5px; font-weight: bold; font-size: 8.5px; cursor: pointer; text-align: center; transition: all 0.2s ease; }
+        .subtab-btn.active { background: #22c55e; color: white; box-shadow: 0 2px 6px rgba(34, 197, 94, 0.4); }
+        .btn-vendor-header { background: linear-gradient(135deg, #22c55e, #16a34a); color: white; border: 2px solid #15803d; padding: 4px 10px; border-radius: 6px; font-weight: bold; font-size: 9.5px; cursor: pointer; box-shadow: 0 3px 8px rgba(34, 197, 94, 0.4); width: 100%; max-width: 280px; }
+        .search-container-header { width: 100%; max-width: 600px; padding: 2px 0; }
+        .search-input { width: 100%; background: #1e293b; border: 1.5px solid #22c55e; border-radius: 8px; padding: 5px 12px; color: #ffffff; font-size: 11px; text-align: center; outline: none; box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
         .search-input::placeholder { color: #94a3b8; }
-        .header-space {
-            width: 100%;
-            height: 195px;
-        }
-        .container {
-            width: 100%;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            width: 100%;
-            margin-top: 5px;
-        }
-        .card {
-            background: #1e293b;
-            border-radius: 12px;
-            padding: 9px;
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            width: 100%;
-            min-width: 0;
-            text-align: center;
-        }
+        .header-space { width: 100%; height: 195px; }
+        .container { width: 100%; max-width: 600px; margin: 0 auto; }
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; width: 100%; margin-top: 5px; }
+        .card { background: #1e293b; border-radius: 12px; padding: 9px; box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4); display: flex; flex-direction: column; justify-content: space-between; width: 100%; min-width: 0; text-align: center; }
         .card-premium { border: 2.5px solid #a855f7; box-shadow: 0 0 15px rgba(168, 85, 247, 0.35); }
         .card-moyen { border: 2.5px solid #eab308; box-shadow: 0 0 15px rgba(234, 179, 8, 0.3); }
         .card-basique { border: 2px solid #64748b; }
         .card-profil { border: 2.5px solid #22c55e; box-shadow: 0 0 15px rgba(34, 197, 94, 0.3); }
-
-        .media-container {
-            width: 100%;
-            border-radius: 8px;
-            overflow: hidden;
-            background: #000000;
-            margin-bottom: 6px;
-            aspect-ratio: 9 / 16;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            cursor: pointer;
-        }
+        .media-container { width: 100%; border-radius: 8px; overflow: hidden; background: #000000; margin-bottom: 6px; aspect-ratio: 9 / 16; display: flex; align-items: center; justify-content: center; position: relative; cursor: pointer; }
         video.preview-video { width: 100%; height: 100%; object-fit: cover; display: block; }
         .profil-img { width: 100%; height: 100%; object-fit: cover; display: block; }
-        
-        .card h3 {
-            margin: 0 0 3px 0;
-            color: #f1f5f9;
-            font-size: 11.5px;
-            text-align: center;
-            font-weight: bold;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        .card-vendor {
-            font-size: 10px;
-            color: #4ade80;
-            font-weight: bold;
-            text-align: center;
-            margin-bottom: 5px;
-        }
-        .profil-desc {
-            font-size: 9.5px;
-            color: #cbd5e1;
-            text-align: center;
-            margin-bottom: 6px;
-            min-height: 25px;
-            max-height: 35px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-        }
-        .countdown-badge {
-            background: rgba(239, 68, 68, 0.2);
-            border: 1px solid #ef4444;
-            color: #f87171;
-            font-size: 8.5px;
-            font-weight: bold;
-            text-align: center;
-            padding: 3px;
-            border-radius: 4px;
-            margin-bottom: 6px;
-        }
-        .quality-badge {
-            font-size: 9px;
-            font-weight: bold;
-            text-align: center;
-            padding: 3px 6px;
-            border-radius: 4px;
-            margin-bottom: 6px;
-            display: inline-block;
-            width: 100%;
-        }
+        .card h3 { margin: 0 0 3px 0; color: #f1f5f9; font-size: 11.5px; text-align: center; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .card-vendor { font-size: 10px; color: #4ade80; font-weight: bold; text-align: center; margin-bottom: 5px; }
+        .profil-desc { font-size: 9.5px; color: #cbd5e1; text-align: center; margin-bottom: 6px; min-height: 25px; max-height: 35px; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+        .countdown-badge { background: rgba(239, 68, 68, 0.2); border: 1px solid #ef4444; color: #f87171; font-size: 8.5px; font-weight: bold; text-align: center; padding: 3px; border-radius: 4px; margin-bottom: 6px; }
+        .quality-badge { font-size: 9px; font-weight: bold; text-align: center; padding: 3px 6px; border-radius: 4px; margin-bottom: 6px; display: inline-block; width: 100%; }
         .badge-premium { background: linear-gradient(135deg, #a855f7, #6366f1); color: #ffffff; }
         .badge-moyen { background: linear-gradient(135deg, #eab308, #ca8a04); color: #ffffff; }
         .badge-basique { background: linear-gradient(135deg, #64748b, #475569); color: #ffffff; }
         .badge-profil { background: linear-gradient(135deg, #22c55e, #16a34a); color: #ffffff; }
-
-        .price-badge {
-            background: linear-gradient(135deg, #ff6600, #ff8533);
-            color: #ffffff;
-            font-size: 12px;
-            font-weight: bold;
-            text-align: center;
-            padding: 5px;
-            border-radius: 6px;
-            margin-bottom: 6px;
-        }
-        .info-id {
-            font-size: 9.5px;
-            color: #94a3b8;
-            margin-bottom: 6px;
-            text-align: center;
-            background: #0f172a;
-            padding: 3px;
-            border-radius: 4px;
-            border: 1px dashed #475569;
-        }
-        .whatsapp-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 4px;
-            background: #22c55e;
-            color: #ffffff;
-            text-align: center;
-            padding: 6px 4px;
-            border-radius: 5px;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 10px;
-            margin-bottom: 6px;
-        }
-        input, select, textarea {
-            width: 100%;
-            background: #0f172a;
-            border: 1.5px solid #22c55e;
-            border-radius: 5px;
-            padding: 5px;
-            color: #ffffff;
-            font-size: 11px;
-            text-align: center;
-            outline: none;
-        }
+        .price-badge { background: linear-gradient(135deg, #ff6600, #ff8533); color: #ffffff; font-size: 12px; font-weight: bold; text-align: center; padding: 5px; border-radius: 6px; margin-bottom: 6px; }
+        .info-id { font-size: 9.5px; color: #94a3b8; margin-bottom: 6px; text-align: center; background: #0f172a; padding: 3px; border-radius: 4px; border: 1px dashed #475569; }
+        .whatsapp-btn { display: flex; align-items: center; justify-content: center; gap: 4px; background: #22c55e; color: #ffffff; text-align: center; padding: 6px 4px; border-radius: 5px; text-decoration: none; font-weight: bold; font-size: 10px; margin-bottom: 6px; }
+        input, select, textarea { width: 100%; background: #0f172a; border: 1.5px solid #22c55e; border-radius: 5px; padding: 5px; color: #ffffff; font-size: 11px; text-align: center; outline: none; }
         textarea { text-align: left; resize: none; height: 60px; }
-        button.verify-btn {
-            width: 100%;
-            background: #22c55e;
-            color: #ffffff;
-            border: none;
-            padding: 6px;
-            border-radius: 5px;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 11px;
-        }
+        button.verify-btn { width: 100%; background: #22c55e; color: #ffffff; border: none; padding: 6px; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 11px; }
         .message { margin-top: 4px; font-size: 10px; text-align: center; font-weight: bold; }
-        .telegram-link {
-            display: block;
-            background: #0088cc;
-            color: #ffffff;
-            padding: 6px;
-            border-radius: 5px;
-            text-decoration: none;
-            font-weight: bold;
-            margin-top: 4px;
-            font-size: 11px;
-            text-align: center;
-        }
-        .admin-fab {
-            position: fixed;
-            bottom: 15px;
-            right: 15px;
-            background: #22c55e;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 45px;
-            height: 45px;
-            font-size: 20px;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.7);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
-            padding: 15px;
-        }
-        .modal-content {
-            background: #1e293b;
-            border: 2px solid #22c55e;
-            padding: 15px;
-            border-radius: 12px;
-            width: 100%;
-            max-width: 650px;
-            max-height: 90vh;
-            overflow-y: auto;
-            color: #f8fafc;
-        }
+        .telegram-link { display: block; background: #0088cc; color: #ffffff; padding: 6px; border-radius: 5px; text-decoration: none; font-weight: bold; margin-top: 4px; font-size: 11px; text-align: center; }
+        .admin-fab { position: fixed; bottom: 15px; right: 15px; background: #22c55e; color: white; border: none; border-radius: 50%; width: 45px; height: 45px; font-size: 20px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.5); z-index: 1000; display: flex; align-items: center; justify-content: center; }
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 2000; justify-content: center; align-items: center; padding: 15px; }
+        .modal-content { background: #1e293b; border: 2px solid #22c55e; padding: 15px; border-radius: 12px; width: 100%; max-width: 650px; max-height: 90vh; overflow-y: auto; color: #f8fafc; }
         .modal-content h2 { color: #22c55e; font-size: 15px; margin-bottom: 10px; text-align: center; }
-        .info-box-important {
-            background: rgba(34, 197, 94, 0.15);
-            border: 2px dashed #22c55e;
-            padding: 10px;
-            border-radius: 6px;
-            margin-bottom: 12px;
-            font-size: 10.5px;
-            color: #86efac;
-            line-height: 1.4;
-            text-align: left;
-        }
+        .info-box-important { background: rgba(34, 197, 94, 0.15); border: 2px dashed #22c55e; padding: 10px; border-radius: 6px; margin-bottom: 12px; font-size: 10.5px; color: #86efac; line-height: 1.4; text-align: left; }
         .modal-content label { font-size: 11px; font-weight: bold; color: #cbd5e1; display: block; margin-top: 8px; }
         .modal-buttons { display: flex; gap: 10px; margin-top: 15px; }
         .btn-contact-admin { background: #22c55e; color: white; text-decoration: none; display: flex; align-items: center; justify-content: center; text-align: center; border-radius: 5px; font-weight: bold; font-size: 11px; padding: 8px; flex: 1; }
         .btn-save { background: #22c55e; color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 11px; padding: 8px; flex: 1; }
         .btn-close { background: #ef4444; color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 11px; padding: 8px; flex: 1; }
-        
-        .admin-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            width: 100%;
-            margin-bottom: 12px;
-        }
-        .admin-card-item {
-            background: #0f172a;
-            border: 2px solid #22c55e;
-            border-radius: 10px;
-            padding: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            width: 100%;
-            min-width: 0;
-        }
-
-        /* PAGE PROFIL DÉDIÉE (SWIPE HORIZONTAL UNIQUE) */
-        #profile-detail-view {
-            display: none;
-            width: 100%;
-            max-width: 600px;
-            background: #1e293b;
-            border: 2.5px solid #22c55e;
-            border-radius: 12px;
-            padding: 15px;
-            margin-top: 5px;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.6);
-        }
-        .back-btn {
-            background: #475569;
-            color: white;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 5px;
-            font-weight: bold;
-            font-size: 10px;
-            cursor: pointer;
-            margin-bottom: 10px;
-        }
-        .horizontal-slider-container {
-            width: 100%;
-            display: flex;
-            overflow-x: auto;
-            scroll-snap-type: x mandatory;
-            scroll-behavior: smooth;
-            gap: 0;
-            border-radius: 8px;
-            background: #000;
-            -webkit-overflow-scrolling: touch;
-            scrollbar-width: none;
-        }
-        .horizontal-slider-container::-webkit-scrollbar {
-            display: none;
-        }
-        .profile-slide-img {
-            flex: 0 0 100%;
-            width: 100%;
-            max-height: 380px;
-            object-fit: contain;
-            background: #000;
-            scroll-snap-align: start;
-            scroll-snap-stop: always;
-            border-radius: 8px;
-        }
-        .slider-dots {
-            display: flex;
-            justify-content: center;
-            gap: 6px;
-            margin-top: 8px;
-            margin-bottom: 10px;
-        }
-        .dot-btn {
-            background: #475569;
-            border: none;
-            width: 28px;
-            height: 6px;
-            border-radius: 3px;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        .dot-btn.active {
-            background: #22c55e;
-        }
-
-        .profile-detail-name {
-            font-size: 16px;
-            color: #f8fafc;
-            font-weight: bold;
-            text-align: center;
-            margin-bottom: 5px;
-        }
-        .profile-detail-desc {
-            font-size: 12px;
-            color: #cbd5e1;
-            text-align: center;
-            margin-bottom: 12px;
-            line-height: 1.4;
-        }
-        .profile-detail-phone {
-            font-size: 12px;
-            color: #38bdf8;
-            text-align: center;
-            font-weight: bold;
-            margin-bottom: 12px;
-            background: #0f172a;
-            padding: 6px;
-            border-radius: 5px;
-            border: 1px dashed #38bdf8;
-        }
-        .profile-contact-btn {
-            width: 100%;
-            background: #22c55e;
-            color: white;
-            border: none;
-            padding: 10px;
-            border-radius: 6px;
-            font-weight: bold;
-            font-size: 12px;
-            cursor: pointer;
-            text-align: center;
-            box-shadow: 0 3px 8px rgba(34, 197, 94, 0.4);
-        }
-        .contact-options {
-            display: none;
-            flex-direction: column;
-            gap: 8px;
-            margin-top: 10px;
-        }
+        .admin-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; width: 100%; margin-bottom: 12px; }
+        .admin-card-item { background: #0f172a; border: 2px solid #22c55e; border-radius: 10px; padding: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); display: flex; flex-direction: column; justify-content: space-between; width: 100%; min-width: 0; }
+        #profile-detail-view { display: none; width: 100%; max-width: 600px; background: #1e293b; border: 2.5px solid #22c55e; border-radius: 12px; padding: 15px; margin-top: 5px; box-shadow: 0 6px 20px rgba(0,0,0,0.6); }
+        .back-btn { background: #475569; color: white; border: none; padding: 6px 12px; border-radius: 5px; font-weight: bold; font-size: 10px; cursor: pointer; margin-bottom: 10px; }
+        .horizontal-slider-container { width: 100%; display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; gap: 0; border-radius: 8px; background: #000; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+        .horizontal-slider-container::-webkit-scrollbar { display: none; }
+        .profile-slide-img { flex: 0 0 100%; width: 100%; max-height: 380px; object-fit: contain; background: #000; scroll-snap-align: start; scroll-snap-stop: always; border-radius: 8px; }
+        .slider-dots { display: flex; justify-content: center; gap: 6px; margin-top: 8px; margin-bottom: 10px; }
+        .dot-btn { background: #475569; border: none; width: 28px; height: 6px; border-radius: 3px; cursor: pointer; transition: background 0.2s; }
+        .dot-btn.active { background: #22c55e; }
+        .profile-detail-name { font-size: 16px; color: #f8fafc; font-weight: bold; text-align: center; margin-bottom: 5px; }
+        .profile-detail-desc { font-size: 12px; color: #cbd5e1; text-align: center; margin-bottom: 12px; line-height: 1.4; }
+        .profile-detail-phone { font-size: 12px; color: #38bdf8; text-align: center; font-weight: bold; margin-bottom: 12px; background: #0f172a; padding: 6px; border-radius: 5px; border: 1px dashed #38bdf8; }
+        .profile-contact-btn { width: 100%; background: #22c55e; color: white; border: none; padding: 10px; border-radius: 6px; font-weight: bold; font-size: 12px; cursor: pointer; text-align: center; box-shadow: 0 3px 8px rgba(34, 197, 94, 0.4); }
+        .contact-options { display: none; flex-direction: column; gap: 8px; margin-top: 10px; }
         .opt-whatsapp { background: #25d366; color: white; padding: 8px; border-radius: 5px; text-decoration: none; font-weight: bold; text-align: center; font-size: 11px; }
         .opt-call { background: #0284c7; color: white; padding: 8px; border-radius: 5px; text-decoration: none; font-weight: bold; text-align: center; font-size: 11px; }
+        .admin-tab-btn { flex: 1; background: #1e293b; color: #94a3b8; border: 1.5px solid #475569; padding: 6px 4px; border-radius: 6px; font-weight: bold; font-size: 10px; cursor: pointer; text-align: center; transition: all 0.2s ease; }
+        .admin-tab-btn.active { background: linear-gradient(135deg, #22c55e, #16a34a); color: white; border-color: #22c55e; box-shadow: 0 2px 8px rgba(34, 197, 94, 0.4); }
     </style>
 </head>
 <body>
@@ -519,7 +91,7 @@
         
         <div class="tabs-container">
             <button id="tab-profils" class="tab-btn active" onclick="changerOnglet('profils')">Bizi Disponible</button>
-            <button id="tab-videos" class="tab-btn" onclick="changerOnglet('videos')">Vidéo Bizi à vendre</button>
+            <button id="tab-videos" class="tab-btn" onclick="changerOnglet('videos')">Vidéo a vendre</button>
         </div>
 
         <div class="subtabs-container" id="subtabs-profils">
@@ -539,10 +111,8 @@
     <div class="header-space" id="header-space"></div>
 
     <div class="container">
-        <!-- VUE PRINCIPALE (GRILLE) -->
         <div class="grid" id="video-grid"></div>
 
-        <!-- VUE DÉTAILLÉE DU PROFIL BIZI -->
         <div id="profile-detail-view">
             <button class="back-btn" onclick="retourGrille()">← Retour</button>
             <div id="profile-detail-content"></div>
@@ -551,7 +121,6 @@
 
     <button class="admin-fab" onclick="demanderSecuriteAdmin()" title="Tableau de Bord Admin">⚙️</button>
 
-    <!-- MODAL INSCRIPTION / PROPOSITION -->
     <div id="vendor-modal" class="modal-overlay">
         <div class="modal-content" style="max-width: 450px;">
             <h2 id="modal-title">🔥 Inscription Bizi Disponible 📸</h2>
@@ -561,7 +130,6 @@
                 Votre profil restera actif 30 jours. Vous pouvez ajouter jusqu'à 5 photos à faire défiler.
             </div>
 
-            <!-- FORMULAIRE VIDÉO (CHANGÉ EN MODE CONTACTER L'ADMIN) -->
             <div id="form-videos-fields" style="display: none;">
                 <label>Nom du Partenaire / Vendeur :</label>
                 <input type="text" id="new-partenaire" placeholder="Ex: Jean Kouassi">
@@ -583,7 +151,6 @@
                 <input type="text" id="new-whatsapp" class="input-placeholder-rdm" placeholder="2250700000000">
             </div>
 
-            <!-- FORMULAIRE PROFIL BIZI -->
             <div id="form-profils-fields">
                 <label>Catégorie Bizi :</label>
                 <select id="profil-categorie" disabled style="background: #1e293b; color: #22c55e; font-weight: bold;">
@@ -613,50 +180,103 @@
         </div>
     </div>
 
-    <!-- TABLEAU DE BORD ADMIN -->
+    <!-- TABLEAU DE BORD ADMIN AVEC DEUX ONGLETS -->
     <div id="admin-list-modal" class="modal-overlay">
         <div class="modal-content">
             <h2>📂 Tableau de Bord VIP (Admin)</h2>
-            <div style="font-size: 11px; color: #cbd5e1; margin-bottom: 10px; text-align: center; font-weight: bold;">
-                Total des vidéos : <span id="admin-total-count" style="color: #22c55e;">0</span>
-            </div>
-
-            <div style="background: #1e293b; border: 2px solid #22c55e; padding: 10px; border-radius: 8px; margin-bottom: 15px;">
-                <h3 style="color: #22c55e; font-size: 13px; margin-bottom: 8px; text-align: center;">🎬 Ajouter une Vidéo</h3>
-                <label>Nom du Partenaire :</label>
-                <input type="text" id="admin-v-partenaire" placeholder="Ex: Kouassi Pro">
-                <label>Titre de la vidéo :</label>
-                <input type="text" id="admin-v-nom" placeholder="Titre de la vidéo">
-                <label>Lien Aperçu (.mp4) :</label>
-                <input type="text" id="admin-v-preview" placeholder="http://.../Highlight.mp4">
-                <label>Lien Mega Complet :</label>
-                <input type="text" id="admin-v-mega" placeholder="https://mega.nz/file/...">
-                <label>Prix (Fr) :</label>
-                <input type="number" id="admin-v-prix" placeholder="1500">
-                <label>Qualité :</label>
-                <select id="admin-v-qualite">
-                    <option value="premium">💎 Ultra Premium</option>
-                    <option value="moyen">🥇 Standard (Or)</option>
-                    <option value="basique">🥉 Basique</option>
-                </select>
-                <label>Numéro WhatsApp :</label>
-                <input type="text" id="admin-v-wa" class="input-placeholder-rdm" placeholder="2250100000000">
-                <button class="btn-save" style="width: 100%; margin-top: 10px; padding: 8px;" onclick="ajouterVideoAdmin()">🚀 Publier la Vidéo</button>
-            </div>
-
-            <div style="margin-bottom: 12px;">
-                <input type="text" id="admin-search-bar" class="search-input" placeholder="🔍 Rechercher dans les vidéos..." oninput="renderAdminList()">
-            </div>
             
-            <div style="font-size: 11px; font-weight: bold; color: #cbd5e1; margin-bottom: 6px;">Liste des vidéos actuelles :</div>
-            <div class="admin-grid" id="admin-videos-list"></div>
+            <!-- Onglets Admin -->
+            <div style="display: flex; gap: 6px; margin-bottom: 12px;">
+                <button id="admin-tab-profils-btn" class="admin-tab-btn active" onclick="changerAdminOnglet('profils')">Gérer Profils Bizi</button>
+                <button id="admin-tab-videos-btn" class="admin-tab-btn" onclick="changerAdminOnglet('videos')">Gérer Vidéos</button>
+            </div>
+
+            <!-- SECTION ADMIN : PROFILS BIZI -->
+            <div id="admin-section-profils">
+                <div style="font-size: 11px; color: #cbd5e1; margin-bottom: 8px; text-align: center; font-weight: bold;">
+                    Total Profils Bizi : <span id="admin-total-profils" style="color: #22c55e;">0</span>
+                </div>
+                <div style="margin-bottom: 10px;">
+                    <input type="text" id="admin-search-profils" class="search-input" placeholder="🔍 Rechercher un profil..." oninput="renderAdminProfilsList()">
+                </div>
+                <div class="admin-grid" id="admin-profils-list"></div>
+            </div>
+
+            <!-- SECTION ADMIN : VIDÉOS -->
+            <div id="admin-section-videos" style="display: none;">
+                <div style="font-size: 11px; color: #cbd5e1; margin-bottom: 10px; text-align: center; font-weight: bold;">
+                    Total des vidéos : <span id="admin-total-count" style="color: #22c55e;">0</span>
+                </div>
+
+                <div style="background: #1e293b; border: 2px solid #22c55e; padding: 10px; border-radius: 8px; margin-bottom: 15px;">
+                    <h3 style="color: #22c55e; font-size: 13px; margin-bottom: 8px; text-align: center;">🎬 Ajouter une Vidéo</h3>
+                    <label>Nom du Partenaire :</label>
+                    <input type="text" id="admin-v-partenaire" placeholder="Ex: Kouassi Pro">
+                    <label>Titre de la vidéo :</label>
+                    <input type="text" id="admin-v-nom" placeholder="Titre de la vidéo">
+                    <label>Lien Aperçu (.mp4) :</label>
+                    <input type="text" id="admin-v-preview" placeholder="http://.../Highlight.mp4">
+                    <label>Lien Mega Complet :</label>
+                    <input type="text" id="admin-v-mega" placeholder="https://mega.nz/file/...">
+                    <label>Prix (Fr) :</label>
+                    <input type="number" id="admin-v-prix" placeholder="1500">
+                    <label>Qualité :</label>
+                    <select id="admin-v-qualite">
+                        <option value="premium">💎 Ultra Premium</option>
+                        <option value="moyen">🥇 Standard (Or)</option>
+                        <option value="basique">🥉 Basique</option>
+                    </select>
+                    <label>Numéro WhatsApp :</label>
+                    <input type="text" id="admin-v-wa" class="input-placeholder-rdm" placeholder="2250100000000">
+                    <button class="btn-save" style="width: 100%; margin-top: 10px; padding: 8px;" onclick="ajouterVideoAdmin()">🚀 Publier la Vidéo</button>
+                </div>
+
+                <div style="margin-bottom: 12px;">
+                    <input type="text" id="admin-search-bar" class="search-input" placeholder="🔍 Rechercher dans les vidéos..." oninput="renderAdminList()">
+                </div>
+                
+                <div style="font-size: 11px; font-weight: bold; color: #cbd5e1; margin-bottom: 6px;">Liste des vidéos actuelles :</div>
+                <div class="admin-grid" id="admin-videos-list"></div>
+            </div>
 
             <button class="btn-close" style="width: 100%; padding: 8px; margin-top: 10px;" onclick="fermerListeAdmin()">Fermer</button>
         </div>
     </div>
 
+    <!-- MODAL MODIFICATION PROFIL BIZI (ADMIN) -->
+    <div id="edit-profil-modal" class="modal-overlay">
+        <div class="modal-content" style="max-width: 450px;">
+            <h2>✏️ Modifier le profil Bizi</h2>
+            <input type="hidden" id="edit-profil-id">
+            
+            <label>Catégorie :</label>
+            <select id="edit-profil-cat">
+                <option value="femme">Bizi Femme</option>
+                <option value="homme">Bizi Homme</option>
+                <option value="blanche">Bizi Blanche</option>
+                <option value="trans">Bizi Trans</option>
+            </select>
+
+            <label>Nom / Pseudo :</label>
+            <input type="text" id="edit-profil-nom">
+
+            <label>Liens des photos (séparés par virgules ou retours à la ligne) :</label>
+            <textarea id="edit-profil-photos" style="height: 70px;"></textarea>
+
+            <label>Description :</label>
+            <textarea id="edit-profil-desc" style="height: 60px;"></textarea>
+
+            <label>Numéro WhatsApp :</label>
+            <input type="text" id="edit-profil-wa">
+
+            <div class="modal-buttons" style="margin-top: 15px;">
+                <button class="btn-save" onclick="sauvegarderModificationProfil()">Enregistrer</button>
+                <button class="btn-close" onclick="fermerModalEditProfil()">Annuler</button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // Fonction pour générer un numéro fictif aléatoire différent à chaque fois
         function genererNumeroAleatoire() {
             const prefixes = ["22507", "22505", "22501", "22556", "22549", "22503"];
             const prefixeChoisi = prefixes[Math.floor(Math.random() * prefixes.length)];
@@ -677,6 +297,7 @@
         let ongletActif = "profils";
         let sousOngletActif = "femme";
         let vueDetailleeActive = false;
+        let adminOngletActif = "profils"; // Gestion des onglets admin
 
         const ADMIN_PASS_1_ENCODED = "MDcwOTE1MjdhZG1pbg=="; 
         const ADMIN_CODE_2_ENCODED = "Qm9saQ==";             
@@ -698,7 +319,6 @@
             { id: 5, cat: "trans", nom: "Kelly Cocody", photos: ["https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=500&auto=format&fit=crop&q=60"], desc: "Gros attributs, très douce et discrète.", wa: "2254911223344", expireAt: tempsActuel + trenteJoursMs }
         ];
 
-        /* LISTE COMPLÈTE DE TOUTES VOS VIDÉOS INTÉGRÉES SANS AUCUNE SUPPRESSION */
         const baseScenes = [ 
             { partenaire: "Kouassi Pro", nom: "Bizi Exclusif Abidjan", preview: "http://hc1.checker.in/file2link/documents/file_670646.mp4/Highlight001.mp4", mega: "https://mega.nz/file/qHwyESiI#mtmHDaWLq02mRvEon3kZL5BroGROTEwJkhtwNTGsMlo", prix: 1500, wa: "2250711223344", qualite: "premium" },
             { partenaire: "Aïcha VIP", nom: "Sextap Résidence Chic", preview: "http://hc1.checker.in/file2link/documents/file_670647.mp4/Highlight002.mp4", mega: "https://mega.nz/file/ea4yBIxC#cO6dr4YAyQoJioS0sp_wylvg72d_9M0roRYT5vYFnE0", prix: 1200, wa: "2250522334455", qualite: "moyen" },
@@ -818,21 +438,19 @@
             { partenaire: "Admin Principal", nom: "Elle baise en bleu blanc", preview: "Movie0063.mp4", mega: "https://mega.nz/file/GtwwiTrB#eL6H2G8AAACASUuSaeeSBQAAAAAAAAAA6Om3kxvnkgU", prix: 1800, wa: adminWhatsAppNumber, qualite: "premium" }
         ];
 
-        let scenesData = JSON.parse(localStorage.getItem("local_vip_scenes_v115")) || [];
-        let profilsData = JSON.parse(localStorage.getItem("local_vip_profils_v115")) || [];
+        let scenesData = JSON.parse(localStorage.getItem("local_vip_scenes_v117")) || [];
+        let profilsData = JSON.parse(localStorage.getItem("local_vip_profils_v117")) || [];
 
         function saveState() {
-            localStorage.setItem("local_vip_scenes_v115", JSON.stringify(scenesData));
-            localStorage.setItem("local_vip_profils_v115", JSON.stringify(profilsData));
+            localStorage.setItem("local_vip_scenes_v117", JSON.stringify(scenesData));
+            localStorage.setItem("local_vip_profils_v117", JSON.stringify(profilsData));
         }
 
         function verifierExpirationProfils() {
             const maintenant = Date.now();
             const avant = profilsData.length;
             profilsData = profilsData.filter(p => p.expireAt > maintenant);
-            if (profilsData.length !== avant) {
-                saveState();
-            }
+            if (profilsData.length !== avant) { saveState(); }
         }
 
         if (scenesData.length === 0) {
@@ -852,12 +470,10 @@
         function formatTempsRestant(expireAt) {
             const diff = expireAt - Date.now();
             if (diff <= 0) return "Expiré";
-            
             const jours = Math.floor(diff / (1000 * 60 * 60 * 24));
             const heures = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
             const secondes = Math.floor((diff % (1000 * 60)) / 1000);
-
             return `⏳ Expire dans : ${jours}j ${heures}h ${minutes}m ${secondes}s`;
         }
 
@@ -935,20 +551,14 @@
 
             const detailContent = document.getElementById("profile-detail-content");
             detailContent.innerHTML = `
-                <div class="horizontal-slider-container" id="slider-${id}" onscroll="suivreScroll(${id})">
-                    ${galerieHtml}
-                </div>
-                <div class="slider-dots" id="dots-${id}">
-                    ${dotsHtml}
-                </div>
+                <div class="horizontal-slider-container" id="slider-${id}" onscroll="suivreScroll(${id})">${galerieHtml}</div>
+                <div class="slider-dots" id="dots-${id}">${dotsHtml}</div>
                 <div class="profile-detail-name">${profil.nom}</div>
                 <div class="quality-badge badge-profil" style="margin-bottom: 8px;">🔥 BIZI DISPONIBLE (${photosList.length} photo${photosList.length > 1 ? 's' : ''})</div>
                 <div class="profile-detail-desc">${profil.desc}</div>
                 <div class="countdown-badge" style="margin-bottom: 10px;">${formatTempsRestant(profil.expireAt)}</div>
                 <div class="profile-detail-phone">📞 Téléphone : <b>${profil.wa}</b></div>
-                
                 <button class="profile-contact-btn" onclick="basculerOptionsContact()">Contacter</button>
-                
                 <div class="contact-options" id="contact-options-box">
                     <a class="opt-whatsapp" href="https://wa.me/${profil.wa}?text=Salut,%20je%20te%20contacte%20depuis%20ton%20profil%20sur%20le%20site." target="_blank">💬 WhatsApp</a>
                     <a class="opt-call" href="tel:${profil.wa}">📞 Appel direct</a>
@@ -959,9 +569,7 @@
         function scrollerVersSlide(profileId, index) {
             const slider = document.getElementById(`slider-${profileId}`);
             const slide = document.getElementById(`slide-${profileId}-${index}`);
-            if (slider && slide) {
-                slider.scrollTo({ left: slide.offsetLeft, behavior: 'smooth' });
-            }
+            if (slider && slide) { slider.scrollTo({ left: slide.offsetLeft, behavior: 'smooth' }); }
         }
 
         function suivreScroll(profileId) {
@@ -970,11 +578,7 @@
             const index = Math.round(slider.scrollLeft / slider.clientWidth);
             const dots = document.querySelectorAll(`#dots-${profileId} .dot-btn`);
             dots.forEach((dot, idx) => {
-                if (idx === index) {
-                    dot.classList.add("active");
-                } else {
-                    dot.classList.remove("active");
-                }
+                if (idx === index) { dot.classList.add("active"); } else { dot.classList.remove("active"); }
             });
         }
 
@@ -1014,7 +618,6 @@
 
                     const card = document.createElement("div");
                     card.className = "card card-profil";
-
                     const photosList = Array.isArray(profil.photos) ? profil.photos : [profil.photo];
                     const premierePhoto = photosList[0] || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500';
 
@@ -1026,65 +629,29 @@
                         <div class="quality-badge badge-profil">🔥 BIZI DISPONIBLE (${photosList.length} photo${photosList.length > 1 ? 's' : ''})</div>
                         <div class="profil-desc">${profil.desc}</div>
                         <div class="countdown-badge">${formatTempsRestant(profil.expireAt)}</div>
-                        <button class="whatsapp-btn" style="border:none; width:100%; cursor:pointer;" onclick="afficherProfilDetail(${profil.id})">
-                            💬 Contacter
-                        </button>
+                        <button class="whatsapp-btn" style="border:none; width:100%; cursor:pointer;" onclick="afficherProfilDetail(${profil.id})">💬 Contacter</button>
                     `;
                     grid.appendChild(card);
                 });
-
             } else {
                 scenesData.forEach((scene, index) => {
                     if (query && !scene.nom.toLowerCase().includes(query)) return;
 
                     const cleAttendue = Math.floor((scene.id * 1996) / 20);
                     const card = document.createElement("div");
-                    
                     let cardClass = 'card card-basique';
                     if (scene.qualite === 'premium') cardClass = 'card card-premium';
                     else if (scene.qualite === 'moyen') cardClass = 'card card-moyen';
                     card.className = cardClass;
 
-                    const mediaHtml = `
-                        <div class="media-container">
-                            <video class="preview-video" muted loop playsinline webkit-playsinline preload="none">
-                                <source src="${scene.preview}" type="video/mp4">
-                            </video>
-                        </div>
-                    `;
+                    const mediaHtml = `<div class="media-container"><video class="preview-video" muted loop playsinline webkit-playsinline preload="none"><source src="${scene.preview}" type="video/mp4"></video></div>`;
                     const badgeHtml = getQualityBadgeHtml(scene.qualite);
                     const vendorName = scene.partenaire || defaultPartenaire;
 
                     if (scene.deverrouille) {
-                        card.innerHTML = `
-                            ${mediaHtml}
-                            <h3>${scene.nom}</h3>
-                            <div class="card-vendor">👤 ${vendorName}</div>
-                            ${badgeHtml}
-                            <div class="price-badge">💎 ${scene.prix} Fr</div>
-                            <div class="info-id">ID : <b>${scene.id}</b></div>
-                            <div class="message" style="color: #4ade80;">
-                                ✅ Déverrouillé<br>
-                                <a class="telegram-link" href="${scene.mega}" target="_blank">📥 Regarder sur Mega</a>
-                            </div>
-                        `;
+                        card.innerHTML = `${mediaHtml}<h3>${scene.nom}</h3><div class="card-vendor">👤 ${vendorName}</div>${badgeHtml}<div class="price-badge">💎 ${scene.prix} Fr</div><div class="info-id">ID : <b>${scene.id}</b></div><div class="message" style="color: #4ade80;">✅ Déverrouillé<br><a class="telegram-link" href="${scene.mega}" target="_blank">📥 Regarder sur Mega</a></div>`;
                     } else {
-                        card.innerHTML = `
-                            ${mediaHtml}
-                            <h3>${scene.nom}</h3>
-                            <div class="card-vendor">👤 ${vendorName}</div>
-                            ${badgeHtml}
-                            <div class="price-badge">💎 ${scene.prix} Fr</div>
-                            <div class="info-id">ID : <b>${scene.id}</b></div>
-                            <a class="whatsapp-btn" href="https://wa.me/${scene.wa}?text=Bonjour,%20je%20veux%20acheter%20la%20clé%20pour%20la%20scène:%20${encodeURIComponent(scene.nom)}%20(ID:%20${scene.id})%20au%20prix%20de%20${scene.prix}Fr" target="_blank">
-                                💬 Commander (${scene.prix} Fr)
-                            </a>
-                            <div class="input-group">
-                                <input type="number" id="input-${index}" placeholder="Code clé...">
-                                <button class="verify-btn" onclick="verifier(${index}, ${cleAttendue})">Valider</button>
-                            </div>
-                            <div class="message" id="msg-${index}"></div>
-                        `;
+                        card.innerHTML = `${mediaHtml}<h3>${scene.nom}</h3><div class="card-vendor">👤 ${vendorName}</div>${badgeHtml}<div class="price-badge">💎 ${scene.prix} Fr</div><div class="info-id">ID : <b>${scene.id}</b></div><a class="whatsapp-btn" href="https://wa.me/${scene.wa}?text=Bonjour,%20je%20veux%20acheter%20la%20clé%20pour%20la%20scène:%20${encodeURIComponent(scene.nom)}%20(ID:%20${scene.id})%20au%20prix%20de%20${scene.prix}Fr" target="_blank">💬 Commander (${scene.prix} Fr)</a><div class="input-group"><input type="number" id="input-${index}" placeholder="Code clé..."><button class="verify-btn" onclick="verifier(${index}, ${cleAttendue})">Valider</button></div><div class="message" id="msg-${index}"></div>`;
                     }
                     grid.appendChild(card);
                 });
@@ -1092,17 +659,12 @@
             }
         }
 
-        setInterval(() => {
-            if (ongletActif === "profils" && !vueDetailleeActive) {
-                renderGrid();
-            }
-        }, 1000);
+        setInterval(() => { if (ongletActif === "profils" && !vueDetailleeActive) { renderGrid(); } }, 1000);
 
         function verifier(index, cleAttendue) {
             const inputElem = document.getElementById(`input-${index}`);
             const msg = document.getElementById(`msg-${index}`);
             const saisie = parseInt(inputElem.value.trim(), 10);
-
             if (saisie === cleAttendue) {
                 scenesData[index].deverrouille = true;
                 saveState();
@@ -1127,28 +689,18 @@
                 formVideos.style.display = "none";
                 formProfils.style.display = "block";
                 document.getElementById("profil-categorie").value = sousOngletActif;
-                
-                buttonsContainer.innerHTML = `
-                    <button class="btn-save" onclick="soumettreProfil()">Publier mon profil</button>
-                    <button class="btn-close" onclick="fermerVendeurModal()">Fermer</button>
-                `;
+                buttonsContainer.innerHTML = `<button class="btn-save" onclick="soumettreProfil()">Publier mon profil</button><button class="btn-close" onclick="fermerVendeurModal()">Fermer</button>`;
             } else {
                 modalTitle.innerText = "🎬 Proposer une vidéo à l'Admin 🎥";
                 infoBox.innerHTML = `<b>⚠️ INFORMATION IMPORTANTE :</b><br>Remplissez vos informations ci-dessous puis cliquez sur <b>"Contacter l'administrateur"</b> pour lui envoyer les détails.`;
                 formVideos.style.display = "block";
                 formProfils.style.display = "none";
-
-                buttonsContainer.innerHTML = `
-                    <a id="whatsapp-admin-link" class="btn-contact-admin" href="#" target="_blank" onclick="preparerMessageAdmin(event)">💬 Contacter l'administrateur</a>
-                    <button class="btn-close" onclick="fermerVendeurModal()">Fermer</button>
-                `;
+                buttonsContainer.innerHTML = `<a id="whatsapp-admin-link" class="btn-contact-admin" href="#" target="_blank" onclick="preparerMessageAdmin(event)">💬 Contacter l'administrateur</a><button class="btn-close" onclick="fermerVendeurModal()">Fermer</button>`;
             }
             document.getElementById("vendor-modal").style.display = "flex";
         }
 
-        function fermerVendeurModal() {
-            document.getElementById("vendor-modal").style.display = "none";
-        }
+        function fermerVendeurModal() { document.getElementById("vendor-modal").style.display = "none"; }
 
         function preparerMessageAdmin(e) {
             const partenaire = document.getElementById("new-partenaire").value.trim() || "Inconnu";
@@ -1165,15 +717,7 @@
                 return;
             }
 
-            const texteMessage = `Bonjour Administrateur, un vendeur veut ajouter sa vidéo :\n\n` +
-                `👤 *Vendeur* : ${partenaire}\n` +
-                `🎬 *Titre* : ${nom}\n` +
-                `📂 *Aperçu* : ${preview}\n` +
-                `🔗 *Lien Mega* : ${mega}\n` +
-                `💎 *Prix* : ${prix} Fr\n` +
-                `🌟 *Qualité* : ${qualite}\n` +
-                `💬 *WhatsApp* : ${wa}`;
-
+            const texteMessage = `Bonjour Administrateur, un vendeur veut ajouter sa vidéo :\n\n👤 *Vendeur* : ${partenaire}\n🎬 *Titre* : ${nom}\n📂 *Aperçu* : ${preview}\n🔗 *Lien Mega* : ${mega}\n💎 *Prix* : ${prix} Fr\n🌟 *Qualité* : ${qualite}\n💬 *WhatsApp* : ${wa}`;
             const urlWhatsApp = `https://wa.me/${adminWhatsAppNumber}?text=` + encodeURIComponent(texteMessage);
             document.getElementById("whatsapp-admin-link").setAttribute("href", urlWhatsApp);
         }
@@ -1186,19 +730,11 @@
             const wa = document.getElementById("profil-whatsapp").value.trim() || genererNumeroAleatoire();
             const expiration30Jours = Date.now() + (30 * 24 * 60 * 60 * 1000);
 
-            if (!nom || !photosRaw || !wa) {
-                alert("Veuillez remplir votre nom, au moins une photo et votre numéro !");
-                return;
-            }
-
+            if (!nom || !photosRaw || !wa) { alert("Veuillez remplir votre nom, au moins une photo et votre numéro !"); return; }
             let photosArray = photosRaw.split(/[\n,]+/).map(p => p.trim()).filter(p => p !== '');
-            if (photosArray.length > 5) {
-                photosArray = photosArray.slice(0, 5);
-            }
+            if (photosArray.length > 5) { photosArray = photosArray.slice(0, 5); }
 
-            profilsData.unshift({
-                id: Date.now(), cat, nom, photos: photosArray, desc, wa, expireAt: expiration30Jours
-            });
+            profilsData.unshift({ id: Date.now(), cat, nom, photos: photosArray, desc, wa, expireAt: expiration30Jours });
             saveState();
             changerSousOnglet(cat);
             fermerVendeurModal();
@@ -1209,19 +745,122 @@
             const mdpSaisi = prompt("🔒 Étape 1/2 - Mot de passe admin :");
             if (mdpSaisi === null) return;
             if (!verifierSecurite(mdpSaisi, ADMIN_PASS_1_ENCODED)) { alert("❌ Mot de passe incorrect."); return; }
-
             const pinSaisi = prompt("🔐 Étape 2/2 - Ville de naissance :");
             if (pinSaisi === null) return;
             if (!verifierSecurite(pinSaisi, ADMIN_CODE_2_ENCODED)) { alert("❌ Ville incorrecte."); return; }
-
             mettreAJourPlaceholdersAleatoires();
             ouvrirListeAdmin();
         }
 
         function ouvrirListeAdmin() {
-            document.getElementById("admin-search-bar").value = "";
-            renderAdminList();
+            changerAdminOnglet('profils');
             document.getElementById("admin-list-modal").style.display = "flex";
+        }
+
+        function fermerListeAdmin() { document.getElementById("admin-list-modal").style.display = "none"; }
+
+        function changerAdminOnglet(onglet) {
+            adminOngletActif = onglet;
+            const btnProfils = document.getElementById("admin-tab-profils-btn");
+            const btnVideos = document.getElementById("admin-tab-videos-btn");
+            const secProfils = document.getElementById("admin-section-profils");
+            const secVideos = document.getElementById("admin-section-videos");
+
+            if (onglet === "profils") {
+                btnProfils.className = "admin-tab-btn active";
+                btnVideos.className = "admin-tab-btn";
+                secProfils.style.display = "block";
+                secVideos.style.display = "none";
+                renderAdminProfilsList();
+            } else {
+                btnProfils.className = "admin-tab-btn";
+                btnVideos.className = "admin-tab-btn active";
+                secProfils.style.display = "none";
+                secVideos.style.display = "block";
+                document.getElementById("admin-search-bar").value = "";
+                renderAdminList();
+            }
+        }
+
+        function renderAdminProfilsList() {
+            const listContainer = document.getElementById("admin-profils-list");
+            const query = document.getElementById("admin-search-profils").value.toLowerCase().trim();
+            document.getElementById("admin-total-profils").innerText = profilsData.length;
+            listContainer.innerHTML = "";
+
+            profilsData.forEach((p) => {
+                if (query && !p.nom.toLowerCase().includes(query) && !p.desc.toLowerCase().includes(query)) return;
+                const photosList = Array.isArray(p.photos) ? p.photos : [p.photo];
+                const premierePhoto = photosList[0] || '';
+
+                listContainer.innerHTML += `
+                    <div class="admin-card-item">
+                        <div class="media-container">
+                            <img class="profil-img" src="${premierePhoto}" alt="${p.nom}">
+                        </div>
+                        <h3 style="color: #22c55e; font-size: 12px; margin-bottom: 2px;">${p.nom}</h3>
+                        <div style="font-size: 10px; color: #cbd5e1; line-height: 1.4; margin-bottom: 6px;">
+                            📂 <b>Catégorie :</b> ${p.cat.toUpperCase()}<br>
+                            📞 <b>Tél :</b> ${p.wa}<br>
+                            🖼️ <b>Photos :</b> ${photosList.length} lien(s)<br>
+                            <span style="color: #f87171;">${formatTempsRestant(p.expireAt)}</span>
+                        </div>
+                        <div style="display: flex; gap: 5px;">
+                            <button class="btn-save" style="padding: 4px; font-size: 10px;" onclick="ouvrirModalEditProfil(${p.id})">✏️ Modifier</button>
+                            <button class="btn-close" style="padding: 4px; font-size: 10px;" onclick="supprimerProfilAdmin(${p.id})">🗑️ Supprimer</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function ouvrirModalEditProfil(id) {
+            const p = profilsData.find(item => item.id === id);
+            if (!p) return;
+
+            document.getElementById("edit-profil-id").value = p.id;
+            document.getElementById("edit-profil-cat").value = p.cat;
+            document.getElementById("edit-profil-nom").value = p.nom;
+            document.getElementById("edit-profil-photos").value = Array.isArray(p.photos) ? p.photos.join(", ") : p.photo;
+            document.getElementById("edit-profil-desc").value = p.desc;
+            document.getElementById("edit-profil-wa").value = p.wa;
+
+            document.getElementById("edit-profil-modal").style.display = "flex";
+        }
+
+        function fermerModalEditProfil() {
+            document.getElementById("edit-profil-modal").style.display = "none";
+        }
+
+        function sauvegarderModificationProfil() {
+            const id = parseInt(document.getElementById("edit-profil-id").value, 10);
+            const p = profilsData.find(item => item.id === id);
+            if (!p) return;
+
+            p.cat = document.getElementById("edit-profil-cat").value;
+            p.nom = document.getElementById("edit-profil-nom").value.trim();
+            const photosRaw = document.getElementById("edit-profil-photos").value.trim();
+            p.desc = document.getElementById("edit-profil-desc").value.trim();
+            p.wa = document.getElementById("edit-profil-wa").value.trim();
+
+            let photosArray = photosRaw.split(/[\n,]+/).map(item => item.trim()).filter(item => item !== '');
+            if (photosArray.length > 5) { photosArray = photosArray.slice(0, 5); }
+            p.photos = photosArray;
+
+            saveState();
+            fermerModalEditProfil();
+            renderAdminProfilsList();
+            renderGrid();
+            alert("✅ Profil modifié avec succès !");
+        }
+
+        function supprimerProfilAdmin(id) {
+            if (confirm("Voulez-vous vraiment supprimer ce profil Bizi ?")) {
+                profilsData = profilsData.filter(item => item.id !== id);
+                saveState();
+                renderAdminProfilsList();
+                renderGrid();
+            }
         }
 
         function renderAdminList() {
@@ -1232,31 +871,9 @@
 
             scenesData.forEach((s, idx) => {
                 if (query && !s.nom.toLowerCase().includes(query)) return;
-
                 const badgeAdmin = getQualityBadgeHtml(s.qualite || 'moyen');
-                listContainer.innerHTML += `
-                    <div class="admin-card-item">
-                        <div class="media-container">
-                            <video class="preview-video" muted loop playsinline webkit-playsinline preload="none">
-                                <source src="${s.preview}" type="video/mp4">
-                            </video>
-                        </div>
-                        <h3 style="color: #22c55e; font-size: 12px; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">#${idx + 1} - ${s.nom}</h3>
-                        <div style="margin-bottom: 4px;">${badgeAdmin}</div>
-                        <div style="font-size: 10px; color: #cbd5e1; line-height: 1.4;">
-                            👤 <b>Vendeur :</b> <span style="color: #4ade80; font-weight: bold;">${s.partenaire || defaultPartenaire}</span><br>
-                            🔑 <b>ID :</b> ${s.id} | 💎 <b>Prix :</b> ${s.prix} Fr<br>
-                            💬 <b>WhatsApp :</b> ${s.wa}<br>
-                            🔗 <b>Mega :</b><br>
-                            <a href="${s.mega}" target="_blank" style="color: #38bdf8; word-break: break-all; font-weight: bold;">${s.mega}</a>
-                        </div>
-                    </div>
-                `;
+                listContainer.innerHTML += `<div class="admin-card-item"><div class="media-container"><video class="preview-video" muted loop playsinline webkit-playsinline preload="none"><source src="${s.preview}" type="video/mp4"></video></div><h3 style="color: #22c55e; font-size: 12px; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">#${idx + 1} - ${s.nom}</h3><div style="margin-bottom: 4px;">${badgeAdmin}</div><div style="font-size: 10px; color: #cbd5e1; line-height: 1.4;">👤 <b>Vendeur :</b> <span style="color: #4ade80; font-weight: bold;">${s.partenaire || defaultPartenaire}</span><br>🔑 <b>ID :</b> ${s.id} | 💎 <b>Prix :</b> ${s.prix} Fr<br>💬 <b>WhatsApp :</b> ${s.wa}<br>🔗 <b>Mega :</b><br><a href="${s.mega}" target="_blank" style="color: #38bdf8; word-break: break-all; font-weight: bold;">${s.mega}</a></div></div>`;
             });
-        }
-
-        function fermerListeAdmin() {
-            document.getElementById("admin-list-modal").style.display = "none";
         }
 
         function ajouterVideoAdmin() {
@@ -1268,24 +885,9 @@
             const qualite = document.getElementById("admin-v-qualite").value;
             const wa = document.getElementById("admin-v-wa").value.trim() || genererNumeroAleatoire();
 
-            if (!nom || !preview || !mega || isNaN(prix)) {
-                alert("Veuillez remplir tous les champs (Titre, Aperçu, Mega, Prix) !");
-                return;
-            }
-
+            if (!nom || !preview || !mega || isNaN(prix)) { alert("Veuillez remplir tous les champs (Titre, Aperçu, Mega, Prix) !"); return; }
             const randomId = Math.floor(Math.random() * (90000 - 10000 + 1)) + 10000;
-
-            const nouvelleScene = {
-                id: randomId,
-                partenaire: partenaire,
-                nom: nom,
-                preview: preview,
-                mega: mega,
-                prix: prix,
-                wa: wa,
-                qualite: qualite,
-                deverrouille: false
-            };
+            const nouvelleScene = { id: randomId, partenaire: partenaire, nom: nom, preview: preview, mega: mega, prix: prix, wa: wa, qualite: qualite, deverrouille: false };
 
             scenesData.unshift(nouvelleScene);
             saveState();
@@ -1298,7 +900,6 @@
             document.getElementById("admin-v-mega").value = "";
             document.getElementById("admin-v-prix").value = "";
             document.getElementById("admin-v-wa").value = "";
-            
             alert(`✅ Vidéo publiée avec succès !\nID généré : ${randomId}`);
         }
 
