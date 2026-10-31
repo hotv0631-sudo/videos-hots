@@ -166,6 +166,7 @@
             justify-content: space-between;
             width: 100%;
             min-width: 0;
+            text-align: center; /* Centrage global de la carte */
         }
         .card-premium { border: 2.5px solid #a855f7; box-shadow: 0 0 15px rgba(168, 85, 247, 0.35); }
         .card-moyen { border: 2.5px solid #eab308; box-shadow: 0 0 15px rgba(234, 179, 8, 0.3); }
@@ -187,14 +188,24 @@
         }
         video.preview-video { width: 100%; height: 100%; object-fit: cover; display: block; }
         .profil-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        
+        /* Titres et textes uniformisés et centrés */
         .card h3 {
-            margin: 0 0 2px 0;
+            margin: 0 0 3px 0;
             color: #f1f5f9;
             font-size: 11.5px;
             text-align: center;
+            font-weight: bold;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+        }
+        .card-vendor {
+            font-size: 10px;
+            color: #4ade80;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 5px;
         }
         .profil-desc {
             font-size: 9.5px;
@@ -486,7 +497,6 @@
             <div class="subtitle">🤑 Commandes et rencontres sécurisées par WhatsApp 🤑</div>
         </div>
         
-        <!-- ONGLETS INVERSÉS : Bizi Disponible EN PREMIER -->
         <div class="tabs-container">
             <button id="tab-profils" class="tab-btn active" onclick="changerOnglet('profils')">Bizi Disponible</button>
             <button id="tab-videos" class="tab-btn" onclick="changerOnglet('videos')">Vidéo a vendre</button>
@@ -614,8 +624,6 @@
     <script>
         const defaultWhatsApp = "2250105553740"; 
         const defaultPartenaire = "Admin Principal";
-        
-        // ONGLET ACTIF PAR DÉFAUT : "profils" (Bizi Disponible en premier)
         let ongletActif = "profils";
         let sousOngletActif = "femme";
         let vueDetailleeActive = false;
@@ -675,12 +683,12 @@
             { partenaire: "Le Procureur", nom: "Love clitoris Final", preview: "http://hc1.checker.in/file2link/documents/file_670698.mp4/Highlight0056.mp4", mega: "https://mega.nz/file/ThQl2QYL#OoNr42p_HRAeztCnVgTa3sIdvfblpVxNjaVaNuYwI3E", prix: 2200, wa: "0103115237", qualite: "premium" }
         ];
 
-        let scenesData = JSON.parse(localStorage.getItem("local_vip_scenes_v111")) || [];
-        let profilsData = JSON.parse(localStorage.getItem("local_vip_profils_v111")) || [];
+        let scenesData = JSON.parse(localStorage.getItem("local_vip_scenes_v112")) || [];
+        let profilsData = JSON.parse(localStorage.getItem("local_vip_profils_v112")) || [];
 
         function saveState() {
-            localStorage.setItem("local_vip_scenes_v111", JSON.stringify(scenesData));
-            localStorage.setItem("local_vip_profils_v111", JSON.stringify(profilsData));
+            localStorage.setItem("local_vip_scenes_v112", JSON.stringify(scenesData));
+            localStorage.setItem("local_vip_profils_v112", JSON.stringify(profilsData));
         }
 
         function verifierExpirationProfils() {
