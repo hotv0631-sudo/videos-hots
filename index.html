@@ -40,9 +40,7 @@
             align-items: center;
             gap: 5px;
         }
-        .header-title {
-            text-align: center;
-        }
+        .header-title { text-align: center; }
         h1 {
             color: #ff6600;
             font-size: 13.5px;
@@ -58,7 +56,6 @@
             font-weight: bold;
             letter-spacing: 0.5px;
         }
-        /* ONGLETS PRINCIPAUX */
         .tabs-container {
             display: flex;
             gap: 6px;
@@ -86,8 +83,6 @@
             border-color: #ff6600;
             box-shadow: 0 2px 8px rgba(255, 102, 0, 0.4);
         }
-
-        /* SOUS-ONGLETS POUR BIZI DISPONIBLE */
         .subtabs-container {
             display: none;
             gap: 4px;
@@ -114,7 +109,6 @@
             color: white;
             box-shadow: 0 2px 6px rgba(34, 197, 94, 0.4);
         }
-
         .btn-vendor-header {
             background: linear-gradient(135deg, #22c55e, #16a34a);
             color: white;
@@ -145,9 +139,7 @@
             outline: none;
             box-shadow: 0 2px 8px rgba(0,0,0,0.3);
         }
-        .search-input::placeholder {
-            color: #94a3b8;
-        }
+        .search-input::placeholder { color: #94a3b8; }
         .header-space {
             width: 100%;
             height: 155px;
@@ -175,10 +167,10 @@
             width: 100%;
             min-width: 0;
         }
-        .card-premium { border: 2.5px solid #a855f7; box-shadow: 0 0 15px rgba(168, 85, 247, 0.35), 0 6px 16px rgba(0, 0, 0, 0.4); }
-        .card-moyen { border: 2.5px solid #eab308; box-shadow: 0 0 15px rgba(234, 179, 8, 0.3), 0 6px 16px rgba(0, 0, 0, 0.4); }
+        .card-premium { border: 2.5px solid #a855f7; box-shadow: 0 0 15px rgba(168, 85, 247, 0.35); }
+        .card-moyen { border: 2.5px solid #eab308; box-shadow: 0 0 15px rgba(234, 179, 8, 0.3); }
         .card-basique { border: 2px solid #64748b; }
-        .card-profil { border: 2.5px solid #22c55e; box-shadow: 0 0 15px rgba(34, 197, 94, 0.3), 0 6px 16px rgba(0, 0, 0, 0.4); }
+        .card-profil { border: 2.5px solid #22c55e; box-shadow: 0 0 15px rgba(34, 197, 94, 0.3); }
 
         .media-container {
             width: 100%;
@@ -191,19 +183,10 @@
             align-items: center;
             justify-content: center;
             position: relative;
+            cursor: pointer;
         }
-        video.preview-video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
-        .profil-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
+        video.preview-video { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .profil-img { width: 100%; height: 100%; object-fit: cover; display: block; }
         .card h3 {
             margin: 0 0 2px 0;
             color: #f1f5f9;
@@ -219,9 +202,6 @@
             font-weight: bold;
             text-align: center;
             margin-bottom: 4px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
         }
         .profil-desc {
             font-size: 9.5px;
@@ -245,12 +225,11 @@
             margin-bottom: 6px;
             display: inline-block;
             width: 100%;
-            letter-spacing: 0.5px;
         }
-        .badge-premium { background: linear-gradient(135deg, #a855f7, #6366f1); color: #ffffff; box-shadow: 0 2px 6px rgba(168, 85, 247, 0.5); }
-        .badge-moyen { background: linear-gradient(135deg, #eab308, #ca8a04); color: #ffffff; box-shadow: 0 2px 6px rgba(234, 179, 8, 0.4); }
+        .badge-premium { background: linear-gradient(135deg, #a855f7, #6366f1); color: #ffffff; }
+        .badge-moyen { background: linear-gradient(135deg, #eab308, #ca8a04); color: #ffffff; }
         .badge-basique { background: linear-gradient(135deg, #64748b, #475569); color: #ffffff; }
-        .badge-profil { background: linear-gradient(135deg, #22c55e, #16a34a); color: #ffffff; box-shadow: 0 2px 6px rgba(34, 197, 94, 0.4); }
+        .badge-profil { background: linear-gradient(135deg, #22c55e, #16a34a); color: #ffffff; }
 
         .price-badge {
             background: linear-gradient(135deg, #ff6600, #ff8533);
@@ -261,7 +240,6 @@
             padding: 5px;
             border-radius: 6px;
             margin-bottom: 6px;
-            box-shadow: 0 2px 6px rgba(255, 102, 0, 0.4);
         }
         .info-id {
             font-size: 9.5px;
@@ -287,7 +265,6 @@
             font-weight: bold;
             font-size: 10px;
             margin-bottom: 6px;
-            box-shadow: 0 2px 6px rgba(34, 197, 94, 0.4);
         }
         input, select, textarea {
             width: 100%;
@@ -311,15 +288,8 @@
             font-weight: bold;
             cursor: pointer;
             font-size: 11px;
-            box-shadow: 0 2px 6px rgba(34, 197, 94, 0.4);
         }
-        .message {
-            margin-top: 4px;
-            font-size: 10px;
-            text-align: center;
-            font-weight: bold;
-            word-break: break-word;
-        }
+        .message { margin-top: 4px; font-size: 10px; text-align: center; font-weight: bold; }
         .telegram-link {
             display: block;
             background: #0088cc;
@@ -331,7 +301,6 @@
             margin-top: 4px;
             font-size: 11px;
             text-align: center;
-            box-shadow: 0 2px 8px rgba(0, 136, 204, 0.4);
         }
         .admin-fab {
             position: fixed;
@@ -354,10 +323,7 @@
         .modal-overlay {
             display: none;
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.7);
             z-index: 2000;
             justify-content: center;
@@ -375,12 +341,7 @@
             overflow-y: auto;
             color: #f8fafc;
         }
-        .modal-content h2 {
-            color: #ff6600;
-            font-size: 15px;
-            margin-bottom: 10px;
-            text-align: center;
-        }
+        .modal-content h2 { color: #ff6600; font-size: 15px; margin-bottom: 10px; text-align: center; }
         .info-box-important {
             background: rgba(34, 197, 94, 0.15);
             border: 2px dashed #22c55e;
@@ -392,20 +353,87 @@
             line-height: 1.4;
             text-align: left;
         }
-        .modal-content label {
-            font-size: 11px;
-            font-weight: bold;
-            color: #cbd5e1;
-            display: block;
-            margin-top: 8px;
-        }
-        .modal-buttons {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-        }
+        .modal-content label { font-size: 11px; font-weight: bold; color: #cbd5e1; display: block; margin-top: 8px; }
+        .modal-buttons { display: flex; gap: 10px; margin-top: 15px; }
         .btn-save { background: #22c55e; color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 11px; padding: 8px; flex: 1; }
         .btn-close { background: #ef4444; color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 11px; padding: 8px; flex: 1; }
+
+        /* PAGE PROFIL DÉDIÉE (VUE DÉTAILLÉE) */
+        #profile-detail-view {
+            display: none;
+            width: 100%;
+            max-width: 600px;
+            background: #1e293b;
+            border: 2.5px solid #22c55e;
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 5px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.6);
+        }
+        .back-btn {
+            background: #475569;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 10px;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+        .profile-detail-img {
+            width: 100%;
+            max-height: 350px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        .profile-detail-name {
+            font-size: 16px;
+            color: #f8fafc;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 5px;
+        }
+        .profile-detail-desc {
+            font-size: 12px;
+            color: #cbd5e1;
+            text-align: center;
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+        .profile-detail-phone {
+            font-size: 12px;
+            color: #38bdf8;
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 12px;
+            background: #0f172a;
+            padding: 6px;
+            border-radius: 5px;
+            border: 1px dashed #38bdf8;
+        }
+        .profile-contact-btn {
+            width: 100%;
+            background: #22c55e;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 12px;
+            cursor: pointer;
+            text-align: center;
+            box-shadow: 0 3px 8px rgba(34, 197, 94, 0.4);
+        }
+        .contact-options {
+            display: none;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        .opt-whatsapp { background: #25d366; color: white; padding: 8px; border-radius: 5px; text-decoration: none; font-weight: bold; text-align: center; font-size: 11px; }
+        .opt-call { background: #0284c7; color: white; padding: 8px; border-radius: 5px; text-decoration: none; font-weight: bold; text-align: center; font-size: 11px; }
     </style>
 </head>
 <body>
@@ -416,13 +444,11 @@
             <div class="subtitle">🤑 Commandes et rencontres sécurisées par WhatsApp 🤑</div>
         </div>
         
-        <!-- ONGLETS PRINCIPAUX -->
         <div class="tabs-container">
             <button id="tab-videos" class="tab-btn active" onclick="changerOnglet('videos')">Vidéo a vendre</button>
             <button id="tab-profils" class="tab-btn" onclick="changerOnglet('profils')">Bizi Disponible</button>
         </div>
 
-        <!-- SOUS-ONGLETS POUR BIZI DISPONIBLE -->
         <div class="subtabs-container" id="subtabs-profils">
             <button id="subtab-femme" class="subtab-btn active" onclick="changerSousOnglet('femme')">Bizi Femme</button>
             <button id="subtab-homme" class="subtab-btn" onclick="changerSousOnglet('homme')">Bizi Homme</button>
@@ -440,7 +466,14 @@
     <div class="header-space" id="header-space"></div>
 
     <div class="container">
+        <!-- VUE PRINCIPALE (GRILLE) -->
         <div class="grid" id="video-grid"></div>
+
+        <!-- VUE DÉTAILLÉE DU PROFIL BIZI (CHANGEMENT DE PAGE INTERNE) -->
+        <div id="profile-detail-view">
+            <button class="back-btn" onclick="retourGrille()">← Retour</button>
+            <div id="profile-detail-content"></div>
+        </div>
     </div>
 
     <button class="admin-fab" onclick="demanderSecuriteAdmin()" title="Tableau de Bord Admin">⚙️</button>
@@ -450,34 +483,28 @@
         <div class="modal-content" style="max-width: 450px;">
             <h2 id="modal-title">🔥 Inscription Bizi Disponible 📸</h2>
             
-            <div class="info-box-important" id="modal-info-box">
+            <div class="info-box-important">
                 <b>✨ INSCRIPTION DIRECTE :</b><br>
-                Votre profil sera automatiquement ajouté dans l'onglet sélectionné.
+                Votre profil sera automatiquement ajouté dans l'onglet sélectionné avec votre numéro et date d'inscription.
             </div>
 
             <div id="form-videos-fields">
                 <label>Nom du Partenaire / Vendeur :</label>
                 <input type="text" id="new-partenaire" placeholder="Ex: Jean Kouassi">
-
                 <label>Titre de la vidéo :</label>
                 <input type="text" id="new-nom" placeholder="Ex: Bizi souriant">
-
                 <label>Nom de l'Aperçu (Ex: Highlight002.mp4) :</label>
                 <input type="text" id="new-preview" placeholder="Highlight002.mp4">
-
                 <label>Lien Vidéo Complet (Lien Mega direct) :</label>
                 <input type="text" id="new-telegram" placeholder="https://mega.nz/file/...">
-
                 <label>Prix (en Fr) :</label>
                 <input type="number" id="new-prix" placeholder="1500" step="100">
-
                 <label>Qualité / Niveau de la vidéo :</label>
                 <select id="new-qualite">
                     <option value="premium">💎 Ultra / Premium (Diamant)</option>
                     <option value="moyen">🥇 Moyen / Standard (Or)</option>
                     <option value="basique">🥉 Basique (Bronze)</option>
                 </select>
-
                 <label>Votre Numéro WhatsApp :</label>
                 <input type="text" id="new-whatsapp" placeholder="2250105553740">
             </div>
@@ -500,7 +527,7 @@
                 <label>Description (Quartier, dispos, etc.) :</label>
                 <textarea id="profil-desc" placeholder="Ex: Disponible à Cocody, propre et douce..."></textarea>
 
-                <label>Votre Numéro WhatsApp :</label>
+                <label>Votre Numéro de Téléphone :</label>
                 <input type="text" id="profil-whatsapp" placeholder="2250105553740">
             </div>
 
@@ -515,41 +542,28 @@
     <div id="admin-list-modal" class="modal-overlay">
         <div class="modal-content">
             <h2>📂 Tableau de Bord VIP (Admin)</h2>
-            <div style="font-size: 11px; color: #cbd5e1; margin-bottom: 10px; text-align: center; font-weight: bold;">
-                Gestion exclusive des vidéos
-            </div>
-
             <div style="background: #1e293b; border: 2px solid #ff6600; padding: 10px; border-radius: 8px; margin-bottom: 15px;">
                 <h3 style="color: #ff6600; font-size: 13px; margin-bottom: 8px; text-align: center;">🎬 Ajouter une Vidéo</h3>
-                
                 <label>Nom du Partenaire :</label>
                 <input type="text" id="admin-v-partenaire" placeholder="Ex: Kouassi Pro">
-
                 <label>Titre de la vidéo :</label>
                 <input type="text" id="admin-v-nom" placeholder="Titre de la vidéo">
-
                 <label>Lien Aperçu (.mp4) :</label>
                 <input type="text" id="admin-v-preview" placeholder="http://.../Highlight.mp4">
-
                 <label>Lien Mega Complet :</label>
                 <input type="text" id="admin-v-mega" placeholder="https://mega.nz/file/...">
-
                 <label>Prix (Fr) :</label>
                 <input type="number" id="admin-v-prix" placeholder="1500">
-
                 <label>Qualité :</label>
                 <select id="admin-v-qualite">
                     <option value="premium">💎 Ultra Premium</option>
                     <option value="moyen">🥇 Standard (Or)</option>
                     <option value="basique">🥉 Basique</option>
                 </select>
-
-                <label>Numéro WhatsApp de réception :</label>
+                <label>Numéro WhatsApp :</label>
                 <input type="text" id="admin-v-wa" placeholder="2250105553740">
-
                 <button class="btn-save" style="width: 100%; margin-top: 10px; padding: 8px;" onclick="ajouterVideoAdmin()">🚀 Publier la Vidéo</button>
             </div>
-
             <button class="btn-close" style="width: 100%; padding: 8px; margin-top: 10px;" onclick="fermerListeAdmin()">Fermer</button>
         </div>
     </div>
@@ -559,6 +573,7 @@
         const defaultPartenaire = "Admin Principal";
         let ongletActif = "videos";
         let sousOngletActif = "femme";
+        let vueDetailleeActive = false;
 
         const ADMIN_PASS_1_ENCODED = "MDcwOTE1MjdhZG1pbg=="; 
         const ADMIN_CODE_2_ENCODED = "Qm9saQ==";             
@@ -570,46 +585,38 @@
         }
 
         const baseProfils = [
-            { cat: "femme", nom: "Vanessa Abidjan", photo: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&auto=format&fit=crop&q=60", desc: "Disponible à Yopougon, propre et douce.", wa: defaultWhatsApp },
-            { cat: "femme", nom: "Aïcha Premium", photo: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=500&auto=format&fit=crop&q=60", desc: "Cocody Riviera, nuit blanche.", wa: defaultWhatsApp },
-            { cat: "homme", nom: "Junior Marcory", photo: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&auto=format&fit=crop&q=60", desc: "Athlétique, propre, dispo pour déplacement.", wa: defaultWhatsApp },
-            { cat: "blanche", nom: "Claire Paris", photo: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=500&auto=format&fit=crop&q=60", desc: "De passage à Abidjan, très ouverte.", wa: defaultWhatsApp },
-            { cat: "trans", nom: "Kelly Cocody", photo: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=500&auto=format&fit=crop&q=60", desc: "Gros attributs, très douce et discrète.", wa: defaultWhatsApp }
+            { id: 1, cat: "femme", nom: "Vanessa Abidjan", photo: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&auto=format&fit=crop&q=60", desc: "Disponible à Yopougon, propre et douce.", wa: defaultWhatsApp, date: "26/10/2026" },
+            { id: 2, cat: "femme", nom: "Aïcha Premium", photo: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=500&auto=format&fit=crop&q=60", desc: "Cocody Riviera, nuit blanche.", wa: defaultWhatsApp, date: "26/10/2026" },
+            { id: 3, cat: "homme", nom: "Junior Marcory", photo: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&auto=format&fit=crop&q=60", desc: "Athlétique, propre, dispo pour déplacement.", wa: defaultWhatsApp, date: "26/10/2026" },
+            { id: 4, cat: "blanche", nom: "Claire Paris", photo: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=500&auto=format&fit=crop&q=60", desc: "De passage à Abidjan, très ouverte.", wa: defaultWhatsApp, date: "26/10/2026" },
+            { id: 5, cat: "trans", nom: "Kelly Cocody", photo: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=500&auto=format&fit=crop&q=60", desc: "Gros attributs, très douce et discrète.", wa: defaultWhatsApp, date: "26/10/2026" }
         ];
 
         const baseScenes = [ 
-            { partenaire: "Kouassi Pro", nom: "Bizi Exclusif Abidjan", preview: "http://hc1.checker.in/file2link/documents/file_670646.mp4/Highlight001.mp4", mega: "https://mega.nz/file/qHwyESiI#mtmHDaWLq02mRvEon3kZL5BroGROTEwJkhtwNTGsMlo", prix: 1500, wa: defaultWhatsApp, qualite: "premium" },
-            { partenaire: "Aïcha VIP", nom: "Sextap Résidence Chic", preview: "http://hc1.checker.in/file2link/documents/file_670647.mp4/Highlight002.mp4", mega: "https://mega.nz/file/ea4yBIxC#cO6dr4YAyQoJioS0sp_wylvg72d_9M0roRYT5vYFnE0", prix: 1200, wa: defaultWhatsApp, qualite: "moyen" },
-            { partenaire: "Le Procureur", nom: "Love clitoris Final", preview: "http://hc1.checker.in/file2link/documents/file_670698.mp4/Highlight0056.mp4", mega: "https://mega.nz/file/ThQl2QYL#OoNr42p_HRAeztCnVgTa3sIdvfblpVxNjaVaNuYwI3E", prix: 2200, wa: "0103115237", qualite: "premium" }
+            { id: 101, partenaire: "Kouassi Pro", nom: "Bizi Exclusif Abidjan", preview: "http://hc1.checker.in/file2link/documents/file_670646.mp4/Highlight001.mp4", mega: "https://mega.nz/file/qHwyESiI#mtmHDaWLq02mRvEon3kZL5BroGROTEwJkhtwNTGsMlo", prix: 1500, wa: defaultWhatsApp, qualite: "premium" }
         ];
 
-        let scenesData = JSON.parse(localStorage.getItem("local_vip_scenes_v104")) || [];
-        let profilsData = JSON.parse(localStorage.getItem("local_vip_profils_v104")) || [];
+        let scenesData = JSON.parse(localStorage.getItem("local_vip_scenes_v105")) || [];
+        let profilsData = JSON.parse(localStorage.getItem("local_vip_profils_v105")) || [];
 
         function saveState() {
-            localStorage.setItem("local_vip_scenes_v104", JSON.stringify(scenesData));
-            localStorage.setItem("local_vip_profils_v104", JSON.stringify(profilsData));
+            localStorage.setItem("local_vip_scenes_v105", JSON.stringify(scenesData));
+            localStorage.setItem("local_vip_profils_v105", JSON.stringify(profilsData));
         }
 
         if (scenesData.length === 0) {
-            scenesData = baseScenes.map((item) => ({
-                id: Math.floor(Math.random() * 80000) + 10000,
-                partenaire: item.partenaire || defaultPartenaire,
-                nom: item.nom, mega: item.mega, preview: item.preview, prix: item.prix, wa: item.wa || defaultWhatsApp, qualite: item.qualite || "moyen", deverrouille: false
-            }));
+            scenesData = baseScenes;
             saveState();
         }
 
         if (profilsData.length === 0) {
-            profilsData = baseProfils.map((item) => ({
-                id: Math.floor(Math.random() * 80000) + 10000,
-                cat: item.cat, nom: item.nom, photo: item.photo, desc: item.desc, wa: item.wa || defaultWhatsApp
-            }));
+            profilsData = baseProfils;
             saveState();
         }
 
         function changerOnglet(nomOnglet) {
             ongletActif = nomOnglet;
+            vueDetailleeActive = false;
             document.getElementById("tab-videos").className = nomOnglet === "videos" ? "tab-btn active" : "tab-btn";
             document.getElementById("tab-profils").className = nomOnglet === "profils" ? "tab-btn active" : "tab-btn";
             
@@ -631,6 +638,7 @@
 
         function changerSousOnglet(cat) {
             sousOngletActif = cat;
+            vueDetailleeActive = false;
             ['femme', 'homme', 'blanche', 'trans'].forEach(c => {
                 document.getElementById(`subtab-${c}`).className = c === cat ? "subtab-btn active" : "subtab-btn";
             });
@@ -646,7 +654,7 @@
         let observer = null;
         function initVideoObserver() {
             if (observer) observer.disconnect();
-            if (ongletActif !== "videos") return;
+            if (ongletActif !== "videos" || vueDetailleeActive) return;
 
             observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
@@ -658,8 +666,58 @@
             document.querySelectorAll('#video-grid video.preview-video').forEach(video => { observer.observe(video); });
         }
 
+        function afficherProfilDetail(id) {
+            vueDetailleeActive = true;
+            document.getElementById("video-grid").style.display = "none";
+            const detailView = document.getElementById("profile-detail-view");
+            detailView.style.display = "block";
+
+            const profil = profilsData.find(p => p.id === id);
+            if (!profil) return;
+
+            const detailContent = document.getElementById("profile-detail-content");
+            detailContent.innerHTML = `
+                <img class="profile-detail-img" src="${profil.photo}" alt="${profil.nom}" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500'">
+                <div class="profile-detail-name">${profil.nom}</div>
+                <div class="quality-badge badge-profil" style="margin-bottom: 8px;">🔥 BIZI DISPONIBLE</div>
+                <div class="profile-detail-desc">${profil.desc}</div>
+                <div style="font-size: 9.5px; color: #94a3b8; text-align: center; margin-bottom: 10px;">📅 Inscrit(e) le : ${profil.date || 'Récemment'}</div>
+                <div class="profile-detail-phone">📞 Téléphone : <b>${profil.wa}</b></div>
+                
+                <button class="profile-contact-btn" onclick="basculerOptionsContact()">Contacter</button>
+                
+                <div class="contact-options" id="contact-options-box">
+                    <a class="opt-whatsapp" href="https://wa.me/${profil.wa}?text=Salut,%20je%20te%20contacte%20depuis%20ton%20profil%20sur%20le%20site." target="_blank">💬 WhatsApp</a>
+                    <a class="opt-call" href="tel:${profil.wa}">📞 Appel direct</a>
+                </div>
+            `;
+        }
+
+        function basculerOptionsContact() {
+            const box = document.getElementById("contact-options-box");
+            box.style.display = box.style.display === "flex" ? "none" : "flex";
+        }
+
+        function retourGrille() {
+            vueDetailleeActive = false;
+            document.getElementById("profile-detail-view").style.display = "none";
+            document.getElementById("video-grid").style.display = "grid";
+            renderGrid();
+        }
+
         function renderGrid() {
             const grid = document.getElementById("video-grid");
+            const detailView = document.getElementById("profile-detail-view");
+            
+            if (vueDetailleeActive) {
+                grid.style.display = "none";
+                detailView.style.display = "block";
+                return;
+            } else {
+                detailView.style.display = "none";
+                grid.style.display = "grid";
+            }
+
             grid.innerHTML = "";
             const query = document.getElementById("search-bar").value.toLowerCase().trim();
 
@@ -682,7 +740,6 @@
                             </video>
                         </div>
                     `;
-
                     const badgeHtml = getQualityBadgeHtml(scene.qualite);
 
                     if (scene.deverrouille) {
@@ -721,6 +778,7 @@
                 setTimeout(initVideoObserver, 100);
 
             } else {
+                // AFFICHAGE DES PROFILS (Nom d'abord, puis description, et clic sur photo pour ouvrir la page dédiée)
                 profilsData.forEach((profil) => {
                     if (profil.cat !== sousOngletActif) return;
                     if (query && !profil.nom.toLowerCase().includes(query) && !profil.desc.toLowerCase().includes(query)) return;
@@ -729,15 +787,15 @@
                     card.className = "card card-profil";
 
                     card.innerHTML = `
-                        <div class="media-container">
+                        <div class="media-container" onclick="afficherProfilDetail(${profil.id})" title="Cliquez pour voir le profil">
                             <img class="profil-img" src="${profil.photo}" alt="${profil.nom}" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500'">
                         </div>
                         <h3>${profil.nom}</h3>
                         <div class="quality-badge badge-profil">🔥 BIZI DISPONIBLE</div>
                         <div class="profil-desc">${profil.desc}</div>
-                        <a class="whatsapp-btn" href="https://wa.me/${profil.wa}?text=Salut,%20je%20te%20contacte%20depuis%20ton%20profil%20sur%20le%20site%20pour%20une%20rencontre." target="_blank">
-                            💬 Contacter sur WhatsApp
-                        </a>
+                        <button class="whatsapp-btn" style="border:none; width:100%; cursor:pointer;" onclick="afficherProfilDetail(${profil.id})">
+                            💬 Contacter
+                        </button>
                     `;
                     grid.appendChild(card);
                 });
@@ -814,14 +872,15 @@
                 const photo = document.getElementById("profil-photo").value.trim();
                 const desc = document.getElementById("profil-desc").value.trim();
                 const wa = document.getElementById("profil-whatsapp").value.trim() || defaultWhatsApp;
+                const dateJour = new Date().toLocaleDateString('fr-FR');
 
-                if (!nom || !photo) {
-                    alert("Veuillez remplir votre nom et le lien de votre photo !");
+                if (!nom || !photo || !wa) {
+                    alert("Veuillez remplir votre nom, le lien de votre photo et votre numéro !");
                     return;
                 }
 
                 profilsData.unshift({
-                    id: Date.now(), cat, nom, photo, desc, wa
+                    id: Date.now(), cat, nom, photo, desc, wa, date: dateJour
                 });
                 saveState();
                 changerSousOnglet(cat);
