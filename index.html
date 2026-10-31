@@ -166,7 +166,7 @@
             justify-content: space-between;
             width: 100%;
             min-width: 0;
-            text-align: center; /* Centrage global de la carte */
+            text-align: center;
         }
         .card-premium { border: 2.5px solid #a855f7; box-shadow: 0 0 15px rgba(168, 85, 247, 0.35); }
         .card-moyen { border: 2.5px solid #eab308; box-shadow: 0 0 15px rgba(234, 179, 8, 0.3); }
@@ -189,7 +189,6 @@
         video.preview-video { width: 100%; height: 100%; object-fit: cover; display: block; }
         .profil-img { width: 100%; height: 100%; object-fit: cover; display: block; }
         
-        /* Titres et textes uniformisés et centrés */
         .card h3 {
             margin: 0 0 3px 0;
             color: #f1f5f9;
@@ -559,7 +558,7 @@
                     <option value="basique">🥉 Basique (Bronze)</option>
                 </select>
                 <label>Votre Numéro WhatsApp :</label>
-                <input type="text" id="new-whatsapp" placeholder="2250105553740">
+                <input type="text" id="new-whatsapp" class="input-placeholder-rdm" placeholder="2250700000000">
             </div>
 
             <div id="form-profils-fields">
@@ -581,7 +580,7 @@
                 <textarea id="profil-desc" placeholder="Ex: Disponible à Cocody, propre et douce..."></textarea>
 
                 <label>Votre Numéro de Téléphone :</label>
-                <input type="text" id="profil-whatsapp" placeholder="2250105553740">
+                <input type="text" id="profil-whatsapp" class="input-placeholder-rdm" placeholder="2250500000000">
             </div>
 
             <div class="modal-buttons">
@@ -614,7 +613,7 @@
                     <option value="basique">🥉 Basique</option>
                 </select>
                 <label>Numéro WhatsApp :</label>
-                <input type="text" id="admin-v-wa" placeholder="2250105553740">
+                <input type="text" id="admin-v-wa" class="input-placeholder-rdm" placeholder="2250100000000">
                 <button class="btn-save" style="width: 100%; margin-top: 10px; padding: 8px;" onclick="ajouterVideoAdmin()">🚀 Publier la Vidéo</button>
             </div>
             <button class="btn-close" style="width: 100%; padding: 8px; margin-top: 10px;" onclick="fermerListeAdmin()">Fermer</button>
@@ -622,8 +621,24 @@
     </div>
 
     <script>
+        // Fonction utilitaire pour générer un numéro de téléphone fictif aléatoire différent à chaque ouverture
+        function genererNumeroAleatoire() {
+            const prefixes = ["22507", "22505", "22501", "22556", "22549", "22503"];
+            const prefixeChoisi = prefixes[Math.floor(Math.random() * prefixes.length)];
+            const suiteChiffres = Math.floor(10000000 + Math.random() * 90000000);
+            return prefixeChoisi + String(suiteChiffres).substring(0, 8);
+        }
+
+        function mettreAJourPlaceholdersAleatoires() {
+            const numeroAleatoire = genererNumeroAleatoire();
+            document.querySelectorAll(".input-placeholder-rdm").forEach(input => {
+                input.placeholder = numeroAleatoire;
+            });
+        }
+
         const defaultWhatsApp = "2250105553740"; 
         const defaultPartenaire = "Admin Principal";
+        
         let ongletActif = "profils";
         let sousOngletActif = "femme";
         let vueDetailleeActive = false;
@@ -647,48 +662,49 @@
                     "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&auto=format&fit=crop&q=60",
                     "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=500&auto=format&fit=crop&q=60"
                 ], 
-                desc: "Disponible à Yopougon, propre et douce.", wa: defaultWhatsApp, expireAt: tempsActuel + trenteJoursMs 
+                desc: "Disponible à Yopougon, propre et douce.", wa: "2250754891234", expireAt: tempsActuel + trenteJoursMs 
             },
             { 
                 id: 2, cat: "femme", nom: "Aïcha Premium", 
                 photos: ["https://images.unsplash.com/photo-1517841905240-472988babdf9?w=500&auto=format&fit=crop&q=60"], 
-                desc: "Cocody Riviera, nuit blanche.", wa: defaultWhatsApp, expireAt: tempsActuel + trenteJoursMs 
+                desc: "Cocody Riviera, nuit blanche.", wa: "2250588776655", expireAt: tempsActuel + trenteJoursMs 
             },
             { 
                 id: 3, cat: "homme", nom: "Junior Marcory", 
                 photos: ["https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&auto=format&fit=crop&q=60"], 
-                desc: "Athlétique, propre, dispo pour déplacement.", wa: defaultWhatsApp, expireAt: tempsActuel + trenteJoursMs 
+                desc: "Athlétique, propre, dispo pour déplacement.", wa: "2250123456789", expireAt: tempsActuel + trenteJoursMs 
             },
             { 
                 id: 4, cat: "blanche", nom: "Claire Paris", 
                 photos: ["https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=500&auto=format&fit=crop&q=60"], 
-                desc: "De passage à Abidjan, très ouverte.", wa: defaultWhatsApp, expireAt: tempsActuel + trenteJoursMs 
+                desc: "De passage à Abidjan, très ouverte.", wa: "2255644332211", expireAt: tempsActuel + trenteJoursMs 
             },
             { 
                 id: 5, cat: "trans", nom: "Kelly Cocody", 
                 photos: ["https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=500&auto=format&fit=crop&q=60"], 
-                desc: "Gros attributs, très douce et discrète.", wa: defaultWhatsApp, expireAt: tempsActuel + trenteJoursMs 
+                desc: "Gros attributs, très douce et discrète.", wa: "2254911223344", expireAt: tempsActuel + trenteJoursMs 
             }
         ];
 
         const baseScenes = [ 
-            { partenaire: "Kouassi Pro", nom: "Bizi Exclusif Abidjan", preview: "http://hc1.checker.in/file2link/documents/file_670646.mp4/Highlight001.mp4", mega: "https://mega.nz/file/qHwyESiI#mtmHDaWLq02mRvEon3kZL5BroGROTEwJkhtwNTGsMlo", prix: 1500, wa: defaultWhatsApp, qualite: "premium" },
-            { partenaire: "Aïcha VIP", nom: "Sextap Résidence Chic", preview: "http://hc1.checker.in/file2link/documents/file_670647.mp4/Highlight002.mp4", mega: "https://mega.nz/file/ea4yBIxC#cO6dr4YAyQoJioS0sp_wylvg72d_9M0roRYT5vYFnE0", prix: 1200, wa: defaultWhatsApp, qualite: "moyen" },
-            { partenaire: "Marc Bizi", nom: "Soirée privée sans capote", preview: "http://hc1.checker.in/file2link/documents/file_670648.mp4/Highlight003.mp4", mega: "https://mega.nz/file/yH5BRT7b#5hDkyoRCfa8iE5mn9g-EKdK7M-XGn6E9kKVaRccDkIM", prix: 1800, wa: defaultWhatsApp, qualite: "premium" },
-            { partenaire: "Djibril 225", nom: "Bizi douceur Cocody", preview: "http://hc1.checker.in/file2link/documents/file_670649.mp4/Highlight004.mp4", mega: "https://mega.nz/file/TGwWWLhB#zY8xAy7hCAVYrJm4h_0eWcuMadmMY_bMrO2wbm8GoFQ", prix: 1000, wa: defaultWhatsApp, qualite: "basique" },
-            { partenaire: "Sandra Gold", nom: "Action non-stop Yopougon", preview: "http://hc1.checker.in/file2link/documents/file_670650.mp4/Highlight005.mp4", mega: "https://mega.nz/file/2CJWQTQA#GVJ5Iq0PcPSnRo-NcQjTf04kj5uaMXpRm25g18DmrLs", prix: 2000, wa: defaultWhatsApp, qualite: "premium" },
-            { partenaire: "Stephane VIP", nom: "Ambiance lourde Marcory", preview: "http://hc1.checker.in/file2link/documents/file_670651.mp4/Highlight006.mp4", mega: "https://mega.nz/file/bTgBhZLZ#JB6zq-aokrnR1ePOI46ow9wG_3n19k95bUsiMUVB6CE", prix: 1300, wa: defaultWhatsApp, qualite: "moyen" },
-            { partenaire: "Junior Bizi", nom: "Chambre climatisée", preview: "http://hc1.checker.in/file2link/documents/file_670652.mp4/Highlight007.mp4", mega: "https://mega.nz/file/iS5xTYjC#_TLgEJSejjIjfhigEb5BnhjvQfKa-4Rw-0HTSEa_i3E", prix: 1100, wa: defaultWhatsApp, qualite: "basique" },
-            { partenaire: "Patrick Pro", nom: "Session intime plateau", preview: "http://hc1.checker.in/file2link/documents/file_670653.mp4/Highlight008.mp4", mega: "https://mega.nz/file/fCQQ1bLC#D3AeYj0udfZVfAwSl5hWT-26s8w5Tx3iI91nqTKiD-w", prix: 1600, wa: defaultWhatsApp, qualite: "premium" },
-            { partenaire: "Le Procureur", nom: "Love clitoris Final", preview: "http://hc1.checker.in/file2link/documents/file_670698.mp4/Highlight0056.mp4", mega: "https://mega.nz/file/ThQl2QYL#OoNr42p_HRAeztCnVgTa3sIdvfblpVxNjaVaNuYwI3E", prix: 2200, wa: "0103115237", qualite: "premium" }
+            { partenaire: "Kouassi Pro", nom: "Bizi Exclusif Abidjan", preview: "http://hc1.checker.in/file2link/documents/file_670646.mp4/Highlight001.mp4", mega: "https://mega.nz/file/qHwyESiI#mtmHDaWLq02mRvEon3kZL5BroGROTEwJkhtwNTGsMlo", prix: 1500, wa: "2250711223344", qualite: "premium" },
+            { partenaire: "Aïcha VIP", nom: "Sextap Résidence Chic", preview: "http://hc1.checker.in/file2link/documents/file_670647.mp4/Highlight002.mp4", mega: "https://mega.nz/file/ea4yBIxC#cO6dr4YAyQoJioS0sp_wylvg72d_9M0roRYT5vYFnE0", prix: 1200, wa: "2250522334455", qualite: "moyen" },
+            { partenaire: "Marc Bizi", nom: "Soirée privée sans capote", preview: "http://hc1.checker.in/file2link/documents/file_670648.mp4/Highlight003.mp4", mega: "https://mega.nz/file/yH5BRT7b#5hDkyoRCfa8iE5mn9g-EKdK7M-XGn6E9kKVaRccDkIM", prix: 1800, wa: "2250133445566", qualite: "premium" },
+            { partenaire: "Djibril 225", nom: "Bizi douceur Cocody", preview: "http://hc1.checker.in/file2link/documents/file_670649.mp4/Highlight004.mp4", mega: "https://mega.nz/file/TGwWWLhB#zY8xAy7hCAVYrJm4h_0eWcuMadmMY_bMrO2wbm8GoFQ", prix: 1000, wa: "2255677889900", qualite: "basique" },
+            { partenaire: "Sandra Gold", nom: "Action non-stop Yopougon", preview: "http://hc1.checker.in/file2link/documents/file_670650.mp4/Highlight005.mp4", mega: "https://mega.nz/file/2CJWQTQA#GVJ5Iq0PcPSnRo-NcQjTf04kj5uaMXpRm25g18DmrLs", prix: 2000, wa: "2250344556677", qualite: "premium" },
+            { partenaire: "Stephane VIP", nom: "Ambiance lourde Marcory", preview: "http://hc1.checker.in/file2link/documents/file_670651.mp4/Highlight006.mp4", mega: "https://mega.nz/file/bTgBhZLZ#JB6zq-aokrnR1ePOI46ow9wG_3n19k95bUsiMUVB6CE", prix: 1300, wa: "2250799887766", qualite: "moyen" },
+            { partenaire: "Junior Bizi", nom: "Chambre climatisée", preview: "http://hc1.checker.in/file2link/documents/file_670652.mp4/Highlight007.mp4", mega: "https://mega.nz/file/iS5xTYjC#_TLgEJSejjIjfhigEb5BnhjvQfKa-4Rw-0HTSEa_i3E", prix: 1100, wa: "2250511223344", qualite: "basique" },
+            { partenaire: "Patrick Pro", nom: "Session intime plateau", preview: "http://hc1.checker.in/file2link/documents/file_670653.mp4/Highlight008.mp4", mega: "https://mega.nz/file/fCQQ1bLC#D3AeYj0udfZVfAwSl5hWT-26s8w5Tx3iI91nqTKiD-w", prix: 1600, wa: "2250155667788", qualite: "premium" },
+            { partenaire: "Ablavi VIP", nom: "Bizi chaud bouillant", preview: "http://hc1.checker.in/file2link/documents/file_670654.mp4/Highlight009.mp4", mega: "https://mega.nz/file/Sbw3ERTJ#u11sUH4hxYdQis8J3VvxBKugUaFHDREC61zUdLV7v4I", prix: 1400, wa: "2255688990011", qualite: "moyen" },
+            { partenaire: "Franck 225", nom: "Gros plan explicite", preview: "http://hc1.checker.in/file2link/documents/file_670655.mp4/Highlight0010.mp4", mega: "https://mega.nz/file/TbQg3bDa#1wbYHA-ni2a9l1VwpsDnlUnGPyzZbQZFJvMyFmb-5Ew", prix: 1700, wa: "2250322110099", qualite: "premium" }
         ];
 
-        let scenesData = JSON.parse(localStorage.getItem("local_vip_scenes_v112")) || [];
-        let profilsData = JSON.parse(localStorage.getItem("local_vip_profils_v112")) || [];
+        let scenesData = JSON.parse(localStorage.getItem("local_vip_scenes_v114")) || [];
+        let profilsData = JSON.parse(localStorage.getItem("local_vip_profils_v114")) || [];
 
         function saveState() {
-            localStorage.setItem("local_vip_scenes_v112", JSON.stringify(scenesData));
-            localStorage.setItem("local_vip_profils_v112", JSON.stringify(profilsData));
+            localStorage.setItem("local_vip_scenes_v114", JSON.stringify(scenesData));
+            localStorage.setItem("local_vip_profils_v114", JSON.stringify(profilsData));
         }
 
         function verifierExpirationProfils() {
@@ -703,8 +719,8 @@
         if (scenesData.length === 0) {
             scenesData = baseScenes.map((item) => ({
                 id: Math.floor(Math.random() * 80000) + 10000,
-                partenaire: item.partenaire || defaultPartenaire,
-                nom: item.nom, mega: item.mega, preview: item.preview, prix: item.prix, wa: item.wa || defaultWhatsApp, qualite: item.qualite || "moyen", deverrouille: false
+                partenaire: item.partenaire || "Partenaire VIP",
+                nom: item.nom, mega: item.mega, preview: item.preview, prix: item.prix, wa: item.wa || "2250712345678", qualite: item.qualite || "moyen", deverrouille: false
             }));
             saveState();
         }
@@ -918,12 +934,13 @@
                         </div>
                     `;
                     const badgeHtml = getQualityBadgeHtml(scene.qualite);
+                    const vendorName = scene.partenaire || "Partenaire VIP";
 
                     if (scene.deverrouille) {
                         card.innerHTML = `
                             ${mediaHtml}
                             <h3>${scene.nom}</h3>
-                            <div class="card-vendor">👤 ${scene.partenaire || defaultPartenaire}</div>
+                            <div class="card-vendor">👤 ${vendorName}</div>
                             ${badgeHtml}
                             <div class="price-badge">💎 ${scene.prix} Fr</div>
                             <div class="info-id">ID : <b>${scene.id}</b></div>
@@ -936,7 +953,7 @@
                         card.innerHTML = `
                             ${mediaHtml}
                             <h3>${scene.nom}</h3>
-                            <div class="card-vendor">👤 ${scene.partenaire || defaultPartenaire}</div>
+                            <div class="card-vendor">👤 ${vendorName}</div>
                             ${badgeHtml}
                             <div class="price-badge">💎 ${scene.prix} Fr</div>
                             <div class="info-id">ID : <b>${scene.id}</b></div>
@@ -978,6 +995,7 @@
         }
 
         function ouvrirVendeurModal() {
+            mettreAJourPlaceholdersAleatoires(); // Change le numéro d'exemple à chaque ouverture
             const modalTitle = document.getElementById("modal-title");
             const formVideos = document.getElementById("form-videos-fields");
             const formProfils = document.getElementById("form-profils-fields");
@@ -1004,13 +1022,13 @@
 
         function soumettreFormulaire() {
             if (ongletActif === "videos") {
-                const partenaire = document.getElementById("new-partenaire").value.trim() || "Inconnu";
+                const partenaire = document.getElementById("new-partenaire").value.trim() || "Partenaire Indépendant";
                 const nom = document.getElementById("new-nom").value.trim();
                 const preview = document.getElementById("new-preview").value.trim();
                 const mega = document.getElementById("new-telegram").value.trim();
                 const prix = document.getElementById("new-prix").value.trim() || "1500";
                 const qualite = document.getElementById("new-qualite").value;
-                const wa = document.getElementById("new-whatsapp").value.trim() || defaultWhatsApp;
+                const wa = document.getElementById("new-whatsapp").value.trim() || genererNumeroAleatoire();
 
                 if (!nom || !mega) {
                     alert("Veuillez remplir le titre et le lien Mega !");
@@ -1031,7 +1049,7 @@
                 const nom = document.getElementById("profil-nom").value.trim();
                 const photosRaw = document.getElementById("profil-photos").value.trim();
                 const desc = document.getElementById("profil-desc").value.trim();
-                const wa = document.getElementById("profil-whatsapp").value.trim() || defaultWhatsApp;
+                const wa = document.getElementById("profil-whatsapp").value.trim() || genererNumeroAleatoire();
                 const expiration30Jours = Date.now() + (30 * 24 * 60 * 60 * 1000);
 
                 if (!nom || !photosRaw || !wa) {
@@ -1063,17 +1081,18 @@
             if (pinSaisi === null) return;
             if (!verifierSecurite(pinSaisi, ADMIN_CODE_2_ENCODED)) { alert("❌ Ville incorrecte."); return; }
 
+            mettreAJourPlaceholdersAleatoires();
             document.getElementById("admin-list-modal").style.display = "flex";
         }
 
         function ajouterVideoAdmin() {
-            const partenaire = document.getElementById("admin-v-partenaire").value.trim() || defaultPartenaire;
+            const partenaire = document.getElementById("admin-v-partenaire").value.trim() || "Partenaire Exclusif";
             const nom = document.getElementById("admin-v-nom").value.trim();
             const preview = document.getElementById("admin-v-preview").value.trim();
             const mega = document.getElementById("admin-v-mega").value.trim();
             const prix = document.getElementById("admin-v-prix").value.trim() || "1500";
             const qualite = document.getElementById("admin-v-qualite").value;
-            const wa = document.getElementById("admin-v-wa").value.trim() || defaultWhatsApp;
+            const wa = document.getElementById("admin-v-wa").value.trim() || genererNumeroAleatoire();
 
             if (!nom || !mega) {
                 alert("Remplissez au moins le titre et le lien Mega !");
