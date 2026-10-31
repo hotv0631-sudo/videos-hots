@@ -196,13 +196,6 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
-        .card-vendor {
-            font-size: 9px;
-            color: #4ade80;
-            font-weight: bold;
-            text-align: center;
-            margin-bottom: 4px;
-        }
         .profil-desc {
             font-size: 9.5px;
             color: #cbd5e1;
@@ -215,6 +208,17 @@
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
+        }
+        .countdown-badge {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid #ef4444;
+            color: #f87171;
+            font-size: 8.5px;
+            font-weight: bold;
+            text-align: center;
+            padding: 3px;
+            border-radius: 4px;
+            margin-bottom: 6px;
         }
         .quality-badge {
             font-size: 9px;
@@ -358,7 +362,7 @@
         .btn-save { background: #22c55e; color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 11px; padding: 8px; flex: 1; }
         .btn-close { background: #ef4444; color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 11px; padding: 8px; flex: 1; }
 
-        /* PAGE PROFIL DÉDIÉE (VUE DÉTAILLÉE) */
+        /* PAGE PROFIL DÉDIÉE (SWIPE HORIZONTAL SÉCURISÉ) */
         #profile-detail-view {
             display: none;
             width: 100%;
@@ -381,13 +385,52 @@
             cursor: pointer;
             margin-bottom: 10px;
         }
-        .profile-detail-img {
+        .horizontal-slider-container {
             width: 100%;
-            max-height: 350px;
-            object-fit: cover;
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            gap: 0;
             border-radius: 8px;
+            background: #000;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none; /* Firefox */
+        }
+        .horizontal-slider-container::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera */
+        }
+        .profile-slide-img {
+            flex: 0 0 100%;
+            width: 100%;
+            max-height: 380px;
+            object-fit: contain;
+            background: #000;
+            scroll-snap-align: start;
+            scroll-snap-stop: always;
+            border-radius: 8px;
+        }
+        /* Boutons indicateurs sous les photos */
+        .slider-dots {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            margin-top: 8px;
             margin-bottom: 10px;
         }
+        .dot-btn {
+            background: #475569;
+            border: none;
+            width: 28px;
+            height: 6px;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .dot-btn.active {
+            background: #22c55e;
+        }
+
         .profile-detail-name {
             font-size: 16px;
             color: #f8fafc;
@@ -469,7 +512,7 @@
         <!-- VUE PRINCIPALE (GRILLE) -->
         <div class="grid" id="video-grid"></div>
 
-        <!-- VUE DÉTAILLÉE DU PROFIL BIZI (CHANGEMENT DE PAGE INTERNE) -->
+        <!-- VUE DÉTAILLÉE DU PROFIL BIZI -->
         <div id="profile-detail-view">
             <button class="back-btn" onclick="retourGrille()">← Retour</button>
             <div id="profile-detail-content"></div>
@@ -478,14 +521,14 @@
 
     <button class="admin-fab" onclick="demanderSecuriteAdmin()" title="Tableau de Bord Admin">⚙️</button>
 
-    <!-- MODAL INSCRIPTION LOCAL PROFIL / PROPOSER VIDEO -->
+    <!-- MODAL INSCRIPTION -->
     <div id="vendor-modal" class="modal-overlay">
         <div class="modal-content" style="max-width: 450px;">
             <h2 id="modal-title">🔥 Inscription Bizi Disponible 📸</h2>
             
             <div class="info-box-important">
-                <b>✨ INSCRIPTION DIRECTE :</b><br>
-                Votre profil sera automatiquement ajouté dans l'onglet sélectionné avec votre numéro et date d'inscription.
+                <b>✨ SWIPE DE PHOTOS (Max 5) :</b><br>
+                Ajoutez jusqu'à 5 photos. Les visiteurs verront une seule photo à la fois et pourront scroller latéralement.
             </div>
 
             <div id="form-videos-fields">
@@ -521,8 +564,8 @@
                 <label>Votre Nom / Pseudo :</label>
                 <input type="text" id="profil-nom" placeholder="Ex: Vanessa Bizi">
 
-                <label>Lien de votre Photo (Image HD) :</label>
-                <input type="text" id="profil-photo" placeholder="https://... (Lien direct de votre photo)">
+                <label>Liens de vos Photos (Jusqu'à 5 liens, séparés par des virgules ou retours à la ligne) :</label>
+                <textarea id="profil-photos" placeholder="https://photo1.jpg, https://photo2.jpg..." style="height: 70px;"></textarea>
 
                 <label>Description (Quartier, dispos, etc.) :</label>
                 <textarea id="profil-desc" placeholder="Ex: Disponible à Cocody, propre et douce..."></textarea>
@@ -584,34 +627,93 @@
             try { return btoa(cleanSaisi) === encodeAttendu; } catch (e) { return false; }
         }
 
+        const tempsActuel = Date.now();
+        const trenteJoursMs = 30 * 24 * 60 * 60 * 1000;
+
         const baseProfils = [
-            { id: 1, cat: "femme", nom: "Vanessa Abidjan", photo: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&auto=format&fit=crop&q=60", desc: "Disponible à Yopougon, propre et douce.", wa: defaultWhatsApp, date: "26/10/2026" },
-            { id: 2, cat: "femme", nom: "Aïcha Premium", photo: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=500&auto=format&fit=crop&q=60", desc: "Cocody Riviera, nuit blanche.", wa: defaultWhatsApp, date: "26/10/2026" },
-            { id: 3, cat: "homme", nom: "Junior Marcory", photo: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&auto=format&fit=crop&q=60", desc: "Athlétique, propre, dispo pour déplacement.", wa: defaultWhatsApp, date: "26/10/2026" },
-            { id: 4, cat: "blanche", nom: "Claire Paris", photo: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=500&auto=format&fit=crop&q=60", desc: "De passage à Abidjan, très ouverte.", wa: defaultWhatsApp, date: "26/10/2026" },
-            { id: 5, cat: "trans", nom: "Kelly Cocody", photo: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=500&auto=format&fit=crop&q=60", desc: "Gros attributs, très douce et discrète.", wa: defaultWhatsApp, date: "26/10/2026" }
+            { 
+                id: 1, cat: "femme", nom: "Vanessa Abidjan", 
+                photos: [
+                    "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&auto=format&fit=crop&q=60",
+                    "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=500&auto=format&fit=crop&q=60"
+                ], 
+                desc: "Disponible à Yopougon, propre et douce.", wa: defaultWhatsApp, expireAt: tempsActuel + trenteJoursMs 
+            },
+            { 
+                id: 2, cat: "femme", nom: "Aïcha Premium", 
+                photos: ["https://images.unsplash.com/photo-1517841905240-472988babdf9?w=500&auto=format&fit=crop&q=60"], 
+                desc: "Cocody Riviera, nuit blanche.", wa: defaultWhatsApp, expireAt: tempsActuel + trenteJoursMs 
+            },
+            { 
+                id: 3, cat: "homme", nom: "Junior Marcory", 
+                photos: ["https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&auto=format&fit=crop&q=60"], 
+                desc: "Athlétique, propre, dispo pour déplacement.", wa: defaultWhatsApp, expireAt: tempsActuel + trenteJoursMs 
+            },
+            { 
+                id: 4, cat: "blanche", nom: "Claire Paris", 
+                photos: ["https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=500&auto=format&fit=crop&q=60"], 
+                desc: "De passage à Abidjan, très ouverte.", wa: defaultWhatsApp, expireAt: tempsActuel + trenteJoursMs 
+            },
+            { 
+                id: 5, cat: "trans", nom: "Kelly Cocody", 
+                photos: ["https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=500&auto=format&fit=crop&q=60"], 
+                desc: "Gros attributs, très douce et discrète.", wa: defaultWhatsApp, expireAt: tempsActuel + trenteJoursMs 
+            }
         ];
 
         const baseScenes = [ 
-            { id: 101, partenaire: "Kouassi Pro", nom: "Bizi Exclusif Abidjan", preview: "http://hc1.checker.in/file2link/documents/file_670646.mp4/Highlight001.mp4", mega: "https://mega.nz/file/qHwyESiI#mtmHDaWLq02mRvEon3kZL5BroGROTEwJkhtwNTGsMlo", prix: 1500, wa: defaultWhatsApp, qualite: "premium" }
+            { partenaire: "Kouassi Pro", nom: "Bizi Exclusif Abidjan", preview: "http://hc1.checker.in/file2link/documents/file_670646.mp4/Highlight001.mp4", mega: "https://mega.nz/file/qHwyESiI#mtmHDaWLq02mRvEon3kZL5BroGROTEwJkhtwNTGsMlo", prix: 1500, wa: defaultWhatsApp, qualite: "premium" },
+            { partenaire: "Aïcha VIP", nom: "Sextap Résidence Chic", preview: "http://hc1.checker.in/file2link/documents/file_670647.mp4/Highlight002.mp4", mega: "https://mega.nz/file/ea4yBIxC#cO6dr4YAyQoJioS0sp_wylvg72d_9M0roRYT5vYFnE0", prix: 1200, wa: defaultWhatsApp, qualite: "moyen" },
+            { partenaire: "Marc Bizi", nom: "Soirée privée sans capote", preview: "http://hc1.checker.in/file2link/documents/file_670648.mp4/Highlight003.mp4", mega: "https://mega.nz/file/yH5BRT7b#5hDkyoRCfa8iE5mn9g-EKdK7M-XGn6E9kKVaRccDkIM", prix: 1800, wa: defaultWhatsApp, qualite: "premium" },
+            { partenaire: "Djibril 225", nom: "Bizi douceur Cocody", preview: "http://hc1.checker.in/file2link/documents/file_670649.mp4/Highlight004.mp4", mega: "https://mega.nz/file/TGwWWLhB#zY8xAy7hCAVYrJm4h_0eWcuMadmMY_bMrO2wbm8GoFQ", prix: 1000, wa: defaultWhatsApp, qualite: "basique" },
+            { partenaire: "Sandra Gold", nom: "Action non-stop Yopougon", preview: "http://hc1.checker.in/file2link/documents/file_670650.mp4/Highlight005.mp4", mega: "https://mega.nz/file/2CJWQTQA#GVJ5Iq0PcPSnRo-NcQjTf04kj5uaMXpRm25g18DmrLs", prix: 2000, wa: defaultWhatsApp, qualite: "premium" },
+            { partenaire: "Stephane VIP", nom: "Ambiance lourde Marcory", preview: "http://hc1.checker.in/file2link/documents/file_670651.mp4/Highlight006.mp4", mega: "https://mega.nz/file/bTgBhZLZ#JB6zq-aokrnR1ePOI46ow9wG_3n19k95bUsiMUVB6CE", prix: 1300, wa: defaultWhatsApp, qualite: "moyen" },
+            { partenaire: "Junior Bizi", nom: "Chambre climatisée", preview: "http://hc1.checker.in/file2link/documents/file_670652.mp4/Highlight007.mp4", mega: "https://mega.nz/file/iS5xTYjC#_TLgEJSejjIjfhigEb5BnhjvQfKa-4Rw-0HTSEa_i3E", prix: 1100, wa: defaultWhatsApp, qualite: "basique" },
+            { partenaire: "Patrick Pro", nom: "Session intime plateau", preview: "http://hc1.checker.in/file2link/documents/file_670653.mp4/Highlight008.mp4", mega: "https://mega.nz/file/fCQQ1bLC#D3AeYj0udfZVfAwSl5hWT-26s8w5Tx3iI91nqTKiD-w", prix: 1600, wa: defaultWhatsApp, qualite: "premium" },
+            { partenaire: "Le Procureur", nom: "Love clitoris Final", preview: "http://hc1.checker.in/file2link/documents/file_670698.mp4/Highlight0056.mp4", mega: "https://mega.nz/file/ThQl2QYL#OoNr42p_HRAeztCnVgTa3sIdvfblpVxNjaVaNuYwI3E", prix: 2200, wa: "0103115237", qualite: "premium" }
         ];
 
-        let scenesData = JSON.parse(localStorage.getItem("local_vip_scenes_v105")) || [];
-        let profilsData = JSON.parse(localStorage.getItem("local_vip_profils_v105")) || [];
+        let scenesData = JSON.parse(localStorage.getItem("local_vip_scenes_v110")) || [];
+        let profilsData = JSON.parse(localStorage.getItem("local_vip_profils_v110")) || [];
 
         function saveState() {
-            localStorage.setItem("local_vip_scenes_v105", JSON.stringify(scenesData));
-            localStorage.setItem("local_vip_profils_v105", JSON.stringify(profilsData));
+            localStorage.setItem("local_vip_scenes_v110", JSON.stringify(scenesData));
+            localStorage.setItem("local_vip_profils_v110", JSON.stringify(profilsData));
+        }
+
+        function verifierExpirationProfils() {
+            const maintenant = Date.now();
+            const avant = profilsData.length;
+            profilsData = profilsData.filter(p => p.expireAt > maintenant);
+            if (profilsData.length !== avant) {
+                saveState();
+            }
         }
 
         if (scenesData.length === 0) {
-            scenesData = baseScenes;
+            scenesData = baseScenes.map((item) => ({
+                id: Math.floor(Math.random() * 80000) + 10000,
+                partenaire: item.partenaire || defaultPartenaire,
+                nom: item.nom, mega: item.mega, preview: item.preview, prix: item.prix, wa: item.wa || defaultWhatsApp, qualite: item.qualite || "moyen", deverrouille: false
+            }));
             saveState();
         }
 
         if (profilsData.length === 0) {
             profilsData = baseProfils;
             saveState();
+        }
+
+        function formatTempsRestant(expireAt) {
+            const diff = expireAt - Date.now();
+            if (diff <= 0) return "Expiré";
+            
+            const jours = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const heures = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const secondes = Math.floor((diff % (1000 * 60)) / 1000);
+
+            return `⏳ Expire dans : ${jours}j ${heures}h ${minutes}m ${secondes}s`;
         }
 
         function changerOnglet(nomOnglet) {
@@ -675,13 +777,29 @@
             const profil = profilsData.find(p => p.id === id);
             if (!profil) return;
 
+            const photosList = Array.isArray(profil.photos) ? profil.photos : [profil.photo];
+            let galerieHtml = '';
+            let dotsHtml = '';
+
+            photosList.forEach((imgUrl, idx) => {
+                if (imgUrl && imgUrl.trim() !== '') {
+                    galerieHtml += `<img class="profile-slide-img" id="slide-${id}-${idx}" src="${imgUrl.trim()}" alt="${profil.nom}" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500'">`;
+                    dotsHtml += `<button class="dot-btn ${idx === 0 ? 'active' : ''}" onclick="scrollerVersSlide(${id}, ${idx})"></button>`;
+                }
+            });
+
             const detailContent = document.getElementById("profile-detail-content");
             detailContent.innerHTML = `
-                <img class="profile-detail-img" src="${profil.photo}" alt="${profil.nom}" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500'">
+                <div class="horizontal-slider-container" id="slider-${id}" onscroll="suivreScroll(${id})">
+                    ${galerieHtml}
+                </div>
+                <div class="slider-dots" id="dots-${id}">
+                    ${dotsHtml}
+                </div>
                 <div class="profile-detail-name">${profil.nom}</div>
-                <div class="quality-badge badge-profil" style="margin-bottom: 8px;">🔥 BIZI DISPONIBLE</div>
+                <div class="quality-badge badge-profil" style="margin-bottom: 8px;">🔥 BIZI DISPONIBLE (${photosList.length} photo${photosList.length > 1 ? 's' : ''})</div>
                 <div class="profile-detail-desc">${profil.desc}</div>
-                <div style="font-size: 9.5px; color: #94a3b8; text-align: center; margin-bottom: 10px;">📅 Inscrit(e) le : ${profil.date || 'Récemment'}</div>
+                <div class="countdown-badge" style="margin-bottom: 10px;">${formatTempsRestant(profil.expireAt)}</div>
                 <div class="profile-detail-phone">📞 Téléphone : <b>${profil.wa}</b></div>
                 
                 <button class="profile-contact-btn" onclick="basculerOptionsContact()">Contacter</button>
@@ -691,6 +809,28 @@
                     <a class="opt-call" href="tel:${profil.wa}">📞 Appel direct</a>
                 </div>
             `;
+        }
+
+        function scrollerVersSlide(profileId, index) {
+            const slider = document.getElementById(`slider-${profileId}`);
+            const slide = document.getElementById(`slide-${profileId}-${index}`);
+            if (slider && slide) {
+                slider.scrollTo({ left: slide.offsetLeft, behavior: 'smooth' });
+            }
+        }
+
+        function suivreScroll(profileId) {
+            const slider = document.getElementById(`slider-${profileId}`);
+            if (!slider) return;
+            const index = Math.round(slider.scrollLeft / slider.clientWidth);
+            const dots = document.querySelectorAll(`#dots-${profileId} .dot-btn`);
+            dots.forEach((dot, idx) => {
+                if (idx === index) {
+                    dot.classList.add("active");
+                } else {
+                    dot.classList.remove("active");
+                }
+            });
         }
 
         function basculerOptionsContact() {
@@ -706,6 +846,7 @@
         }
 
         function renderGrid() {
+            verifierExpirationProfils();
             const grid = document.getElementById("video-grid");
             const detailView = document.getElementById("profile-detail-view");
             
@@ -778,7 +919,6 @@
                 setTimeout(initVideoObserver, 100);
 
             } else {
-                // AFFICHAGE DES PROFILS (Nom d'abord, puis description, et clic sur photo pour ouvrir la page dédiée)
                 profilsData.forEach((profil) => {
                     if (profil.cat !== sousOngletActif) return;
                     if (query && !profil.nom.toLowerCase().includes(query) && !profil.desc.toLowerCase().includes(query)) return;
@@ -786,13 +926,17 @@
                     const card = document.createElement("div");
                     card.className = "card card-profil";
 
+                    const photosList = Array.isArray(profil.photos) ? profil.photos : [profil.photo];
+                    const premierePhoto = photosList[0] || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500';
+
                     card.innerHTML = `
                         <div class="media-container" onclick="afficherProfilDetail(${profil.id})" title="Cliquez pour voir le profil">
-                            <img class="profil-img" src="${profil.photo}" alt="${profil.nom}" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500'">
+                            <img class="profil-img" src="${premierePhoto}" alt="${profil.nom}" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500'">
                         </div>
                         <h3>${profil.nom}</h3>
-                        <div class="quality-badge badge-profil">🔥 BIZI DISPONIBLE</div>
+                        <div class="quality-badge badge-profil">🔥 BIZI DISPONIBLE (${photosList.length} photo${photosList.length > 1 ? 's' : ''})</div>
                         <div class="profil-desc">${profil.desc}</div>
+                        <div class="countdown-badge">${formatTempsRestant(profil.expireAt)}</div>
                         <button class="whatsapp-btn" style="border:none; width:100%; cursor:pointer;" onclick="afficherProfilDetail(${profil.id})">
                             💬 Contacter
                         </button>
@@ -801,6 +945,12 @@
                 });
             }
         }
+
+        setInterval(() => {
+            if (ongletActif === "profils" && !vueDetailleeActive) {
+                renderGrid();
+            }
+        }, 1000);
 
         function verifier(index, cleAttendue) {
             const inputElem = document.getElementById(`input-${index}`);
@@ -869,23 +1019,28 @@
             } else {
                 const cat = sousOngletActif;
                 const nom = document.getElementById("profil-nom").value.trim();
-                const photo = document.getElementById("profil-photo").value.trim();
+                const photosRaw = document.getElementById("profil-photos").value.trim();
                 const desc = document.getElementById("profil-desc").value.trim();
                 const wa = document.getElementById("profil-whatsapp").value.trim() || defaultWhatsApp;
-                const dateJour = new Date().toLocaleDateString('fr-FR');
+                const expiration30Jours = Date.now() + (30 * 24 * 60 * 60 * 1000);
 
-                if (!nom || !photo || !wa) {
-                    alert("Veuillez remplir votre nom, le lien de votre photo et votre numéro !");
+                if (!nom || !photosRaw || !wa) {
+                    alert("Veuillez remplir votre nom, au moins une photo et votre numéro !");
                     return;
                 }
 
+                let photosArray = photosRaw.split(/[\n,]+/).map(p => p.trim()).filter(p => p !== '');
+                if (photosArray.length > 5) {
+                    photosArray = photosArray.slice(0, 5);
+                }
+
                 profilsData.unshift({
-                    id: Date.now(), cat, nom, photo, desc, wa, date: dateJour
+                    id: Date.now(), cat, nom, photos: photosArray, desc, wa, expireAt: expiration30Jours
                 });
                 saveState();
                 changerSousOnglet(cat);
                 fermerVendeurModal();
-                alert("✅ Inscription réussie ! Votre profil est affiché.");
+                alert("✅ Inscription réussie ! Votre profil avec vos photos est affiché pour 30 jours.");
             }
         }
 
