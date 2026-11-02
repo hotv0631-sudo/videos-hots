@@ -26,15 +26,9 @@
         .container { width: 100%; max-width: 600px; margin: 0 auto; }
         .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; width: 100%; margin-top: 5px; }
         
-        /* DESIGN DES CARTES SELON LES NIVEAUX (OR, PREMIUM, BRONZE, STANDARD) */
         .card { background: #1e293b; border-radius: 12px; padding: 9px; box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4); display: flex; flex-direction: column; justify-content: space-between; width: 100%; min-width: 0; text-align: center; position: relative; }
-        
-        .card-vip-gold { border: 2.5px solid #eab308; box-shadow: 0 0 18px rgba(234, 179, 8, 0.5); animation: pulseGold 2s infinite; }
-        @keyframes pulseGold { 0% { box-shadow: 0 0 10px rgba(234, 179, 8, 0.4); } 50% { box-shadow: 0 0 22px rgba(234, 179, 8, 0.8); } 100% { box-shadow: 0 0 10px rgba(234, 179, 8, 0.4); } }
-
-        .card-vip-premium { border: 2.5px solid #a855f7; box-shadow: 0 0 18px rgba(168, 85, 247, 0.5); animation: pulsePrem 2s infinite; }
-        @keyframes pulsePrem { 0% { box-shadow: 0 0 10px rgba(168, 85, 247, 0.4); } 50% { box-shadow: 0 0 22px rgba(168, 85, 247, 0.8); } 100% { box-shadow: 0 0 10px rgba(168, 85, 247, 0.4); } }
-
+        .card-vip-gold { border: 2.5px solid #eab308; box-shadow: 0 0 18px rgba(234, 179, 8, 0.5); }
+        .card-vip-premium { border: 2.5px solid #a855f7; box-shadow: 0 0 18px rgba(168, 85, 247, 0.5); }
         .card-vip-bronze { border: 2px solid #b45309; box-shadow: 0 0 12px rgba(180, 83, 9, 0.3); }
         .card-profil { border: 2.5px solid #22c55e; box-shadow: 0 0 12px rgba(34, 197, 94, 0.3); }
 
@@ -49,8 +43,8 @@
         .countdown-badge { background: rgba(239, 68, 68, 0.2); border: 1px solid #ef4444; color: #f87171; font-size: 8.5px; font-weight: bold; text-align: center; padding: 3px; border-radius: 4px; margin-bottom: 6px; }
         
         .quality-badge { font-size: 9px; font-weight: bold; text-align: center; padding: 3px 6px; border-radius: 4px; margin-bottom: 6px; display: inline-block; width: 100%; }
-        .badge-gold { background: linear-gradient(135deg, #eab308, #ca8a04); color: #ffffff; box-shadow: 0 0 8px rgba(234, 179, 8, 0.4); }
-        .badge-premium { background: linear-gradient(135deg, #a855f7, #6366f1); color: #ffffff; box-shadow: 0 0 8px rgba(168, 85, 247, 0.4); }
+        .badge-gold { background: linear-gradient(135deg, #eab308, #ca8a04); color: #ffffff; }
+        .badge-premium { background: linear-gradient(135deg, #a855f7, #6366f1); color: #ffffff; }
         .badge-bronze { background: linear-gradient(135deg, #b45309, #78350f); color: #ffffff; }
         .badge-profil { background: linear-gradient(135deg, #22c55e, #16a34a); color: #ffffff; }
 
@@ -72,8 +66,8 @@
         .btn-contact-admin { background: #22c55e; color: white; text-decoration: none; display: flex; align-items: center; justify-content: center; text-align: center; border-radius: 5px; font-weight: bold; font-size: 11px; padding: 8px; flex: 1; }
         .btn-save { background: #22c55e; color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 11px; padding: 8px; flex: 1; }
         .btn-close { background: #ef4444; color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 11px; padding: 8px; flex: 1; }
-        .admin-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; width: 100%; margin-bottom: 12px; }
-        .admin-card-item { background: #0f172a; border: 2px solid #22c55e; border-radius: 10px; padding: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); display: flex; flex-direction: column; justify-content: space-between; width: 100%; min-width: 0; }
+        .admin-grid { display: grid; grid-template-columns: 1fr; gap: 10px; width: 100%; margin-bottom: 12px; }
+        .admin-card-item { background: #0f172a; border: 2px solid #22c55e; border-radius: 10px; padding: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); display: flex; flex-direction: column; gap: 6px; }
         #profile-detail-view { display: none; width: 100%; max-width: 600px; background: #1e293b; border: 2.5px solid #22c55e; border-radius: 12px; padding: 15px; margin-top: 5px; box-shadow: 0 6px 20px rgba(0,0,0,0.6); }
         .back-btn { background: #475569; color: white; border: none; padding: 6px 12px; border-radius: 5px; font-weight: bold; font-size: 10px; cursor: pointer; margin-bottom: 10px; }
         .horizontal-slider-container { width: 100%; display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; gap: 0; border-radius: 8px; background: #000; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
@@ -91,11 +85,12 @@
         .opt-whatsapp { background: #25d366; color: white; padding: 8px; border-radius: 5px; text-decoration: none; font-weight: bold; text-align: center; font-size: 11px; }
         .opt-call { background: #0284c7; color: white; padding: 8px; border-radius: 5px; text-decoration: none; font-weight: bold; text-align: center; font-size: 11px; }
         
-        .preview-thumbs-container { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
-        .thumb-box { width: 55px; height: 55px; border-radius: 6px; overflow: hidden; position: relative; border: 1.5px solid #22c55e; background: #000; }
+        /* MINIATURES CÔTÉ CLIENT AVEC BOUTON CROIX ROUGE */
+        .preview-thumbs-container { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px; }
+        .thumb-box { width: 60px; height: 60px; border-radius: 6px; overflow: hidden; position: relative; border: 1.5px solid #22c55e; background: #000; }
         .thumb-box img { width: 100%; height: 100%; object-fit: cover; }
+        .thumb-delete-btn { position: absolute; top: 2px; right: 2px; background: #ef4444; color: white; border: none; border-radius: 50%; width: 18px; height: 18px; font-size: 10px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.5); }
 
-        /* ÉCRAN DE CHARGEMENT CLASSE */
         .loading-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.92); backdrop-filter: blur(6px); z-index: 3000; justify-content: center; align-items: center; flex-direction: column; text-align: center; color: white; }
         .spinner { width: 55px; height: 55px; border: 5px solid rgba(34, 197, 94, 0.2); border-top: 5px solid #22c55e; border-radius: 50%; animation: spin 0.9s linear infinite; margin-bottom: 18px; box-shadow: 0 0 15px rgba(34, 197, 94, 0.4); }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
@@ -141,11 +136,11 @@
         </div>
     </div>
 
-    <!-- ÉCRAN DE CHARGEMENT CLASSE -->
+    <!-- ÉCRAN DE CHARGEMENT -->
     <div id="loading-modal" class="loading-overlay">
         <div class="spinner"></div>
         <div class="loading-title" id="loading-status-title">Publication en cours...</div>
-        <div class="loading-subtext" id="loading-status-subtext">Veuillez patienter, enregistrement sécurisé dans la base de données...</div>
+        <div class="loading-subtext" id="loading-status-subtext">Enregistrement sécurisé dans la base de données...</div>
     </div>
 
     <button class="admin-fab" onclick="demanderSecuriteAdmin()" title="Tableau de Bord Admin">⚙️</button>
@@ -156,7 +151,7 @@
             
             <div class="info-box-important" id="modal-info-box">
                 <b>✨ EXPIRATION 30 JOURS & SWIPE DE PHOTOS :</b><br>
-                Votre profil restera actif 30 jours. Sélectionnez jusqu'à 5 photos.
+                Votre profil restera actif 30 jours. Sélectionnez jusqu'à 5 photos. (Vous pouvez supprimer une photo avec la croix rouge si besoin).
             </div>
 
             <div id="form-videos-fields" style="display: none;">
@@ -211,7 +206,7 @@
         </div>
     </div>
 
-    <!-- TABLEAU DE BORD ADMIN (AVEC MODIFICATION DE STATUT VIP & SUPPRESSION) -->
+    <!-- TABLEAU DE BORD ADMIN COMPLET (MODIFICATION TOTALE + SUPPRESSION) -->
     <div id="admin-list-modal" class="modal-overlay">
         <div class="modal-content">
             <h2>📂 Tableau de Bord VIP (Admin)</h2>
@@ -284,7 +279,7 @@
                             return {
                                 id: parseInt(p.id, 10),
                                 cat: p.cat ? p.cat.trim() : 'femme',
-                                vip: p.vip || 'standard', // Gestion du niveau VIP (standard, gold, premium, bronze)
+                                vip: p.vip || 'standard',
                                 nom: p.nom,
                                 photos: parsedPhotos,
                                 desc: p.desc || '',
@@ -435,14 +430,12 @@
             const query = document.getElementById("search-bar").value.toLowerCase().trim();
 
             if (ongletActif === "profils") {
-                // Les nouveaux profils s'affichent EN HAUT (ordre décroissant par ID)
                 profilsData.forEach((profil) => {
                     if (profil.cat !== sousOngletActif) return;
                     if (query && !profil.nom.toLowerCase().includes(query) && !profil.desc.toLowerCase().includes(query)) return;
 
                     const card = document.createElement("div");
                     
-                    // Application des styles visuels selon le niveau VIP (Or, Premium, Bronze, Standard)
                     let cardClass = "card card-profil";
                     let badgeVipHtml = `<div class="quality-badge badge-profil">🔥 BIZI DISPONIBLE</div>`;
 
@@ -461,9 +454,12 @@
                     const photosList = Array.isArray(profil.photos) ? profil.photos : [profil.photos];
                     const premierePhoto = (photosList[0] && typeof photosList[0] === 'string') ? photosList[0] : '';
 
+                    // SI PAS DE PHOTO VALIDE, ON N'AFFICHE PAS DE FAUSSE PHOTO, JUSTE UN CONTENEUR VIDE PROPRE
+                    const imgHtml = premierePhoto ? `<img class="profil-img" src="${premierePhoto}" alt="${profil.nom}">` : `<div style="color:#94a3b8; font-size:10px; display:flex; align-items:center; justify-content:center; height:100%;">Aucune photo</div>`;
+
                     card.innerHTML = `
                         <div class="media-container" onclick="afficherProfilDetail(${profil.id})" title="Cliquez pour voir le profil">
-                            <img class="profil-img" src="${premierePhoto}" alt="${profil.nom}" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500'">
+                            ${imgHtml}
                             <div class="watermark-overlay">Bizi 🤑</div>
                         </div>
                         <h3>${profil.nom}</h3>
@@ -510,7 +506,7 @@
 
             if (ongletActif === "profils") {
                 modalTitle.innerText = `🔥 Inscription Bizi (${sousOngletActif.toUpperCase()}) 📸`;
-                infoBox.innerHTML = `<b>✨ EXPIRATION 30 JOURS & SWIPE DE PHOTOS :</b><br>Votre profil restera actif 30 jours. Sélectionnez jusqu'à 5 photos.`;
+                infoBox.innerHTML = `<b>✨ EXPIRATION 30 JOURS & SWIPE DE PHOTOS :</b><br>Votre profil restera actif 30 jours. Sélectionnez jusqu'à 5 photos. (Vous pouvez supprimer une photo avec la croix rouge si besoin).`;
                 formVideos.style.display = "none";
                 formProfils.style.display = "block";
                 document.getElementById("profil-categorie").value = sousOngletActif;
@@ -537,17 +533,13 @@
 
         function apercuMiniaturesPhotos(event) {
             const files = event.target.files;
-            const thumbsBox = document.getElementById("preview-thumbs-box");
-            thumbsBox.innerHTML = "";
-            imagesSelectionnees64 = [];
-
             if (!files || files.length === 0) return;
 
-            if (files.length > 5) {
-                alert("Vous pouvez sélectionner un maximum de 5 photos !");
+            if (imagesSelectionnees64.length + files.length > 5) {
+                alert("Vous pouvez sélectionner un maximum de 5 photos au total !");
             }
 
-            const limit = Math.min(files.length, 5);
+            const limit = Math.min(files.length, 5 - imagesSelectionnees64.length);
 
             for (let i = 0; i < limit; i++) {
                 const file = files[i];
@@ -573,22 +565,36 @@
                         const compressedDataUrl = canvas.toDataURL("image/jpeg", 0.6);
 
                         imagesSelectionnees64.push(compressedDataUrl);
-
-                        thumbsBox.innerHTML += `
-                            <div class="thumb-box">
-                                <img src="${compressedDataUrl}" alt="Aperçu">
-                            </div>`;
+                        afficherMiniaturesClient();
                     };
                 };
                 reader.readAsDataURL(file);
             }
         }
 
+        // AFFICHAGE DES MINIATURES CLIENT AVEC BOUTON CROIX ROUGE DE SUPPRESSION
+        function afficherMiniaturesClient() {
+            const thumbsBox = document.getElementById("preview-thumbs-box");
+            thumbsBox.innerHTML = "";
+            imagesSelectionnees64.forEach((imgBase64, index) => {
+                thumbsBox.innerHTML += `
+                    <div class="thumb-box">
+                        <img src="${imgBase64}" alt="Aperçu">
+                        <button class="thumb-delete-btn" type="button" onclick="supprimerPhotoClient(${index})">✕</button>
+                    </div>`;
+            });
+        }
+
+        function supprimerPhotoClient(index) {
+            imagesSelectionnees64.splice(index, 1);
+            afficherMiniaturesClient();
+        }
+
         function compresserEtPublierProfil() {
             if (enCoursDePublication) return;
 
             if (imagesSelectionnees64.length === 0) {
-                alert("Veuillez patienter ou sélectionner au moins une photo valide !");
+                alert("Veuillez sélectionner au moins une photo !");
                 return;
             }
 
@@ -640,13 +646,14 @@
                     
                     setTimeout(() => {
                         loadingModal.style.display = "none";
-                        fermerVendeurModal(); // Ferme proprement le formulaire pour ne plus y rester bloqué
+                        fermerVendeurModal();
                         enCoursDePublication = false;
                         document.getElementById("profil-nom").value = "";
                         document.getElementById("profil-desc").value = "";
                         document.getElementById("profil-fichiers-input").value = "";
                         imagesSelectionnees64 = [];
-                        chargerProfilsDepuisAPI(); // Recharge et affiche le nouveau profil tout en haut sur l'accueil
+                        document.getElementById("preview-thumbs-box").innerHTML = "";
+                        chargerProfilsDepuisAPI();
                     }, 1200);
                 } else {
                     loadingModal.style.display = "none";
@@ -669,7 +676,7 @@
             ouvrirListeAdmin();
         }
 
-        // TABLEAU DE BORD ADMIN AVEC OPTIONS DE MODIFICATION VIP ET SUPPRESSION
+        // PANNEAU ADMIN COMPLET : MODIFICATION TOTALE (Nom, Téléphone, Description, VIP, Photos) + SUPPRESSION
         function ouvrirListeAdmin() {
             document.getElementById("admin-total-profils").innerText = profilsData.length;
             const listContainer = document.getElementById("admin-profils-list");
@@ -679,46 +686,74 @@
                 const photosList = Array.isArray(p.photos) ? p.photos : [p.photos];
                 listContainer.innerHTML += `
                     <div class="admin-card-item">
-                        <h3 style="color: #22c55e; font-size: 12px; margin-bottom: 2px;">${p.nom}</h3>
-                        <div style="font-size: 10px; color: #cbd5e1; line-height: 1.4; margin-bottom: 6px;">
-                            📁 <b>Cat :</b> ${p.cat} | 📞 <b>Tél :</b> ${p.wa}<br>
-                            🖼️ <b>Photos :</b> ${photosList.length} | 👑 <b>VIP :</b> <span style="color:#eab308; font-weight:bold;">${p.vip.toUpperCase()}</span>
+                        <div style="font-size:11px; font-weight:bold; color:#22c55e;">ID: ${p.id} - ${p.nom}</div>
+                        
+                        <label style="font-size:10px; color:#cbd5e1; margin-top:4px;">Nom / Pseudo :</label>
+                        <input type="text" id="admin-nom-${p.id}" value="${p.nom}" style="font-size:10px; padding:3px;">
+
+                        <label style="font-size:10px; color:#cbd5e1; margin-top:4px;">Téléphone :</label>
+                        <input type="text" id="admin-wa-${p.id}" value="${p.wa}" style="font-size:10px; padding:3px;">
+
+                        <label style="font-size:10px; color:#cbd5e1; margin-top:4px;">Description :</label>
+                        <textarea id="admin-desc-${p.id}" style="font-size:10px; padding:3px; height:45px;">${p.desc}</textarea>
+
+                        <label style="font-size:10px; color:#cbd5e1; margin-top:4px;">Niveau VIP / Style :</label>
+                        <select id="admin-vip-${p.id}" style="font-size:10px; padding:3px; background:#1e293b; color:white; border:1px solid #22c55e; border-radius:4px;">
+                            <option value="standard" ${p.vip==='standard'?'selected':''}>Standard (Vert)</option>
+                            <option value="gold" ${p.vip==='gold'?'selected':''}>Or / Gold (✨)</option>
+                            <option value="premium" ${p.vip==='premium'?'selected':''}>Ultra Premium (💎)</option>
+                            <option value="bronze" ${p.vip==='bronze'?'selected':''}>Bronze (🥉)</option>
+                        </select>
+
+                        <div style="font-size:10px; color:#94a3b8; margin-top:4px;">Photos actuelles en mémoire : ${photosList.length} photo(s)</div>
+
+                        <div style="display:flex; gap:6px; margin-top:8px;">
+                            <button class="verify-btn" style="padding: 5px; font-size: 10px; flex:1;" onclick="sauvegarderModifAdmin(${p.id})">💾 Enregistrer les modifs</button>
+                            <button class="btn-close" style="padding: 5px; font-size: 10px; flex:1;" onclick="supprimerProfilAdmin(${p.id})">🗑️ Supprimer</button>
                         </div>
-                        <div style="display: flex; gap: 4px; margin-bottom: 4px;">
-                            <select id="vip-select-${p.id}" style="font-size:9px; padding:3px; background:#1e293b; color:white; border:1px solid #22c55e; border-radius:4px;">
-                                <option value="standard" ${p.vip==='standard'?'selected':''}>Standard (Vert)</option>
-                                <option value="gold" ${p.vip==='gold'?'selected':''}>Or / Gold (✨)</option>
-                                <option value="premium" ${p.vip==='premium'?'selected':''}>Ultra Premium (💎)</option>
-                                <option value="bronze" ${p.vip==='bronze'?'selected':''}>Bronze (🥉)</option>
-                            </select>
-                            <button class="verify-btn" style="padding: 3px 6px; font-size: 9px; width: auto;" onclick="modifierVipAdmin(${p.id})">OK</button>
-                        </div>
-                        <button class="btn-close" style="padding: 4px; font-size: 10px;" onclick="supprimerProfilAdmin(${p.id})">🗑️ Supprimer</button>
                     </div>
                 `;
             });
             document.getElementById("admin-list-modal").style.display = "flex";
         }
 
-        function modifierVipAdmin(id) {
-            const selectElem = document.getElementById(`vip-select-${id}`);
-            const nouveauVip = selectElem.value;
+        function sauvegarderModifAdmin(id) {
+            const nouveauNom = document.getElementById(`admin-nom-${id}`).value.trim();
+            const nouveauWa = document.getElementById(`admin-wa-${id}`).value.trim();
+            const nouvelleDesc = document.getElementById(`admin-desc-${id}`).value.trim();
+            const nouveauVip = document.getElementById(`admin-vip-${id}`).value;
 
-            // Envoi de la mise à jour VIP vers l'API Hostinger
-            fetch(`${API_URL}?id=${id}&vip=${nouveauVip}`, { method: 'PUT' })
-                .then(res => res.json())
-                .then(result => {
-                    alert("✅ Niveau VIP mis à jour avec succès !");
-                    fermerListeAdmin();
-                    chargerProfilsDepuisAPI();
-                })
-                .catch(err => {
-                    // Si l'API ne gère pas encore le PUT, on met à jour localement et recharge
-                    profilsData = profilsData.map(p => p.id === id ? {...p, vip: nouveauVip} : p);
-                    alert("✅ Niveau VIP appliqué !");
-                    fermerListeAdmin();
-                    renderGrid();
-                });
+            if (!nouveauNom) {
+                alert("Le nom ne peut pas être vide !");
+                return;
+            }
+
+            const profilActuel = profilsData.find(p => p.id === id);
+            const payload = {
+                id: id,
+                nom: nouveauNom,
+                telephone: nouveauWa,
+                desc: nouvelleDesc,
+                vip: nouveauVip,
+                cat: profilActuel.cat,
+                photos: profilActuel.photos
+            };
+
+            fetch(API_URL, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            })
+            .then(res => res.json())
+            .then(result => {
+                alert("✅ Profil modifié et mis à jour avec succès dans la base de données !");
+                fermerListeAdmin();
+                chargerProfilsDepuisAPI();
+            })
+            .catch(err => {
+                console.error("Erreur:", err);
+                alert("Erreur lors de la mise à jour.");
+            });
         }
 
         function fermerListeAdmin() { document.getElementById("admin-list-modal").style.display = "none"; }
