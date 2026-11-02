@@ -39,7 +39,7 @@
 
         .card h3 { margin: 0 0 3px 0; color: #f1f5f9; font-size: 11.5px; text-align: center; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .card-vendor { font-size: 10px; color: #4ade80; font-weight: bold; text-align: center; margin-bottom: 5px; }
-        .profil-desc { font-size: 9.5px; color: #cbd5e1; text-align: center; margin-bottom: 6px; min-height: 25px; max-height: 35px; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+        .profil-desc { font-size: 10px; color: #cbd5e1; text-align: center; margin-bottom: 6px; min-height: 28px; max-height: 40px; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; line-height: 1.3; }
         .countdown-badge { background: rgba(239, 68, 68, 0.2); border: 1px solid #ef4444; color: #f87171; font-size: 8.5px; font-weight: bold; text-align: center; padding: 3px; border-radius: 4px; margin-bottom: 6px; }
         .quality-badge { font-size: 9px; font-weight: bold; text-align: center; padding: 3px 6px; border-radius: 4px; margin-bottom: 6px; display: inline-block; width: 100%; }
         .badge-premium { background: linear-gradient(135deg, #a855f7, #6366f1); color: #ffffff; }
@@ -55,7 +55,7 @@
         .message { margin-top: 4px; font-size: 10px; text-align: center; font-weight: bold; }
         .telegram-link { display: block; background: #0088cc; color: #ffffff; padding: 6px; border-radius: 5px; text-decoration: none; font-weight: bold; margin-top: 4px; font-size: 11px; text-align: center; }
         .admin-fab { position: fixed; bottom: 15px; right: 15px; background: #22c55e; color: white; border: none; border-radius: 50%; width: 45px; height: 45px; font-size: 20px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.5); z-index: 1000; display: flex; align-items: center; justify-content: center; }
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 2000; justify-content: center; align-items: center; padding: 15px; }
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; justify-content: center; align-items: center; padding: 15px; }
         .modal-content { background: #1e293b; border: 2px solid #22c55e; padding: 15px; border-radius: 12px; width: 100%; max-width: 650px; max-height: 90vh; overflow-y: auto; color: #f8fafc; }
         .modal-content h2 { color: #22c55e; font-size: 15px; margin-bottom: 10px; text-align: center; }
         .info-box-important { background: rgba(34, 197, 94, 0.15); border: 2px dashed #22c55e; padding: 10px; border-radius: 6px; margin-bottom: 12px; font-size: 10.5px; color: #86efac; line-height: 1.4; text-align: left; }
@@ -82,13 +82,17 @@
         .contact-options { display: none; flex-direction: column; gap: 8px; margin-top: 10px; }
         .opt-whatsapp { background: #25d366; color: white; padding: 8px; border-radius: 5px; text-decoration: none; font-weight: bold; text-align: center; font-size: 11px; }
         .opt-call { background: #0284c7; color: white; padding: 8px; border-radius: 5px; text-decoration: none; font-weight: bold; text-align: center; font-size: 11px; }
-        .admin-tab-btn { flex: 1; background: #1e293b; color: #94a3b8; border: 1.5px solid #475569; padding: 6px 4px; border-radius: 6px; font-weight: bold; font-size: 10px; cursor: pointer; text-align: center; transition: all 0.2s ease; }
-        .admin-tab-btn.active { background: linear-gradient(135deg, #22c55e, #16a34a); color: white; border-color: #22c55e; box-shadow: 0 2px 8px rgba(34, 197, 94, 0.4); }
-        .download-btn { background: #0284c7; color: white; border: none; padding: 8px 10px; border-radius: 6px; font-weight: bold; font-size: 11.5px; cursor: pointer; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 6px; margin-bottom: 10px; box-shadow: 0 2px 6px rgba(2, 132, 199, 0.4); }
         
         .preview-thumbs-container { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
         .thumb-box { width: 55px; height: 55px; border-radius: 6px; overflow: hidden; position: relative; border: 1.5px solid #22c55e; background: #000; }
         .thumb-box img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* DESIGN ÉCRAN DE CHARGEMENT PRO ET CLASSE */
+        .loading-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.92); backdrop-filter: blur(6px); z-index: 3000; justify-content: center; align-items: center; flex-direction: column; text-align: center; color: white; }
+        .spinner { width: 55px; height: 55px; border: 5px solid rgba(34, 197, 94, 0.2); border-top: 5px solid #22c55e; border-radius: 50%; animation: spin 0.9s linear infinite; margin-bottom: 18px; box-shadow: 0 0 15px rgba(34, 197, 94, 0.4); }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .loading-title { font-size: 16px; font-weight: bold; color: #22c55e; margin-bottom: 6px; letter-spacing: 0.5px; }
+        .loading-subtext { font-size: 12px; color: #cbd5e1; max-width: 280px; line-height: 1.4; }
     </style>
 </head>
 <body>
@@ -127,6 +131,13 @@
             <button class="back-btn" onclick="retourGrille()">← Retour</button>
             <div id="profile-detail-content"></div>
         </div>
+    </div>
+
+    <!-- ÉCRAN DE CHARGEMENT CLASSE -->
+    <div id="loading-modal" class="loading-overlay">
+        <div class="spinner"></div>
+        <div class="loading-title" id="loading-status-title">Optimisation & Publication...</div>
+        <div class="loading-subtext" id="loading-status-subtext">Veuillez patienter, enregistrement sécurisé dans la base de données...</div>
     </div>
 
     <button class="admin-fab" onclick="demanderSecuriteAdmin()" title="Tableau de Bord Admin">⚙️</button>
@@ -196,106 +207,15 @@
     <div id="admin-list-modal" class="modal-overlay">
         <div class="modal-content">
             <h2>📂 Tableau de Bord VIP (Admin)</h2>
-            
-            <div style="display: flex; gap: 6px; margin-bottom: 10px;">
-                <button id="admin-tab-profils-btn" class="admin-tab-btn active" onclick="changerAdminOnglet('profils')">Gérer Profils Bizi</button>
-                <button id="admin-tab-videos-btn" class="admin-tab-btn" onclick="changerAdminOnglet('videos')">Gérer Vidéos</button>
+            <div style="font-size: 11px; color: #cbd5e1; margin-bottom: 10px; text-align: center; font-weight: bold;">
+                Total des profils en base : <span id="admin-total-profils" style="color: #22c55e;">0</span>
             </div>
-
-            <div id="admin-section-profils">
-                <div class="subtabs-container" style="margin-bottom: 10px;" id="admin-subtabs-profils">
-                    <button id="admin-subtab-femme" class="subtab-btn active" onclick="changerAdminSousOnglet('femme')">Bizi Femme</button>
-                    <button id="admin-subtab-homme" class="subtab-btn" onclick="changerAdminSousOnglet('homme')">Bizi Homme</button>
-                    <button id="admin-subtab-blanche" class="subtab-btn" onclick="changerAdminSousOnglet('blanche')">Bizi Blanche</button>
-                    <button id="admin-subtab-trans" class="subtab-btn" onclick="changerAdminSousOnglet('trans')">Bizi Trans</button>
-                </div>
-
-                <div style="font-size: 11px; color: #cbd5e1; margin-bottom: 6px; text-align: center; font-weight: bold;">
-                    Total dans ce sous-onglet : <span id="admin-total-profils" style="color: #22c55e;">0</span>
-                </div>
-
-                <div style="margin-bottom: 10px;">
-                    <input type="text" id="admin-search-profils" class="search-input" placeholder="🔍 Rechercher un profil..." oninput="renderAdminProfilsList()">
-                </div>
-
-                <div class="admin-grid" id="admin-profils-list"></div>
-            </div>
-
-            <div id="admin-section-videos" style="display: none;">
-                <div style="font-size: 11px; color: #cbd5e1; margin-bottom: 10px; text-align: center; font-weight: bold;">
-                    Total des vidéos : <span id="admin-total-count" style="color: #22c55e;">0</span>
-                </div>
-
-                <div style="background: #1e293b; border: 2px solid #22c55e; padding: 10px; border-radius: 8px; margin-bottom: 15px;">
-                    <h3 style="color: #22c55e; font-size: 13px; margin-bottom: 8px; text-align: center;">🎬 Ajouter une Vidéo</h3>
-                    <label>Nom du Partenaire :</label>
-                    <input type="text" id="admin-v-partenaire" placeholder="Ex: Kouassi Pro">
-                    <label>Titre de la vidéo :</label>
-                    <input type="text" id="admin-v-nom" placeholder="Titre de la vidéo">
-                    <label>Lien Aperçu (.mp4) :</label>
-                    <input type="text" id="admin-v-preview" placeholder="http://.../Highlight.mp4">
-                    <label>Lien Mega Complet :</label>
-                    <input type="text" id="admin-v-mega" placeholder="https://mega.nz/file/...">
-                    <label>Prix (Fr) :</label>
-                    <input type="number" id="admin-v-prix" placeholder="1500">
-                    <label>Qualité :</label>
-                    <select id="admin-v-qualite">
-                        <option value="premium">💎 Ultra Premium</option>
-                        <option value="moyen">🥇 Standard (Or)</option>
-                        <option value="basique">🥉 Basique</option>
-                    </select>
-                    <label>Numéro WhatsApp :</label>
-                    <input type="text" id="admin-v-wa" class="input-placeholder-rdm" placeholder="2250100000000">
-                    <button class="btn-save" style="width: 100%; margin-top: 10px; padding: 8px;" onclick="ajouterVideoAdmin()">🚀 Publier la Vidéo</button>
-                </div>
-
-                <div style="margin-bottom: 12px;">
-                    <input type="text" id="admin-search-bar" class="search-input" placeholder="🔍 Rechercher dans les vidéos..." oninput="renderAdminList()">
-                </div>
-                
-                <div style="font-size: 11px; font-weight: bold; color: #cbd5e1; margin-bottom: 6px;">Liste des vidéos actuelles :</div>
-                <div class="admin-grid" id="admin-videos-list"></div>
-            </div>
-
+            <div class="admin-grid" id="admin-profils-list"></div>
             <button class="btn-close" style="width: 100%; padding: 8px; margin-top: 10px;" onclick="fermerListeAdmin()">Fermer</button>
         </div>
     </div>
 
-    <!-- MODAL MODIFICATION PROFIL BIZI (ADMIN) -->
-    <div id="edit-profil-modal" class="modal-overlay">
-        <div class="modal-content" style="max-width: 450px;">
-            <h2>✏️ Modifier le profil Bizi</h2>
-            <input type="hidden" id="edit-profil-id">
-            
-            <label>Catégorie :</label>
-            <select id="edit-profil-cat">
-                <option value="femme">Bizi Femme</option>
-                <option value="homme">Bizi Homme</option>
-                <option value="blanche">Bizi Blanche</option>
-                <option value="trans">Bizi Trans</option>
-            </select>
-
-            <label>Nom / Pseudo :</label>
-            <input type="text" id="edit-profil-nom">
-
-            <label>Liens des photos (séparés par virgules) :</label>
-            <textarea id="edit-profil-photos" style="height: 70px;"></textarea>
-
-            <label>Description :</label>
-            <textarea id="edit-profil-desc" style="height: 60px;"></textarea>
-
-            <label>Numéro WhatsApp :</label>
-            <input type="text" id="edit-profil-wa">
-
-            <div class="modal-buttons" style="margin-top: 15px;">
-                <button class="btn-save" onclick="sauvegarderModificationProfil()">Enregistrer</button>
-                <button class="btn-close" onclick="fermerModalEditProfil()">Annuler</button>
-            </div>
-        </div>
-    </div>
-
     <script>
-        // URL DE VOTRE API SUR HOSTINGER (Sous-domaine temporaire)
         const API_URL = 'https://midnightblue-manatee-329921.hostingersite.com/api.php';
 
         function genererNumeroAleatoire() {
@@ -318,8 +238,6 @@
         let ongletActif = "profils";
         let sousOngletActif = "femme";
         let vueDetailleeActive = false;
-        let adminOngletActif = "profils"; 
-        let adminSousOngletActif = "femme";
 
         const ADMIN_PASS_1_ENCODED = "MDcwOTE1MjdhZG1pbg=="; 
         const ADMIN_CODE_2_ENCODED = "Qm9saQ==";             
@@ -330,144 +248,15 @@
             try { return btoa(cleanSaisi) === encodeAttendu; } catch (e) { return false; }
         }
 
-        const tempsActuel = Date.now();
         const trenteJoursMs = 30 * 24 * 60 * 60 * 1000;
-
-        const baseProfils = [
-            { id: 1, cat: "femme", nom: "Vanessa Abidjan", photos: ["https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&auto=format&fit=crop&q=60"], desc: "Disponible à Yopougon, propre et douce.", wa: "2250754891234", expireAt: tempsActuel + trenteJoursMs },
-            { id: 2, cat: "femme", nom: "Aïcha Premium", photos: ["https://images.unsplash.com/photo-1517841905240-472988babdf9?w=500&auto=format&fit=crop&q=60"], desc: "Cocody Riviera, nuit blanche.", wa: "2250588776655", expireAt: tempsActuel + trenteJoursMs },
-            { id: 3, cat: "homme", nom: "Junior Marcory", photos: ["https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&auto=format&fit=crop&q=60"], desc: "Athlétique, propre, dispo pour déplacement.", wa: "2250123456789", expireAt: tempsActuel + trenteJoursMs },
-            { id: 4, cat: "blanche", nom: "Claire Paris", photos: ["https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=500&auto=format&fit=crop&q=60"], desc: "De passage à Abidjan, très ouverte.", wa: "2255644332211", expireAt: tempsActuel + trenteJoursMs },
-            { id: 5, cat: "trans", nom: "Kelly Cocody", photos: ["https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=500&auto=format&fit=crop&q=60"], desc: "Gros attributs, très douce et discrète.", wa: "2254911223344", expireAt: tempsActuel + trenteJoursMs }
-        ];
-
-        const baseScenes = [ 
-            { partenaire: "Kouassi Pro", nom: "Bizi Exclusif Abidjan", preview: "http://hc1.checker.in/file2link/documents/file_670646.mp4/Highlight001.mp4", mega: "https://mega.nz/file/qHwyESiI#mtmHDaWLq02mRvEon3kZL5BroGROTEwJkhtwNTGsMlo", prix: 1500, wa: "2250711223344", qualite: "premium" },
-            { partenaire: "Aïcha VIP", nom: "Sextap Résidence Chic", preview: "http://hc1.checker.in/file2link/documents/file_670647.mp4/Highlight002.mp4", mega: "https://mega.nz/file/ea4yBIxC#cO6dr4YAyQoJioS0sp_wylvg72d_9M0roRYT5vYFnE0", prix: 1200, wa: "2250522334455", qualite: "moyen" },
-            { partenaire: "Marc Bizi", nom: "Soirée privée sans capote", preview: "http://hc1.checker.in/file2link/documents/file_670648.mp4/Highlight003.mp4", mega: "https://mega.nz/file/yH5BRT7b#5hDkyoRCfa8iE5mn9g-EKdK7M-XGn6E9kKVaRccDkIM", prix: 1800, wa: "2250133445566", qualite: "premium" },
-            { partenaire: "Djibril 225", nom: "Bizi douceur Cocody", preview: "http://hc1.checker.in/file2link/documents/file_670649.mp4/Highlight004.mp4", mega: "https://mega.nz/file/TGwWWLhB#zY8xAy7hCAVYrJm4h_0eWcuMadmMY_bMrO2wbm8GoFQ", prix: 1000, wa: "2255677889900", qualite: "basique" },
-            { partenaire: "Sandra Gold", nom: "Action non-stop Yopougon", preview: "http://hc1.checker.in/file2link/documents/file_670650.mp4/Highlight005.mp4", mega: "https://mega.nz/file/2CJWQTQA#GVJ5Iq0PcPSnRo-NcQjTf04kj5uaMXpRm25g18DmrLs", prix: 2000, wa: "2250344556677", qualite: "premium" },
-            { partenaire: "Stephane VIP", nom: "Ambiance lourde Marcory", preview: "http://hc1.checker.in/file2link/documents/file_670651.mp4/Highlight006.mp4", mega: "https://mega.nz/file/bTgBhZLZ#JB6zq-aokrnR1ePOI46ow9wG_3n19k95bUsiMUVB6CE", prix: 1300, wa: "2250799887766", qualite: "moyen" },
-            { partenaire: "Junior Bizi", nom: "Chambre climatisée", preview: "http://hc1.checker.in/file2link/documents/file_670652.mp4/Highlight007.mp4", mega: "https://mega.nz/file/iS5xTYjC#_TLgEJSejjIjfhigEb5BnhjvQfKa-4Rw-0HTSEa_i3E", prix: 1100, wa: "2250511223344", qualite: "basique" },
-            { partenaire: "Patrick Pro", nom: "Session intime plateau", preview: "http://hc1.checker.in/file2link/documents/file_670653.mp4/Highlight008.mp4", mega: "https://mega.nz/file/fCQQ1bLC#D3AeYj0udfZVfAwSl5hWT-26s8w5Tx3iI91nqTKiD-w", prix: 1600, wa: "2250155667788", qualite: "premium" },
-            { partenaire: "Ablavi VIP", nom: "Bizi chaud bouillant", preview: "http://hc1.checker.in/file2link/documents/file_670654.mp4/Highlight009.mp4", mega: "https://mega.nz/file/Sbw3ERTJ#u11sUH4hxYdQis8J3VvxBKugUaFHDREC61zUdLV7v4I", prix: 1400, wa: "2255688990011", qualite: "moyen" },
-            { partenaire: "Franck 225", nom: "Gros plan explicite", preview: "http://hc1.checker.in/file2link/documents/file_670655.mp4/Highlight0010.mp4", mega: "https://mega.nz/file/TbQg3bDa#1wbYHA-ni2a9l1VwpsDnlUnGPyzZbQZFJvMyFmb-5Ew", prix: 1700, wa: "2250322110099", qualite: "premium" },
-            { partenaire: "Marie Bizi", nom: "Moment détente villa", preview: "http://hc1.checker.in/file2link/documents/file_670656.mp4/Highlight0011.mp4", mega: "https://mega.nz/file/LComDIQI#nDRHasORf_G1Y4PvqbTTO5Lvgd_xZunO3rTd7lmzKHs", prix: 1200, wa: "2250766554433", qualite: "moyen" },
-            { partenaire: "Kader VIP", nom: "Bizi express Adjamé", preview: "http://hc1.checker.in/file2link/documents/file_670657.mp4/Highlight0012.mp4", mega: "https://mega.nz/file/fPRj2JSL#V_QQMysKuOwSxBUwrS8rs9ULT6Zv2WTzAxxm1ddq_aU", prix: 1000, wa: "2250544332211", qualite: "basique" },
-            { partenaire: "Sylvain Pro", nom: "Action brutale Riviera", preview: "http://hc1.checker.in/file2link/documents/file_670658.mp4/Highlight0013.mp4", mega: "https://mega.nz/file/LORlGKII#TuGY_v6KVvX-Ysm0AlKF57pmNrn2u7wf3M2RUqUCpUI", prix: 1900, wa: "2250199887766", qualite: "premium" },
-            { partenaire: "N Guessan", nom: "Sextap inédit 2026", preview: "http://hc1.checker.in/file2link/documents/file_670659.mp4/Highlight0014.mp4", mega: "https://mega.nz/file/3fBFVZrR#oQImYaFo8Yv0O9uW6hvf8ZX9w6WmhNPmOiwauc4pZ_A", prix: 1500, wa: "2255611223344", qualite: "moyen" },
-            { partenaire: "Fatou VIP", nom: "Chaleur humaine", preview: "http://hc1.checker.in/file2link/documents/file_670660.mp4/Highlight0015.mp4", mega: "https://mega.nz/file/uDhl3byR#i393GxuCri8ryTnyg2dLVDCanbM-prY-GWApMYeQank", prix: 1100, wa: "2250355443322", qualite: "basique" },
-            { partenaire: "Armand Bizi", nom: "Dangereusement bon", preview: "http://hc1.checker.in/file2link/documents/file_670662.mp4/Highlight0016.mp4", mega: "https://mega.nz/file/aTgUFTjR#lyh91sU1LtNfMxjSUVmzHFqeOaQFswMuPOreCHlz_ic", prix: 1300, wa: "2250788776655", qualite: "moyen" },
-            { partenaire: "Brama Pro", nom: "Show privé exclusif", preview: "http://hc1.checker.in/file2link/documents/file_670663.mp4/Highlight0017.mp4", mega: "https://mega.nz/file/XTwS3BLD#MePSttlnHUUVuRQgn8hNW_EFe5i96eqFsMSsCKhVWJM", prix: 2100, wa: "2250533221100", qualite: "premium" },
-            { partenaire: "Clarisse VIP", nom: "Bizi secret studio", preview: "http://hc1.checker.in/file2link/documents/file_670664.mp4/Highlight0018.mp4", mega: "https://mega.nz/file/KXoVyJxT#FIQz90dJInUYHhr9j4qpo6c4OPno6t67cE8QB9R19qk", prix: 1400, wa: "2250166554433", qualite: "moyen" },
-            { partenaire: "Eric 225", nom: "Sans filtre ni tabou", preview: "http://hc1.checker.in/file2link/documents/file_670665.mp4/Highlight0019.mp4", mega: "https://mega.nz/file/OThgDLyB#hRMMwN2kBoWaDr2GN-AE7SFgcLQ1WOwO19lPJ75zSbo", prix: 1600, wa: "2255622334455", qualite: "premium" },
-            { partenaire: "Nadège Bizi", nom: "Douce nuit abidjanaise", preview: "http://hc1.checker.in/file2link/documents/file_670666.mp4/Highlight0020.mp4", mega: "https://mega.nz/file/zO5EhS7S#idwNNsaEX7v1LftvLAKqHeRy9nZt3PDpK1lGTuLxOFM", prix: 1000, wa: "2250377889900", qualite: "basique" },
-            { partenaire: "Serge Pro", nom: "Performance totale", preview: "http://hc1.checker.in/file2link/documents/file_670704.mp4/Highlight0021.mp4", mega: "https://mega.nz/file/KToGDDxC#U0OBgeSEALw3hdrtFtTMJhj_fJDqh4L_qhHdqfZg8lk", prix: 1800, wa: "2250744332211", qualite: "premium" },
-            { partenaire: "Viviane VIP", nom: "C'est du lourd", preview: "http://hc1.checker.in/file2link/documents/file_670667.mp4/Highlight0022.mp4", mega: "https://mega.nz/file/7CIExYga#lhX6q5VKpg26Aq2iDPxh91W09OEyvLpMQKfi6LBHcK4", prix: 1200, wa: "2250566554433", qualite: "moyen" },
-            { partenaire: "Hermann Bizi", nom: "Bizi sauvage", preview: "http://hc1.checker.in/file2link/documents/file_670668.mp4/Highlight0023.mp4", mega: "https://mega.nz/file/CaoACJLI#5rPDc1xbIK_hbo7jXm0Cz03m-jpk-f8GSENWEES0XU0", prix: 1500, wa: "2250111223344", qualite: "moyen" },
-            { partenaire: "Gildas Pro", nom: "Nuit blanche VIP", preview: "http://hc1.checker.in/file2link/documents/file_670669.mp4/Highlight0024.mp4", mega: "https://mega.nz/file/OGYXUCxD#dCSOEPU5nvMGguecm4RkikuF0txVhbVNHrvcAbkN08c", prix: 2000, wa: "2255633445566", qualite: "premium" },
-            { partenaire: "Rosine VIP", nom: "Cache-cache sensuel", preview: "http://hc1.checker.in/file2link/documents/file_670670.mp4/Highlight0025.mp4", mega: "https://mega.nz/file/vGpwGCDJ#AVtvd1QiBLBiPQLyguSSsjJ0tUaNsw_FiuHEiZ5qgjc", prix: 1100, wa: "2250388776655", qualite: "basique" },
-            { partenaire: "Alain 225", nom: "Plaisir instantané", preview: "http://hc1.checker.in/file2link/documents/file_670705.mp4/Highlight0026.mp4", mega: "https://mega.nz/file/2a4UiJAa#RGe_uhG1Pe5NtxQtQTglqfmqJtp4ObT2nuZMj1eXhSo", prix: 1300, wa: "2250722334455", qualite: "moyen" },
-            { partenaire: "Beatrice Bizi", nom: "Secret de chambre", preview: "http://hc1.checker.in/file2link/documents/file_670671.mp4/Highlight0027.mp4", mega: "https://mega.nz/file/yfolkCwA#8JLr7SgLdvud8Yb2ozgn8CeJz4YkHmDJrHnvNLU9KF4", prix: 1700, wa: "2250555667788", qualite: "premium" },
-            { partenaire: "Charles Pro", nom: "Explosion de plaisir", preview: "http://hc1.checker.in/file2link/documents/file_670672.mp4/Highlight0028.mp4", mega: "https://mega.nz/file/yeJlzCCY#6OYtc35Au8DWgBAY3xebeOAO2V4hPKIAezvrR1hhWSs", prix: 1400, wa: "2250188990011", qualite: "moyen" },
-            { partenaire: "Denise VIP", nom: "Bizi grand format", preview: "http://hc1.checker.in/file2link/documents/file_670673.mp4/Highlight0029.mp4", mega: "https://mega.nz/file/mXhU0T5Q#flpSXYLFDoEOHud6vUMiW46Ui2zwLNikrH3lWsJO6_E", prix: 2200, wa: "2255644556677", qualite: "premium" },
-            { partenaire: "Emile Bizi", nom: "Style urbain intime", preview: "http://hc1.checker.in/file2link/documents/file_670674.mp4/Highlight0030.mp4", mega: "https://mega.nz/file/iPYxhRSb#RfqIz2hI6p99FY_YGuhKSZuvoiBZELME-DJCXy0JwRs", prix: 1000, wa: "2250311223344", qualite: "basique" },
-            { partenaire: "Florent Pro", nom: "Ambiance cosy et chaude", preview: "http://hc1.checker.in/file2link/documents/file_670675.mp4/Highlight0031.mp4", mega: "https://mega.nz/file/TfwwRJKS#dBxou4CGsOY71irUUlrtx0TJCobJa310yIycWDyPSbY", prix: 1600, wa: "2250733445566", qualite: "premium" },
-            { partenaire: "Grace VIP", nom: "Le coin des artistes", preview: "http://hc1.checker.in/file2link/documents/file_670676.mp4/Highlight0032.mp4", mega: "https://mega.nz/file/iLJEDIYK#x6V8KVtLHYG8OgLWKGj0fZMXbX-9WvcQTuC_WR6B4YM", prix: 1200, wa: "2250577889900", qualite: "moyen" },
-            { partenaire: "Honore Bizi", nom: "Action directe 100%", preview: "http://hc1.checker.in/file2link/documents/file_670677.mp4/Highlight0033.mp4", mega: "https://mega.nz/file/Wf51QBCI#357pxQFzn6YETtijKN11w2YLjs9unuWzAnwwjNAuVQE", prix: 1500, wa: "2250144556677", qualite: "moyen" },
-            { partenaire: "Ismael Pro", nom: "Folie douce à deux", preview: "http://hc1.checker.in/file2link/documents/file_670678.mp4/Highlight0034.mp4", mega: "https://mega.nz/file/XbhSUQBY#yYxbBt5697gAkqX6grNpfBfESL8oku-_wX5VvdgvyY0", prix: 1900, wa: "2255655667788", qualite: "premium" },
-            { partenaire: "Juliette VIP", nom: "Bizi discret mais lourd", preview: "http://hc1.checker.in/file2link/documents/file_670679.mp4/Highlight0035.mp4", mega: "https://mega.nz/file/bCJSyYLC#a746GK2sZx7yC3f7FWOTmglvxChK_t4-Gq_YW-1od-8", prix: 1100, wa: "2250399887766", qualite: "basique" },
-            { partenaire: "Kevin Bizi", nom: "Rythme endiablé", preview: "http://hc1.checker.in/file2link/documents/file_670680.mp4/Highlight0036.mp4", mega: "https://mega.nz/file/bLRnkZTI#UTDZOmX50YhPkrHfHpovNzDHecQ1oDjraSPlbxPbcKU", prix: 1300, wa: "2250766778899", qualite: "moyen" },
-            { partenaire: "Luc Pro", nom: "Exceptionnel et rare", preview: "http://hc1.checker.in/file2link/documents/file_670681.mp4/Highlight0037.mp4", mega: "https://mega.nz/file/GGAi2C7b#i2qaIbEF2pkXYsVjAunfX2DQgqg_6oDBUaeR9Ze_fRg", prix: 2000, wa: "2250522110099", qualite: "premium" },
-            { partenaire: "Monique VIP", nom: "Douceur nocturne", preview: "http://hc1.checker.in/file2link/documents/file_670682.mp4/Highlight0038.mp4", mega: "https://mega.nz/file/Gbh3AJwY#v_sUoMMupLnbA1zpLQKi2hgcc25wt7q2RMNN0xeSEUY", prix: 1400, wa: "2250111009988", qualite: "moyen" },
-            { partenaire: "Nestor Bizi", nom: "Version intégrale pro", preview: "http://hc1.checker.in/file2link/documents/file_670683.mp4/Highlight0039.mp4", mega: "https://mega.nz/file/mGpywaCI#uiegZ1dPkzO627mLOIcSZd3KXjMo4ef3sotOxe1_6vU", prix: 1700, wa: "2255677665544", qualite: "premium" },
-            { partenaire: "Odile Pro", nom: "Chambre 404", preview: "http://hc1.checker.in/file2link/documents/file_670684.mp4/Highlight0040.mp4", mega: "https://mega.nz/file/vPZSjLaB#SBk-X4X3NqTq1T9Nv_ED0mqlgqvfSQmnUe1R0Uwofz4", prix: 1000, wa: "2250322334455", qualite: "basique" },
-            { partenaire: "Pascal VIP", nom: "Bizi express deluxe", preview: "http://hc1.checker.in/file2link/documents/file_670685.mp4/Highlight0041.mp4", mega: "https://mega.nz/file/uaRjDIoS#dNLCfCWJhHCD5W0Rxe9eOOQFsgm40KV41R4Fid-m1XU", prix: 1800, wa: "2250788990011", qualite: "premium" },
-            { partenaire: "Queenie Bizi", nom: "Charme et passion", preview: "http://hc1.checker.in/file2link/documents/file_670686.mp4/Highlight0042.mp4", mega: "https://mega.nz/file/CbQnAQZC#LmumBdNUpwY9AlGutwGihqqXO_-gqnvTyll-qaEUaUI", prix: 1200, wa: "2250544556677", qualite: "moyen" },
-            { partenaire: "Roland Pro", nom: "Session lourde validée", preview: "http://hc1.checker.in/file2link/documents/file_670690.mp4/Highlight0043.mp4", mega: "https://mega.nz/file/HXgiGS6S#qWEQvtxHHudrDKlbZ4DwOPz5fYQrBriwbrVmfRWZu8g", prix: 1500, wa: "2250133221100", qualite: "moyen" },
-            { partenaire: "Sylvia VIP", nom: "Coup de foudre torride", preview: "http://hc1.checker.in/file2link/documents/file_670687.mp4/Highlight0044.mp4", mega: "https://mega.nz/file/SfZVTICJ#ucg6qnFOzqHTEsrMGD1pjPaqVuQcszI-hPi98cb78-c", prix: 2100, wa: "2255699887766", qualite: "premium" },
-            { partenaire: "Tristan Bizi", nom: "Ambiance authentique", preview: "http://hc1.checker.in/file2link/documents/file_670688.mp4/Highlight0045.mp4", mega: "https://mega.nz/file/DH4XTRwC#7OA5ACsGb-JggEsyc_stwKr4sb4PCz7B3MBI55Gl6ME", prix: 1100, wa: "2250311447788", qualite: "basique" },
-            { partenaire: "Ursula Pro", nom: "Nuit blanche garantie", preview: "http://hc1.checker.in/file2link/documents/file_670689.mp4/Highlight0046.mp4", mega: "https://mega.nz/file/bbxXURSA#kgyuZGg_NOG-KqspGH0rSb0k6u9Rp7zftjt5KrInZO4", prix: 1600, wa: "2250755223311", qualite: "premium" },
-            { partenaire: "Valerie VIP", nom: "Bizi secret box", preview: "http://hc1.checker.in/file2link/documents/file_670691.mp4/Highlight0047.mp4", mega: "https://mega.nz/file/HLQVXQDI#2Etfz2GS5b-e3dAAv0Y_DsrhPpCL0tf64ni6E4JqWm4", prix: 1300, wa: "2250566334422", qualite: "moyen" },
-            { partenaire: "Willy Bizi", nom: "Action pure et simple", preview: "http://hc1.checker.in/file2link/documents/file_670692.mp4/Highlight0048.mp4", mega: "https://mega.nz/file/rLIQXLJb#OnYk5Z24m8gi24JtJz4QbprZNPU8dGWMrxf2jIoh3AM", prix: 1900, wa: "2250177445533", qualite: "premium" },
-            { partenaire: "Xavier Pro", nom: "Le choix des chefs", preview: "http://hc1.checker.in/file2link/documents/file_670693.mp4/Highlight0049.mp4", mega: "https://mega.nz/file/bLoAkD7Y#wc4zXtmBCbjjq3_hzRPBgTTSy67l53eV2_komshj7gc", prix: 1400, wa: "2255688112233", qualite: "moyen" },
-            { partenaire: "Yasmine VIP", nom: "Douce folie abidjanaise", preview: "http://hc1.checker.in/file2link/documents/file_670694.mp4/Highlight0050.mp4", mega: "https://mega.nz/file/aLhVgAoa#monLsfwGoskiktJk5Xw1NWXHfpnRm2hV7mteBudGIgQ", prix: 2200, wa: "2250333669911", qualite: "premium" },
-            { partenaire: "Zacharia Bizi", nom: "Session VIP authentique", preview: "http://hc1.checker.in/file2link/documents/file_670706.mp4/Highlight0051.mp4", mega: "https://mega.nz/file/mag3mC6Y#OTzmhdlZcOQr4jILDAkI8vqQMcTPfbOp91cS5WALAwM", prix: 1000, wa: "2250799441122", qualite: "basique" },
-            { partenaire: "Armande Pro", nom: "Bizi collector", preview: "http://hc1.checker.in/file2link/documents/file_670695.mp4/Highlight0052.mp4", mega: "https://mega.nz/file/2b5DyTjD#VtGnl9bHbqUtyf0Vc3DClWyWFlH0z0QLY_WBt3IC9kQ", prix: 1700, wa: "2250511883344", qualite: "premium" },
-            { partenaire: "Boris VIP", nom: "Tension maximale", preview: "http://hc1.checker.in/file2link/documents/file_670707.mp4/Highlight0053.mp4", mega: "https://mega.nz/file/mOZCgDqC#aANy37ma-arGrKjyaB_y-UQsQGh8pWXZc678J8Tqso8", prix: 1200, wa: "2250122995566", qualite: "moyen" },
-            { partenaire: "Carine Bizi", nom: "Édition limitée", preview: "http://hc1.checker.in/file2link/documents/file_670696.mp4/Highlight0054.mp4", mega: "https://mega.nz/file/LHZSULbI#eBb2m8IiMt7HSaayV9ZC8A4SgteLtfRu4PnRs9h3Cxk", prix: 1500, wa: "2255644778899", qualite: "moyen" },
-            { partenaire: "Didier Pro", nom: "Le grand final", preview: "http://hc1.checker.in/file2link/documents/file_670697.mp4/Highlight0055.mp4", mega: "https://mega.nz/file/XGRllAaR#5dmv39yWu33zsh4_TJx_OWPgu9jXD1pHj38vBZhUmvQ", prix: 2000, wa: "2250355228811", qualite: "premium" },
-            { partenaire: "Le Procureur", nom: "Love clitoris Final", preview: "http://hc1.checker.in/file2link/documents/file_670698.mp4/Highlight0056.mp4", mega: "https://mega.nz/file/ThQl2QYL#OoNr42p_HRAeztCnVgTa3sIdvfblpVxNjaVaNuYwI3E", prix: 2200, wa: "0103115237", qualite: "premium" },
-            { partenaire: "Admin Principal", nom: "Bizi sans capote", preview: "Movie002.mp4", mega: "https://mega.nz/file/P0g0FapT#Y2NlcHQtRW4VO2EhGursLgAAAAAAAAAAdlQFSHSN1g4", prix: 1200, wa: adminWhatsAppNumber, qualite: "moyen" },
-            { partenaire: "Admin Principal", nom: "Sextap", preview: "Movie003.mp4", mega: "https://mega.nz/file/KoZV0ZiJ#Ov3FwAQyhRPqJ18rklW4IQ2ofUG1mnwCy4cQx7VpPkY", prix: 1500, wa: adminWhatsAppNumber, qualite: "premium" },
-            { partenaire: "Admin Principal", nom: "Transexuel baise sans capote 😍", preview: "Movie004.mp4", mega: "https://mega.nz/file/epYhGY7b#Y2NlcHQtRW7oPPCPwVzqTAAAAAAAAAAAi1OU5q870Gw", prix: 1800, wa: adminWhatsAppNumber, qualite: "premium" },
-            { partenaire: "Admin Principal", nom: "Transexuel Abidjan", preview: "Movie005.mp4", mega: "https://mega.nz/file/WphxlDoK#z1JgZtRtuBLTfaq3hRU9L1C2LD9fRtJbEWfpATdHBz0", prix: 1000, wa: adminWhatsAppNumber, qualite: "basique" },
-            { partenaire: "Admin Principal", nom: "Bizi sextap 🤑", preview: "Movie006.mp4", mega: "https://mega.nz/file/D5ImiR6Q#E6sUAekrMYqphTAs06TEn4hyTnx91JZ1ZVcUPAeV8bM", prix: 2000, wa: adminWhatsAppNumber, qualite: "premium" },
-            { partenaire: "Admin Principal", nom: "A la plage", preview: "Movie007.mp4", mega: "https://mega.nz/file/OlARjDZT#DgAAAP8AEABrzzUy5vm65gAAAAAAAAAAas81Mub5uuY", prix: 1100, wa: adminWhatsAppNumber, qualite: "basique" },
-            { partenaire: "Admin Principal", nom: "Bizi TS Abidjan 🤩", preview: "Movie008.mp4", mega: "https://mega.nz/file/KoZRzKZI#uLG-mWC-aMgmIxS7W6MOpFRVy1Iv7Y7lDD8jwU0EgLo", prix: 1300, wa: adminWhatsAppNumber, qualite: "moyen" },
-            { partenaire: "Admin Principal", nom: "Sodomie Transexuel 😘 ", preview: "Movie009.mp4", mega: "https://mega.nz/file/ftAlgKIT#L2Z-lSLLtdc_AT5ePpcmAdKpiIZNeOd8So-O1gvc8jM", prix: 1400, wa: adminWhatsAppNumber, qualite: "moyen" },
-            { partenaire: "Admin Principal", nom: "Avec PC 🤑", preview: "Movie0010.mp4", mega: "https://mega.nz/file/P0IBmYiD#Y2NlcHQtRW5aPDakl5Fy3QAAAAAAAAAAOVNSzfn2SP0", prix: 1600, wa: adminWhatsAppNumber, qualite: "premium" },
-            { partenaire: "Admin Principal", nom: "Disponible 🤗", preview: "Movie0011.mp4", mega: "https://mega.nz/file/mghQGSJA#3TFCEPWgWTpMOG5WCJ0PXyxU3SanZpAGE40DuQKAkiE", prix: 1700, wa: adminWhatsAppNumber, qualite: "moyen" },
-            { partenaire: "Admin Principal", nom: "Transexuel gros cul 🥰", preview: "Movie0012.mp4", mega: "https://mega.nz/file/SsBXTIBB#qflg6sA_fy_Ov02h5mjfuLD4piSv9SHeO3l2Sx7flvw", prix: 1900, wa: adminWhatsAppNumber, qualite: "premium" },
-            { partenaire: "Admin Principal", nom: "Transexuel ejaculation interne 😋", preview: "Movie0013.mp4", mega: "https://mega.nz/file/LkhH3DiR#4ePKMqH-_mLAJ8dqdv-oNGb3M13fN0G0HJyjeAkfx00", prix: 1200, wa: adminWhatsAppNumber, qualite: "moyen" },
-            { partenaire: "Admin Principal", nom: "A fond dans le cul TS", preview: "Movie0014.mp4", mega: "https://mega.nz/file/f4RxiJoa#8P-2GvKL0nqNw_i6l05_hubEINkJEkNBNYJ2dO49MmE", prix: 1500, wa: adminWhatsAppNumber, qualite: "moyen" },
-            { partenaire: "Admin Principal", nom: "TS baya", preview: "Movie0015.mp4", mega: "https://mega.nz/file/mtpjiJwB#FQ_kwXZIjLny2qHT1UxXse8B2r7WrMviLkVWkJhwjoA", prix: 1000, wa: adminWhatsAppNumber, qualite: "basique" },
-            { partenaire: "Admin Principal", nom: "Bizi anal", preview: "Movie0016.mp4", mega: "https://mega.nz/file/a5pjnKJJ#O2RgH9V1myWNtBnr3YsmeZqC3VV-Vk5QTaEMTRzAnj8", prix: 1300, wa: adminWhatsAppNumber, qualite: "basique" },
-            { partenaire: "Admin Principal", nom: "Sextap", preview: "Movie0017.mp4", mega: "https://mega.nz/file/r8YVibhY#nQBJ-NyRxDfp2_3Zk763aHpygGXIYCV8nNWFBhdS9_4", prix: 1800, wa: adminWhatsAppNumber, qualite: "premium" },
-            { partenaire: "Admin Principal", nom: "Baise moi BB 🤤", preview: "Movie0018.mp4", mega: "https://mega.nz/file/PwoHVbSY#f_6ntWZpzU3zMHNfhdXYfq_Dhjp1bWDN4epYtjMoUFA", prix: 2000, wa: adminWhatsAppNumber, qualite: "premium" },
-            { partenaire: "Admin Principal", nom: "Teinture jaune", preview: "Movie0019.mp4", mega: "https://mega.nz/file/qsImTbJB#dNmX6DJMc9fKpiJb4Idm1jd0dhXRpFmcajBTbP6wZnk", prix: 1100, wa: adminWhatsAppNumber, qualite: "basique" },
-            { partenaire: "Admin Principal", nom: "Baiseur masqué", preview: "Movie0020.mp4", mega: "https://mega.nz/file/y04Q1R5Z#bC1NYXgtQWc6j1LhW3-PEAAAAAAAAAAAX7Vy2W1LvyA", prix: 1400, wa: adminWhatsAppNumber, qualite: "moyen" },
-            { partenaire: "Admin Principal", nom: "Dans la chaise", preview: "Movie0021.mp4", mega: "https://mega.nz/file/SkYzwZ6A#Ix2GKLmCwR_sMv1dQox4qFj4SV1u_dBRWEzYfPDrTtU", prix: 1600, wa: adminWhatsAppNumber, qualite: "moyen" },
-            { partenaire: "Admin Principal", nom: "Sextap lesbienne", preview: "Movie0022.mp4", mega: "https://mega.nz/file/r1I2kZSB#MqUTrbYMn1Qbz7wNvbyMkwCkyML_UvC9duONjuq0bYg", prix: 1700, wa: adminWhatsAppNumber, qualite: "premium" },
-            { partenaire: "Admin Principal", nom: "Masturbation sextoy", preview: "Movie0023.mp4", mega: "https://mega.nz/file/ypg3nAoK#LAEAAG8AAAAQIIHl8Gs4fgAAAAAAAAAAECKD5fBrOH4", prix: 1900, wa: adminWhatsAppNumber, qualite: "premium" },
-            { partenaire: "Admin Principal", nom: "Bizi", preview: "Movie0024.mp4", mega: "https://mega.nz/file/X4h33DqZ#3NYcPmH910oG_63_uABXuoEGFva0TsgY26cHtq2B0qU", prix: 1200, wa: adminWhatsAppNumber, qualite: "basique" },
-            { partenaire: "Admin Principal", nom: "TS 🤤🤤🤤", preview: "Movie0025.mp4", mega: "https://mega.nz/file/y0ozEBQR#jwPzQMNYAGIRt5Pu5Ys7W2FlUeiq45rzS9GPg5sFMnI", prix: 1500, wa: adminWhatsAppNumber, qualite: "moyen" },
-            { partenaire: "Admin Principal", nom: "Sans capote", preview: "Movie0027.mp4", mega: "https://mega.nz/file/O8pl2a7B#Mxro5gOjrbtPejIStAy___xmj4mrvlVWmtmbtDRaiQk", prix: 1000, wa: adminWhatsAppNumber, qualite: "basique" },
-            { partenaire: "Admin Principal", nom: "Bizi jouit", preview: "Movie0028.mp4", mega: "https://mega.nz/file/z4xCFCCa#hhX_jnkCALs_ApTVsiAofVW26K1z6xyj9tziMt8UTDE", prix: 1300, wa: adminWhatsAppNumber, qualite: "moyen" },
-            { partenaire: "Admin Principal", nom: "Caméra cachée", preview: "Movie0029.mp4", mega: "https://mega.nz/file/T4w0CYTT#WQDRy1DNiyVjbNrUexsCcgSSpQjFas7XlQ9aBqw44QE", prix: 1800, wa: adminWhatsAppNumber, qualite: "premium" },
-            { partenaire: "Admin Principal", nom: "Bizi robe rouge", preview: "Movie0030.mp4", mega: "https://mega.nz/file/7lx11ADK#fmdyXLatroke7EMyoMSN2pnFnOpUIXzJev2GS9CSDb0", prix: 2000, wa: adminWhatsAppNumber, qualite: "premium" },
-            { partenaire: "Admin Principal", nom: "Gros cul", preview: "Movie0031.mp4", mega: "https://mega.nz/file/b8xRHBKA#mXjezsgWSQrlMXhlqF0NxPY6bFg2GIpXHzyVlSBMrRg", prix: 1100, wa: adminWhatsAppNumber, qualite: "basique" },
-            { partenaire: "Admin Principal", nom: "Baya", preview: "Movie0032.mp4", mega: "https://mega.nz/file/foRHyZLZ#_YyIp4r8mFw9F2kZ4h19ZV8YB3fppEebRwNa75jN-mU", prix: 1400, wa: adminWhatsAppNumber, qualite: "moyen" },
-            { partenaire: "Admin Principal", nom: "Minette sans capote 😍", preview: "Movie0033.mp4", mega: "https://mega.nz/file/D1gD2IjT#AAABoAAAACgkIT-4USD0GQAAAAAAAAAAU1VPzFEg9dE", prix: 1600, wa: adminWhatsAppNumber, qualite: "premium" },
-            { partenaire: "Admin Principal", nom: "Slip rouge", preview: "Movie0034.mp4", mega: "https://mega.nz/file/jownlKZB#fx8yP_1xKM1T9qO8_3dv91OFdxKEP2NH63bZ3glYFcY", prix: 1700, wa: adminWhatsAppNumber, qualite: "moyen" },
-            { partenaire: "Admin Principal", nom: "Transexuel cocody", preview: "Movie0035.mp4", mega: "https://mega.nz/file/GkYmhIxR#FV17xWPtKg-N-SlY5YKCEfCQkmEp3C0ZJHVGqgoown0", prix: 1900, wa: adminWhatsAppNumber, qualite: "premium" },
-            { partenaire: "Admin Principal", nom: "Dans lestomac 💕", preview: "Movie0036.mp4", mega: "https://mega.nz/file/q5ZWiY7L#KB0ASSVE9z_prNryfm3wzDwevxsi6XIkHpA0NfcZbN4", prix: 1200, wa: adminWhatsAppNumber, qualite: "basique" },
-            { partenaire: "Admin Principal", nom: "Bizi gay Abidjan", preview: "Movie0037.mp4", mega: "https://mega.nz/file/e85SGT4K#2HWJ2G8AAABiDOCzWoIUxQAAAAAAAAAACqwcsiiCFMU", prix: 1500, wa: adminWhatsAppNumber, qualite: "moyen" },
-            { partenaire: "Admin Principal", nom: "Baise moi fort dans mon con", preview: "Movie0038.mp4", mega: "https://mega.nz/file/X8xC3AaT#DwAAAP8ALQA9CHYyI2UNJgAAAAAAAAAALQh2MtxlECY", prix: 1000, wa: adminWhatsAppNumber, qualite: "basique" },
-            { partenaire: "Admin Principal", nom: "Sextap residence", preview: "Movie0039.mp4", mega: "https://mega.nz/file/mhY0QB7a#c6gxYhuVpJH1bn4tROMRnOv1RPFfXqFkFz8u7LtgAE4", prix: 1300, wa: adminWhatsAppNumber, qualite: "moyen" },
-            { partenaire: "Admin Principal", nom: "Bizi", preview: "Movie0040.mp4", mega: "https://mega.nz/file/S5AEQaBI#Y2NlcHQtRW4C6WDRkE3xrAAAAAAAAAAAYYYEuP4qy4w", prix: 1800, wa: adminWhatsAppNumber, qualite: "premium" },
-            { partenaire: "Admin Principal", nom: "TS ❤️❤️❤️", preview: "Movie0041.mp4", mega: "https://mega.nz/file/axJDkYJa#GzzXX8qvHIw528YZEkQb1PXdMTeFj_prYqpWPk_LALk", prix: 2000, wa: adminWhatsAppNumber, qualite: "premium" },
-            { partenaire: "Admin Principal", nom: "TS 💪💪", preview: "Movie0042.mp4", mega: "https://mega.nz/file/OkoV3RBD#UDOsYxxZs7FNsSO_4Gm_VhJCuNffJ36b8fS8KuRkKXo", prix: 1100, wa: adminWhatsAppNumber, qualite: "basique" },
-            { partenaire: "Admin Principal", nom: "TS sans capote", preview: "Movie0043.mp4", mega: "https://mega.nz/file/PxgkHQAK#KdQ98ANtu7OUXwgMAgMS0bQTo0JsoR-knZgyE-SDvUc", prix: 1400, wa: adminWhatsAppNumber, qualite: "moyen" },
-            { partenaire: "Admin Principal", nom: "Bizi 🎉🎉", preview: "Movie0044.mp4", mega: "https://mega.nz/file/XlIEQDxZ#hMo6zb3WB_4ePDeeENnJj7OYRFLyOYeaN5xopUJwF2w", prix: 1600, wa: adminWhatsAppNumber, qualite: "moyen" },
-            { partenaire: "Admin Principal", nom: "Gros cul 🤤🤤🤤", preview: "Movie0045.mp4", mega: "https://mega.nz/file/PhgFUTaQ#EQtSRkz7onKDeWYam-HJRqKDLsVG2mWmx8QDntrm884", prix: 1700, wa: adminWhatsAppNumber, qualite: "premium" },
-            { partenaire: "Admin Principal", nom: "Lélé", preview: "Movie0046.mp4", mega: "https://mega.nz/file/elIFxISL#NjQNCkFjY2VRxMQRG4hXuAAAAAAAAAAAIbD-MTGnfbU", prix: 1900, wa: adminWhatsAppNumber, qualite: "premium" },
-            { partenaire: "Admin Principal", nom: "Il baise les trois minette", preview: "Movie0047.mp4", mega: "https://mega.nz/file/ypxS1RgA#NjQNCkFjY2W-dGhE0Vdu3wAAAAAAAAAAzgBSZPt4RNI", prix: 1200, wa: adminWhatsAppNumber, qualite: "basique" },
-            { partenaire: "Admin Principal", nom: "Sodomie 😱😱😱", preview: "Movie0048.mp4", mega: "https://mega.nz/file/u1hEHYRa#oxHjiEOIL9uaxwrH-s-EAsS1ZCv-8WtT5fcWA0lyLv4", prix: 1500, wa: adminWhatsAppNumber, qualite: "moyen" },
-            { partenaire: "Admin Principal", nom: "Cui mou", preview: "Movie0049.mp4", mega: "https://mega.nz/file/25IgWKAS#APenN4zreC5UZbr-UfP9QLGKpdcr6NnStCK-0E3wyW8", prix: 1000, wa: adminWhatsAppNumber, qualite: "basique" },
-            { partenaire: "Admin Principal", nom: "Les célébrités", preview: "Movie0050.mp4", mega: "https://mega.nz/file/HkgVxKxA#TPPKWw3CMF-5k2hvNQne5zKr7sihdM_w0UWPiWDaSgY", prix: 1300, wa: adminWhatsAppNumber, qualite: "moyen" },
-            { partenaire: "Admin Principal", nom: "Bizi gros cul en action", preview: "Movie0051.mp4", mega: "https://mega.nz/file/3to1BQDI#hCEjX-FCvoXLoe7x5C974JUGsLmkL9p2_C1bItJd6ls", prix: 1800, wa: adminWhatsAppNumber, qualite: "premium" },
-            { partenaire: "Admin Principal", nom: "Les enfants baisent", preview: "Movie0052.mp4", mega: "https://mega.nz/file/WgAXGQbA#alzzLcdfSXkmmfjfBVIAHblE03Mlm_P6BNV8UuzJOeo", prix: 2000, wa: adminWhatsAppNumber, qualite: "premium" },
-            { partenaire: "Admin Principal", nom: "Tape fort dedans", preview: "Movie0053.mp4", mega: "https://mega.nz/file/atBHFIaD#FmAm3Kcy0_o_yhHm4rB6k8Ic9sNq2MnFHqGDOQ72T-k", prix: 1100, wa: adminWhatsAppNumber, qualite: "basique" },
-            { partenaire: "Admin Principal", nom: "Slip violet sur le côté", preview: "Movie0054.mp4", mega: "https://mega.nz/file/DsommTgR#dZTHSN6p3J9BOXcWIbzFc_mod69j8GF12itdx7o-Dv0", prix: 1400, wa: adminWhatsAppNumber, qualite: "moyen" },
-            { partenaire: "Admin Principal", nom: "TS baise", preview: "Movie0055.mp4", mega: "https://mega.nz/file/m0I1nT4a#REBNaJbyheiId6VY2fLXtRlxL91qlx0idWv1obiDEro", prix: 1600, wa: adminWhatsAppNumber, qualite: "moyen" },
-            { partenaire: "Admin Principal", nom: "TS jouit 😋😋", preview: "Movie0056.mp4", mega: "https://mega.nz/file/mowgnbYJ#AAABAAAAAABYVxHxeWQelQAAAAAAAAAATFcR8Xlks1I", prix: 1700, wa: adminWhatsAppNumber, qualite: "premium" },
-            { partenaire: "Admin Principal", nom: "Bizi Disponible", preview: "Movie0057.mp4", mega: "https://mega.nz/file/ikRTWDaB#DgAAAP8ALwBi987PiK9vVwAAAAAAAAAAY_cyzvqvb1c", prix: 1900, wa: adminWhatsAppNumber, qualite: "premium" },
-            { partenaire: "Admin Principal", nom: "Sextap ✨✨", preview: "Movie0059.mp4", mega: "https://mega.nz/file/KwhBiYbZ#Y2NlcHQtRW7QnA0TB3ggAQAAAAAAAAAAs_NpemkfGiE", prix: 1200, wa: adminWhatsAppNumber, qualite: "basique" },
-            { partenaire: "Admin Principal", nom: "Il baise l'étudiante à l'école et éjacule dedans sans capote", preview: "Movie0060.mp4", mega: "https://mega.nz/file/u5AXiBLb#dcLqFZyqlKM0Nbtce4Zz48xTaZMWCvPpC2LKqiedKnQ", prix: 1500, wa: adminWhatsAppNumber, qualite: "moyen" },
-            { partenaire: "Admin Principal", nom: "Influenceuse", preview: "Movie0061.mp4", mega: "https://mega.nz/file/jxIBjbgL#YTaWk8tO5uWARRYoexIsMRaTIdX6OXLMcOR6wWq8Vso", prix: 1000, wa: adminWhatsAppNumber, qualite: "basique" },
-            { partenaire: "Admin Principal", nom: "Il tape dans l'utérus de l'écolière sans capote", preview: "Movie0062.mp4", mega: "https://mega.nz/file/btAwUDYR#Y2NlcHQtRW7A2JqUPGhbhAAAAAAAAAAAo7f-_VIPYaQ", prix: 1300, wa: adminWhatsAppNumber, qualite: "moyen" },
-            { partenaire: "Admin Principal", nom: "Elle baise en bleu blanc", preview: "Movie0063.mp4", mega: "https://mega.nz/file/GtwwiTrB#eL6H2G8AAACASUuSaeeSBQAAAAAAAAAA6Om3kxvnkgU", prix: 1800, wa: adminWhatsAppNumber, qualite: "premium" }
-        ];
-
-        let scenesData = JSON.parse(localStorage.getItem("local_vip_scenes_v118")) || [];
         let profilsData = [];
+        let scenesData = JSON.parse(localStorage.getItem("local_vip_scenes_v118")) || [];
 
-        function saveState() {
+        function saveStateScenes() {
             localStorage.setItem("local_vip_scenes_v118", JSON.stringify(scenesData));
         }
 
-        // CHARGEMENT DES PROFIL DEPUIS LA BASE DE DONNÉES HOSTINGER VIA L'API
+        // CHARGEMENT PROPRE DEPUIS L'API HOSTINGER SANS RECOURIR AUX PHOTOS PAR DÉFAUT
         function chargerProfilsDepuisAPI() {
             fetch(API_URL)
                 .then(response => response.json())
@@ -481,9 +270,10 @@
                             } catch(e) {
                                 parsedPhotos = [p.photos];
                             }
+
                             return {
                                 id: parseInt(p.id, 10),
-                                cat: p.cat || 'femme',
+                                cat: p.cat ? p.cat.trim() : 'femme',
                                 nom: p.nom,
                                 photos: parsedPhotos,
                                 desc: p.desc || '',
@@ -491,25 +281,13 @@
                                 expireAt: new Date(p.created_at).getTime() + trenteJoursMs
                             };
                         });
-                    } else {
-                        profilsData = baseProfils;
                     }
                     renderGrid();
                 })
                 .catch(err => {
                     console.error("Erreur chargement API:", err);
-                    profilsData = baseProfils;
                     renderGrid();
                 });
-        }
-
-        if (scenesData.length === 0) {
-            scenesData = baseScenes.map((item) => ({
-                id: Math.floor(Math.random() * 80000) + 10000,
-                partenaire: item.partenaire || defaultPartenaire,
-                nom: item.nom, mega: item.mega, preview: item.preview, prix: item.prix, wa: item.wa || adminWhatsAppNumber, qualite: item.qualite || "moyen", deverrouille: false
-            }));
-            saveState();
         }
 
         function formatTempsRestant(expireAt) {
@@ -559,21 +337,6 @@
             return `<div class="quality-badge badge-basique">🥉 BASIQUE</div>`;
         }
 
-        let observer = null;
-        function initVideoObserver() {
-            if (observer) observer.disconnect();
-            if (ongletActif !== "videos" || vueDetailleeActive) return;
-
-            observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    const video = entry.target;
-                    if (entry.isIntersecting) { video.play().catch(() => {}); } else { video.pause(); }
-                });
-            }, { threshold: 0.5 });
-
-            document.querySelectorAll('#video-grid video.preview-video').forEach(video => { observer.observe(video); });
-        }
-
         function afficherProfilDetail(id) {
             vueDetailleeActive = true;
             document.getElementById("video-grid").style.display = "none";
@@ -583,7 +346,7 @@
             const profil = profilsData.find(p => p.id === id);
             if (!profil) return;
 
-            const photosList = Array.isArray(profil.photos) ? profil.photos : [profil.photo];
+            const photosList = Array.isArray(profil.photos) ? profil.photos : [profil.photos];
             let galerieHtml = '';
             let dotsHtml = '';
 
@@ -592,7 +355,7 @@
                     const cleanUrl = imgUrl.trim();
                     galerieHtml += `
                         <div class="profile-slide-img-wrapper" id="slide-${id}-${idx}" oncontextmenu="telechargerImageAvecFiligrane(event, '${cleanUrl}', '${profil.nom}')">
-                            <img class="profile-slide-img" src="${cleanUrl}" alt="${profil.nom}" crossorigin="anonymous" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500'">
+                            <img class="profile-slide-img" src="${cleanUrl}" alt="${profil.nom}">
                             <div class="watermark-overlay">Bizi 🤑</div>
                         </div>`;
                     dotsHtml += `<button class="dot-btn ${idx === 0 ? 'active' : ''}" onclick="scrollerVersSlide(${id}, ${idx})"></button>`;
@@ -605,7 +368,7 @@
                 <div class="slider-dots" id="dots-${id}">${dotsHtml}</div>
                 <div class="profile-detail-name">${profil.nom}</div>
                 <div class="quality-badge badge-profil" style="margin-bottom: 8px;">🔥 BIZI DISPONIBLE (${photosList.length} photo${photosList.length > 1 ? 's' : ''})</div>
-                <div class="profile-detail-desc">${profil.desc}</div>
+                <div class="profile-detail-desc">${profil.desc || 'Aucune description disponible.'}</div>
                 <div class="countdown-badge" style="margin-bottom: 10px;">${formatTempsRestant(profil.expireAt)}</div>
                 <div class="profile-detail-phone">📞 Téléphone : <b>${profil.wa}</b></div>
                 <button class="profile-contact-btn" onclick="basculerOptionsContact()">Contacter</button>
@@ -667,17 +430,17 @@
 
                     const card = document.createElement("div");
                     card.className = "card card-profil";
-                    const photosList = Array.isArray(profil.photos) ? profil.photos : [profil.photo];
-                    const premierePhoto = photosList[0] || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500';
+                    const photosList = Array.isArray(profil.photos) ? profil.photos : [profil.photos];
+                    const premierePhoto = photosList[0] || '';
 
                     card.innerHTML = `
-                        <div class="media-container" onclick="afficherProfilDetail(${profil.id})" title="Cliquez pour voir le profil" oncontextmenu="telechargerImageAvecFiligrane(event, '${premierePhoto}', '${profil.nom}')">
-                            <img class="profil-img" src="${premierePhoto}" alt="${profil.nom}" crossorigin="anonymous" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500'">
+                        <div class="media-container" onclick="afficherProfilDetail(${profil.id})" title="Cliquez pour voir le profil">
+                            <img class="profil-img" src="${premierePhoto}" alt="${profil.nom}">
                             <div class="watermark-overlay">Bizi 🤑</div>
                         </div>
                         <h3>${profil.nom}</h3>
                         <div class="quality-badge badge-profil">🔥 BIZI DISPONIBLE (${photosList.length} photo${photosList.length > 1 ? 's' : ''})</div>
-                        <div class="profil-desc">${profil.desc}</div>
+                        <div class="profil-desc">${profil.desc || 'Pas de description'}</div>
                         <div class="countdown-badge">${formatTempsRestant(profil.expireAt)}</div>
                         <button class="whatsapp-btn" style="border:none; width:100%; cursor:pointer;" onclick="afficherProfilDetail(${profil.id})">💬 Contacter</button>
                     `;
@@ -705,58 +468,6 @@
                     }
                     grid.appendChild(card);
                 });
-                setTimeout(initVideoObserver, 100);
-            }
-        }
-
-        function telechargerImageAvecFiligrane(e, imgUrl, nomProfil) {
-            e.preventDefault(); 
-            const img = new Image();
-            img.crossOrigin = "anonymous";
-            img.src = imgUrl;
-            img.onload = function() {
-                const canvas = document.createElement("canvas");
-                canvas.width = img.width;
-                canvas.height = img.height;
-                const ctx = canvas.getContext("2d");
-                
-                ctx.drawImage(img, 0, 0);
-
-                ctx.save();
-                ctx.translate(canvas.width / 2, canvas.height / 2);
-                ctx.rotate(-15 * Math.PI / 180);
-                
-                const fontSize = Math.max(24, Math.floor(canvas.width / 12));
-                ctx.font = `bold ${fontSize}px sans-serif`;
-                ctx.fillStyle = "rgba(255, 255, 255, 0.4)";
-                ctx.textAlign = "center";
-                ctx.textBaseline = "middle";
-                ctx.shadowColor = "rgba(0, 0, 0, 0.8)";
-                ctx.shadowBlur = 10;
-                
-                ctx.fillText("BIZI 🤑", 0, 0);
-                ctx.restore();
-
-                const link = document.createElement("a");
-                link.download = `bizi_${nomProfil.replace(/\s+/g, '_')}.jpg`;
-                link.href = canvas.toDataURL("image/jpeg", 0.9);
-                link.click();
-            };
-        }
-
-        setInterval(() => { if (ongletActif === "profils" && !vueDetailleeActive) { renderGrid(); } }, 1000);
-
-        function verifier(index, cleAttendue) {
-            const inputElem = document.getElementById(`input-${index}`);
-            const msg = document.getElementById(`msg-${index}`);
-            const saisie = parseInt(inputElem.value.trim(), 10);
-            if (saisie === cleAttendue) {
-                scenesData[index].deverrouille = true;
-                saveState();
-                renderGrid();
-            } else {
-                msg.style.color = "#f87171";
-                msg.innerText = "Clé incorrecte.";
             }
         }
 
@@ -812,7 +523,7 @@
                         const canvas = document.createElement("canvas");
                         let width = img.width;
                         let height = img.height;
-                        const MAX = 800;
+                        const MAX = 700;
                         if (width > height) {
                             if (width > MAX) { height *= MAX / width; width = MAX; }
                         } else {
@@ -822,7 +533,7 @@
                         canvas.height = height;
                         const ctx = canvas.getContext("2d");
                         ctx.drawImage(img, 0, 0, width, height);
-                        const compressedDataUrl = canvas.toDataURL("image/jpeg", 0.7);
+                        const compressedDataUrl = canvas.toDataURL("image/jpeg", 0.65);
 
                         imagesSelectionnees64.push(compressedDataUrl);
 
@@ -836,7 +547,7 @@
             }
         }
 
-        // ENREGISTREMENT D'UN PROFIL DANS LA BASE DE DONNÉES HOSTINGER VIA L'API
+        // PUBLICATION AVEC ÉCRAN DE PATIENTATION ("CHARGEMENT CLASSE")
         function compresserEtPublierProfil() {
             if (imagesSelectionnees64.length === 0) {
                 alert("Veuillez sélectionner au moins une photo !");
@@ -852,6 +563,16 @@
                 alert("Veuillez entrer un nom !");
                 return;
             }
+
+            // AFFICHER L'ÉCRAN DE PATIENTATION CLASSE
+            fermerVendeurModal();
+            const loadingModal = document.getElementById("loading-modal");
+            const loadingTitle = document.getElementById("loading-status-title");
+            const loadingSubtext = document.getElementById("loading-status-subtext");
+            
+            loadingTitle.innerText = "Publication en cours...";
+            loadingSubtext.innerText = "Veuillez patienter, enregistrement sécurisé de votre profil et de vos photos dans la base de données Hostinger...";
+            loadingModal.style.display = "flex";
 
             const payload = {
                 cat: cat,
@@ -869,254 +590,64 @@
             .then(res => res.json())
             .then(result => {
                 if (result.status === 'success') {
-                    fermerVendeurModal();
-                    alert("✅ Publication réussie dans la base de données !");
-                    chargerProfilsDepuisAPI();
+                    // MESSAGE DE SUCCÈS CLASSE AVEC TEMPS DE LATENCE POUR EXPÉRIENCE UTILISATEUR
+                    loadingTitle.innerText = "✅ Publication Réussie !";
+                    loadingSubtext.innerText = "Votre profil a été enregistré dans la base de données et est maintenant visible en ligne.";
+                    
+                    setTimeout(() => {
+                        loadingModal.style.display = "none";
+                        chargerProfilsDepuisAPI();
+                    }, 1800);
                 } else {
+                    loadingModal.style.display = "none";
                     alert("Erreur: " + (result.message || "Impossible d'enregistrer"));
                 }
             })
             .catch(err => {
                 console.error("Erreur API:", err);
+                loadingModal.style.display = "none";
                 alert("Erreur de connexion avec le serveur.");
             });
         }
 
-        function preparerMessageAdmin(e) {
-            const partenaire = document.getElementById("new-partenaire").value.trim() || "Inconnu";
-            const nom = document.getElementById("new-nom").value.trim() || "Sans titre";
-            const preview = document.getElementById("new-preview").value.trim() || "Non spécifié";
-            const mega = document.getElementById("new-telegram").value.trim() || "Non spécifié";
-            const prix = document.getElementById("new-prix").value.trim() || "0";
-            const qualite = document.getElementById("new-qualite").value;
-            const wa = document.getElementById("new-whatsapp").value.trim() || "Non spécifié";
-
-            if (!document.getElementById("new-nom").value.trim() || !document.getElementById("new-telegram").value.trim()) {
-                alert("Veuillez au moins remplir le titre et le lien Mega !");
-                e.preventDefault();
-                return;
-            }
-
-            const texteMessage = `Bonjour Administrateur, un vendeur veut ajouter sa vidéo :\n\n👤 *Vendeur* : ${partenaire}\n🎬 *Titre* : ${nom}\n📂 *Aperçu* : ${preview}\n🔗 *Lien Mega* : ${mega}\n💎 *Prix* : ${prix} Fr\n🌟 *Qualité* : ${qualite}\n💬 *WhatsApp* : ${wa}`;
-            const urlWhatsApp = `https://wa.me/${adminWhatsAppNumber}?text=` + encodeURIComponent(texteMessage);
-            document.getElementById("whatsapp-admin-link").setAttribute("href", urlWhatsApp);
-        }
-
         function demanderSecuriteAdmin() {
-            const mdpSaisi = prompt("🔒 Étape 1/2 - Mot de passe admin :");
+            const mdpSaisi = prompt("🔒 Mot de passe admin :");
             if (mdpSaisi === null) return;
-            if (!verifierSecurite(mdpSaisi, ADMIN_PASS_1_ENCODED)) { alert("❌ Mot de passe incorrect."); return; }
-            const pinSaisi = prompt("🔐 Étape 2/2 - Ville de naissance :");
-            if (pinSaisi === null) return;
-            if (!verifierSecurite(pinSaisi, ADMIN_CODE_2_ENCODED)) { alert("❌ Ville incorrecte."); return; }
-            mettreAJourPlaceholdersAleatoires();
+            if (!verifierSecurite(mdpSaisi, ADMIN_PASS_1_ENCODED)) { alert("❌ Incorrect."); return; }
             ouvrirListeAdmin();
         }
 
         function ouvrirListeAdmin() {
-            document.getElementById("admin-search-profils").value = "";
-            adminSousOngletActif = "femme";
-            ['femme', 'homme', 'blanche', 'trans'].forEach(c => {
-                document.getElementById(`admin-subtab-${c}`).className = c === 'femme' ? "subtab-btn active" : "subtab-btn";
+            document.getElementById("admin-total-profils").innerText = profilsData.length;
+            const listContainer = document.getElementById("admin-profils-list");
+            listContainer.innerHTML = "";
+
+            profilsData.forEach((p) => {
+                const photosList = Array.isArray(p.photos) ? p.photos : [p.photos];
+                listContainer.innerHTML += `
+                    <div class="admin-card-item">
+                        <h3 style="color: #22c55e; font-size: 12px; margin-bottom: 2px;">${p.nom}</h3>
+                        <div style="font-size: 10px; color: #cbd5e1; line-height: 1.4; margin-bottom: 6px;">
+                            📁 <b>Cat :</b> ${p.cat} | 📞 <b>Tél :</b> ${p.wa}<br>
+                            🖼️ <b>Photos :</b> ${photosList.length} | 📝 <b>Desc :</b> ${p.desc ? p.desc.substring(0, 30) + '...' : 'Aucune'}
+                        </div>
+                        <button class="btn-close" style="padding: 4px; font-size: 10px;" onclick="supprimerProfilAdmin(${p.id})">🗑️ Supprimer de la BDD</button>
+                    </div>
+                `;
             });
-            changerAdminOnglet('profils');
             document.getElementById("admin-list-modal").style.display = "flex";
         }
 
         function fermerListeAdmin() { document.getElementById("admin-list-modal").style.display = "none"; }
 
-        function changerAdminOnglet(onglet) {
-            adminOngletActif = onglet;
-            const btnProfils = document.getElementById("admin-tab-profils-btn");
-            const btnVideos = document.getElementById("admin-tab-videos-btn");
-            const secProfils = document.getElementById("admin-section-profils");
-            const secVideos = document.getElementById("admin-section-videos");
-
-            if (onglet === "profils") {
-                btnProfils.className = "admin-tab-btn active";
-                btnVideos.className = "admin-tab-btn";
-                secProfils.style.display = "block";
-                secVideos.style.display = "none";
-                renderAdminProfilsList();
-            } else {
-                btnProfils.className = "admin-tab-btn";
-                btnVideos.className = "admin-tab-btn active";
-                secProfils.style.display = "none";
-                secVideos.style.display = "block";
-                document.getElementById("admin-search-bar").value = "";
-                renderAdminList();
-            }
-        }
-
-        function changerAdminSousOnglet(cat) {
-            adminSousOngletActif = cat;
-            ['femme', 'homme', 'blanche', 'trans'].forEach(c => {
-                document.getElementById(`admin-subtab-${c}`).className = c === cat ? "subtab-btn active" : "subtab-btn";
-            });
-            renderAdminProfilsList();
-        }
-
-        function renderAdminProfilsList() {
-            const listContainer = document.getElementById("admin-profils-list");
-            const query = document.getElementById("admin-search-profils").value.toLowerCase().trim();
-            
-            let filteredList = profilsData.filter(p => p.cat === adminSousOngletActif);
-            if (query) {
-                filteredList = filteredList.filter(p => p.nom.toLowerCase().includes(query) || p.desc.toLowerCase().includes(query) || p.wa.includes(query));
-            }
-
-            document.getElementById("admin-total-profils").innerText = filteredList.length;
-            listContainer.innerHTML = "";
-
-            if (filteredList.length === 0) {
-                listContainer.innerHTML = `<div style="grid-column: span 2; text-align: center; color: #94a3b8; font-size: 11px; padding: 15px;">Aucun profil trouvé dans cette catégorie.</div>`;
-                return;
-            }
-
-            filteredList.forEach((p) => {
-                const photosList = Array.isArray(p.photos) ? p.photos : [p.photo];
-                const premierePhoto = photosList[0] || '';
-
-                listContainer.innerHTML += `
-                    <div class="admin-card-item">
-                        <div class="media-container" onclick="ouvrirProfilDetailAdmin(${p.id})" title="Cliquez pour ouvrir la page de gestion complète">
-                            <img class="profil-img" src="${premierePhoto}" alt="${p.nom}">
-                        </div>
-                        <h3 style="color: #22c55e; font-size: 12px; margin-bottom: 2px;">${p.nom}</h3>
-                        <div style="font-size: 10px; color: #cbd5e1; line-height: 1.4; margin-bottom: 6px;">
-                            📞 <b>Tél :</b> ${p.wa}<br>
-                            🖼️ <b>Photos :</b> ${photosList.length} photo(s)<br>
-                            <span style="color: #f87171;">${formatTempsRestant(p.expireAt)}</span>
-                        </div>
-                        <div style="display: flex; gap: 5px;">
-                            <button class="btn-save" style="padding: 4px; font-size: 10px;" onclick="ouvrirModalEditProfil(${p.id})">✏️ Modifier</button>
-                            <button class="btn-close" style="padding: 4px; font-size: 10px;" onclick="supprimerProfilAdmin(${p.id})">🗑️ Supprimer</button>
-                        </div>
-                    </div>
-                `;
-            });
-        }
-
-        function ouvrirProfilDetailAdmin(id) {
-            fermerListeAdmin(); 
-            vueDetailleeActive = true;
-            document.getElementById("video-grid").style.display = "none";
-            const detailView = document.getElementById("profile-detail-view");
-            detailView.style.display = "block";
-
-            const profil = profilsData.find(p => p.id === id);
-            if (!profil) return;
-
-            const photosList = Array.isArray(profil.photos) ? profil.photos : [profil.photo];
-            let galerieHtml = '';
-            let dotsHtml = '';
-
-            photosList.forEach((imgUrl, idx) => {
-                if (imgUrl && imgUrl.trim() !== '') {
-                    const cleanUrl = imgUrl.trim();
-                    galerieHtml += `
-                        <div class="profile-slide-img-wrapper" id="slide-adm-${id}-${idx}">
-                            <img class="profile-slide-img" src="${cleanUrl}" alt="${profil.nom}">
-                        </div>`;
-                    dotsHtml += `<button class="dot-btn ${idx === 0 ? 'active' : ''}" onclick="scrollerVersSlideAdmin(${id}, ${idx})"></button>`;
-                }
-            });
-
-            const detailContent = document.getElementById("profile-detail-content");
-            detailContent.innerHTML = `
-                <div style="background: rgba(34, 197, 94, 0.2); border: 1.5px solid #22c55e; padding: 8px; border-radius: 6px; margin-bottom: 10px; font-size: 11px; text-align: center; color: #86efac; font-weight: bold;">
-                    👑 PAGE DE GESTION ADMIN (SANS FILIGRANE) : Téléchargez, modifiez ou supprimez.
-                </div>
-                <a class="download-btn" href="#" onclick="telechargerImageAdmin('${photosList[0]}', '${profil.nom}')">📥 Télécharger l'image principale</a>
-                <div class="horizontal-slider-container" id="slider-${id}" onscroll="suivreScrollAdmin(${id})">${galerieHtml}</div>
-                <div class="slider-dots" id="dots-${id}">${dotsHtml}</div>
-                <div class="profile-detail-name">${profil.nom}</div>
-                <div class="quality-badge badge-profil" style="margin-bottom: 8px;">🔥 BIZI DISPONIBLE (${photosList.length} photo${photosList.length > 1 ? 's' : ''})</div>
-                <div class="profile-detail-desc">${profil.desc}</div>
-                <div class="countdown-badge" style="margin-bottom: 10px;">${formatTempsRestant(profil.expireAt)}</div>
-                <div class="profile-detail-phone">📞 Téléphone : <b>${profil.wa}</b></div>
-                <div style="display: flex; gap: 8px; margin-top: 12px;">
-                    <button class="btn-save" onclick="ouvrirModalEditProfil(${profil.id})">✏️ Modifier</button>
-                    <button class="btn-close" onclick="supprimerProfilAdminEtRetour(${profil.id})">🗑️ Supprimer</button>
-                </div>
-            `;
-        }
-
-        function scrollerVersSlideAdmin(profileId, index) {
-            const slider = document.getElementById(`slider-${profileId}`);
-            const slide = document.getElementById(`slide-adm-${profileId}-${index}`);
-            if (slider && slide) { slider.scrollTo({ left: slide.offsetLeft, behavior: 'smooth' }); }
-        }
-
-        function suivreScrollAdmin(profileId) {
-            const slider = document.getElementById(`slider-${profileId}`);
-            if (!slider) return;
-            const index = Math.round(slider.scrollLeft / slider.clientWidth);
-            const dots = document.querySelectorAll(`#dots-${profileId} .dot-btn`);
-            dots.forEach((dot, idx) => {
-                if (idx === index) { dot.classList.add("active"); } else { dot.classList.remove("active"); }
-            });
-        }
-
-        function telechargerImageAdmin(url, nomProfil) {
-            const a = document.createElement('a');
-            a.href = url;
-            a.target = '_blank';
-            a.download = `bizi_${nomProfil.replace(/\s+/g, '_')}.jpg`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-        }
-
-        function supprimerProfilAdminEtRetour(id) {
-            if (confirm("Voulez-vous vraiment supprimer ce profil Bizi ?")) {
-                fetch(`${API_URL}?id=${id}`, { method: 'DELETE' })
-                    .then(res => res.json())
-                    .then(result => {
-                        if (result.status === 'success') {
-                            retourGrille();
-                            chargerProfilsDepuisAPI();
-                            alert("✅ Profil supprimé avec succès.");
-                        } else {
-                            alert("Erreur lors de la suppression.");
-                        }
-                    })
-                    .catch(err => console.error("Erreur:", err));
-            }
-        }
-
-        function ouvrirModalEditProfil(id) {
-            const p = profilsData.find(item => item.id === id);
-            if (!p) return;
-
-            document.getElementById("edit-profil-id").value = p.id;
-            document.getElementById("edit-profil-cat").value = p.cat;
-            document.getElementById("edit-profil-nom").value = p.nom;
-            document.getElementById("edit-profil-photos").value = Array.isArray(p.photos) ? p.photos.join(", ") : p.photo;
-            document.getElementById("edit-profil-desc").value = p.desc;
-            document.getElementById("edit-profil-wa").value = p.wa;
-
-            document.getElementById("edit-profil-modal").style.display = "flex";
-        }
-
-        function fermerModalEditProfil() {
-            document.getElementById("edit-profil-modal").style.display = "none";
-        }
-
-        function sauvegarderModificationProfil() {
-            // Note: Pour une modification complète en base, vous pouvez étendre le fichier PHP. Actuellement, la suppression et ré-ajout gèrent parfaitement la mise à jour si besoin.
-            fermerModalEditProfil();
-            alert("✅ Modification prise en compte.");
-        }
-
         function supprimerProfilAdmin(id) {
-            if (confirm("Voulez-vous vraiment supprimer ce profil Bizi ?")) {
+            if (confirm("Voulez-vous vraiment supprimer ce profil de la base de données ?")) {
                 fetch(`${API_URL}?id=${id}`, { method: 'DELETE' })
                     .then(res => res.json())
                     .then(result => {
                         if (result.status === 'success') {
+                            fermerListeAdmin();
                             chargerProfilsDepuisAPI();
-                            renderAdminProfilsList();
                         } else {
                             alert("Erreur lors de la suppression.");
                         }
@@ -1125,47 +656,7 @@
             }
         }
 
-        function renderAdminList() {
-            const listContainer = document.getElementById("admin-videos-list");
-            const query = document.getElementById("admin-search-bar").value.toLowerCase().trim();
-            document.getElementById("admin-total-count").innerText = scenesData.length;
-            listContainer.innerHTML = "";
-
-            scenesData.forEach((s, idx) => {
-                if (query && !s.nom.toLowerCase().includes(query)) return;
-                const badgeAdmin = getQualityBadgeHtml(s.qualite || 'moyen');
-                listContainer.innerHTML += `<div class="admin-card-item"><div class="media-container"><video class="preview-video" muted loop playsinline webkit-playsinline preload="none"><source src="${s.preview}" type="video/mp4"></video></div><h3 style="color: #22c55e; font-size: 12px; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">#${idx + 1} - ${s.nom}</h3><div style="margin-bottom: 4px;">${badgeAdmin}</div><div style="font-size: 10px; color: #cbd5e1; line-height: 1.4;">👤 <b>Vendeur :</b> <span style="color: #4ade80; font-weight: bold;">${s.partenaire || defaultPartenaire}</span><br>🔑 <b>ID :</b> ${s.id} | 💎 <b>Prix :</b> ${s.prix} Fr<br>💬 <b>WhatsApp :</b> ${s.wa}<br>🔗 <b>Mega :</b><br><a href="${s.mega}" target="_blank" style="color: #38bdf8; word-break: break-all; font-weight: bold;">${s.mega}</a></div></div>`;
-            });
-        }
-
-        function ajouterVideoAdmin() {
-            const partenaire = document.getElementById("admin-v-partenaire").value.trim() || defaultPartenaire;
-            const nom = document.getElementById("admin-v-nom").value.trim();
-            const preview = document.getElementById("admin-v-preview").value.trim();
-            const mega = document.getElementById("admin-v-mega").value.trim();
-            const prix = parseInt(document.getElementById("admin-v-prix").value.trim(), 10);
-            const qualite = document.getElementById("admin-v-qualite").value;
-            const wa = document.getElementById("admin-v-wa").value.trim() || genererNumeroAleatoire();
-
-            if (!nom || !preview || !mega || isNaN(prix)) { alert("Veuillez remplir tous les champs (Titre, Aperçu, Mega, Prix) !"); return; }
-            const randomId = Math.floor(Math.random() * (90000 - 10000 + 1)) + 10000;
-            const nouvelleScene = { id: randomId, partenaire: partenaire, nom: nom, preview: preview, mega: mega, prix: prix, wa: wa, qualite: qualite, deverrouille: false };
-
-            scenesData.unshift(nouvelleScene);
-            saveState();
-            renderGrid();
-            renderAdminList();
-
-            document.getElementById("admin-v-partenaire").value = "";
-            document.getElementById("admin-v-nom").value = "";
-            document.getElementById("admin-v-preview").value = "";
-            document.getElementById("admin-v-mega").value = "";
-            document.getElementById("admin-v-prix").value = "";
-            document.getElementById("admin-v-wa").value = "";
-            alert(`✅ Vidéo publiée avec succès !\nID généré : ${randomId}`);
-        }
-
-        // Lancement du chargement initial depuis Hostinger
+        // CHARGEMENT INITIAL UNIQUE (FINI LE CLIGNOTEMENT REPETITIF !)
         chargerProfilsDepuisAPI();
     </script>
 </body>
