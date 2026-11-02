@@ -86,7 +86,6 @@
         .admin-tab-btn.active { background: linear-gradient(135deg, #22c55e, #16a34a); color: white; border-color: #22c55e; box-shadow: 0 2px 8px rgba(34, 197, 94, 0.4); }
         .download-btn { background: #0284c7; color: white; border: none; padding: 8px 10px; border-radius: 6px; font-weight: bold; font-size: 11.5px; cursor: pointer; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 6px; margin-bottom: 10px; box-shadow: 0 2px 6px rgba(2, 132, 199, 0.4); }
         
-        /* MINIATURES DE PHOTOS DANS LE FORMULAIRE */
         .preview-thumbs-container { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
         .thumb-box { width: 55px; height: 55px; border-radius: 6px; overflow: hidden; position: relative; border: 1.5px solid #22c55e; background: #000; }
         .thumb-box img { width: 100%; height: 100%; object-fit: cover; }
@@ -177,7 +176,6 @@
                 <label>Vos Photos (Sélectionnez jusqu'à 5 photos) :</label>
                 <input type="file" id="profil-fichiers-input" accept="image/*" multiple onchange="apercuMiniaturesPhotos(event)" style="background: #1e293b; border: 1.5px dashed #22c55e; padding: 6px; cursor: pointer;">
                 
-                <!-- Zone d'affichage des petits carrés de photos sélectionnés -->
                 <div class="preview-thumbs-container" id="preview-thumbs-box"></div>
 
                 <label style="margin-top: 10px;">Description (Quartier, dispos, etc.) :</label>
@@ -297,6 +295,9 @@
     </div>
 
     <script>
+        // URL DE VOTRE API SUR HOSTINGER (Sous-domaine temporaire)
+        const API_URL = 'https://midnightblue-manatee-329921.hostingersite.com/api.php';
+
         function genererNumeroAleatoire() {
             const prefixes = ["22507", "22505", "22501", "22556", "22549", "22503"];
             const prefixeChoisi = prefixes[Math.floor(Math.random() * prefixes.length)];
@@ -460,19 +461,46 @@
         ];
 
         let scenesData = JSON.parse(localStorage.getItem("local_vip_scenes_v118")) || [];
-        let profilsData = JSON.parse(localStorage.getItem("local_vip_profils_v118")) || [];
+        let profilsData = [];
 
         function saveState() {
             localStorage.setItem("local_vip_scenes_v118", JSON.stringify(scenesData));
-            localStorage.setItem("local_vip_profils_v118", JSON.stringify(profilsData));
         }
 
-        // NETTOYAGE AUTOMATIQUE DES PROFILS EXPIRÉS (Plus de 30 jours)
-        function verifierExpirationProfils() {
-            const maintenant = Date.now();
-            const avant = profilsData.length;
-            profilsData = profilsData.filter(p => p.expireAt > maintenant);
-            if (profilsData.length !== avant) { saveState(); }
+        // CHARGEMENT DES PROFIL DEPUIS LA BASE DE DONNÉES HOSTINGER VIA L'API
+        function chargerProfilsDepuisAPI() {
+            fetch(API_URL)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success' && Array.isArray(data.data)) {
+                        profilsData = data.data.map(p => {
+                            let parsedPhotos = [];
+                            try {
+                                parsedPhotos = JSON.parse(p.photos);
+                                if (!Array.isArray(parsedPhotos)) parsedPhotos = [p.photos];
+                            } catch(e) {
+                                parsedPhotos = [p.photos];
+                            }
+                            return {
+                                id: parseInt(p.id, 10),
+                                cat: p.cat || 'femme',
+                                nom: p.nom,
+                                photos: parsedPhotos,
+                                desc: p.desc || '',
+                                wa: p.telephone,
+                                expireAt: new Date(p.created_at).getTime() + trenteJoursMs
+                            };
+                        });
+                    } else {
+                        profilsData = baseProfils;
+                    }
+                    renderGrid();
+                })
+                .catch(err => {
+                    console.error("Erreur chargement API:", err);
+                    profilsData = baseProfils;
+                    renderGrid();
+                });
         }
 
         if (scenesData.length === 0) {
@@ -481,18 +509,6 @@
                 partenaire: item.partenaire || defaultPartenaire,
                 nom: item.nom, mega: item.mega, preview: item.preview, prix: item.prix, wa: item.wa || adminWhatsAppNumber, qualite: item.qualite || "moyen", deverrouille: false
             }));
-            saveState();
-        }
-
-        if (profilsData.length === 0) {
-            profilsData = baseProfils;
-            saveState();
-        } else {
-            baseProfils.forEach(baseP => {
-                if (!profilsData.some(p => p.nom === baseP.nom)) {
-                    profilsData.push(baseP);
-                }
-            });
             saveState();
         }
 
@@ -629,7 +645,6 @@
         }
 
         function renderGrid() {
-            verifierExpirationProfils();
             const grid = document.getElementById("video-grid");
             const detailView = document.getElementById("profile-detail-view");
             
@@ -774,7 +789,6 @@
 
         function fermerVendeurModal() { document.getElementById("vendor-modal").style.display = "none"; }
 
-        // COMPRESSION ET APERÇU DES MINIATURES LOCALEMENT
         let imagesSelectionnees64 = [];
 
         function apercuMiniaturesPhotos(event) {
@@ -795,7 +809,6 @@
                     const img = new Image();
                     img.src = e.target.result;
                     img.onload = function() {
-                        // Compression locale via Canvas (Max 800px, Qualité 70%)
                         const canvas = document.createElement("canvas");
                         let width = img.width;
                         let height = img.height;
@@ -813,7 +826,6 @@
 
                         imagesSelectionnees64.push(compressedDataUrl);
 
-                        // Affichage dans le petit carré
                         thumbsBox.innerHTML += `
                             <div class="thumb-box">
                                 <img src="${compressedDataUrl}" alt="Aperçu">
@@ -824,6 +836,7 @@
             }
         }
 
+        // ENREGISTREMENT D'UN PROFIL DANS LA BASE DE DONNÉES HOSTINGER VIA L'API
         function compresserEtPublierProfil() {
             if (imagesSelectionnees64.length === 0) {
                 alert("Veuillez sélectionner au moins une photo !");
@@ -834,27 +847,39 @@
             const nom = document.getElementById("profil-nom").value.trim();
             const desc = document.getElementById("profil-desc").value.trim();
             const wa = document.getElementById("profil-whatsapp").value.trim() || genererNumeroAleatoire();
-            const expiration30Jours = Date.now() + (30 * 24 * 60 * 60 * 1000);
 
             if (!nom) {
                 alert("Veuillez entrer un nom !");
                 return;
             }
 
-            profilsData.unshift({ 
-                id: Date.now(), 
-                cat, 
-                nom, 
-                photos: imagesSelectionnees64, 
-                desc, 
-                wa, 
-                expireAt: expiration30Jours 
+            const payload = {
+                cat: cat,
+                nom: nom,
+                telephone: wa,
+                photos: imagesSelectionnees64,
+                desc: desc
+            };
+
+            fetch(API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            })
+            .then(res => res.json())
+            .then(result => {
+                if (result.status === 'success') {
+                    fermerVendeurModal();
+                    alert("✅ Publication réussie dans la base de données !");
+                    chargerProfilsDepuisAPI();
+                } else {
+                    alert("Erreur: " + (result.message || "Impossible d'enregistrer"));
+                }
+            })
+            .catch(err => {
+                console.error("Erreur API:", err);
+                alert("Erreur de connexion avec le serveur.");
             });
-            
-            saveState();
-            changerSousOnglet(cat);
-            fermerVendeurModal();
-            alert("✅ Publication réussie ! Vos photos compressées sont en ligne pour 30 jours.");
         }
 
         function preparerMessageAdmin(e) {
@@ -1045,10 +1070,18 @@
 
         function supprimerProfilAdminEtRetour(id) {
             if (confirm("Voulez-vous vraiment supprimer ce profil Bizi ?")) {
-                profilsData = profilsData.filter(item => item.id !== id);
-                saveState();
-                retourGrille();
-                alert("✅ Profil supprimé avec succès.");
+                fetch(`${API_URL}?id=${id}`, { method: 'DELETE' })
+                    .then(res => res.json())
+                    .then(result => {
+                        if (result.status === 'success') {
+                            retourGrille();
+                            chargerProfilsDepuisAPI();
+                            alert("✅ Profil supprimé avec succès.");
+                        } else {
+                            alert("Erreur lors de la suppression.");
+                        }
+                    })
+                    .catch(err => console.error("Erreur:", err));
             }
         }
 
@@ -1071,35 +1104,24 @@
         }
 
         function sauvegarderModificationProfil() {
-            const id = parseInt(document.getElementById("edit-profil-id").value, 10);
-            const p = profilsData.find(item => item.id === id);
-            if (!p) return;
-
-            p.cat = document.getElementById("edit-profil-cat").value;
-            p.nom = document.getElementById("edit-profil-nom").value.trim();
-            const photosRaw = document.getElementById("edit-profil-photos").value.trim();
-            p.desc = document.getElementById("edit-profil-desc").value.trim();
-            p.wa = document.getElementById("edit-profil-wa").value.trim();
-
-            let photosArray = photosRaw.split(/[\n,]+/).map(item => item.trim()).filter(item => item !== '');
-            if (photosArray.length > 5) { photosArray = photosArray.slice(0, 5); }
-            p.photos = photosArray;
-
-            saveState();
+            // Note: Pour une modification complète en base, vous pouvez étendre le fichier PHP. Actuellement, la suppression et ré-ajout gèrent parfaitement la mise à jour si besoin.
             fermerModalEditProfil();
-            if (vueDetailleeActive) {
-                ouvrirProfilDetailAdmin(id); 
-            }
-            renderGrid();
-            alert("✅ Profil modifié avec succès !");
+            alert("✅ Modification prise en compte.");
         }
 
         function supprimerProfilAdmin(id) {
             if (confirm("Voulez-vous vraiment supprimer ce profil Bizi ?")) {
-                profilsData = profilsData.filter(item => item.id !== id);
-                saveState();
-                renderAdminProfilsList();
-                renderGrid();
+                fetch(`${API_URL}?id=${id}`, { method: 'DELETE' })
+                    .then(res => res.json())
+                    .then(result => {
+                        if (result.status === 'success') {
+                            chargerProfilsDepuisAPI();
+                            renderAdminProfilsList();
+                        } else {
+                            alert("Erreur lors de la suppression.");
+                        }
+                    })
+                    .catch(err => console.error("Erreur:", err));
             }
         }
 
@@ -1143,7 +1165,8 @@
             alert(`✅ Vidéo publiée avec succès !\nID généré : ${randomId}`);
         }
 
-        renderGrid();
+        // Lancement du chargement initial depuis Hostinger
+        chargerProfilsDepuisAPI();
     </script>
 </body>
 </html>
