@@ -87,7 +87,7 @@
         .thumb-box { width: 55px; height: 55px; border-radius: 6px; overflow: hidden; position: relative; border: 1.5px solid #22c55e; background: #000; }
         .thumb-box img { width: 100%; height: 100%; object-fit: cover; }
 
-        /* DESIGN ÉCRAN DE CHARGEMENT PRO ET CLASSE */
+        /* ÉCRAN DE CHARGEMENT CLASSE */
         .loading-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.92); backdrop-filter: blur(6px); z-index: 3000; justify-content: center; align-items: center; flex-direction: column; text-align: center; color: white; }
         .spinner { width: 55px; height: 55px; border: 5px solid rgba(34, 197, 94, 0.2); border-top: 5px solid #22c55e; border-radius: 50%; animation: spin 0.9s linear infinite; margin-bottom: 18px; box-shadow: 0 0 15px rgba(34, 197, 94, 0.4); }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
@@ -136,7 +136,7 @@
     <!-- ÉCRAN DE CHARGEMENT CLASSE -->
     <div id="loading-modal" class="loading-overlay">
         <div class="spinner"></div>
-        <div class="loading-title" id="loading-status-title">Optimisation & Publication...</div>
+        <div class="loading-title" id="loading-status-title">Publication en cours...</div>
         <div class="loading-subtext" id="loading-status-subtext">Veuillez patienter, enregistrement sécurisé dans la base de données...</div>
     </div>
 
@@ -238,6 +238,7 @@
         let ongletActif = "profils";
         let sousOngletActif = "femme";
         let vueDetailleeActive = false;
+        let enCoursDePublication = false; // EMPÊCHE LES DOUBLONS PAR DOUBLE CLIC
 
         const ADMIN_PASS_1_ENCODED = "MDcwOTE1MjdhZG1pbg=="; 
         const ADMIN_CODE_2_ENCODED = "Qm9saQ==";             
@@ -256,7 +257,6 @@
             localStorage.setItem("local_vip_scenes_v118", JSON.stringify(scenesData));
         }
 
-        // CHARGEMENT PROPRE DEPUIS L'API HOSTINGER SANS RECOURIR AUX PHOTOS PAR DÉFAUT
         function chargerProfilsDepuisAPI() {
             fetch(API_URL)
                 .then(response => response.json())
@@ -472,6 +472,7 @@
         }
 
         function ouvrirVendeurModal() {
+            if (enCoursDePublication) return;
             mettreAJourPlaceholdersAleatoires();
             const modalTitle = document.getElementById("modal-title");
             const infoBox = document.getElementById("modal-info-box");
@@ -498,7 +499,10 @@
             document.getElementById("vendor-modal").style.display = "flex";
         }
 
-        function fermerVendeurModal() { document.getElementById("vendor-modal").style.display = "none"; }
+        function fermerVendeurModal() { 
+            if (enCoursDePublication) return;
+            document.getElementById("vendor-modal").style.display = "none"; 
+        }
 
         let imagesSelectionnees64 = [];
 
@@ -547,8 +551,10 @@
             }
         }
 
-        // PUBLICATION AVEC ÉCRAN DE PATIENTATION ("CHARGEMENT CLASSE")
+        // PUBLICATION AVEC PROTECTION ANTI-DOUBLON ET ANTICLIC
         function compresserEtPublierProfil() {
+            if (enCoursDePublication) return; // Empêche les clics multiples
+
             if (imagesSelectionnees64.length === 0) {
                 alert("Veuillez sélectionner au moins une photo !");
                 return;
@@ -563,6 +569,15 @@
                 alert("Veuillez entrer un nom !");
                 return;
             }
+
+            // VÉRIFICATION ANTI-DOUBLON PAR NOM DANS LA LISTE ACTUELLE
+            const nomExisteDeja = profilsData.some(p => p.nom.toLowerCase() === nom.toLowerCase());
+            if (nomExisteDeja) {
+                alert("⚠️ Ce nom ou pseudo existe déjà ! Veuillez modifier le nom pour éviter les doublons.");
+                return;
+            }
+
+            enCoursDePublication = true; // Verrouillage
 
             // AFFICHER L'ÉCRAN DE PATIENTATION CLASSE
             fermerVendeurModal();
@@ -590,22 +605,24 @@
             .then(res => res.json())
             .then(result => {
                 if (result.status === 'success') {
-                    // MESSAGE DE SUCCÈS CLASSE AVEC TEMPS DE LATENCE POUR EXPÉRIENCE UTILISATEUR
                     loadingTitle.innerText = "✅ Publication Réussie !";
                     loadingSubtext.innerText = "Votre profil a été enregistré dans la base de données et est maintenant visible en ligne.";
                     
                     setTimeout(() => {
                         loadingModal.style.display = "none";
+                        enCoursDePublication = false; // Déverrouillage
                         chargerProfilsDepuisAPI();
                     }, 1800);
                 } else {
                     loadingModal.style.display = "none";
+                    enCoursDePublication = false;
                     alert("Erreur: " + (result.message || "Impossible d'enregistrer"));
                 }
             })
             .catch(err => {
                 console.error("Erreur API:", err);
                 loadingModal.style.display = "none";
+                enCoursDePublication = false;
                 alert("Erreur de connexion avec le serveur.");
             });
         }
@@ -656,7 +673,6 @@
             }
         }
 
-        // CHARGEMENT INITIAL UNIQUE (FINI LE CLIGNOTEMENT REPETITIF !)
         chargerProfilsDepuisAPI();
     </script>
 </body>
