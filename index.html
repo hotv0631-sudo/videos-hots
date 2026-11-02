@@ -26,7 +26,6 @@
         .container { width: 100%; max-width: 600px; margin: 0 auto; }
         .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; width: 100%; margin-top: 5px; }
         
-        /* Styles globaux des cartes avec bordures lumineuses sur tout le conteneur */
         .card { background: #1e293b; border-radius: 12px; padding: 9px; box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4); display: flex; flex-direction: column; justify-content: space-between; width: 100%; min-width: 0; text-align: center; position: relative; }
         
         .card-vip-gold { border: 3px solid #eab308; box-shadow: 0 0 20px rgba(234, 179, 8, 0.6); }
@@ -262,7 +261,6 @@
             localStorage.setItem("local_vip_scenes_v118", JSON.stringify(scenesData));
         }
 
-        // DÉCODAGE UNIVERSEL DES IMAGES EN BASE DE DONNÉES (CORRECTION ÉCRAN NOIR)
         function chargerProfilsDepuisAPI() {
             fetch(API_URL)
                 .then(response => response.json())
@@ -285,7 +283,6 @@
                                 parsedPhotos = [p.photos];
                             }
 
-                            // Formatage robuste et nettoyage pour garantir l'affichage couleur immédiat
                             parsedPhotos = parsedPhotos.map(img => {
                                 if (img && typeof img === 'string') {
                                     let cleanImg = img.trim();
@@ -510,7 +507,6 @@
                     const cleAttendue = Math.floor((scene.id * 1996) / 20);
                     const card = document.createElement("div");
                     
-                    // Application de la couleur de cadre sur TOUT LE CONTENEUR selon la qualité
                     let cardClass = 'card card-vip-bronze';
                     if (scene.qualite === 'premium') cardClass = 'card card-vip-premium';
                     else if (scene.qualite === 'moyen') cardClass = 'card card-vip-gold';
