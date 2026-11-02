@@ -251,13 +251,16 @@
 
         const trenteJoursMs = 30 * 24 * 60 * 60 * 1000;
         let profilsData = [];
-        let scenesData = JSON.parse(localStorage.getItem("local_vip_scenes_v118")) || [];
+        let scenesData = JSON.parse(localStorage.getItem("local_vip_scenes_v118")) || [
+            { id: 1, nom: "Vidéo Test Démo 1", preview: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4", mega: "https://mega.nz", prix: 1500, qualite: "premium", partenaire: "Admin Principal", deverrouille: false, wa: "22507000000" },
+            { id: 2, nom: "Vidéo Test Démo 2", preview: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4", mega: "https://mega.nz", prix: 1000, qualite: "moyen", partenaire: "Admin Principal", deverrouille: false, wa: "22507000000" }
+        ];
 
         function saveStateScenes() {
             localStorage.setItem("local_vip_scenes_v118", JSON.stringify(scenesData));
         }
 
-        // CORRECTION ULTRA-ROBUSTE DU DÉCODAGE DES IMAGES
+        // DÉCODAGE UNIVERSEL DES IMAGES EN BASE DE DONNÉES (CORRECTION ÉCRAN NOIR)
         function chargerProfilsDepuisAPI() {
             fetch(API_URL)
                 .then(response => response.json())
@@ -268,7 +271,6 @@
                             try {
                                 if (typeof p.photos === 'string') {
                                     let cleaned = p.photos.trim();
-                                    // Si la chaîne commence par un crochet, on parse le JSON
                                     if (cleaned.startsWith('[')) {
                                         parsedPhotos = JSON.parse(cleaned);
                                     } else {
@@ -281,11 +283,10 @@
                                 parsedPhotos = [p.photos];
                             }
 
-                            // Nettoyage et formatage parfait pour forcer l'affichage en couleur
+                            // Formatage parfait pour garantir l'affichage des couleurs (avec en-tête image/jpeg)
                             parsedPhotos = parsedPhotos.map(img => {
                                 if (img && typeof img === 'string') {
                                     let cleanImg = img.trim();
-                                    // Nettoyer les guillemets superflus si présents
                                     if (cleanImg.startsWith('"') && cleanImg.endsWith('"')) {
                                         cleanImg = cleanImg.slice(1, -1);
                                     }
@@ -362,6 +363,21 @@
             if (qualite === 'premium') return `<div class="quality-badge badge-premium">💎 ULTRA PREMIUM</div>`;
             if (qualite === 'moyen') return `<div class="quality-badge badge-moyen">🥇 STANDARD (OR)</div>`;
             return `<div class="quality-badge badge-basique">🥉 BASIQUE</div>`;
+        }
+
+        function verifier(index, cleAttendue) {
+            const inputVal = document.getElementById(`input-${index}`).value.trim();
+            const msgBox = document.getElementById(`msg-${index}`);
+            if (parseInt(inputVal, 10) === cleAttendue) {
+                scenesData[index].deverrouille = true;
+                saveStateScenes();
+                msgBox.style.color = "#4ade80";
+                msgBox.innerHTML = "✅ Clé valide !";
+                setTimeout(() => renderGrid(), 500);
+            } else {
+                msgBox.style.color = "#ef4444";
+                msgBox.innerText = "❌ Code incorrect";
+            }
         }
 
         function afficherProfilDetail(id) {
@@ -496,14 +512,14 @@
                     else if (scene.qualite === 'moyen') cardClass = 'card card-moyen';
                     card.className = cardClass;
 
-                    const mediaHtml = `<div class="media-container"><video class="preview-video" muted loop playsinline webkit-playsinline preload="none"><source src="${scene.preview}" type="video/mp4"></video></div>`;
+                    const mediaHtml = `<div class="media-container"><video class="preview-video" autoplay muted loop playsinline webkit-playsinline preload="auto"><source src="${scene.preview}" type="video/mp4"></video></div>`;
                     const badgeHtml = getQualityBadgeHtml(scene.qualite);
                     const vendorName = scene.partenaire || defaultPartenaire;
 
                     if (scene.deverrouille) {
-                        card.innerHTML = `${mediaHtml}<h3>${scene.nom}</h3><div class="card-vendor">👤 ${vendorName}</div>${badgeHtml}<div class="price-badge">💎 ${scene.prix} Fr</div><div class="info-id">ID : <b>${scene.id}</b></div><div class="message" style="color: #4ade80;">✅ Déverrouillé<br><a class="telegram-link" href="${scene.mega}" target="_blank">📥 Regarder sur Mega</a></div>`;
+                        card.innerHTML = `${mediaHtml}<h3>${scene.nom}</h3><div style="font-size:9.5px; color:#94a3b8; margin-bottom:4px;">👤 ${vendorName}</div>${badgeHtml}<div class="price-badge">💎 ${scene.prix} Fr</div><div class="info-id">ID : <b>${scene.id}</b></div><div class="message" style="color: #4ade80;">✅ Déverrouillé<br><a class="telegram-link" href="${scene.mega}" target="_blank">📥 Regarder sur Mega</a></div>`;
                     } else {
-                        card.innerHTML = `${mediaHtml}<h3>${scene.nom}</h3><div class="card-vendor">👤 ${vendorName}</div>${badgeHtml}<div class="price-badge">💎 ${scene.prix} Fr</div><div class="info-id">ID : <b>${scene.id}</b></div><a class="whatsapp-btn" href="https://wa.me/${scene.wa}?text=Bonjour,%20je%20veux%20acheter%20la%20clé%20pour%20la%20scène:%20${encodeURIComponent(scene.nom)}%20(ID:%20${scene.id})%20au%20prix%20de%20${scene.prix}Fr" target="_blank">💬 Commander (${scene.prix} Fr)</a><div class="input-group"><input type="number" id="input-${index}" placeholder="Code clé..."><button class="verify-btn" onclick="verifier(${index}, ${cleAttendue})">Valider</button></div><div class="message" id="msg-${index}"></div>`;
+                        card.innerHTML = `${mediaHtml}<h3>${scene.nom}</h3><div style="font-size:9.5px; color:#94a3b8; margin-bottom:4px;">👤 ${vendorName}</div>${badgeHtml}<div class="price-badge">💎 ${scene.prix} Fr</div><div class="info-id">ID : <b>${scene.id}</b></div><a class="whatsapp-btn" href="https://wa.me/${scene.wa}?text=Bonjour,%20je%20veux%20acheter%20la%20clé%20pour%20la%20scène:%20${encodeURIComponent(scene.nom)}%20(ID:%20${scene.id})%20au%20prix%20de%20${scene.prix}Fr" target="_blank">💬 Commander (${scene.prix} Fr)</a><div style="margin-top:4px;"><input type="number" id="input-${index}" placeholder="Code clé..."><button class="verify-btn" style="margin-top:4px;" onclick="verifier(${index}, ${cleAttendue})">Valider</button></div><div class="message" id="msg-${index}"></div>`;
                     }
                     grid.appendChild(card);
                 });
@@ -534,9 +550,61 @@
                 infoBox.innerHTML = `<b>⚠️ INFORMATION IMPORTANTE :</b><br>Remplissez vos informations ci-dessous puis cliquez sur <b>"Contacter l'administrateur"</b> pour lui envoyer les détails.`;
                 formVideos.style.display = "block";
                 formProfils.style.display = "none";
-                buttonsContainer.innerHTML = `<a id="whatsapp-admin-link" class="btn-contact-admin" href="#" target="_blank" onclick="preparerMessageAdmin(event)">💬 Contacter l'administrateur</a><button class="btn-close" onclick="fermerVendeurModal()">Fermer</button>`;
+                buttonsContainer.innerHTML = `<button class="btn-save" onclick="soumettreVideoAdmin()">💬 Envoyer à l'Admin</button><button class="btn-close" onclick="fermerVendeurModal()">Fermer</button>`;
             }
             document.getElementById("vendor-modal").style.display = "flex";
+        }
+
+        function preparerMessageAdmin(e) {
+            e.preventDefault();
+            const partenaire = document.getElementById("new-partenaire").value.trim() || defaultPartenaire;
+            const nom = document.getElementById("new-nom").value.trim();
+            const preview = document.getElementById("new-preview").value.trim();
+            const mega = document.getElementById("new-telegram").value.trim();
+            const prix = document.getElementById("new-prix").value.trim();
+            const qualite = document.getElementById("new-qualite").value;
+            const wa = document.getElementById("new-whatsapp").value.trim();
+
+            if (!nom || !preview || !mega || !prix) {
+                alert("Veuillez remplir tous les champs de la vidéo !");
+                return;
+            }
+
+            const texte = `Salut Admin, je souhaite proposer une nouvelle vidéo à vendre :\n\n- Vendeur/Partenaire : ${partenaire}\n- Titre : ${nom}\n- Aperçu : ${preview}\n- Lien Mega : ${mega}\n- Prix : ${prix} Fr\n- Qualité : ${qualite}\n- WhatsApp : ${wa}`;
+            window.open(`https://wa.me/${adminWhatsAppNumber}?text=${encodeURIComponent(texte)}`, '_blank');
+        }
+
+        function soumettreVideoAdmin() {
+            const partenaire = document.getElementById("new-partenaire").value.trim() || defaultPartenaire;
+            const nom = document.getElementById("new-nom").value.trim();
+            const preview = document.getElementById("new-preview").value.trim();
+            const mega = document.getElementById("new-telegram").value.trim();
+            const prix = parseInt(document.getElementById("new-prix").value.trim(), 10);
+            const qualite = document.getElementById("new-qualite").value;
+            const wa = document.getElementById("new-whatsapp").value.trim() || genererNumeroAleatoire();
+
+            if (!nom || !preview || !mega || !prix) {
+                alert("Veuillez remplir tous les champs !");
+                return;
+            }
+
+            const newScene = {
+                id: Date.now().toString().slice(-4),
+                nom: nom,
+                preview: preview.startsWith('http') ? preview : preview,
+                mega: mega,
+                prix: prix,
+                qualite: qualite,
+                partenaire: partenaire,
+                deverrouille: false,
+                wa: wa
+            };
+
+            scenesData.unshift(newScene);
+            saveStateScenes();
+            fermerVendeurModal();
+            renderGrid();
+            alert("✅ Vidéo ajoutée avec succès !");
         }
 
         function fermerVendeurModal() { 
@@ -728,7 +796,7 @@
             const nouveauNom = document.getElementById(`admin-nom-${id}`).value.trim();
             const nouveauWa = document.getElementById(`admin-wa-${id}`).value.trim();
             const nouvelleDesc = document.getElementById(`admin-desc-${id}`).value.trim();
-            const nouveauVip = document.getElementById(`admin-vip-${id}`).value;
+            const nouveauVip = document.getElementById(`admin-vip-${id}` ).value;
 
             if (!nouveauNom) {
                 alert("Le nom ne peut pas être vide !");
