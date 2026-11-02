@@ -26,11 +26,13 @@
         .container { width: 100%; max-width: 600px; margin: 0 auto; }
         .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; width: 100%; margin-top: 5px; }
         
+        /* Styles globaux des cartes avec bordures lumineuses sur tout le conteneur */
         .card { background: #1e293b; border-radius: 12px; padding: 9px; box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4); display: flex; flex-direction: column; justify-content: space-between; width: 100%; min-width: 0; text-align: center; position: relative; }
-        .card-vip-gold { border: 2.5px solid #eab308; box-shadow: 0 0 18px rgba(234, 179, 8, 0.5); }
-        .card-vip-premium { border: 2.5px solid #a855f7; box-shadow: 0 0 18px rgba(168, 85, 247, 0.5); }
-        .card-vip-bronze { border: 2px solid #b45309; box-shadow: 0 0 12px rgba(180, 83, 9, 0.3); }
-        .card-profil { border: 2.5px solid #22c55e; box-shadow: 0 0 12px rgba(34, 197, 94, 0.3); }
+        
+        .card-vip-gold { border: 3px solid #eab308; box-shadow: 0 0 20px rgba(234, 179, 8, 0.6); }
+        .card-vip-premium { border: 3px solid #a855f7; box-shadow: 0 0 20px rgba(168, 85, 247, 0.6); }
+        .card-vip-bronze { border: 3px solid #b45309; box-shadow: 0 0 16px rgba(180, 83, 9, 0.5); }
+        .card-profil { border: 3px solid #22c55e; box-shadow: 0 0 16px rgba(34, 197, 94, 0.5); }
 
         .media-container { width: 100%; border-radius: 8px; overflow: hidden; background: #000000; margin-bottom: 6px; aspect-ratio: 9 / 16; display: flex; align-items: center; justify-content: center; position: relative; cursor: pointer; }
         video.preview-video { width: 100%; height: 100%; object-fit: cover; display: block; }
@@ -283,7 +285,7 @@
                                 parsedPhotos = [p.photos];
                             }
 
-                            // Formatage parfait pour garantir l'affichage des couleurs (avec en-tête image/jpeg)
+                            // Formatage robuste et nettoyage pour garantir l'affichage couleur immédiat
                             parsedPhotos = parsedPhotos.map(img => {
                                 if (img && typeof img === 'string') {
                                     let cleanImg = img.trim();
@@ -361,8 +363,8 @@
 
         function getQualityBadgeHtml(qualite) {
             if (qualite === 'premium') return `<div class="quality-badge badge-premium">💎 ULTRA PREMIUM</div>`;
-            if (qualite === 'moyen') return `<div class="quality-badge badge-moyen">🥇 STANDARD (OR)</div>`;
-            return `<div class="quality-badge badge-basique">🥉 BASIQUE</div>`;
+            if (qualite === 'moyen') return `<div class="quality-badge badge-gold">👑 STANDARD (OR)</div>`;
+            return `<div class="quality-badge badge-bronze">🥉 BASIQUE</div>`;
         }
 
         function verifier(index, cleAttendue) {
@@ -507,9 +509,12 @@
 
                     const cleAttendue = Math.floor((scene.id * 1996) / 20);
                     const card = document.createElement("div");
-                    let cardClass = 'card card-basique';
-                    if (scene.qualite === 'premium') cardClass = 'card card-premium';
-                    else if (scene.qualite === 'moyen') cardClass = 'card card-moyen';
+                    
+                    // Application de la couleur de cadre sur TOUT LE CONTENEUR selon la qualité
+                    let cardClass = 'card card-vip-bronze';
+                    if (scene.qualite === 'premium') cardClass = 'card card-vip-premium';
+                    else if (scene.qualite === 'moyen') cardClass = 'card card-vip-gold';
+                    
                     card.className = cardClass;
 
                     const mediaHtml = `<div class="media-container"><video class="preview-video" autoplay muted loop playsinline webkit-playsinline preload="auto"><source src="${scene.preview}" type="video/mp4"></video></div>`;
@@ -555,25 +560,6 @@
             document.getElementById("vendor-modal").style.display = "flex";
         }
 
-        function preparerMessageAdmin(e) {
-            e.preventDefault();
-            const partenaire = document.getElementById("new-partenaire").value.trim() || defaultPartenaire;
-            const nom = document.getElementById("new-nom").value.trim();
-            const preview = document.getElementById("new-preview").value.trim();
-            const mega = document.getElementById("new-telegram").value.trim();
-            const prix = document.getElementById("new-prix").value.trim();
-            const qualite = document.getElementById("new-qualite").value;
-            const wa = document.getElementById("new-whatsapp").value.trim();
-
-            if (!nom || !preview || !mega || !prix) {
-                alert("Veuillez remplir tous les champs de la vidéo !");
-                return;
-            }
-
-            const texte = `Salut Admin, je souhaite proposer une nouvelle vidéo à vendre :\n\n- Vendeur/Partenaire : ${partenaire}\n- Titre : ${nom}\n- Aperçu : ${preview}\n- Lien Mega : ${mega}\n- Prix : ${prix} Fr\n- Qualité : ${qualite}\n- WhatsApp : ${wa}`;
-            window.open(`https://wa.me/${adminWhatsAppNumber}?text=${encodeURIComponent(texte)}`, '_blank');
-        }
-
         function soumettreVideoAdmin() {
             const partenaire = document.getElementById("new-partenaire").value.trim() || defaultPartenaire;
             const nom = document.getElementById("new-nom").value.trim();
@@ -591,7 +577,7 @@
             const newScene = {
                 id: Date.now().toString().slice(-4),
                 nom: nom,
-                preview: preview.startsWith('http') ? preview : preview,
+                preview: preview,
                 mega: mega,
                 prix: prix,
                 qualite: qualite,
@@ -796,7 +782,7 @@
             const nouveauNom = document.getElementById(`admin-nom-${id}`).value.trim();
             const nouveauWa = document.getElementById(`admin-wa-${id}`).value.trim();
             const nouvelleDesc = document.getElementById(`admin-desc-${id}`).value.trim();
-            const nouveauVip = document.getElementById(`admin-vip-${id}` ).value;
+            const nouveauVip = document.getElementById(`admin-vip-${id}`).value;
 
             if (!nouveauNom) {
                 alert("Le nom ne peut pas être vide !");
