@@ -257,7 +257,7 @@
             localStorage.setItem("local_vip_scenes_v118", JSON.stringify(scenesData));
         }
 
-        // NETTOYAGE ET CORRECTION AUTOMATIQUE DES ENÊTES BASE64
+        // CORRECTION ULTRA-ROBUSTE DU DÉCODAGE DES IMAGES
         function chargerProfilsDepuisAPI() {
             fetch(API_URL)
                 .then(response => response.json())
@@ -267,28 +267,35 @@
                             let parsedPhotos = [];
                             try {
                                 if (typeof p.photos === 'string') {
-                                    parsedPhotos = JSON.parse(p.photos);
+                                    let cleaned = p.photos.trim();
+                                    // Si la chaîne commence par un crochet, on parse le JSON
+                                    if (cleaned.startsWith('[')) {
+                                        parsedPhotos = JSON.parse(cleaned);
+                                    } else {
+                                        parsedPhotos = [cleaned];
+                                    }
                                 } else if (Array.isArray(p.photos)) {
                                     parsedPhotos = p.photos;
-                                }
-                                if (!Array.isArray(parsedPhotos)) {
-                                    parsedPhotos = [p.photos];
                                 }
                             } catch(e) {
                                 parsedPhotos = [p.photos];
                             }
 
-                            // S'assure que chaque chaîne Base64 commence bien par "data:image/jpeg;base64," pour éviter l'affichage noir
+                            // Nettoyage et formatage parfait pour forcer l'affichage en couleur
                             parsedPhotos = parsedPhotos.map(img => {
                                 if (img && typeof img === 'string') {
                                     let cleanImg = img.trim();
+                                    // Nettoyer les guillemets superflus si présents
+                                    if (cleanImg.startsWith('"') && cleanImg.endsWith('"')) {
+                                        cleanImg = cleanImg.slice(1, -1);
+                                    }
                                     if (!cleanImg.startsWith("data:image")) {
                                         cleanImg = "data:image/jpeg;base64," + cleanImg;
                                     }
                                     return cleanImg;
                                 }
                                 return null;
-                            }).filter(img => img !== null);
+                            }).filter(img => img !== null && img.length > 50);
 
                             return {
                                 id: parseInt(p.id, 10),
