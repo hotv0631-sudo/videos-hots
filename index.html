@@ -257,7 +257,7 @@
             localStorage.setItem("local_vip_scenes_v118", JSON.stringify(scenesData));
         }
 
-        // DÉCODAGE ROBUSTE DU JSON DES PHOTOS DEPUIS LA BDD
+        // NETTOYAGE ET CORRECTION AUTOMATIQUE DES ENÊTES BASE64
         function chargerProfilsDepuisAPI() {
             fetch(API_URL)
                 .then(response => response.json())
@@ -278,12 +278,24 @@
                                 parsedPhotos = [p.photos];
                             }
 
+                            // S'assure que chaque chaîne Base64 commence bien par "data:image/jpeg;base64," pour éviter l'affichage noir
+                            parsedPhotos = parsedPhotos.map(img => {
+                                if (img && typeof img === 'string') {
+                                    let cleanImg = img.trim();
+                                    if (!cleanImg.startsWith("data:image")) {
+                                        cleanImg = "data:image/jpeg;base64," + cleanImg;
+                                    }
+                                    return cleanImg;
+                                }
+                                return null;
+                            }).filter(img => img !== null);
+
                             return {
                                 id: parseInt(p.id, 10),
                                 cat: p.cat ? p.cat.trim() : 'femme',
                                 vip: p.vip || 'standard',
                                 nom: p.nom,
-                                photos: parsedPhotos.filter(img => img && typeof img === 'string' && img.trim() !== ''),
+                                photos: parsedPhotos,
                                 desc: p.desc || '',
                                 wa: p.telephone,
                                 expireAt: new Date(p.created_at).getTime() + trenteJoursMs
