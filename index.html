@@ -85,6 +85,11 @@
         .admin-tab-btn { flex: 1; background: #1e293b; color: #94a3b8; border: 1.5px solid #475569; padding: 6px 4px; border-radius: 6px; font-weight: bold; font-size: 10px; cursor: pointer; text-align: center; transition: all 0.2s ease; }
         .admin-tab-btn.active { background: linear-gradient(135deg, #22c55e, #16a34a); color: white; border-color: #22c55e; box-shadow: 0 2px 8px rgba(34, 197, 94, 0.4); }
         .download-btn { background: #0284c7; color: white; border: none; padding: 8px 10px; border-radius: 6px; font-weight: bold; font-size: 11.5px; cursor: pointer; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 6px; margin-bottom: 10px; box-shadow: 0 2px 6px rgba(2, 132, 199, 0.4); }
+        
+        /* MINIATURES DE PHOTOS DANS LE FORMULAIRE */
+        .preview-thumbs-container { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+        .thumb-box { width: 55px; height: 55px; border-radius: 6px; overflow: hidden; position: relative; border: 1.5px solid #22c55e; background: #000; }
+        .thumb-box img { width: 100%; height: 100%; object-fit: cover; }
     </style>
 </head>
 <body>
@@ -169,10 +174,13 @@
                 <label>Votre Nom / Pseudo :</label>
                 <input type="text" id="profil-nom" placeholder="Ex: Vanessa Bizi">
 
-                <label>Liens de vos Photos (Jusqu'à 5 liens, séparés par virgules ou retours à la ligne) :</label>
-                <textarea id="profil-photos" placeholder="https://photo1.jpg, https://photo2.jpg..." style="height: 70px;"></textarea>
+                <label>Vos Photos (Sélectionnez jusqu'à 5 photos) :</label>
+                <input type="file" id="profil-fichiers-input" accept="image/*" multiple onchange="apercuMiniaturesPhotos(event)" style="background: #1e293b; border: 1.5px dashed #22c55e; padding: 6px; cursor: pointer;">
+                
+                <!-- Zone d'affichage des petits carrés de photos sélectionnés -->
+                <div class="preview-thumbs-container" id="preview-thumbs-box"></div>
 
-                <label>Description (Quartier, dispos, etc.) :</label>
+                <label style="margin-top: 10px;">Description (Quartier, dispos, etc.) :</label>
                 <textarea id="profil-desc" placeholder="Ex: Disponible à Cocody, propre et douce..."></textarea>
 
                 <label>Votre Numéro de Téléphone :</label>
@@ -180,7 +188,7 @@
             </div>
 
             <div class="modal-buttons" id="modal-buttons-container">
-                <button id="btn-submit-action" class="btn-save" onclick="soumettreProfil()">Publier mon profil</button>
+                <button id="btn-submit-action" class="btn-save" onclick="uploaderImagesEtPublier()">Publier mon profil</button>
                 <button class="btn-close" onclick="fermerVendeurModal()">Fermer</button>
             </div>
         </div>
@@ -272,7 +280,7 @@
             <label>Nom / Pseudo :</label>
             <input type="text" id="edit-profil-nom">
 
-            <label>Liens des photos (séparés par virgules ou retours à la ligne) :</label>
+            <label>Liens des photos (séparés par virgules) :</label>
             <textarea id="edit-profil-photos" style="height: 70px;"></textarea>
 
             <label>Description :</label>
@@ -451,7 +459,6 @@
             { partenaire: "Admin Principal", nom: "Elle baise en bleu blanc", preview: "Movie0063.mp4", mega: "https://mega.nz/file/GtwwiTrB#eL6H2G8AAACASUuSaeeSBQAAAAAAAAAA6Om3kxvnkgU", prix: 1800, wa: adminWhatsAppNumber, qualite: "premium" }
         ];
 
-        // GESTION INTELLIGENTE DU STOCKAGE LOCAL (Conserve le temps exact des profils existants)
         let scenesData = JSON.parse(localStorage.getItem("local_vip_scenes_v118")) || [];
         let profilsData = JSON.parse(localStorage.getItem("local_vip_profils_v118")) || [];
 
@@ -460,10 +467,11 @@
             localStorage.setItem("local_vip_profils_v118", JSON.stringify(profilsData));
         }
 
+        // NETTOYAGE AUTOMATIQUE DES PROFILS EXPIRÉS (Plus de 30 jours)
         function verifierExpirationProfils() {
             const maintenant = Date.now();
             const avant = profilsData.length;
-            profilsData = profilDataFilter = profilsData.filter(p => p.expireAt > maintenant);
+            profilsData = profilsData.filter(p => p.expireAt > maintenant);
             if (profilsData.length !== avant) { saveState(); }
         }
 
@@ -476,13 +484,10 @@
             saveState();
         }
 
-        // Si le localStorage est vide pour les profils, on charge la base, 
-        // MAIS si des profils existent déjà, on les CONSERVE avec leurs vraies dates d'expiration !
         if (profilsData.length === 0) {
             profilsData = baseProfils;
             saveState();
         } else {
-            // S'assure que si de nouveaux profils par défaut sont ajoutés dans le code, ils s'ajoutent sans écraser les anciens
             baseProfils.forEach(baseP => {
                 if (!profilsData.some(p => p.nom === baseP.nom)) {
                     profilsData.push(baseP);
@@ -750,11 +755,13 @@
 
             if (ongletActif === "profils") {
                 modalTitle.innerText = `🔥 Inscription Bizi (${sousOngletActif.toUpperCase()}) 📸`;
-                infoBox.innerHTML = `<b>✨ EXPIRATION 30 JOURS & SWIPE DE PHOTOS :</b><br>Votre profil restera actif 30 jours. Vous pouvez ajouter jusqu'à 5 photos à faire défiler.`;
+                infoBox.innerHTML = `<b>✨ EXPIRATION 30 JOURS & SWIPE DE PHOTOS :</b><br>Votre profil restera actif 30 jours. Sélectionnez jusqu'à 5 photos.`;
                 formVideos.style.display = "none";
                 formProfils.style.display = "block";
                 document.getElementById("profil-categorie").value = sousOngletActif;
-                buttonsContainer.innerHTML = `<button class="btn-save" onclick="soumettreProfil()">Publier mon profil</button><button class="btn-close" onclick="fermerVendeurModal()">Fermer</button>`;
+                document.getElementById("profil-fichiers-input").value = "";
+                document.getElementById("preview-thumbs-box").innerHTML = "";
+                buttonsContainer.innerHTML = `<button class="btn-save" onclick="uploaderImagesEtPublier()">Publier mon profil</button><button class="btn-close" onclick="fermerVendeurModal()">Fermer</button>`;
             } else {
                 modalTitle.innerText = "🎬 Proposer une vidéo à l'Admin 🎥";
                 infoBox.innerHTML = `<b>⚠️ INFORMATION IMPORTANTE :</b><br>Remplissez vos informations ci-dessous puis cliquez sur <b>"Contacter l'administrateur"</b> pour lui envoyer les détails.`;
@@ -766,6 +773,93 @@
         }
 
         function fermerVendeurModal() { document.getElementById("vendor-modal").style.display = "none"; }
+
+        // AFFICHAGE DES PETITS CARRÉS DE PHOTOS DANS LE FORMULAIRE
+        function apercuMiniaturesPhotos(event) {
+            const files = event.target.files;
+            const thumbsBox = document.getElementById("preview-thumbs-box");
+            thumbsBox.innerHTML = "";
+
+            if (files.length > 5) {
+                alert("Vous pouvez sélectionner un maximum de 5 photos !");
+            }
+
+            const limit = Math.min(files.length, 5);
+            for (let i = 0; i < limit; i++) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    thumbsBox.innerHTML += `
+                        <div class="thumb-box">
+                            <img src="${e.target.result}" alt="Aperçu">
+                        </div>`;
+                }
+                reader.readAsDataURL(files[i]);
+            }
+        }
+
+        async function uploaderImagesEtPublier() {
+            const inputFichiers = document.getElementById("profil-fichiers-input");
+            const fichiers = inputFichiers.files;
+            
+            if (fichiers.length === 0) {
+                alert("Veuillez sélectionner au moins une photo !");
+                return;
+            }
+
+            alert("⏳ Envoi des photos en cours... Veuillez patienter quelques secondes.");
+            let liensPhotos = [];
+
+            const limit = Math.min(fichiers.length, 5);
+            for (let i = 0; i < limit; i++) {
+                const formData = new FormData();
+                formData.append("reqtype", "fileupload");
+                formData.append("fileToUpload", fichiers[i]);
+
+                try {
+                    const reponse = await fetch("https://catbox.moe/user/api.php", {
+                        method: "POST",
+                        body: formData
+                    });
+                    const lienDirect = await reponse.text();
+                    if (lienDirect && lienDirect.startsWith("http")) {
+                        liensPhotos.push(lienDirect.trim());
+                    }
+                } catch (err) {
+                    console.error("Erreur lors de l'envoi de l'image", err);
+                }
+            }
+
+            if (liensPhotos.length === 0) {
+                alert("❌ Erreur lors de l'envoi des photos. Réessayez.");
+                return;
+            }
+
+            const cat = sousOngletActif;
+            const nom = document.getElementById("profil-nom").value.trim();
+            const desc = document.getElementById("profil-desc").value.trim();
+            const wa = document.getElementById("profil-whatsapp").value.trim() || genererNumeroAleatoire();
+            const expiration30Jours = Date.now() + (30 * 24 * 60 * 60 * 1000);
+
+            if (!nom) {
+                alert("Veuillez entrer un nom !");
+                return;
+            }
+
+            profilsData.unshift({ 
+                id: Date.now(), 
+                cat, 
+                nom, 
+                photos: liensPhotos, 
+                desc, 
+                wa, 
+                expireAt: expiration30Jours 
+            });
+            
+            saveState();
+            changerSousOnglet(cat);
+            fermerVendeurModal();
+            alert("✅ Publication réussie ! Les photos sont en ligne pour 30 jours.");
+        }
 
         function preparerMessageAdmin(e) {
             const partenaire = document.getElementById("new-partenaire").value.trim() || "Inconnu";
@@ -785,25 +879,6 @@
             const texteMessage = `Bonjour Administrateur, un vendeur veut ajouter sa vidéo :\n\n👤 *Vendeur* : ${partenaire}\n🎬 *Titre* : ${nom}\n📂 *Aperçu* : ${preview}\n🔗 *Lien Mega* : ${mega}\n💎 *Prix* : ${prix} Fr\n🌟 *Qualité* : ${qualite}\n💬 *WhatsApp* : ${wa}`;
             const urlWhatsApp = `https://wa.me/${adminWhatsAppNumber}?text=` + encodeURIComponent(texteMessage);
             document.getElementById("whatsapp-admin-link").setAttribute("href", urlWhatsApp);
-        }
-
-        function soumettreProfil() {
-            const cat = sousOngletActif;
-            const nom = document.getElementById("profil-nom").value.trim();
-            const photosRaw = document.getElementById("profil-photos").value.trim();
-            const desc = document.getElementById("profil-desc").value.trim();
-            const wa = document.getElementById("profil-whatsapp").value.trim() || genererNumeroAleatoire();
-            const expiration30Jours = Date.now() + (30 * 24 * 60 * 60 * 1000);
-
-            if (!nom || !photosRaw || !wa) { alert("Veuillez remplir votre nom, au moins une photo et votre numéro !"); return; }
-            let photosArray = photosRaw.split(/[\n,]+/).map(p => p.trim()).filter(p => p !== '');
-            if (photosArray.length > 5) { photosArray = photosArray.slice(0, 5); }
-
-            profilsData.unshift({ id: Date.now(), cat, nom, photos: photosArray, desc, wa, expireAt: expiration30Jours });
-            saveState();
-            changerSousOnglet(cat);
-            fermerVendeurModal();
-            alert("✅ Inscription réussie ! Votre profil avec vos photos est affiché pour 30 jours.");
         }
 
         function demanderSecuriteAdmin() {
