@@ -238,7 +238,7 @@
         let ongletActif = "profils";
         let sousOngletActif = "femme";
         let vueDetailleeActive = false;
-        let enCoursDePublication = false; // EMPÊCHE LES DOUBLONS PAR DOUBLE CLIC
+        let enCoursDePublication = false;
 
         const ADMIN_PASS_1_ENCODED = "MDcwOTE1MjdhZG1pbg=="; 
         const ADMIN_CODE_2_ENCODED = "Qm9saQ==";             
@@ -266,7 +266,9 @@
                             let parsedPhotos = [];
                             try {
                                 parsedPhotos = JSON.parse(p.photos);
-                                if (!Array.isArray(parsedPhotos)) parsedPhotos = [p.photos];
+                                if (!Array.isArray(parsedPhotos)) {
+                                    parsedPhotos = [p.photos];
+                                }
                             } catch(e) {
                                 parsedPhotos = [p.photos];
                             }
@@ -351,7 +353,7 @@
             let dotsHtml = '';
 
             photosList.forEach((imgUrl, idx) => {
-                if (imgUrl && imgUrl.trim() !== '') {
+                if (imgUrl && typeof imgUrl === 'string' && imgUrl.trim() !== '') {
                     const cleanUrl = imgUrl.trim();
                     galerieHtml += `
                         <div class="profile-slide-img-wrapper" id="slide-${id}-${idx}" oncontextmenu="telechargerImageAvecFiligrane(event, '${cleanUrl}', '${profil.nom}')">
@@ -431,7 +433,7 @@
                     const card = document.createElement("div");
                     card.className = "card card-profil";
                     const photosList = Array.isArray(profil.photos) ? profil.photos : [profil.photos];
-                    const premierePhoto = photosList[0] || '';
+                    const premierePhoto = (photosList[0] && typeof photosList[0] === 'string') ? photosList[0] : '';
 
                     card.innerHTML = `
                         <div class="media-container" onclick="afficherProfilDetail(${profil.id})" title="Cliquez pour voir le profil">
@@ -488,6 +490,7 @@
                 document.getElementById("profil-categorie").value = sousOngletActif;
                 document.getElementById("profil-fichiers-input").value = "";
                 document.getElementById("preview-thumbs-box").innerHTML = "";
+                imagesSelectionnees64 = [];
                 buttonsContainer.innerHTML = `<button class="btn-save" onclick="compresserEtPublierProfil()">Publier mon profil</button><button class="btn-close" onclick="fermerVendeurModal()">Fermer</button>`;
             } else {
                 modalTitle.innerText = "🎬 Proposer une vidéo à l'Admin 🎥";
@@ -506,20 +509,26 @@
 
         let imagesSelectionnees64 = [];
 
+        // GESTION ROBUSTE DE LA MULTI-SÉLECTION DE PHOTOS
         function apercuMiniaturesPhotos(event) {
             const files = event.target.files;
             const thumbsBox = document.getElementById("preview-thumbs-box");
             thumbsBox.innerHTML = "";
             imagesSelectionnees64 = [];
 
+            if (!files || files.length === 0) return;
+
             if (files.length > 5) {
                 alert("Vous pouvez sélectionner un maximum de 5 photos !");
             }
 
             const limit = Math.min(files.length, 5);
+            let chargeesCount = 0;
+
             for (let i = 0; i < limit; i++) {
                 const file = files[i];
                 const reader = new FileReader();
+                
                 reader.onload = function(e) {
                     const img = new Image();
                     img.src = e.target.result;
@@ -545,18 +554,17 @@
                             <div class="thumb-box">
                                 <img src="${compressedDataUrl}" alt="Aperçu">
                             </div>`;
-                    }
-                }
+                    };
+                };
                 reader.readAsDataURL(file);
             }
         }
 
-        // PUBLICATION AVEC PROTECTION ANTI-DOUBLON ET ANTICLIC
         function compresserEtPublierProfil() {
-            if (enCoursDePublication) return; // Empêche les clics multiples
+            if (enCoursDePublication) return;
 
             if (imagesSelectionnees64.length === 0) {
-                alert("Veuillez sélectionner au moins une photo !");
+                alert("Veuillez patienter ou sélectionner au moins une photo valide !");
                 return;
             }
 
@@ -570,23 +578,21 @@
                 return;
             }
 
-            // VÉRIFICATION ANTI-DOUBLON PAR NOM DANS LA LISTE ACTUELLE
             const nomExisteDeja = profilsData.some(p => p.nom.toLowerCase() === nom.toLowerCase());
             if (nomExisteDeja) {
                 alert("⚠️ Ce nom ou pseudo existe déjà ! Veuillez modifier le nom pour éviter les doublons.");
                 return;
             }
 
-            enCoursDePublication = true; // Verrouillage
+            enCoursDePublication = true;
 
-            // AFFICHER L'ÉCRAN DE PATIENTATION CLASSE
             fermerVendeurModal();
             const loadingModal = document.getElementById("loading-modal");
             const loadingTitle = document.getElementById("loading-status-title");
             const loadingSubtext = document.getElementById("loading-status-subtext");
             
             loadingTitle.innerText = "Publication en cours...";
-            loadingSubtext.innerText = "Veuillez patienter, enregistrement sécurisé de votre profil et de vos photos dans la base de données Hostinger...";
+            loadingSubtext.innerText = "Enregistrement sécurisé de votre profil et de vos photos dans la base de données...";
             loadingModal.style.display = "flex";
 
             const payload = {
@@ -606,13 +612,17 @@
             .then(result => {
                 if (result.status === 'success') {
                     loadingTitle.innerText = "✅ Publication Réussie !";
-                    loadingSubtext.innerText = "Votre profil a été enregistré dans la base de données et est maintenant visible en ligne.";
+                    loadingSubtext.innerText = "Votre profil est maintenant visible en ligne.";
                     
                     setTimeout(() => {
                         loadingModal.style.display = "none";
-                        enCoursDePublication = false; // Déverrouillage
+                        enCoursDePublication = false;
+                        document.getElementById("profil-nom").value = "";
+                        document.getElementById("profil-desc").value = "";
+                        document.getElementById("profil-fichiers-input").value = "";
+                        imagesSelectionnees64 = [];
                         chargerProfilsDepuisAPI();
-                    }, 1800);
+                    }, 1500);
                 } else {
                     loadingModal.style.display = "none";
                     enCoursDePublication = false;
