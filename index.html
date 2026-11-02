@@ -27,7 +27,6 @@
         .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; width: 100%; margin-top: 5px; }
         
         .card { background: #1e293b; border-radius: 12px; padding: 9px; box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4); display: flex; flex-direction: column; justify-content: space-between; width: 100%; min-width: 0; text-align: center; position: relative; }
-        
         .card-vip-gold { border: 3px solid #eab308; box-shadow: 0 0 20px rgba(234, 179, 8, 0.6); }
         .card-vip-premium { border: 3px solid #a855f7; box-shadow: 0 0 20px rgba(168, 85, 247, 0.6); }
         .card-vip-bronze { border: 3px solid #b45309; box-shadow: 0 0 16px rgba(180, 83, 9, 0.5); }
@@ -513,7 +512,8 @@
                     
                     card.className = cardClass;
 
-                    const mediaHtml = `<div class="media-container"><video class="preview-video" autoplay muted loop playsinline webkit-playsinline preload="auto"><source src="${scene.preview}" type="video/mp4"></video></div>`;
+                    // Optimisation Observer : lecture de la vidéo uniquement lorsqu'elle apparaît à l'écran
+                    const mediaHtml = `<div class="media-container"><video class="preview-video" muted loop playsinline webkit-playsinline preload="none"><source src="${scene.preview}" type="video/mp4"></video></div>`;
                     const badgeHtml = getQualityBadgeHtml(scene.qualite);
                     const vendorName = scene.partenaire || defaultPartenaire;
 
@@ -524,6 +524,24 @@
                     }
                     grid.appendChild(card);
                 });
+
+                // Activation de l'Intersection Observer pour les vidéos en scroll
+                setTimeout(() => {
+                    const videoObserver = new IntersectionObserver((entries, observer) => {
+                        entries.forEach(entry => {
+                            const vid = entry.target;
+                            if (entry.isIntersecting) {
+                                vid.play().catch(e => {});
+                            } else {
+                                vid.pause();
+                            }
+                        });
+                    }, { threshold: 0.2 });
+
+                    document.querySelectorAll('.preview-video').forEach(video => {
+                        videoObserver.observe(video);
+                    });
+                }, 100);
             }
         }
 
