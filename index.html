@@ -138,7 +138,7 @@
             
             <div class="info-box-important" id="modal-info-box">
                 <b>✨ EXPIRATION 30 JOURS & SWIPE DE PHOTOS :</b><br>
-                Votre profil restera actif 30 jours. Vous pouvez ajouter jusqu'à 5 photos à faire défiler.
+                Votre profil restera actif 30 jours. Sélectionnez jusqu'à 5 photos.
             </div>
 
             <div id="form-videos-fields" style="display: none;">
@@ -188,7 +188,7 @@
             </div>
 
             <div class="modal-buttons" id="modal-buttons-container">
-                <button id="btn-submit-action" class="btn-save" onclick="uploaderImagesEtPublier()">Publier mon profil</button>
+                <button id="btn-submit-action" class="btn-save" onclick="compresserEtPublierProfil()">Publier mon profil</button>
                 <button class="btn-close" onclick="fermerVendeurModal()">Fermer</button>
             </div>
         </div>
@@ -761,7 +761,7 @@
                 document.getElementById("profil-categorie").value = sousOngletActif;
                 document.getElementById("profil-fichiers-input").value = "";
                 document.getElementById("preview-thumbs-box").innerHTML = "";
-                buttonsContainer.innerHTML = `<button class="btn-save" onclick="uploaderImagesEtPublier()">Publier mon profil</button><button class="btn-close" onclick="fermerVendeurModal()">Fermer</button>`;
+                buttonsContainer.innerHTML = `<button class="btn-save" onclick="compresserEtPublierProfil()">Publier mon profil</button><button class="btn-close" onclick="fermerVendeurModal()">Fermer</button>`;
             } else {
                 modalTitle.innerText = "🎬 Proposer une vidéo à l'Admin 🎥";
                 infoBox.innerHTML = `<b>⚠️ INFORMATION IMPORTANTE :</b><br>Remplissez vos informations ci-dessous puis cliquez sur <b>"Contacter l'administrateur"</b> pour lui envoyer les détails.`;
@@ -774,11 +774,14 @@
 
         function fermerVendeurModal() { document.getElementById("vendor-modal").style.display = "none"; }
 
-        // AFFICHAGE DES PETITS CARRÉS DE PHOTOS DANS LE FORMULAIRE
+        // COMPRESSION ET APERÇU DES MINIATURES LOCALEMENT
+        let imagesSelectionnees64 = [];
+
         function apercuMiniaturesPhotos(event) {
             const files = event.target.files;
             const thumbsBox = document.getElementById("preview-thumbs-box");
             thumbsBox.innerHTML = "";
+            imagesSelectionnees64 = [];
 
             if (files.length > 5) {
                 alert("Vous pouvez sélectionner un maximum de 5 photos !");
@@ -786,51 +789,44 @@
 
             const limit = Math.min(files.length, 5);
             for (let i = 0; i < limit; i++) {
+                const file = files[i];
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    thumbsBox.innerHTML += `
-                        <div class="thumb-box">
-                            <img src="${e.target.result}" alt="Aperçu">
-                        </div>`;
+                    const img = new Image();
+                    img.src = e.target.result;
+                    img.onload = function() {
+                        // Compression locale via Canvas (Max 800px, Qualité 70%)
+                        const canvas = document.createElement("canvas");
+                        let width = img.width;
+                        let height = img.height;
+                        const MAX = 800;
+                        if (width > height) {
+                            if (width > MAX) { height *= MAX / width; width = MAX; }
+                        } else {
+                            if (height > MAX) { width *= MAX / height; height = MAX; }
+                        }
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext("2d");
+                        ctx.drawImage(img, 0, 0, width, height);
+                        const compressedDataUrl = canvas.toDataURL("image/jpeg", 0.7);
+
+                        imagesSelectionnees64.push(compressedDataUrl);
+
+                        // Affichage dans le petit carré
+                        thumbsBox.innerHTML += `
+                            <div class="thumb-box">
+                                <img src="${compressedDataUrl}" alt="Aperçu">
+                            </div>`;
+                    }
                 }
-                reader.readAsDataURL(files[i]);
+                reader.readAsDataURL(file);
             }
         }
 
-        async function uploaderImagesEtPublier() {
-            const inputFichiers = document.getElementById("profil-fichiers-input");
-            const fichiers = inputFichiers.files;
-            
-            if (fichiers.length === 0) {
+        function compresserEtPublierProfil() {
+            if (imagesSelectionnees64.length === 0) {
                 alert("Veuillez sélectionner au moins une photo !");
-                return;
-            }
-
-            alert("⏳ Envoi des photos en cours... Veuillez patienter quelques secondes.");
-            let liensPhotos = [];
-
-            const limit = Math.min(fichiers.length, 5);
-            for (let i = 0; i < limit; i++) {
-                const formData = new FormData();
-                formData.append("reqtype", "fileupload");
-                formData.append("fileToUpload", fichiers[i]);
-
-                try {
-                    const reponse = await fetch("https://catbox.moe/user/api.php", {
-                        method: "POST",
-                        body: formData
-                    });
-                    const lienDirect = await reponse.text();
-                    if (lienDirect && lienDirect.startsWith("http")) {
-                        liensPhotos.push(lienDirect.trim());
-                    }
-                } catch (err) {
-                    console.error("Erreur lors de l'envoi de l'image", err);
-                }
-            }
-
-            if (liensPhotos.length === 0) {
-                alert("❌ Erreur lors de l'envoi des photos. Réessayez.");
                 return;
             }
 
@@ -849,7 +845,7 @@
                 id: Date.now(), 
                 cat, 
                 nom, 
-                photos: liensPhotos, 
+                photos: imagesSelectionnees64, 
                 desc, 
                 wa, 
                 expireAt: expiration30Jours 
@@ -858,7 +854,7 @@
             saveState();
             changerSousOnglet(cat);
             fermerVendeurModal();
-            alert("✅ Publication réussie ! Les photos sont en ligne pour 30 jours.");
+            alert("✅ Publication réussie ! Vos photos compressées sont en ligne pour 30 jours.");
         }
 
         function preparerMessageAdmin(e) {
@@ -964,7 +960,7 @@
                         <h3 style="color: #22c55e; font-size: 12px; margin-bottom: 2px;">${p.nom}</h3>
                         <div style="font-size: 10px; color: #cbd5e1; line-height: 1.4; margin-bottom: 6px;">
                             📞 <b>Tél :</b> ${p.wa}<br>
-                            🖼️ <b>Photos :</b> ${photosList.length} lien(s)<br>
+                            🖼️ <b>Photos :</b> ${photosList.length} photo(s)<br>
                             <span style="color: #f87171;">${formatTempsRestant(p.expireAt)}</span>
                         </div>
                         <div style="display: flex; gap: 5px;">
