@@ -614,7 +614,6 @@
 
         let imagesSelectionnees64 = [];
 
-        // --- DÉTECTION AUTOMATIQUE DE LA QUALITÉ DE LA PHOTO (HD, Or, Basique) ---
         function apercuMiniaturesPhotos(event) {
             const files = event.target.files;
             if (!files || files.length === 0) return;
@@ -639,7 +638,7 @@
                         const canvas = document.createElement("canvas");
                         let width = originalWidth;
                         let height = originalHeight;
-                        const MAX = 600; // Taille optimisée pour l'upload
+                        const MAX = 600; 
                         
                         if (width > height) {
                             if (width > MAX) { height *= MAX / width; width = MAX; }
@@ -701,20 +700,19 @@
                 return;
             }
 
-            // Détection automatique du badge VIP selon la résolution de la meilleure photo envoyée
             let maxResolution = 0;
             imagesSelectionnees64.forEach(img => {
                 const res = img.width * img.height;
                 if (res > maxResolution) maxResolution = res;
             });
 
-            let detectedVip = 'standard'; // Vert par défaut
+            let detectedVip = 'standard'; 
             if (maxResolution > 1200 * 1200) {
-                detectedVip = 'premium'; // Ultra Premium (Diamant) si image très HD
+                detectedVip = 'premium'; 
             } else if (maxResolution > 800 * 800) {
-                detectedVip = 'gold'; // Or (Gold) si image HD moyenne
+                detectedVip = 'gold'; 
             } else {
-                detectedVip = 'bronze'; // Bronze si image de petite taille
+                detectedVip = 'bronze'; 
             }
 
             enCoursDePublication = true;
@@ -727,7 +725,6 @@
             loadingSubtext.innerText = "Détection de la qualité photo et enregistrement sécurisé dans la base de données...";
             loadingModal.style.display = "flex";
 
-            // On extrait uniquement les chaînes Base64 pures pour l'API
             const purePhotosArray = imagesSelectionnees64.map(img => img.data);
 
             const payload = {
@@ -736,7 +733,7 @@
                 telephone: wa,
                 photos: purePhotosArray,
                 desc: desc,
-                vip: detectedVip // Attribué automatiquement selon la qualité !
+                vip: detectedVip 
             };
 
             fetch(API_URL, {
@@ -951,13 +948,6 @@
         }
 
         function fermerListeAdmin() { document.getElementById("admin-list-modal").style.display = "none"; }
-
-        // --- RESTAURATION DE VOS VRAIES 100+ VIDÉOS DE SCÈNES ---
-        let scenesData = JSON.parse(localStorage.getItem("local_vip_scenes_v118")) || [
-            // Remplacez ou laissez vos scènes ici
-            { id: 1, nom: "Vidéo Test Démo 1", preview: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4", mega: "https://mega.nz", prix: 1500, qualite: "premium", partenaire: "Admin Principal", deverrouille: false, wa: "22507000000" },
-            { id: 2, nom: "Vidéo Test Démo 2", preview: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4", mega: "https://mega.nz", prix: 1000, qualite: "moyen", partenaire: "Admin Principal", deverrouille: false, wa: "22507000000" }
-        ];
 
         function supprimerProfilAdmin(id) {
             if (confirm("Supprimer ce profil ?")) {
