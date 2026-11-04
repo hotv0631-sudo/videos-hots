@@ -192,7 +192,7 @@
         </div>
     </div>
 
-    <!-- MODAL D'ÉDITION ADMIN POUR UNE VIDÉO (ACCÈS DIRECT AU LIEN MEGA SANS CLÉ) -->
+    <!-- MODAL D'ÉDITION ADMIN POUR UNE VIDÉO -->
     <div id="admin-edit-video-modal" class="modal-overlay" style="z-index: 2500;">
         <div class="modal-content" style="max-width: 450px;">
             <h2>✏️ Modifier la Vidéo (Admin)</h2>
@@ -279,11 +279,11 @@
             const statusDiv = document.getElementById("video-preview-status");
             if (!file) return;
 
-            statusDiv.innerText = "⏳ Traitement de l'extrait 5s...";
+            statusDiv.innerText = "⏳ Traitement de l'extrait 5s en cours...";
             const reader = new FileReader();
             reader.onload = function(e) {
                 videoExtrait5sData = e.target.result;
-                statusDiv.innerText = "✅ Extrait 5s prêt !";
+                statusDiv.innerText = "✅ Extrait 5s prêt pour publication !";
             };
             reader.readAsDataURL(file);
         }
@@ -294,7 +294,7 @@
             const reader = new FileReader();
             reader.onload = function(e) {
                 editExtraitTemp = e.target.result;
-                alert("✅ Nouvel extrait 5s pris en compte pour l'édition !");
+                alert("✅ Nouvel extrait pris en compte !");
             };
             reader.readAsDataURL(file);
         }
@@ -558,7 +558,7 @@
                     
                     card.className = cardClass;
 
-                    // LECTURE EN BOUCLE STRICTE 5 SECONDES POUR BLOQUER IDM SUR L'APERÇU
+                    // LECTURE EN BOUCLE STRICTE 5 SECONDES POUR L'APERÇU
                     const mediaHtml = `
                         <div class="media-container" onclick="${adminModeConnecte ? `ouvrirModalEditVideo(${index})` : ''}">
                             <video class="preview-video" muted loop playsinline webkit-playsinline preload="none" ontimeupdate="if(this.currentTime>=5){this.currentTime=0;}">
@@ -570,7 +570,6 @@
                     const vendorName = scene.partenaire || "Admin Principal";
 
                     if (adminModeConnecte) {
-                        // EN MODE ADMIN : ACCÈS DIRECT AU LIEN MEGA SANS CLÉ / SANS CODE
                         card.innerHTML = `
                             ${mediaHtml}
                             <h3>${scene.nom}</h3>
@@ -635,7 +634,7 @@
                 adminModeConnecte = true;
                 document.getElementById("admin-active-banner").style.display = "block";
                 renderGrid();
-                alert("✅ Mode Admin activé ! Vous avez maintenant un accès direct à tous les liens Mega sans code.");
+                alert("✅ Mode Admin activé !");
             }
         }
 
@@ -888,8 +887,8 @@
             const qualite = document.getElementById("new-qualite").value;
             const wa = document.getElementById("new-whatsapp").value.trim() || genererNumeroAleatoire();
 
-            if (!nom || !videoExtrait5sData || !mega || !prix) {
-                alert("Veuillez sélectionner l'extrait 5s et remplir tous les champs !");
+            if (!nom || !videoExtrait5sData || !mega || isNaN(prix)) {
+                alert("⚠️ Veuillez sélectionner l'extrait vidéo 5s et remplir tous les champs obligatoires (Titre, Lien Mega, Prix) !");
                 return;
             }
 
