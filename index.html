@@ -251,6 +251,8 @@
 
         const trenteJoursMs = 30 * 24 * 60 * 60 * 1000;
         let profilsData = [];
+        let adminPhotosTemp = {}; // Permet de gérer la modification/ajout des photos côté Admin
+
         let scenesData = JSON.parse(localStorage.getItem("local_vip_scenes_v118")) || [
             { id: 1, nom: "Vidéo Test Démo 1", preview: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4", mega: "https://mega.nz", prix: 1500, qualite: "premium", partenaire: "Admin Principal", deverrouille: false, wa: "22507000000" },
             { id: 2, nom: "Vidéo Test Démo 2", preview: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4", mega: "https://mega.nz", prix: 1000, qualite: "moyen", partenaire: "Admin Principal", deverrouille: false, wa: "22507000000" }
@@ -633,7 +635,7 @@
                         const canvas = document.createElement("canvas");
                         let width = img.width;
                         let height = img.height;
-                        const MAX = 450; // Compression optimisée pour éviter les surcharges serveur
+                        const MAX = 450;
                         if (width > height) {
                             if (width > MAX) { height *= MAX / width; width = MAX; }
                         } else {
@@ -670,7 +672,6 @@
             afficherMiniaturesClient();
         }
 
-        // Fonction corrigée et blindée pour éviter l'erreur serveur lors de l'enregistrement
         function compresserEtPublierProfil() {
             if (enCoursDePublication) return;
 
@@ -761,13 +762,17 @@
             ouvrirListeAdmin();
         }
 
+        // --- GESTION DU TABLEAU DE BORD ADMIN AVEC MODIFICATION DES PHOTOS ---
+
         function ouvrirListeAdmin() {
             document.getElementById("admin-total-profils").innerText = profilsData.length;
             const listContainer = document.getElementById("admin-profils-list");
             listContainer.innerHTML = "";
+            adminPhotosTemp = {};
 
             profilsData.forEach((p) => {
-                const photosList = p.photos;
+                adminPhotosTemp[p.id] = [...(p.photos || [])];
+                
                 listContainer.innerHTML += `
                     <div class="admin-card-item">
                         <div style="font-size:11px; font-weight:bold; color:#22c55e;">ID: ${p.id} - ${p.nom}</div>
@@ -789,16 +794,91 @@
                             <option value="bronze" ${p.vip==='bronze'?'selected':''}>Bronze (🥉)</option>
                         </select>
 
-                        <div style="font-size:10px; color:#94a3b8; margin-top:4px;">Photos actuelles : ${photosList.length} photo(s)</div>
+                        <label style="font-size:10px; color:#cbd5e1; margin-top:6px;">📸 Gestion des photos (Max 5) :</label>
+                        <div class="preview-thumbs-container" id="admin-thumbs-box-${p.id}"></div>
+                        
+                        <input type="file" accept="image/*" multiple onchange="ajouterPhotosAdmin(event, ${p.id})" style="margin-top:6px; font-size:10px; background:#1e293b; border:1.5px dashed #22c55e; padding:4px; cursor:pointer;">
 
-                        <div style="display:flex; gap:6px; margin-top:8px;">
+                        <div style="display:flex; gap:6px; margin-top:10px;">
                             <button class="verify-btn" style="padding: 5px; font-size: 10px; flex:1;" onclick="sauvegarderModifAdmin(${p.id})">💾 Enregistrer</button>
                             <button class="btn-close" style="padding: 5px; font-size: 10px; flex:1;" onclick="supprimerProfilAdmin(${p.id})">🗑️ Supprimer</button>
                         </div>
                     </div>
                 `;
+
+                setTimeout(() => mefAdminThumbs(p.id), 50);
             });
             document.getElementById("admin-list-modal").style.display = "flex";
+        }
+
+        function mefAdminThumbs(id) {
+            const thumbsBox = document.getElementById(`admin-thumbs-box-${id}`);
+            if (!thumbsBox) return;
+            thumbsBox.innerHTML = "";
+            const currentPhotos = adminPhotosTemp[id] || [];
+
+            if (currentPhotos.length === 0) {
+                thumbsBox.innerHTML = `<span style="font-size:9.5px; color:#ef4444;">Aucune photo</span>`;
+                return;
+            }
+
+            currentPhotos.forEach((imgBase64, index) => {
+                thumbsBox.innerHTML += `
+                    <div class="thumb-box" style="width:50px; height:50px;">
+                        <img src="${imgBase64}" alt="Photo ${index+1}">
+                        <button class="thumb-delete-btn" type="button" onclick="supprimerPhotoAdmin(${id}, ${index})">✕</button>
+                    </div>`;
+            });
+        }
+
+        function supprimerPhotoAdmin(id, photoIndex) {
+            if (adminPhotosTemp[id]) {
+                adminPhotosTemp[id].splice(photoIndex, 1);
+                mefAdminThumbs(id);
+            }
+        }
+
+        function ajouterPhotosAdmin(event, id) {
+            const files = event.target.files;
+            if (!files || files.length === 0) return;
+
+            const currentPhotos = adminPhotosTemp[id] || [];
+
+            if (currentPhotos.length + files.length > 5) {
+                alert("Impossible de dépasser 5 photos par profil !");
+            }
+
+            const limit = Math.min(files.length, 5 - currentPhotos.length);
+
+            for (let i = 0; i < limit; i++) {
+                const file = files[i];
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    const img = new Image();
+                    img.src = e.target.result;
+                    img.onload = function() {
+                        const canvas = document.createElement("canvas");
+                        let width = img.width;
+                        let height = img.height;
+                        const MAX = 450;
+                        if (width > height) {
+                            if (width > MAX) { height *= MAX / width; width = MAX; }
+                        } else {
+                            if (height > MAX) { width *= MAX / height; height = MAX; }
+                        }
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext("2d");
+                        ctx.drawImage(img, 0, 0, width, height);
+                        const compressedDataUrl = canvas.toDataURL("image/jpeg", 0.5);
+
+                        adminPhotosTemp[id].push(compressedDataUrl);
+                        mefAdminThumbs(id);
+                    };
+                };
+                reader.readAsDataURL(file);
+            }
         }
 
         function sauvegarderModifAdmin(id) {
@@ -813,6 +893,8 @@
             }
 
             const profilActuel = profilsData.find(p => p.id === id);
+            const photosModifiees = adminPhotosTemp[id] || [];
+
             const payload = {
                 id: id,
                 nom: nouveauNom,
@@ -820,7 +902,7 @@
                 desc: nouvelleDesc,
                 vip: nouveauVip,
                 cat: profilActuel.cat,
-                photos: profilActuel.photos
+                photos: photosModifiees
             };
 
             fetch(API_URL, {
@@ -830,7 +912,7 @@
             })
             .then(res => res.json())
             .then(result => {
-                alert("✅ Modifié avec succès !");
+                alert("✅ Profil et photos enregistrés avec succès !");
                 fermerListeAdmin();
                 chargerProfilsDepuisAPI();
             })
