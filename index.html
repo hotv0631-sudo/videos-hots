@@ -149,7 +149,7 @@
             
             <div class="info-box-important" id="modal-info-box">
                 <b>✨ EXPIRATION 30 JOURS & DÉTECTION HD :</b><br>
-                Votre profil restera actif 30 jours. Le système détecte automatiquement la qualité de vos photos (Premium, Or, Basique).
+                Votre profil restera actif 30 jours. Le système détecte automatiquement la qualité de vos photos.
             </div>
 
             <div id="form-videos-fields" style="display: none;">
@@ -204,13 +204,27 @@
         </div>
     </div>
 
+    <!-- TABLEAU DE BORD ADMIN AVEC DOUBLE ONGLET (PROFIL & VIDÉOS) -->
     <div id="admin-list-modal" class="modal-overlay">
         <div class="modal-content">
             <h2>📂 Tableau de Bord VIP (Admin)</h2>
-            <div style="font-size: 11px; color: #cbd5e1; margin-bottom: 10px; text-align: center; font-weight: bold;">
-                Total des profils en base : <span id="admin-total-profils" style="color: #22c55e;">0</span>
+            
+            <!-- Onglets de l'Admin -->
+            <div class="tabs-container" style="margin-bottom: 12px;">
+                <button id="admin-tab-profils" class="tab-btn active" onclick="changerAdminOnglet('profils')">Gérer les Profils (<span id="admin-total-profils">0</span>)</button>
+                <button id="admin-tab-videos" class="tab-btn" onclick="changerAdminOnglet('videos')">Gérer les Vidéos (<span id="admin-total-videos">0</span>)</button>
             </div>
-            <div class="admin-grid" id="admin-profils-list"></div>
+
+            <!-- Contenu Admin Profils -->
+            <div id="admin-section-profils">
+                <div class="admin-grid" id="admin-profils-list"></div>
+            </div>
+
+            <!-- Contenu Admin Vidéos -->
+            <div id="admin-section-videos" style="display: none;">
+                <div class="admin-grid" id="admin-videos-list"></div>
+            </div>
+
             <button class="btn-close" style="width: 100%; padding: 8px; margin-top: 10px;" onclick="fermerListeAdmin()">Fermer</button>
         </div>
     </div>
@@ -240,8 +254,8 @@
         let vueDetailleeActive = false;
         let enCoursDePublication = false;
 
-        const ADMIN_PASS_1_ENCODED = "MDcwOTE1MjdhZG1pbg=="; 
-        const ADMIN_CODE_2_ENCODED = "Qm9saQ==";             
+        const ADMIN_PASS_1_ENCODED = "MDcwOTE1MjdhZG1pbg=="; // 07091527admin
+        const ADMIN_CODE_2_ENCODED = "Qm9saQ==";             // Boli
 
         function verifierSecurite(saisi, encodeAttendu) {
             if (!saisi) return false;
@@ -253,6 +267,7 @@
         let profilsData = [];
         let adminPhotosTemp = {}; 
 
+        // Vos 100+ vidéos de scènes
         let scenesData = JSON.parse(localStorage.getItem("local_vip_scenes_v118")) || [
             { id: 1, nom: "Vidéo Test Démo 1", preview: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4", mega: "https://mega.nz", prix: 1500, qualite: "premium", partenaire: "Admin Principal", deverrouille: false, wa: "22507000000" },
             { id: 2, nom: "Vidéo Test Démo 2", preview: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4", mega: "https://mega.nz", prix: 1000, qualite: "moyen", partenaire: "Admin Principal", deverrouille: false, wa: "22507000000" }
@@ -556,7 +571,7 @@
 
             if (ongletActif === "profils") {
                 modalTitle.innerText = `🔥 Inscription Bizi (${sousOngletActif.toUpperCase()}) 📸`;
-                infoBox.innerHTML = `<b>✨ EXPIRATION 30 JOURS & DÉTECTION HD :</b><br>Votre profil restera actif 30 jours. Le système détecte automatiquement la qualité de vos photos (Premium, Or, Basique).`;
+                infoBox.innerHTML = `<b>✨ EXPIRATION 30 JOURS & DÉTECTION HD :</b><br>Votre profil restera actif 30 jours. Le système détecte automatiquement la qualité de vos photos.`;
                 formVideos.style.display = "none";
                 formProfils.style.display = "block";
                 document.getElementById("profil-categorie").value = sousOngletActif;
@@ -566,7 +581,7 @@
                 buttonsContainer.innerHTML = `<button class="btn-save" onclick="compresserEtPublierProfil()">Publier mon profil</button><button class="btn-close" onclick="fermerVendeurModal()">Fermer</button>`;
             } else {
                 modalTitle.innerText = "🎬 Proposer une vidéo à l'Admin 🎥";
-                infoBox.innerHTML = `<b>⚠️ INFORMATION IMPORTANTE :</b><br>Remplissez vos informations ci-dessous puis cliquez sur <b>"Contacter l'administrateur"</b> pour lui envoyer les détails.`;
+                infoBox.innerHTML = `<b>⚠️ INFORMATION IMPORTANTE :</b><br>Remplissez vos informations ci-dessous puis cliquez sur <b>"Envoyer à l'Admin"</b> pour l'ajouter.`;
                 formVideos.style.display = "block";
                 formProfils.style.display = "none";
                 buttonsContainer.innerHTML = `<button class="btn-save" onclick="soumettreVideoAdmin()">💬 Envoyer à l'Admin</button><button class="btn-close" onclick="fermerVendeurModal()">Fermer</button>`;
@@ -782,15 +797,57 @@
             });
         }
 
+        // --- DOUBLE AUTHENTIFICATION ADMIN COMPLÈTE ---
         function demanderSecuriteAdmin() {
-            const mdpSaisi = prompt("🔒 Mot de passe admin :");
+            const mdpSaisi = prompt("🔒 Entrez le mot de passe admin :");
             if (mdpSaisi === null) return;
-            if (!verifierSecurite(mdpSaisi, ADMIN_PASS_1_ENCODED)) { alert("❌ Incorrect."); return; }
+            if (!verifierSecurite(mdpSaisi, ADMIN_PASS_1_ENCODED)) { 
+                alert("❌ Mot de passe incorrect."); 
+                return; 
+            }
+            
+            const code2Saisi = prompt("🔐 Entrez le code secret à double facteur :");
+            if (code2Saisi === null) return;
+            if (!verifierSecurite(code2Saisi, ADMIN_CODE_2_ENCODED)) { 
+                alert("❌ Code secret incorrect."); 
+                return; 
+            }
+
             ouvrirListeAdmin();
+        }
+
+        // --- GESTION DES ONGLETS DU TABLEAU DE BORD ADMIN ---
+        function changerAdminOnglet(type) {
+            const btnProfils = document.getElementById("admin-tab-profils");
+            const btnVideos = document.getElementById("admin-tab-videos");
+            const secProfils = document.getElementById("admin-section-profils");
+            const secVideos = document.getElementById("admin-section-videos");
+
+            if (type === 'profils') {
+                btnProfils.className = "tab-btn active";
+                btnVideos.className = "tab-btn";
+                secProfils.style.display = "block";
+                secVideos.style.display = "none";
+            } else {
+                btnProfils.className = "tab-btn";
+                btnVideos.className = "tab-btn active";
+                secProfils.style.display = "none";
+                secVideos.style.display = "block";
+                renderAdminVideosList();
+            }
         }
 
         function ouvrirListeAdmin() {
             document.getElementById("admin-total-profils").innerText = profilsData.length;
+            document.getElementById("admin-total-videos").innerText = scenesData.length;
+            
+            changerAdminOnglet('profils');
+            renderAdminProfilsList();
+            
+            document.getElementById("admin-list-modal").style.display = "flex";
+        }
+
+        function renderAdminProfilsList() {
             const listContainer = document.getElementById("admin-profils-list");
             listContainer.innerHTML = "";
             adminPhotosTemp = {};
@@ -833,7 +890,58 @@
 
                 setTimeout(() => mefAdminThumbs(p.id), 50);
             });
-            document.getElementById("admin-list-modal").style.display = "flex";
+        }
+
+        function renderAdminVideosList() {
+            const listContainer = document.getElementById("admin-videos-list");
+            listContainer.innerHTML = "";
+
+            scenesData.forEach((scene, index) => {
+                listContainer.innerHTML += `
+                    <div class="admin-card-item">
+                        <div style="font-size:11px; font-weight:bold; color:#38bdf8;">Vidéo ID: ${scene.id}</div>
+                        
+                        <label style="font-size:10px; color:#cbd5e1; margin-top:4px;">Titre de la vidéo :</label>
+                        <input type="text" id="admin-vid-nom-${index}" value="${scene.nom}" style="font-size:10px; padding:3px;">
+
+                        <label style="font-size:10px; color:#cbd5e1; margin-top:4px;">Lien Aperçu (Vidéo) :</label>
+                        <input type="text" id="admin-vid-preview-${index}" value="${scene.preview}" style="font-size:10px; padding:3px;">
+
+                        <label style="font-size:10px; color:#cbd5e1; margin-top:4px;">Lien Mega :</label>
+                        <input type="text" id="admin-vid-mega-${index}" value="${scene.mega}" style="font-size:10px; padding:3px;">
+
+                        <label style="font-size:10px; color:#cbd5e1; margin-top:4px;">Prix (Fr) :</label>
+                        <input type="number" id="admin-vid-prix-${index}" value="${scene.prix}" style="font-size:10px; padding:3px;">
+
+                        <div style="display:flex; gap:6px; margin-top:10px;">
+                            <button class="verify-btn" style="padding: 5px; font-size: 10px; flex:1;" onclick="sauvegarderModifVideo(${index})">💾 Mettre à jour</button>
+                            <button class="btn-close" style="padding: 5px; font-size: 10px; flex:1;" onclick="supprimerVideoAdmin(${index})">🗑️ Supprimer</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function sauvegarderModifVideo(index) {
+            scenesData[index].nom = document.getElementById(`admin-vid-nom-${index}`).value.trim();
+            scenesData[index].preview = document.getElementById(`admin-vid-preview-${index}`).value.trim();
+            scenesData[index].mega = document.getElementById(`admin-vid-mega-${index}`).value.trim();
+            scenesData[index].prix = parseInt(document.getElementById(`admin-vid-prix-${index}`).value.trim(), 10);
+            
+            saveStateScenes();
+            alert("✅ Vidéo modifiée avec succès !");
+            renderGrid();
+            renderAdminVideosList();
+        }
+
+        function supprimerVideoAdmin(index) {
+            if (confirm("Supprimer cette vidéo de la liste ?")) {
+                scenesData.splice(index, 1);
+                saveStateScenes();
+                renderGrid();
+                renderAdminVideosList();
+                document.getElementById("admin-total-videos").innerText = scenesData.length;
+            }
         }
 
         function mefAdminThumbs(id) {
