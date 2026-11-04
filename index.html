@@ -92,7 +92,7 @@
     <header>
         <div class="header-title">
             <h1>BIZI DISPONIBLE & VIDEO BIZI A VENDRE</h1>
-            <div class="subtitle" id="header-subtitle-mode">🤑 Commandes et rencontres sécurisées par WhatsApp 🤑</div>
+            <div class="subtitle">🤑 Commandes et rencontres sécurisées par WhatsApp 🤑</div>
         </div>
         
         <div class="tabs-container">
@@ -117,7 +117,7 @@
     <div class="header-space" id="header-space"></div>
 
     <div class="container">
-        <div class="admin-banner-bar" id="admin-active-banner">🛡️ MODE ADMINISTRATEUR ACTIF (Cliquez sur n'importe quel profil ou vidéo pour le modifier)</div>
+        <div class="admin-banner-bar" id="admin-active-banner">🛡️ MODE ADMINISTRATEUR ACTIF (Cliquez sur un profil ou une vidéo pour éditer)</div>
         <div class="grid" id="video-grid"></div>
 
         <div id="profile-detail-view">
@@ -257,7 +257,7 @@
 
         const trenteJoursMs = 30 * 24 * 60 * 60 * 1000;
         let profilsData = [];
-        let editPhotosTemp = [];
+        let adminPhotosTemp = [];
 
         let scenesData = JSON.parse(localStorage.getItem("local_vip_scenes_v118")) || [
             { id: 1, nom: "Vidéo Test Démo 1", preview: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4", mega: "https://mega.nz", prix: 1500, qualite: "premium", partenaire: "Admin Principal", deverrouille: false, wa: "22507000000" },
@@ -390,7 +390,6 @@
             }
         }
 
-        // --- GESTION DU CLIC SUR UN PROFIL (CLIENT OU ADMIN) ---
         function declencherActionProfil(id) {
             if (adminModeConnecte) {
                 ouvrirModalEditProfilAdmin(id);
@@ -499,13 +498,13 @@
 
                     let btnActionHtml = `<button class="whatsapp-btn" style="border:none; width:100%; cursor:pointer;" onclick="declencherActionProfil(${profil.id})">💬 Contacter</button>`;
                     if (adminModeConnecte) {
-                        btnActionHtml = `<button class="whatsapp-btn" style="border:none; width:100%; cursor:pointer; background:#ef4444;" onclick="declencherActionProfil(${profil.id})">✏️ Modifier ce Profil</button>`;
+                        btnActionHtml = `<button class="whatsapp-btn" style="border:none; width:100%; cursor:pointer; background:#ef4444;" onclick="declencherActionProfil(${profil.id})">✏️ Éditer ce Profil</button>`;
                     }
 
                     card.innerHTML = `
-                        <div class="media-container" onclick="declencherActionProfil(${profil.id})" title="Voir / Modifier">
+                        <div class="media-container" onclick="declencherActionProfil(${profil.id})" title="Voir / Éditer">
                             ${imgHtml}
-                            <div class="watermark-overlay">${adminModeConnecte ? 'Éditer ⚙️' : 'Bizi 🤑'}</div>
+                            <div class="watermark-overlay">Bizi 🤑</div>
                         </div>
                         <h3>${profil.nom}</h3>
                         ${badgeVipHtml}
@@ -528,7 +527,7 @@
                     
                     card.className = cardClass;
 
-                    const mediaHtml = `<div class="media-container" onclick="${adminModeConnecte ? `ouvrirModalEditVideo(${index})` : ''}"><video class="preview-video" muted loop playsinline webkit-playsinline preload="none"><source src="${scene.preview}" type="video/mp4"></video>${adminModeConnecte ? '<div class="watermark-overlay">Éditer ⚙️</div>' : ''}</div>`;
+                    const mediaHtml = `<div class="media-container" onclick="${adminModeConnecte ? `ouvrirModalEditVideo(${index})` : ''}"><video class="preview-video" muted loop playsinline webkit-playsinline preload="none"><source src="${scene.preview}" type="video/mp4"></video></div>`;
                     const badgeHtml = getQualityBadgeHtml(scene.qualite);
                     const vendorName = scene.partenaire || "Admin Principal";
 
@@ -540,7 +539,7 @@
                             ${badgeHtml}
                             <div class="price-badge">💎 ${scene.prix} Fr</div>
                             <div class="info-id">ID : <b>${scene.id}</b></div>
-                            <button class="whatsapp-btn" style="border:none; width:100%; cursor:pointer; background:#ef4444;" onclick="ouvrirModalEditVideo(${index})">✏️ Modifier cette Vidéo</button>
+                            <button class="whatsapp-btn" style="border:none; width:100%; cursor:pointer; background:#ef4444;" onclick="ouvrirModalEditVideo(${index})">✏️ Éditer cette Vidéo</button>
                         `;
                     } else {
                         if (scene.deverrouille) {
@@ -552,15 +551,26 @@
                     grid.appendChild(card);
                 });
 
+                // --- OBSERVATEUR DE SCROLL POUR JOUER LES VIDÉOS UNE PAR UNE ---
                 setTimeout(() => {
+                    const videoObserver = new IntersectionObserver((entries, observer) => {
+                        entries.forEach(entry => {
+                            const vid = entry.target;
+                            if (entry.isIntersecting) {
+                                vid.play().catch(e => {});
+                            } else {
+                                vid.pause();
+                            }
+                        });
+                    }, { threshold: 0.2 });
+
                     document.querySelectorAll('.preview-video').forEach(video => {
-                        video.play().catch(e => {});
+                        videoObserver.observe(video);
                     });
                 }, 100);
             }
         }
 
-        // --- GESTION DU BOUTON ADMIN FLOTTANT ---
         function gererBoutonAdmin() {
             if (adminModeConnecte) {
                 if (confirm("Voulez-vous quitter le mode administrateur ?")) {
@@ -586,13 +596,11 @@
                 adminModeConnecte = true;
                 document.getElementById("admin-active-banner").style.display = "block";
                 renderGrid();
-                alert("✅ Mode Admin activé ! Vous pouvez maintenant cliquer sur n'importe quel profil ou vidéo pour les modifier en direct.");
+                alert("✅ Mode Admin activé ! Cliquez sur n'importe quel profil ou vidéo pour l'éditer.");
             }
         }
 
-        // --- MODAL DE MODIFICATION D'UN PROFIL (EN MODE CARROUSEL / ÉDITION) ---
         let profilAdminEnCoursId = null;
-        let adminPhotosTemp = [];
 
         function ouvrirModalEditProfilAdmin(id) {
             profilAdminEnCoursId = id;
@@ -627,7 +635,7 @@
             const detailContent = document.getElementById("profile-detail-content");
             detailContent.innerHTML = `
                 <div style="background:#0f172a; border:2px solid #ef4444; padding:12px; border-radius:10px; margin-bottom:12px;">
-                    <h3 style="color:#ef4444; margin-bottom:8px; text-align:center;">🛠️ PANNEAU DE MODIFICATION PROFIL</h3>
+                    <h3 style="color:#ef4444; margin-bottom:8px; text-align:center;">🛠️ ÉDITION DU PROFIL</h3>
                     
                     <label>Nom / Pseudo :</label>
                     <input type="text" id="adm-p-nom" value="${profil.nom}" style="margin-bottom:6px;">
@@ -659,7 +667,7 @@
                 </div>
 
                 <div class="horizontal-slider-container" id="slider-${id}">${galerieHtml}</div>
-                <div class="profile-detail-name" style="margin-top:10px;">Aperçu des photos en direct</div>
+                <div class="profile-detail-name" style="margin-top:10px;">Carrousel des photos</div>
             `;
         }
 
@@ -742,7 +750,7 @@
         }
 
         function supprimerProfilAdminActif() {
-            if (confirm("Voulez-vous vraiment supprimer ce profil définitivement ?")) {
+            if (confirm("Voulez-vous vraiment supprimer ce profil ?")) {
                 fetch(`${API_URL}?id=${profilAdminEnCoursId}`, { method: 'DELETE' })
                     .then(res => res.json())
                     .then(result => {
@@ -754,7 +762,6 @@
             }
         }
 
-        // --- GESTION DE L'ÉDITION D'UNE VIDÉO ---
         function ouvrirModalEditVideo(index) {
             const scene = scenesData[index];
             if (!scene) return;
@@ -800,7 +807,6 @@
             }
         }
 
-        // --- OUVERTURE MODALE AJOUT (CLIENT / VENDEUR) ---
         function ouvrirVendeurModal() {
             mettreAJourPlaceholdersAleatoires();
             const modalTitle = document.getElementById("modal-title");
