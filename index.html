@@ -512,7 +512,6 @@
                     
                     card.className = cardClass;
 
-                    // Optimisation Observer : lecture de la vidéo uniquement lorsqu'elle apparaît à l'écran
                     const mediaHtml = `<div class="media-container"><video class="preview-video" muted loop playsinline webkit-playsinline preload="none"><source src="${scene.preview}" type="video/mp4"></video></div>`;
                     const badgeHtml = getQualityBadgeHtml(scene.qualite);
                     const vendorName = scene.partenaire || defaultPartenaire;
@@ -525,7 +524,6 @@
                     grid.appendChild(card);
                 });
 
-                // Activation de l'Intersection Observer pour les vidéos en scroll
                 setTimeout(() => {
                     const videoObserver = new IntersectionObserver((entries, observer) => {
                         entries.forEach(entry => {
@@ -635,7 +633,7 @@
                         const canvas = document.createElement("canvas");
                         let width = img.width;
                         let height = img.height;
-                        const MAX = 500;
+                        const MAX = 450; // Compression optimisée pour éviter les surcharges serveur
                         if (width > height) {
                             if (width > MAX) { height *= MAX / width; width = MAX; }
                         } else {
@@ -645,7 +643,7 @@
                         canvas.height = height;
                         const ctx = canvas.getContext("2d");
                         ctx.drawImage(img, 0, 0, width, height);
-                        const compressedDataUrl = canvas.toDataURL("image/jpeg", 0.55);
+                        const compressedDataUrl = canvas.toDataURL("image/jpeg", 0.5);
 
                         imagesSelectionnees64.push(compressedDataUrl);
                         afficherMiniaturesClient();
@@ -672,6 +670,7 @@
             afficherMiniaturesClient();
         }
 
+        // Fonction corrigée et blindée pour éviter l'erreur serveur lors de l'enregistrement
         function compresserEtPublierProfil() {
             if (enCoursDePublication) return;
 
@@ -711,10 +710,20 @@
 
             fetch(API_URL, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
                 body: JSON.stringify(payload)
             })
-            .then(res => res.json())
+            .then(async res => {
+                const text = await res.text();
+                try {
+                    return JSON.parse(text);
+                } catch (e) {
+                    throw new Error("Réponse serveur invalide : " + text);
+                }
+            })
             .then(result => {
                 if (result.status === 'success') {
                     loadingTitle.innerText = "✅ Publication Réussie !";
