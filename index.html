@@ -33,7 +33,7 @@
         .card-profil { border: 3px solid #22c55e; box-shadow: 0 0 16px rgba(34, 197, 94, 0.5); }
 
         .media-container { width: 100%; border-radius: 8px; overflow: hidden; background: #000000; margin-bottom: 6px; aspect-ratio: 9 / 16; display: flex; align-items: center; justify-content: center; position: relative; cursor: pointer; }
-        video.preview-video { width: 100%; height: 100%; object-fit: cover; display: block; }
+        video.preview-video { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
         .profil-img { width: 100%; height: 100%; object-fit: cover; display: block; }
         
         .watermark-overlay { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-15deg); color: rgba(255, 255, 255, 0.35); font-size: 26px; font-weight: 900; letter-spacing: 2px; pointer-events: none; z-index: 10; text-transform: uppercase; white-space: nowrap; text-shadow: 0 2px 8px rgba(0,0,0,0.6); }
@@ -133,7 +133,7 @@
         <div class="modal-content" style="max-width: 450px;">
             <h2 id="modal-title">🔥 Inscription Bizi Disponible 📸</h2>
             <div class="info-box-important" id="modal-info-box">
-                <b>✨ EXPIRATION 30 JOURS & DÉTECTION HD :</b><br>Votre profil restera actif 30 jours. Le système détecte automatiquement la qualité de vos photos.
+                <b>✨ EXTRAIT SÉCURISÉ 5S :</b><br>Sélectionnez un court extrait vidéo (max 5s) pour l'aperçu, et collez votre lien Mega pour la vidéo complète.
             </div>
 
             <div id="form-videos-fields" style="display: none;">
@@ -141,10 +141,14 @@
                 <input type="text" id="new-partenaire" placeholder="Ex: Jean Kouassi">
                 <label>Titre de la vidéo :</label>
                 <input type="text" id="new-nom" placeholder="Ex: Bizi souriant">
-                <label>Lien Vidéo Aperçu (MP4) :</label>
-                <input type="text" id="new-preview" placeholder="https://...">
-                <label>Lien Vidéo Complet (Mega direct) :</label>
+                
+                <label>Fichier Extrait Aperçu (5s max) :</label>
+                <input type="file" id="new-video-file" accept="video/*" onchange="traiterExtraitVideo5s(event)" style="background: #1e293b; border: 1.5px dashed #22c55e; padding: 6px; cursor: pointer;">
+                <div id="video-preview-status" style="font-size: 10px; color: #38bdf8; margin-top: 4px; text-align: center;"></div>
+
+                <label style="margin-top: 8px;">Lien Vidéo Complet (Lien Mega direct) :</label>
                 <input type="text" id="new-telegram" placeholder="https://mega.nz/file/...">
+                
                 <label>Prix (en Fr) :</label>
                 <input type="number" id="new-prix" placeholder="1500" step="100">
                 <label>Qualité / Niveau de la vidéo :</label>
@@ -188,7 +192,7 @@
         </div>
     </div>
 
-    <!-- MODAL D'ÉDITION ADMIN POUR UNE VIDÉO -->
+    <!-- MODAL D'ÉDITION ADMIN POUR UNE VIDÉO (ACCÈS DIRECT AU LIEN MEGA SANS CLÉ) -->
     <div id="admin-edit-video-modal" class="modal-overlay" style="z-index: 2500;">
         <div class="modal-content" style="max-width: 450px;">
             <h2>✏️ Modifier la Vidéo (Admin)</h2>
@@ -197,11 +201,11 @@
             <label>Titre de la vidéo :</label>
             <input type="text" id="edit-v-nom">
 
-            <label>Lien Vidéo Aperçu (MP4) :</label>
-            <input type="text" id="edit-v-preview">
+            <label>Fichier Aperçu 5s (Optionnel pour changer) :</label>
+            <input type="file" id="edit-v-file-input" accept="video/*" onchange="traiterExtraitAdmin(event)" style="background: #1e293b; border: 1.5px dashed #22c55e; padding: 5px; cursor: pointer; margin-bottom:6px;">
 
-            <label>Lien Mega (Vidéo complète) :</label>
-            <input type="text" id="edit-v-mega">
+            <label>Lien Mega (Vidéo complète - Accès direct Admin) :</label>
+            <input type="text" id="edit-v-mega" style="border: 2px solid #38bdf8; background: #0f172a; font-weight: bold; color: #38bdf8;">
 
             <label>Prix (en Fr) :</label>
             <input type="number" id="edit-v-prix">
@@ -245,9 +249,11 @@
         let sousOngletActif = "femme";
         let vueDetailleeActive = false;
         let adminModeConnecte = false;
+        let videoExtrait5sData = ""; 
+        let editExtraitTemp = "";
 
-        const ADMIN_PASS_1_ENCODED = "MDcwOTE1MjdhZG1pbg=="; // 07091527admin
-        const ADMIN_CODE_2_ENCODED = "Qm9saQ==";             // Boli
+        const ADMIN_PASS_1_ENCODED = "MDcwOTE1MjdhZG1pbg=="; 
+        const ADMIN_CODE_2_ENCODED = "Qm9saQ==";             
 
         function verifierSecurite(saisi, encodeAttendu) {
             if (!saisi) return false;
@@ -266,6 +272,31 @@
 
         function saveStateScenes() {
             localStorage.setItem("local_vip_scenes_v118", JSON.stringify(scenesData));
+        }
+
+        function traiterExtraitVideo5s(event) {
+            const file = event.target.files[0];
+            const statusDiv = document.getElementById("video-preview-status");
+            if (!file) return;
+
+            statusDiv.innerText = "⏳ Traitement de l'extrait 5s...";
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                videoExtrait5sData = e.target.result;
+                statusDiv.innerText = "✅ Extrait 5s prêt !";
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function traiterExtraitAdmin(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                editExtraitTemp = e.target.result;
+                alert("✅ Nouvel extrait 5s pris en compte pour l'édition !");
+            };
+            reader.readAsDataURL(file);
         }
 
         function chargerProfilsDepuisAPI() {
@@ -527,11 +558,19 @@
                     
                     card.className = cardClass;
 
-                    const mediaHtml = `<div class="media-container" onclick="${adminModeConnecte ? `ouvrirModalEditVideo(${index})` : ''}"><video class="preview-video" muted loop playsinline webkit-playsinline preload="none"><source src="${scene.preview}" type="video/mp4"></video></div>`;
+                    // LECTURE EN BOUCLE STRICTE 5 SECONDES POUR BLOQUER IDM SUR L'APERÇU
+                    const mediaHtml = `
+                        <div class="media-container" onclick="${adminModeConnecte ? `ouvrirModalEditVideo(${index})` : ''}">
+                            <video class="preview-video" muted loop playsinline webkit-playsinline preload="none" ontimeupdate="if(this.currentTime>=5){this.currentTime=0;}">
+                                <source src="${scene.preview}" type="video/mp4">
+                            </video>
+                        </div>`;
+
                     const badgeHtml = getQualityBadgeHtml(scene.qualite);
                     const vendorName = scene.partenaire || "Admin Principal";
 
                     if (adminModeConnecte) {
+                        // EN MODE ADMIN : ACCÈS DIRECT AU LIEN MEGA SANS CLÉ / SANS CODE
                         card.innerHTML = `
                             ${mediaHtml}
                             <h3>${scene.nom}</h3>
@@ -539,6 +578,7 @@
                             ${badgeHtml}
                             <div class="price-badge">💎 ${scene.prix} Fr</div>
                             <div class="info-id">ID : <b>${scene.id}</b></div>
+                            <a class="telegram-link" href="${scene.mega}" target="_blank" style="background:#38bdf8; margin-bottom:4px;">📂 Lien Mega Direct</a>
                             <button class="whatsapp-btn" style="border:none; width:100%; cursor:pointer; background:#ef4444;" onclick="ouvrirModalEditVideo(${index})">✏️ Éditer cette Vidéo</button>
                         `;
                     } else {
@@ -551,7 +591,6 @@
                     grid.appendChild(card);
                 });
 
-                // --- OBSERVATEUR DE SCROLL POUR JOUER LES VIDÉOS UNE PAR UNE ---
                 setTimeout(() => {
                     const videoObserver = new IntersectionObserver((entries, observer) => {
                         entries.forEach(entry => {
@@ -596,7 +635,7 @@
                 adminModeConnecte = true;
                 document.getElementById("admin-active-banner").style.display = "block";
                 renderGrid();
-                alert("✅ Mode Admin activé ! Cliquez sur n'importe quel profil ou vidéo pour l'éditer.");
+                alert("✅ Mode Admin activé ! Vous avez maintenant un accès direct à tous les liens Mega sans code.");
             }
         }
 
@@ -766,9 +805,9 @@
             const scene = scenesData[index];
             if (!scene) return;
 
+            editExtraitTemp = "";
             document.getElementById("edit-v-index").value = index;
             document.getElementById("edit-v-nom").value = scene.nom;
-            document.getElementById("edit-v-preview").value = scene.preview;
             document.getElementById("edit-v-mega").value = scene.mega;
             document.getElementById("edit-v-prix").value = scene.prix;
             document.getElementById("edit-v-qualite").value = scene.qualite;
@@ -784,11 +823,14 @@
         function sauvegarderEditionVideoAdmin() {
             const index = parseInt(document.getElementById("edit-v-index").value, 10);
             scenesData[index].nom = document.getElementById("edit-v-nom").value.trim();
-            scenesData[index].preview = document.getElementById("edit-v-preview").value.trim();
             scenesData[index].mega = document.getElementById("edit-v-mega").value.trim();
             scenesData[index].prix = parseInt(document.getElementById("edit-v-prix").value.trim(), 10);
             scenesData[index].qualite = document.getElementById("edit-v-qualite").value;
             scenesData[index].wa = document.getElementById("edit-v-wa").value.trim();
+
+            if (editExtraitTemp) {
+                scenesData[index].preview = editExtraitTemp;
+            }
 
             saveStateScenes();
             fermerModalEditVideo();
@@ -827,9 +869,12 @@
                 buttonsContainer.innerHTML = `<button class="btn-save" onclick="compresserEtPublierProfil()">Publier mon profil</button><button class="btn-close" onclick="fermerVendeurModal()">Fermer</button>`;
             } else {
                 modalTitle.innerText = "🎬 Proposer une vidéo 🎥";
-                infoBox.innerHTML = `<b>⚠️ INFORMATION IMPORTANTE :</b><br>Remplissez les informations de la vidéo ci-dessous.`;
+                infoBox.innerHTML = `<b>⚠️ FORMULAIRE SÉCURISÉ :</b><br>Chargez un court extrait (max 5s) et collez votre lien Mega direct.`;
                 formVideos.style.display = "block";
                 formProfils.style.display = "none";
+                document.getElementById("new-video-file").value = "";
+                document.getElementById("video-preview-status").innerText = "";
+                videoExtrait5sData = "";
                 buttonsContainer.innerHTML = `<button class="btn-save" onclick="soumettreVideoAdmin()">Ajouter la vidéo</button><button class="btn-close" onclick="fermerVendeurModal()">Fermer</button>`;
             }
             document.getElementById("vendor-modal").style.display = "flex";
@@ -838,21 +883,20 @@
         function soumettreVideoAdmin() {
             const partenaire = document.getElementById("new-partenaire").value.trim() || "Admin Principal";
             const nom = document.getElementById("new-nom").value.trim();
-            const preview = document.getElementById("new-preview").value.trim();
             const mega = document.getElementById("new-telegram").value.trim();
             const prix = parseInt(document.getElementById("new-prix").value.trim(), 10);
             const qualite = document.getElementById("new-qualite").value;
             const wa = document.getElementById("new-whatsapp").value.trim() || genererNumeroAleatoire();
 
-            if (!nom || !preview || !mega || !prix) {
-                alert("Veuillez remplir tous les champs requis !");
+            if (!nom || !videoExtrait5sData || !mega || !prix) {
+                alert("Veuillez sélectionner l'extrait 5s et remplir tous les champs !");
                 return;
             }
 
             const newScene = {
                 id: Date.now().toString().slice(-4),
                 nom: nom,
-                preview: preview,
+                preview: videoExtrait5sData, 
                 mega: mega,
                 prix: prix,
                 qualite: qualite,
