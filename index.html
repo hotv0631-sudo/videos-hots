@@ -474,13 +474,13 @@
         let scenesData = [];
         let adminPhotosTemp = [];
 
-        // MODIFICATION ICI : Compression et réduction agressive de la taille de la vidéo 5s pour ne plus saturer la BDD
+        // COMPRESSION ULTRA-LÉGÈRE DE LA VIDÉO EN APERÇU IMAGE FIXE (ANTI-POIDS LOURD)
         function traiterExtraitVideo5s(event) {
             const file = event.target.files[0];
             const statusDiv = document.getElementById("video-preview-status");
             if (!file) return;
 
-            statusDiv.innerText = "⏳ Compression de l'extrait vidéo...";
+            statusDiv.innerText = "⏳ Compression de l'extrait en cours...";
             
             const reader = new FileReader();
             reader.onload = function(e) {
@@ -491,20 +491,19 @@
                 videoEl.playsInline = true;
                 
                 videoEl.onloadedmetadata = function() {
-                    videoEl.currentTime = 0;
+                    videoEl.currentTime = 0.5; // Prend une frame au début
                 };
 
                 videoEl.onseeked = function() {
                     const canvas = document.createElement('canvas');
-                    // On réduit la résolution à 360p max pour alléger drastiquement le poids pour la BDD
-                    canvas.width = 360;
-                    canvas.height = 640;
+                    canvas.width = 300;  // Largeur ultra-légère
+                    canvas.height = 533; // Hauteur proportionnelle 9:16
                     const ctx = canvas.getContext('2d');
                     ctx.drawImage(videoEl, 0, 0, canvas.width, canvas.height);
                     
-                    // Conversion ultra-légère en JPEG compressé pour la prévisualisation
-                    videoExtrait5sData = canvas.toDataURL('image/jpeg', 0.65);
-                    statusDiv.innerText = "✅ Aperçu compressé et optimisé (Prêt anti-saturation) !";
+                    // Compression agressive en JPEG (qualité 50%) pour que l'aperçu ne pèse que quelques Ko
+                    videoExtrait5sData = canvas.toDataURL('image/jpeg', 0.5);
+                    statusDiv.innerText = "✅ Aperçu compressé et optimisé (Poids plume garanti) !";
                 };
             };
             reader.readAsDataURL(file);
@@ -853,7 +852,7 @@
                     
                     card.className = cardClass;
 
-                    // Support affichage image compressée ou vidéo selon l'enregistrement
+                    // Support affichage image compressée ou vidéo selon ce qui est stocké
                     const isImgPreview = scene.preview && scene.preview.startsWith('data:image');
                     const mediaHtml = isImgPreview ? `
                         <div class="media-container" onclick="${adminModeConnecte ? `ouvrirModalEditVideo(${scene.realId})` : ''}">
@@ -1441,7 +1440,7 @@
                         <img src="${imgObj.data}" alt="Aperçu HD">
                         <button class="thumb-delete-btn" type="button" onclick="supprimerPhotoClient(${index})">✕</button>
                     </div>`;
-                });
+            });
         }
 
         function supprimerPhotoClient(index) {
