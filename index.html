@@ -102,7 +102,6 @@
 
         .loading-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(8px); z-index: 3000; justify-content: center; align-items: center; flex-direction: column; text-align: center; color: white; padding: 20px; }
         
-        /* Styles de la barre de progression */
         .progress-bar-container { width: 100%; max-width: 320px; background: #1e293b; border: 2px solid #22c55e; border-radius: 10px; height: 22px; overflow: hidden; margin-top: 15px; position: relative; box-shadow: 0 0 15px rgba(34, 197, 94, 0.3); }
         .progress-bar-fill { width: 0%; height: 100%; background: linear-gradient(135deg, #22c55e, #16a34a); transition: width 0.2s ease-in-out; }
         .progress-text { position: absolute; width: 100%; height: 100%; top: 0; left: 0; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold; color: #ffffff; text-shadow: 0 1px 3px rgba(0,0,0,0.8); }
@@ -154,7 +153,6 @@
 
     <button class="admin-fab" onclick="gererBoutonAdmin()" title="Mode Admin">⚙️</button>
 
-    <!-- MODAL DE CHARGEMENT AVEC BARRE DE PROGRESSION -->
     <div id="loading-modal" class="loading-overlay">
         <div class="loading-title" id="loading-status-title">🔒 Traitement en cours...</div>
         <div class="progress-bar-container">
@@ -476,16 +474,38 @@
         let scenesData = [];
         let adminPhotosTemp = [];
 
+        // MODIFICATION ICI : Compression et réduction agressive de la taille de la vidéo 5s pour ne plus saturer la BDD
         function traiterExtraitVideo5s(event) {
             const file = event.target.files[0];
             const statusDiv = document.getElementById("video-preview-status");
             if (!file) return;
 
-            statusDiv.innerText = "⏳ Conversion instantanée (5s)...";
+            statusDiv.innerText = "⏳ Compression de l'extrait vidéo...";
+            
             const reader = new FileReader();
             reader.onload = function(e) {
-                videoExtrait5sData = e.target.result;
-                statusDiv.innerText = "✅ Extrait converti et prêt en 5 secondes !";
+                const blobUrl = e.target.result;
+                const videoEl = document.createElement('video');
+                videoEl.src = blobUrl;
+                videoEl.muted = true;
+                videoEl.playsInline = true;
+                
+                videoEl.onloadedmetadata = function() {
+                    videoEl.currentTime = 0;
+                };
+
+                videoEl.onseeked = function() {
+                    const canvas = document.createElement('canvas');
+                    // On réduit la résolution à 360p max pour alléger drastiquement le poids pour la BDD
+                    canvas.width = 360;
+                    canvas.height = 640;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(videoEl, 0, 0, canvas.width, canvas.height);
+                    
+                    // Conversion ultra-légère en JPEG compressé pour la prévisualisation
+                    videoExtrait5sData = canvas.toDataURL('image/jpeg', 0.65);
+                    statusDiv.innerText = "✅ Aperçu compressé et optimisé (Prêt anti-saturation) !";
+                };
             };
             reader.readAsDataURL(file);
         }
@@ -833,7 +853,12 @@
                     
                     card.className = cardClass;
 
-                    const mediaHtml = `
+                    // Support affichage image compressée ou vidéo selon l'enregistrement
+                    const isImgPreview = scene.preview && scene.preview.startsWith('data:image');
+                    const mediaHtml = isImgPreview ? `
+                        <div class="media-container" onclick="${adminModeConnecte ? `ouvrirModalEditVideo(${scene.realId})` : ''}">
+                            <img class="profil-img" src="${scene.preview}" alt="${scene.nom}">
+                        </div>` : `
                         <div class="media-container" onclick="${adminModeConnecte ? `ouvrirModalEditVideo(${scene.realId})` : ''}">
                             <video class="preview-video" muted loop playsinline webkit-playsinline preload="none" ontimeupdate="if(this.currentTime>=5){this.currentTime=0;}">
                                 <source src="${scene.preview}" type="video/mp4">
@@ -1305,7 +1330,6 @@
             progressText.innerText = "0%";
             loadingModal.style.display = "flex";
 
-            // Simulation d'une progression fluide et réaliste jusqu'à 90% pendant l'envoi
             let currentProgress = 0;
             const progressInterval = setInterval(() => {
                 if (currentProgress < 90) {
@@ -1417,7 +1441,7 @@
                         <img src="${imgObj.data}" alt="Aperçu HD">
                         <button class="thumb-delete-btn" type="button" onclick="supprimerPhotoClient(${index})">✕</button>
                     </div>`;
-            });
+                });
         }
 
         function supprimerPhotoClient(index) {
