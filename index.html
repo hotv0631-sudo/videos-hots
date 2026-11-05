@@ -64,7 +64,6 @@
         .modal-content h2 { color: #22c55e; font-size: 15px; margin-bottom: 10px; text-align: center; }
         .info-box-important { background: rgba(34, 197, 94, 0.15); border: 2px dashed #22c55e; padding: 10px; border-radius: 6px; margin-bottom: 12px; font-size: 10.5px; color: #86efac; line-height: 1.4; text-align: left; }
         
-        /* Guide étape par étape pour les liens Drive / Mega */
         .tutorial-box { background: rgba(56, 189, 248, 0.1); border: 1.5px solid #38bdf8; padding: 10px; border-radius: 6px; margin-top: 8px; margin-bottom: 8px; font-size: 9.5px; color: #e2e8f0; line-height: 1.4; text-align: left; }
         .tutorial-box b { color: #38bdf8; }
 
@@ -145,14 +144,14 @@
     <div id="loading-modal" class="loading-overlay">
         <div class="spinner"></div>
         <div class="loading-title" id="loading-status-title">🔥 Publication en cours...</div>
-        <div class="loading-subtext" id="loading-status-subtext">Traitement et enregistrement instantané en base de données...</div>
+        <div class="loading-subtext" id="loading-status-subtext">Application du filigrane HD et enregistrement instantané...</div>
     </div>
 
     <div id="vendor-modal" class="modal-overlay">
         <div class="modal-content" style="max-width: 450px;">
             <h2 id="modal-title">🔥 Inscription Bizi Disponible 📸</h2>
             <div class="info-box-important" id="modal-info-box">
-                <b>✨ SÉCURITÉ & INSTANTANÉITÉ :</b><br>Vos données sont enregistrées en base pour une visibilité immédiate partout.
+                <b>✨ FILIGRANE HD & SÉCURITÉ :</b><br>Vos photos sont automatiquement protégées avec le filigrane HD.
             </div>
 
             <div id="form-videos-fields" style="display: none;">
@@ -169,11 +168,10 @@
                 <label style="margin-top: 8px;">2. Lien de la Vidéo Complète (Drive ou Mega) * :</label>
                 <input type="text" id="new-telegram" placeholder="Collez le lien ici...">
 
-                <!-- GUIDE D'AIDE POUR L'UTILISATEUR -->
                 <div class="tutorial-box">
                     <b>📖 Comment obtenir et partager votre lien :</b><br>
                     • <b>Sur Google Drive :</b> Uploadez votre vidéo, faites un clic droit ou appuyez sur <i>Partager</i> > changez les accès pour mettre <b>« Tous les utilisateurs ayant le lien »</b> en mode <b>« Lecteur »</b>. Copiez ensuite le lien et collez-le ci-dessus.<br>
-                    • <b>Sur Mega :</b> Uploadez la vidéo, cliquez sur <i>Obtenir le lien</i> (avec ou sans clé) et collez-le ici.
+                    • <b>Sur Mega :</b> Uploadez la vidéo, cliquez sur <i>Obtenir le lien</i> et collez-le ici.
                 </div>
                 
                 <label>Prix (en Fr) * :</label>
@@ -623,6 +621,7 @@
                 scenesData.forEach((scene, index) => {
                     if (query && !scene.nom.toLowerCase().includes(query)) return;
 
+                    // Calcul exact de la clé sans arrondis de virgules
                     const cleAttendue = Math.floor((scene.id * 1996) / 20);
                     const card = document.createElement("div");
                     
