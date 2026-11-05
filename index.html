@@ -15,9 +15,11 @@
         .tabs-container { display: flex; gap: 6px; width: 100%; max-width: 600px; justify-content: center; padding: 2px 0; }
         .tab-btn { flex: 1; background: #1e293b; color: #94a3b8; border: 1.5px solid #475569; padding: 6px 4px; border-radius: 6px; font-weight: bold; font-size: 10px; cursor: pointer; text-align: center; transition: all 0.2s ease; }
         .tab-btn.active { background: linear-gradient(135deg, #22c55e, #16a34a); color: white; border-color: #22c55e; box-shadow: 0 2px 8px rgba(34, 197, 94, 0.4); }
-        .subtabs-container { display: flex; gap: 4px; width: 100%; max-width: 600px; justify-content: center; padding: 2px 0; }
-        .subtab-btn { flex: 1; background: #0f172a; color: #cbd5e1; border: 1px solid #22c55e; padding: 4px 2px; border-radius: 5px; font-weight: bold; font-size: 8.5px; cursor: pointer; text-align: center; transition: all 0.2s ease; }
+        
+        .subtabs-container { display: flex; gap: 3px; width: 100%; max-width: 600px; justify-content: center; padding: 2px 0; }
+        .subtab-btn { flex: 1; background: #0f172a; color: #cbd5e1; border: 1px solid #22c55e; padding: 4px 1px; border-radius: 5px; font-weight: bold; font-size: 8px; cursor: pointer; text-align: center; transition: all 0.2s ease; white-space: nowrap; }
         .subtab-btn.active { background: #22c55e; color: white; box-shadow: 0 2px 6px rgba(34, 197, 94, 0.4); }
+        
         .btn-vendor-header { background: linear-gradient(135deg, #22c55e, #16a34a); color: white; border: 2px solid #15803d; padding: 4px 10px; border-radius: 6px; font-weight: bold; font-size: 9.5px; cursor: pointer; box-shadow: 0 3px 8px rgba(34, 197, 94, 0.4); width: 100%; max-width: 280px; }
         .search-container-header { width: 100%; max-width: 600px; padding: 2px 0; display: flex; gap: 5px; align-items: center; }
         .search-input { flex: 1; background: #1e293b; border: 1.5px solid #22c55e; border-radius: 8px; padding: 5px 12px; color: #ffffff; font-size: 11px; text-align: center; outline: none; box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
@@ -67,9 +69,6 @@
         .modal-content h2 { color: #22c55e; font-size: 15px; margin-bottom: 10px; text-align: center; }
         .info-box-important { background: rgba(34, 197, 94, 0.15); border: 2px dashed #22c55e; padding: 10px; border-radius: 6px; margin-bottom: 12px; font-size: 10.5px; color: #86efac; line-height: 1.4; text-align: left; }
         
-        .tutorial-box { background: rgba(56, 189, 248, 0.1); border: 1.5px solid #38bdf8; padding: 10px; border-radius: 6px; margin-top: 8px; margin-bottom: 8px; font-size: 9.5px; color: #e2e8f0; line-height: 1.4; text-align: left; }
-        .tutorial-box b { color: #38bdf8; }
-
         .modal-content label { font-size: 11px; font-weight: bold; color: #cbd5e1; display: block; margin-top: 8px; }
         .modal-buttons { display: flex; gap: 10px; margin-top: 15px; }
         .btn-save { background: #22c55e; color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 11px; padding: 8px; flex: 1; }
@@ -108,7 +107,7 @@
     <header>
         <div class="header-title">
             <h1>BIZI DISPONIBLE & VIDEO BIZI A VENDRE</h1>
-            <div class="subtitle">🔒 Chiffrement intelligent & Nettoyage rapide 🔒</div>
+            <div class="subtitle">🔒 Chiffrement intelligent & Sécurité renforcée 🔒</div>
         </div>
         
         <div class="tabs-container">
@@ -116,11 +115,13 @@
             <button id="tab-videos" class="tab-btn" onclick="changerOnglet('videos')">Vidéo a vendre</button>
         </div>
 
+        <!-- 5 SOUS-ONGLETS SUR LA MÊME LIGNE -->
         <div class="subtabs-container" id="subtabs-container">
-            <button id="subtab-femme" class="subtab-btn active" onclick="changerSousOnglet('femme')">Bizi Femme</button>
-            <button id="subtab-homme" class="subtab-btn" onclick="changerSousOnglet('homme')">Bizi Homme</button>
-            <button id="subtab-blanche" class="subtab-btn" onclick="changerSousOnglet('blanche')">Bizi Blanche</button>
-            <button id="subtab-trans" class="subtab-btn" onclick="changerSousOnglet('trans')">Bizi Trans</button>
+            <button id="subtab-femme" class="subtab-btn active" onclick="changerSousOnglet('femme')">Femme</button>
+            <button id="subtab-homme" class="subtab-btn" onclick="changerSousOnglet('homme')">Homme</button>
+            <button id="subtab-trans" class="subtab-btn" onclick="changerSousOnglet('trans')">Trans</button>
+            <button id="subtab-lesbi" class="subtab-btn" onclick="changerSousOnglet('lesbi')">Lesbi</button>
+            <button id="subtab-blanche" class="subtab-btn" onclick="changerSousOnglet('blanche')">Blanche</button>
         </div>
 
         <button class="btn-vendor-header" id="btn-modal-action" onclick="ouvrirVendeurModal()">Cliquez ici pour ajouter un Bizi</button>
@@ -134,7 +135,7 @@
     <div class="header-space"></div>
 
     <div class="container">
-        <div class="admin-banner-bar" id="admin-active-banner">🛡️ MODE ADMINISTRATEUR ACTIF (Bouton de suppression de masse actif)</div>
+        <div class="admin-banner-bar" id="admin-active-banner">🛡️ MODE ADMINISTRATEUR ACTIF</div>
         <div class="grid" id="video-grid"></div>
 
         <div id="profile-detail-view">
@@ -147,8 +148,8 @@
 
     <div id="loading-modal" class="loading-overlay">
         <div class="spinner"></div>
-        <div class="loading-title" id="loading-status-title">🗑️ Suppression en cours...</div>
-        <div class="loading-status-subtext" id="loading-status-subtext">Nettoyage complet des données sur le serveur...</div>
+        <div class="loading-title" id="loading-status-title">🔒 Traitement en cours...</div>
+        <div class="loading-status-subtext" id="loading-status-subtext">Veuillez patienter...</div>
     </div>
 
     <div id="vendor-modal" class="modal-overlay">
@@ -161,10 +162,11 @@
             <div id="form-videos-fields" style="display: none;">
                 <label>Catégorie Vidéo * :</label>
                 <select id="new-video-categorie" style="background: #1e293b; color: #22c55e; font-weight: bold; border: 1.5px solid #22c55e; margin-bottom: 6px;">
-                    <option value="femme">Vidéo Bizi Femme</option>
-                    <option value="homme">Vidéo Bizi Homme</option>
-                    <option value="blanche">Vidéo Bizi Blanche</option>
-                    <option value="trans">Vidéo Bizi Trans</option>
+                    <option value="femme">Femme</option>
+                    <option value="homme">Homme</option>
+                    <option value="trans">Trans</option>
+                    <option value="lesbi">Lesbi</option>
+                    <option value="blanche">Blanche</option>
                 </select>
 
                 <label>Nom du Partenaire / Vendeur * :</label>
@@ -197,10 +199,11 @@
             <div id="form-profils-fields">
                 <label>Catégorie Bizi (Sélectionnable) * :</label>
                 <select id="profil-categorie" style="background: #1e293b; color: #22c55e; font-weight: bold; border: 1.5px solid #22c55e;">
-                    <option value="femme">Bizi Femme</option>
-                    <option value="homme">Bizi Homme</option>
-                    <option value="blanche">Bizi Blanche</option>
-                    <option value="trans">Bizi Trans</option>
+                    <option value="femme">Femme</option>
+                    <option value="homme">Homme</option>
+                    <option value="trans">Trans</option>
+                    <option value="lesbi">Lesbi</option>
+                    <option value="blanche">Blanche</option>
                 </select>
 
                 <label>Votre Nom / Pseudo * :</label>
@@ -233,10 +236,11 @@
 
             <label>Catégorie Vidéo :</label>
             <select id="edit-v-cat" style="background:#1e293b; color:#22c55e; border:1.5px solid #22c55e; padding:5px; border-radius:5px; margin-bottom:6px; font-weight:bold;">
-                <option value="femme">Vidéo Bizi Femme</option>
-                <option value="homme">Vidéo Bizi Homme</option>
-                <option value="blanche">Vidéo Bizi Blanche</option>
-                <option value="trans">Vidéo Bizi Trans</option>
+                <option value="femme">Femme</option>
+                <option value="homme">Homme</option>
+                <option value="trans">Trans</option>
+                <option value="lesbi">Lesbi</option>
+                <option value="blanche">Blanche</option>
             </select>
             
             <label>Titre de la vidéo :</label>
@@ -494,7 +498,7 @@
             nettoyerCarrousels();
             sousOngletActif = cat;
             vueDetailleeActive = false;
-            ['femme', 'homme', 'blanche', 'trans'].forEach(c => {
+            ['femme', 'homme', 'trans', 'lesbi', 'blanche'].forEach(c => {
                 document.getElementById(`subtab-${c}`).className = c === cat ? "subtab-btn active" : "subtab-btn";
             });
             renderGrid();
@@ -819,30 +823,27 @@
                 document.getElementById("admin-active-banner").style.display = "block";
                 document.getElementById("admin-wipe-category-btn").style.display = "inline-block";
                 renderGrid();
-                alert("✅ Mode Admin activé ! Le bouton de suppression par catégorie est désormais visible à côté de la barre de recherche.");
+                alert("✅ Mode Admin activé !");
             }
         }
 
-        // SUPPRESSION EN MASSE DE LA CATÉGORIE ACTUELLE
         function supprimerToutDansCategorieCourante() {
-            if (!confirm(`⚠️ ATTENTION : Voulez-vous vraiment supprimer TOUS les éléments de la catégorie "${sousOngletActif.toUpperCase()}" (${ongletActif === 'profils' ? 'Profils' : 'Vidéos'}) ?`)) {
+            if (!confirm(`⚠️ ATTENTION : Supprimer TOUS les éléments de la catégorie "${sousOngletActif.toUpperCase()}" ?`)) {
                 return;
             }
 
             document.getElementById("loading-status-title").innerText = "🗑️ Suppression en masse...";
-            document.getElementById("loading-status-subtext").innerText = `Suppression de tous les éléments de la catégorie ${sousOngletActif}...`;
+            document.getElementById("loading-status-subtext").innerText = `Suppression des éléments de la catégorie ${sousOngletActif}...`;
             document.getElementById("loading-modal").style.display = "flex";
 
             if (ongletActif === 'profils') {
                 const elementsASupprimer = profilsData.filter(p => p.cat === sousOngletActif);
                 let count = 0;
-
                 if (elementsASupprimer.length === 0) {
                     document.getElementById("loading-modal").style.display = "none";
                     alert("Aucun profil à supprimer dans cette catégorie.");
                     return;
                 }
-
                 elementsASupprimer.forEach(p => {
                     fetch(`${API_URL}?id=${p.id}`, { method: 'DELETE' })
                         .then(res => res.json())
@@ -850,25 +851,20 @@
                             count++;
                             if (count === elementsASupprimer.length) {
                                 document.getElementById("loading-modal").style.display = "none";
-                                alert(`✅ Tous les profils de la catégorie ${sousOngletActif} ont été supprimés !`);
+                                alert("✅ Catégorie vidée avec succès !");
                                 chargerDonneesDepuisAPI();
                             }
                         })
-                        .catch(err => {
-                            document.getElementById("loading-modal").style.display = "none";
-                            console.error(err);
-                        });
+                        .catch(() => document.getElementById("loading-modal").style.display = "none");
                 });
             } else {
                 const elementsASupprimer = scenesData.filter(s => s.cat === sousOngletActif);
                 let count = 0;
-
                 if (elementsASupprimer.length === 0) {
                     document.getElementById("loading-modal").style.display = "none";
                     alert("Aucune vidéo à supprimer dans cette catégorie.");
                     return;
                 }
-
                 elementsASupprimer.forEach(s => {
                     fetch(`${API_VIDEOS_URL}?id=${s.realId}`, { method: 'DELETE' })
                         .then(res => res.json())
@@ -876,14 +872,11 @@
                             count++;
                             if (count === elementsASupprimer.length) {
                                 document.getElementById("loading-modal").style.display = "none";
-                                alert(`✅ Toutes les vidéos de la catégorie ${sousOngletActif} ont été supprimées !`);
+                                alert("✅ Catégorie vidée avec succès !");
                                 chargerDonneesDepuisAPI();
                             }
                         })
-                        .catch(err => {
-                            document.getElementById("loading-modal").style.display = "none";
-                            console.error(err);
-                        });
+                        .catch(() => document.getElementById("loading-modal").style.display = "none");
                 });
             }
         }
@@ -926,10 +919,11 @@
                     
                     <label>Catégorie Bizi :</label>
                     <select id="adm-p-cat" style="background:#1e293b; color:#22c55e; border:1.5px solid #22c55e; padding:5px; border-radius:5px; margin-bottom:6px; font-weight:bold;">
-                        <option value="femme" ${profil.cat==='femme'?'selected':''}>Bizi Femme</option>
-                        <option value="homme" ${profil.cat==='homme'?'selected':''}>Bizi Homme</option>
-                        <option value="blanche" ${profil.cat==='blanche'?'selected':''}>Bizi Blanche</option>
-                        <option value="trans" ${profil.cat==='trans'?'selected':''}>Bizi Trans</option>
+                        <option value="femme" ${profil.cat==='femme'?'selected':''}>Femme</option>
+                        <option value="homme" ${profil.cat==='homme'?'selected':''}>Homme</option>
+                        <option value="trans" ${profil.cat==='trans'?'selected':''}>Trans</option>
+                        <option value="lesbi" ${profil.cat==='lesbi'?'selected':''}>Lesbi</option>
+                        <option value="blanche" ${profil.cat==='blanche'?'selected':''}>Blanche</option>
                     </select>
 
                     <label>Nom / Pseudo :</label>
@@ -1026,28 +1020,24 @@
                 body: JSON.stringify(payload)
             })
             .then(res => res.json())
-            .then(result => {
+            .then(() => {
                 document.getElementById("loading-modal").style.display = "none";
                 alert("✅ Profil modifié et chiffré !");
                 retourGrille();
                 chargerDonneesDepuisAPI();
             })
-            .catch(err => {
-                document.getElementById("loading-modal").style.display = "none";
-                alert("Erreur lors de la mise à jour.");
-            });
+            .catch(() => document.getElementById("loading-modal").style.display = "none");
         }
 
         function supprimerProfilAdminActif() {
             if (confirm("Voulez-vous vraiment supprimer ce profil ?")) {
                 fetch(`${API_URL}?id=${profilAdminEnCoursId}`, { method: 'DELETE' })
                     .then(res => res.json())
-                    .then(result => {
+                    .then(() => {
                         alert("🗑️ Profil supprimé !");
                         retourGrille();
                         chargerDonneesDepuisAPI();
-                    })
-                    .catch(err => console.error("Erreur:", err));
+                    });
             }
         }
 
@@ -1090,12 +1080,11 @@
                 body: JSON.stringify(payload)
             })
             .then(res => res.json())
-            .then(result => {
+            .then(() => {
                 fermerModalEditVideo();
                 chargerDonneesDepuisAPI();
                 alert("✅ Vidéo modifiée et chiffrée avec succès !");
-            })
-            .catch(err => console.error("Erreur édition vidéo:", err));
+            });
         }
 
         function supprimerVideoAdminActive() {
@@ -1103,12 +1092,11 @@
             if (confirm("Supprimer cette vidéo ?")) {
                 fetch(`${API_VIDEOS_URL}?id=${realId}`, { method: 'DELETE' })
                     .then(res => res.json())
-                    .then(result => {
+                    .then(() => {
                         fermerModalEditVideo();
                         chargerDonneesDepuisAPI();
                         alert("🗑️ Vidéo supprimée !");
-                    })
-                    .catch(err => console.error("Erreur suppression vidéo:", err));
+                    });
             }
         }
 
@@ -1197,10 +1185,7 @@
                     alert("Erreur lors de l'enregistrement.");
                 }
             })
-            .catch(err => {
-                loadingModal.style.display = "none";
-                alert("Erreur de connexion avec le serveur.");
-            });
+            .catch(() => loadingModal.style.display = "none");
         }
 
         function fermerVendeurModal() { document.getElementById("vendor-modal").style.display = "none"; }
@@ -1322,10 +1307,7 @@
                     alert("Erreur lors de l'enregistrement.");
                 }
             })
-            .catch(err => {
-                loadingModal.style.display = "none";
-                alert("Erreur de connexion avec le serveur.");
-            });
+            .catch(() => loadingModal.style.display = "none");
         }
 
         chargerDonneesDepuisAPI();
