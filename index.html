@@ -144,14 +144,14 @@
     <div id="loading-modal" class="loading-overlay">
         <div class="spinner"></div>
         <div class="loading-title" id="loading-status-title">🔥 Publication en cours...</div>
-        <div class="loading-subtext" id="loading-status-subtext">Application du filigrane HD et enregistrement instantané...</div>
+        <div class="loading-subtext" id="loading-status-subtext">Incrustation définitive du filigrane HD sur les photos...</div>
     </div>
 
     <div id="vendor-modal" class="modal-overlay">
         <div class="modal-content" style="max-width: 450px;">
             <h2 id="modal-title">🔥 Inscription Bizi Disponible 📸</h2>
             <div class="info-box-important" id="modal-info-box">
-                <b>✨ FILIGRANE HD & SÉCURITÉ :</b><br>Vos photos sont automatiquement protégées avec le filigrane HD.
+                <b>✨ FILIGRANE HD INCRUSTÉ :</b><br>Vos photos sont protégées de façon définitive (le filigrane reste même après téléchargement).
             </div>
 
             <div id="form-videos-fields" style="display: none;">
@@ -356,8 +356,12 @@
                                 return null;
                             }).filter(img => img !== null && img.length > 50);
 
+                            // ID forcé à 3 chiffres (si l'ID BDD est inférieur à 100, on ajuste ou on affiche de manière complexe)
+                            let rawId = parseInt(p.id, 10);
+                            let formattedId = rawId < 100 ? rawId + 100 : rawId;
+
                             return {
-                                id: parseInt(p.id, 10),
+                                id: formattedId,
                                 cat: p.cat ? p.cat.trim() : 'femme',
                                 vip: p.vip || 'standard',
                                 nom: p.nom,
@@ -376,17 +380,21 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.status === 'success' && Array.isArray(data.data)) {
-                        scenesData = data.data.map(v => ({
-                            id: parseInt(v.id, 10),
-                            partenaire: v.partenaire || "Admin",
-                            nom: v.nom,
-                            preview: v.preview,
-                            mega: v.mega,
-                            prix: parseInt(v.prix, 10),
-                            qualite: v.qualite || 'bronze',
-                            wa: v.telephone,
-                            deverrouille: false
-                        }));
+                        scenesData = data.data.map(v => {
+                            let rawId = parseInt(v.id, 10);
+                            let formattedId = rawId < 100 ? rawId + 100 : rawId;
+                            return {
+                                id: formattedId,
+                                partenaire: v.partenaire || "Admin",
+                                nom: v.nom,
+                                preview: v.preview,
+                                mega: v.mega,
+                                prix: parseInt(v.prix, 10),
+                                qualite: v.qualite || 'bronze',
+                                wa: v.telephone,
+                                deverrouille: false
+                            };
+                        });
                     }
                     renderGrid();
                 })
@@ -621,7 +629,7 @@
                 scenesData.forEach((scene, index) => {
                     if (query && !scene.nom.toLowerCase().includes(query)) return;
 
-                    // Calcul exact de la clé sans arrondis de virgules
+                    // Calcul exact de la clé sans arrondis de virgules (Math.floor)
                     const cleAttendue = Math.floor((scene.id * 1996) / 20);
                     const card = document.createElement("div");
                     
@@ -841,7 +849,7 @@
             document.getElementById("loading-modal").style.display = "flex";
 
             const payload = {
-                id: profilAdminEnCoursId,
+                id: profilAdminEnCoursId > 100 ? profilAdminEnCoursId - 100 : profilAdminEnCoursId,
                 cat: cat,
                 nom: nom,
                 telephone: wa,
@@ -871,7 +879,8 @@
 
         function supprimerProfilAdminActif() {
             if (confirm("Voulez-vous vraiment supprimer ce profil ?")) {
-                fetch(`${API_URL}?id=${profilAdminEnCoursId}`, { method: 'DELETE' })
+                let realId = profilAdminEnCoursId > 100 ? profilAdminEnCoursId - 100 : profilAdminEnCoursId;
+                fetch(`${API_URL}?id=${realId}`, { method: 'DELETE' })
                     .then(res => res.json())
                     .then(result => {
                         alert("🗑️ Profil supprimé !");
@@ -902,9 +911,11 @@
         }
 
         function sauvegarderEditionVideoAdmin() {
-            const id = document.getElementById("edit-v-id").value;
+            let fakeId = document.getElementById("edit-v-id").value;
+            let realId = fakeId > 100 ? fakeId - 100 : fakeId;
+
             const payload = {
-                id: id,
+                id: realId,
                 nom: document.getElementById("edit-v-nom").value.trim(),
                 mega: document.getElementById("edit-v-mega").value.trim(),
                 prix: parseInt(document.getElementById("edit-v-prix").value.trim(), 10),
@@ -931,9 +942,11 @@
         }
 
         function supprimerVideoAdminActive() {
-            const id = document.getElementById("edit-v-id").value;
+            let fakeId = document.getElementById("edit-v-id").value;
+            let realId = fakeId > 100 ? fakeId - 100 : fakeId;
+
             if (confirm("Supprimer cette vidéo de la base de données ?")) {
-                fetch(`${API_VIDEOS_URL}?id=${id}`, { method: 'DELETE' })
+                fetch(`${API_VIDEOS_URL}?id=${realId}`, { method: 'DELETE' })
                     .then(res => res.json())
                     .then(result => {
                         fermerModalEditVideo();
@@ -954,7 +967,7 @@
 
             if (ongletActif === "profils") {
                 modalTitle.innerText = `🔥 Inscription Bizi Disponible 📸`;
-                infoBox.innerHTML = `<b>✨ FILIGRANE HD & SÉCURITÉ :</b><br>Sélectionnez votre catégorie et téléchargez vos photos HD.`;
+                infoBox.innerHTML = `<b>✨ FILIGRANE HD INCRUSTÉ :</b><br>Sélectionnez votre catégorie et téléchargez vos photos HD. Le filigrane sera définitivement incrusté.`;
                 formVideos.style.display = "none";
                 formProfils.style.display = "block";
                 
@@ -1036,6 +1049,7 @@
 
         let imagesSelectionnees64 = [];
 
+        // INCRUSTATION DÉFINITIVE DU FILIGRANE SUR L'IMAGE (VISIBLE PARTOUT ET AU TÉLÉCHARGEMENT)
         function inclusterFiligraneCanvas(file, callback) {
             const reader = new FileReader();
             reader.onload = function(e) {
@@ -1047,22 +1061,25 @@
                     canvas.height = img.height;
                     const ctx = canvas.getContext("2d");
 
+                    // Dessiner l'image originale sur le canvas
                     ctx.drawImage(img, 0, 0, img.width, img.height);
 
+                    // Incrustation du filigrane de manière répétée / centrée pour qu'il soit indélébile
                     ctx.save();
                     ctx.translate(canvas.width / 2, canvas.height / 2);
-                    ctx.rotate(-15 * Math.PI / 180);
+                    ctx.rotate(-20 * Math.PI / 180);
                     
-                    const fontSize = Math.max(28, Math.floor(canvas.width / 10));
+                    const fontSize = Math.max(35, Math.floor(canvas.width / 8));
                     ctx.font = `900 ${fontSize}px sans-serif`;
-                    ctx.fillStyle = "rgba(255, 255, 255, 0.4)";
+                    ctx.fillStyle = "rgba(255, 255, 255, 0.45)";
                     ctx.textAlign = "center";
                     ctx.textBaseline = "middle";
-                    ctx.shadowColor = "rgba(0, 0, 0, 0.7)";
-                    ctx.shadowBlur = 8;
+                    ctx.shadowColor = "rgba(0, 0, 0, 0.8)";
+                    ctx.shadowBlur = 10;
                     ctx.fillText("BIZI 🤑", 0, 0);
                     ctx.restore();
 
+                    // Générer l'image finale encodée avec le filigrane intégré définitivement
                     const base64HD = canvas.toDataURL("image/jpeg", 0.95);
                     callback({
                         data: base64HD,
@@ -1138,7 +1155,7 @@
 
             const loadingModal = document.getElementById("loading-modal");
             document.getElementById("loading-status-title").innerText = "🔥 Publication en cours...";
-            document.getElementById("loading-status-subtext").innerText = "Application du filigrane HD et mise en ligne sécurisée...";
+            document.getElementById("loading-status-subtext").innerText = "Incrustation définitive du filigrane HD et mise en ligne...";
             loadingModal.style.display = "flex";
 
             const purePhotosArray = imagesSelectionnees64.map(img => img.data);
@@ -1161,7 +1178,7 @@
             .then(result => {
                 loadingModal.style.display = "none";
                 if (result.status === 'success') {
-                    alert("✅ Publication Ultra HD réussie ! Votre profil est en ligne.");
+                    alert("✅ Publication Ultra HD avec filigrane intégré réussie !");
                     fermerVendeurModal();
                     
                     if (sousOngletActif !== catChoice) {
