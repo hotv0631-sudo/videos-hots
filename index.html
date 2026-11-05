@@ -113,7 +113,7 @@
             <button id="tab-videos" class="tab-btn" onclick="changerOnglet('videos')">Vidéo a vendre</button>
         </div>
 
-        <div class="subtabs-container" id="subtabs-profils">
+        <div class="subtabs-container" id="subtabs-container">
             <button id="subtab-femme" class="subtab-btn active" onclick="changerSousOnglet('femme')">Bizi Femme</button>
             <button id="subtab-homme" class="subtab-btn" onclick="changerSousOnglet('homme')">Bizi Homme</button>
             <button id="subtab-blanche" class="subtab-btn" onclick="changerSousOnglet('blanche')">Bizi Blanche</button>
@@ -127,7 +127,7 @@
         </div>
     </header>
 
-    <div class="header-space" id="header-space"></div>
+    <div class="header-space"></div>
 
     <div class="container">
         <div class="admin-banner-bar" id="admin-active-banner">🛡️ MODE ADMINISTRATEUR ACTIF (Cliquez sur un profil ou une vidéo pour éditer)</div>
@@ -155,6 +155,14 @@
             </div>
 
             <div id="form-videos-fields" style="display: none;">
+                <label>Catégorie Vidéo * :</label>
+                <select id="new-video-categorie" style="background: #1e293b; color: #22c55e; font-weight: bold; border: 1.5px solid #22c55e; margin-bottom: 6px;">
+                    <option value="femme">Vidéo Bizi Femme</option>
+                    <option value="homme">Vidéo Bizi Homme</option>
+                    <option value="blanche">Vidéo Bizi Blanche</option>
+                    <option value="trans">Vidéo Bizi Trans</option>
+                </select>
+
                 <label>Nom du Partenaire / Vendeur * :</label>
                 <input type="text" id="new-partenaire" placeholder="Ex: Jean Kouassi">
                 
@@ -224,6 +232,14 @@
         <div class="modal-content" style="max-width: 450px;">
             <h2>✏️ Modifier la Vidéo (Admin)</h2>
             <input type="hidden" id="edit-v-real-id">
+
+            <label>Catégorie Vidéo :</label>
+            <select id="edit-v-cat" style="background:#1e293b; color:#22c55e; border:1.5px solid #22c55e; padding:5px; border-radius:5px; margin-bottom:6px; font-weight:bold;">
+                <option value="femme">Vidéo Bizi Femme</option>
+                <option value="homme">Vidéo Bizi Homme</option>
+                <option value="blanche">Vidéo Bizi Blanche</option>
+                <option value="trans">Vidéo Bizi Trans</option>
+            </select>
             
             <label>Titre de la vidéo :</label>
             <input type="text" id="edit-v-nom">
@@ -415,6 +431,7 @@
                             return {
                                 realId: realId,
                                 displayId: displayId,
+                                cat: v.cat ? v.cat.trim() : 'femme',
                                 partenaire: v.partenaire || "Admin",
                                 nom: v.nom,
                                 preview: v.preview,
@@ -449,17 +466,11 @@
             document.getElementById("tab-profils").className = nomOnglet === "profils" ? "tab-btn active" : "tab-btn";
             document.getElementById("tab-videos").className = nomOnglet === "videos" ? "tab-btn active" : "tab-btn";
             
-            const subtabs = document.getElementById("subtabs-profils");
-            const headerSpace = document.getElementById("header-space");
             const btnModalAction = document.getElementById("btn-modal-action");
 
             if (nomOnglet === "profils") {
-                subtabs.style.display = "flex";
-                headerSpace.style.height = "195px";
                 btnModalAction.innerText = "Cliquez ici pour ajouter un Bizi";
             } else {
-                subtabs.style.display = "none";
-                headerSpace.style.height = "155px";
                 btnModalAction.innerText = "Cliquez ici pour vendre une vidéo";
             }
             renderGrid();
@@ -668,6 +679,7 @@
                 });
             } else {
                 scenesData.forEach((scene, index) => {
+                    if (scene.cat !== sousOngletActif) return;
                     if (query && !scene.nom.toLowerCase().includes(query)) return;
 
                     const cleAttendue = Math.floor((scene.displayId * 1996) / 20);
@@ -732,7 +744,6 @@
                     grid.appendChild(card);
                 });
 
-                // Lancement du compte à rebours minute par minute
                 misesAJourCompteursTemps();
                 countdownInterval = setInterval(misesAJourCompteursTemps, 1000);
 
@@ -767,7 +778,6 @@
                     const el = document.getElementById(`countdown-${scene.realId}`);
                     if (el) {
                         if (timeLeft <= 0) {
-                            // Expiré, on reverrouille
                             scene.deverrouille = false;
                             localStorage.removeItem(`bizi_unlocked_${scene.realId}`);
                             localStorage.removeItem(`bizi_unlock_time_${scene.realId}`);
@@ -988,6 +998,7 @@
 
             editExtraitTemp = "";
             document.getElementById("edit-v-real-id").value = scene.realId;
+            document.getElementById("edit-v-cat").value = scene.cat || "femme";
             document.getElementById("edit-v-nom").value = scene.nom;
             document.getElementById("edit-v-mega").value = scene.mega;
             document.getElementById("edit-v-prix").value = scene.prix;
@@ -1006,6 +1017,7 @@
 
             const payload = {
                 id: realId,
+                cat: document.getElementById("edit-v-cat").value,
                 nom: document.getElementById("edit-v-nom").value.trim(),
                 mega: document.getElementById("edit-v-mega").value.trim(),
                 prix: parseInt(document.getElementById("edit-v-prix").value.trim(), 10),
@@ -1070,9 +1082,13 @@
                 buttonsContainer.innerHTML = `<button class="btn-save" onclick="compresserEtPublierProfil()">Publier mon profil</button><button class="btn-close" onclick="fermerVendeurModal()">Fermer</button>`;
             } else {
                 modalTitle.innerText = "🎬 Proposer une vidéo 🎥";
-                infoBox.innerHTML = `<b>⚠️ FORMULAIRE SÉCURISÉ :</b><br>1. Téléchargez un court extrait de 5s (converti instantanément).<br>2. Partagez votre vidéo sur Google Drive ou Mega et collez le lien ci-dessous.`;
+                infoBox.innerHTML = `<b>⚠️ FORMULAIRE SÉCURISÉ :</b><br>1. Choisissez la catégorie.<br>2. Téléchargez un court extrait de 5s.<br>3. Collez votre lien Drive ou Mega.`;
                 formVideos.style.display = "block";
                 formProfils.style.display = "none";
+                
+                const videoCatSelect = document.getElementById("new-video-categorie");
+                videoCatSelect.value = sousOngletActif;
+
                 document.getElementById("new-video-file").value = "";
                 document.getElementById("video-preview-status").innerText = "";
                 videoExtrait5sData = "";
@@ -1082,6 +1098,7 @@
         }
 
         function soumettreVideoAdmin() {
+            const cat = document.getElementById("new-video-categorie").value;
             const partenaire = document.getElementById("new-partenaire").value.trim() || "Admin Principal";
             const nom = document.getElementById("new-nom").value.trim();
             const mega = document.getElementById("new-telegram").value.trim();
@@ -1090,7 +1107,7 @@
             const wa = document.getElementById("new-whatsapp").value.trim();
 
             if (!nom || !videoExtrait5sData || !mega || isNaN(prix) || !wa) {
-                alert("⚠️ TOUS LES CHAMPS SONT OBLIGATOIRES ! Veuillez remplir le titre, l'extrait vidéo 5s, le lien Drive/Mega, le prix et le téléphone.");
+                alert("⚠️ TOUS LES CHAMPS SONT OBLIGATOIRES ! Veuillez remplir tous les champs du formulaire.");
                 return;
             }
 
@@ -1100,6 +1117,7 @@
             loadingModal.style.display = "flex";
 
             const payload = {
+                cat: cat,
                 partenaire: partenaire,
                 nom: nom,
                 preview: videoExtrait5sData,
@@ -1118,9 +1136,13 @@
             .then(result => {
                 loadingModal.style.display = "none";
                 if (result.status === 'success') {
-                    alert("✅ Vidéo publiée avec succès et visible instantanément partout !");
+                    alert("✅ Vidéo publiée avec succès et visible instantanément dans sa catégorie !");
                     fermerVendeurModal();
-                    chargerDonneesDepuisAPI();
+                    if (sousOngletActif !== cat) {
+                        changerSousOnglet(cat);
+                    } else {
+                        chargerDonneesDepuisAPI();
+                    }
                 } else {
                     alert("Erreur lors de l'enregistrement de la vidéo.");
                 }
