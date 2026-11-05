@@ -32,13 +32,13 @@
         .card-vip-bronze { border: 3px solid #b45309; box-shadow: 0 0 16px rgba(180, 83, 9, 0.5); }
         .card-profil { border: 3px solid #22c55e; box-shadow: 0 0 16px rgba(34, 197, 94, 0.5); }
 
-        .media-container { width: 100%; border-radius: 8px; overflow: hidden; background: #000000; margin-bottom: 6px; aspect-ratio: 9 / 16; display: flex; align-items: center; position: relative; cursor: pointer; }
+        .media-container { width: 100%; border-radius: 8px; overflow: hidden; background: #000000; margin-bottom: 6px; aspect-ratio: 9 / 16; display: flex; align-items: center; justify-content: center; position: relative; cursor: pointer; }
         video.preview-video { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
         
-        /* Piste de glissement parfaite */
-        .card-slider-track { display: flex; height: 100%; transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1); will-change: transform; }
-        .card-slide-item { flex: 0 0 100%; width: 100%; height: 100%; }
-        .profil-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        /* Image avec transition fluide de glissement latéral propre */
+        .profil-img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out; }
+        .slide-out-left { transform: translateX(-100%); opacity: 0; }
+        .slide-in-right { transform: translateX(100%); opacity: 0; }
         
         .card h3 { margin: 0 0 3px 0; color: #f1f5f9; font-size: 11.5px; text-align: center; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .profil-desc { font-size: 10px; color: #cbd5e1; text-align: center; margin-bottom: 6px; min-height: 28px; max-height: 40px; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; line-height: 1.3; }
@@ -548,12 +548,8 @@
 
                     card.className = cardClass;
                     const photos = profil.photos || [];
+                    const firstPhoto = photos.length > 0 ? photos[0] : '';
                     
-                    let slidesHtml = '';
-                    photos.forEach(photo => {
-                        slidesHtml += `<div class="card-slide-item"><img class="profil-img" src="${photo}" alt="${profil.nom}"></div>`;
-                    });
-
                     let btnActionHtml = `<button class="whatsapp-btn" style="border:none; width:100%; cursor:pointer;" onclick="declencherActionProfil(${profil.id})">💬 Contacter</button>`;
                     if (adminModeConnecte) {
                         btnActionHtml = `<button class="whatsapp-btn" style="border:none; width:100%; cursor:pointer; background:#ef4444;" onclick="declencherActionProfil(${profil.id})">✏️ Éditer ce Profil</button>`;
@@ -561,9 +557,7 @@
 
                     card.innerHTML = `
                         <div class="media-container" onclick="declencherActionProfil(${profil.id})" title="Voir le profil">
-                            <div class="card-slider-track" id="card-track-${profil.id}" style="width: ${photos.length * 100}%;">
-                                ${slidesHtml}
-                            </div>
+                            <img id="card-img-${profil.id}" class="profil-img" src="${firstPhoto}" alt="${profil.nom}">
                         </div>
                         <h3>${profil.nom}</h3>
                         ${badgeVipHtml}
@@ -573,19 +567,33 @@
                     `;
                     grid.appendChild(card);
 
-                    // CARROUSEL EN BOUCLE EXACT PAR NOMBRE DE PHOTOS
+                    // GLISSEMENT LATÉRAL EN BOUCLE PROpre et FLUIDE PHOTO PAR PHOTO
                     if (photos.length > 1) {
                         let currentIdx = 0;
                         carouselIntervals[profil.id] = setInterval(() => {
-                            currentIdx++;
-                            if (currentIdx >= photos.length) {
-                                currentIdx = 0;
-                            }
-                            const trackEl = document.getElementById(`card-track-${profil.id}`);
-                            if (trackEl) {
-                                const pourcent = currentIdx * (100 / photos.length);
-                                trackEl.style.transform = `translateX(-${pourcent}%)`;
-                            }
+                            const imgEl = document.getElementById(`card-img-${profil.id}`);
+                            if (!imgEl) return;
+
+                            // Étape 1 : Glissement vers la gauche (disparition)
+                            imgEl.classList.add('slide-out-left');
+
+                            setTimeout(() => {
+                                currentIdx = (currentIdx + 1) % photos.length;
+                                imgEl.src = photos[currentIdx];
+                                
+                                // Étape 2 : Positionnement à droite sans transition
+                                imgEl.style.transition = 'none';
+                                imgEl.classList.remove('slide-out-left');
+                                imgEl.classList.add('slide-in-right');
+
+                                setTimeout(() => {
+                                    // Étape 3 : Glissement vers le centre (apparition fluide)
+                                    imgEl.style.transition = 'transform 0.5s ease-in-out, opacity 0.5s ease-in-out';
+                                    imgEl.classList.remove('slide-in-right');
+                                }, 50);
+
+                            }, 500);
+
                         }, 3500);
                     }
                 });
