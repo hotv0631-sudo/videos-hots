@@ -542,9 +542,9 @@
                     let rawVideos = [];
                     if (data.status === 'success' && Array.isArray(data.data)) { rawVideos = data.data; }
 
-                    scenesData = rawVideos.map(v => {
+                    scenesData = rawVideos.map((v, index) => {
                         const realId = parseInt(v.id || Math.floor(Math.random() * 100000), 10);
-                        const storageKey = `bizi_video_display_id_${realId}`;
+                        const storageKey = `bizi_video_display_id_${realId}_${index}`;
                         const unlockKey = `bizi_unlocked_${realId}`;
                         const unlockTimeKey = `bizi_unlock_time_${realId}`;
 
