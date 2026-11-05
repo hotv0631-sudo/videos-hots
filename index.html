@@ -275,8 +275,21 @@
         const API_URL = 'https://midnightblue-manatee-329921.hostingersite.com/api.php';
         const API_VIDEOS_URL = 'https://midnightblue-manatee-329921.hostingersite.com/api_videos.php';
 
+        // Intégration de secours locale avec vos anciennes vidéos toutes classées en "femme"
+        const defaultWhatsApp = "2250105553740";
+        const fallbackOldVideos = [
+            { id: 1, cat: "femme", partenaire: "Kouassi Pro", nom: "Bizi Exclusif Abidjan", preview: "http://hc1.checker.in/file2link/documents/file_670646.mp4/Highlight001.mp4", mega: "https://mega.nz/file/qHwyESiI#mtmHDaWLq02mRvEon3kZL5BroGROTEwJkhtwNTGsMlo", prix: 1500, wa: defaultWhatsApp, qualite: "premium" },
+            { id: 2, cat: "femme", partenaire: "Aïcha VIP", nom: "Sextap Résidence Chic", preview: "http://hc1.checker.in/file2link/documents/file_670647.mp4/Highlight002.mp4", mega: "https://mega.nz/file/ea4yBIxC#cO6dr4YAyQoJioS0sp_wylvg72d_9M0roRYT5vYFnE0", prix: 1200, wa: defaultWhatsApp, qualite: "moyen" },
+            { id: 3, cat: "femme", partenaire: "Marc Bizi", nom: "Soirée privée sans capote", preview: "http://hc1.checker.in/file2link/documents/file_670648.mp4/Highlight003.mp4", mega: "https://mega.nz/file/yH5BRT7b#5hDkyoRCfa8iE5mn9g-EKdK7M-XGn6E9kKVaRccDkIM", prix: 1800, wa: defaultWhatsApp, qualite: "premium" },
+            { id: 4, cat: "femme", partenaire: "Djibril 225", nom: "Bizi douceur Cocody", preview: "http://hc1.checker.in/file2link/documents/file_670649.mp4/Highlight004.mp4", mega: "https://mega.nz/file/TGwWWLhB#zY8xAy7hCAVYrJm4h_0eWcuMadmMY_bMrO2wbm8GoFQ", prix: 1000, wa: defaultWhatsApp, qualite: "basique" },
+            { id: 5, cat: "femme", partenaire: "Sandra Gold", nom: "Action non-stop Yopougon", preview: "http://hc1.checker.in/file2link/documents/file_670650.mp4/Highlight005.mp4", mega: "https://mega.nz/file/2CJWQTQA#GVJ5Iq0PcPSnRo-NcQjTf04kj5uaMXpRm25g18DmrLs", prix: 2000, wa: defaultWhatsApp, qualite: "premium" },
+            { id: 6, cat: "femme", partenaire: "Le procureur", nom: "Love clitoris", preview: "Movie0064.mp4", mega: "https://mega.nz/file/ThQl2QYL#OoNr42p_HRAeztCnVgTa3sIdvfblpVxNjaVaNuYwI3E", prix: 2200, wa: "0103115237", qualite: "premium" },
+            { id: 7, cat: "femme", partenaire: "Admin Principal", nom: "Bizi sans capote", preview: "Movie002.mp4", mega: "https://mega.nz/file/P0g0FapT#Y2NlcHQtRW4VO2EhGursLgAAAAAAAAAAdlQFSHSN1g4", prix: 1200, wa: defaultWhatsApp, qualite: "moyen" },
+            { id: 8, cat: "femme", partenaire: "Admin Principal", nom: "Sextap", preview: "Movie003.mp4", mega: "https://mega.nz/file/KoZV0ZiJ#Ov3FwAQyhRPqJ18rklW4IQ2ofUG1mnwCy4cQx7VpPkY", prix: 1500, wa: defaultWhatsApp, qualite: "premium" }
+        ];
+
         function formaterNumeroWhatsApp(num) {
-            let clean = num.replace(/\D/g, '');
+            let clean = String(num || '').replace(/\D/g, '');
             if (!clean.startsWith('225')) {
                 clean = '225' + clean;
             }
@@ -400,54 +413,73 @@
             fetch(API_VIDEOS_URL)
                 .then(response => response.json())
                 .then(data => {
-                    if (data.status === 'success' && Array.isArray(data.data)) {
-                        scenesData = data.data.map(v => {
-                            const realId = parseInt(v.id, 10);
-                            const storageKey = `bizi_video_display_id_${realId}`;
-                            const unlockKey = `bizi_unlocked_${realId}`;
-                            const unlockTimeKey = `bizi_unlock_time_${realId}`;
-
-                            let isUnlocked = false;
-                            const unlockTime = localStorage.getItem(unlockTimeKey);
-                            if (unlockTime) {
-                                const now = Date.now();
-                                const oneHour = 60 * 60 * 1000;
-                                if (now - parseInt(unlockTime, 10) < oneHour) {
-                                    isUnlocked = true;
-                                } else {
-                                    localStorage.removeItem(unlockKey);
-                                    localStorage.removeItem(unlockTimeKey);
-                                }
-                            }
-                            
-                            let displayId = localStorage.getItem(storageKey);
-                            if (!displayId) {
-                                displayId = Math.floor(100 + Math.random() * 900);
-                                localStorage.setItem(storageKey, displayId);
-                            } else {
-                                displayId = parseInt(displayId, 10);
-                            }
-
-                            return {
-                                realId: realId,
-                                displayId: displayId,
-                                cat: v.cat ? v.cat.trim() : 'femme',
-                                partenaire: v.partenaire || "Admin",
-                                nom: v.nom,
-                                preview: v.preview,
-                                mega: v.mega,
-                                prix: parseInt(v.prix, 10),
-                                qualite: v.qualite || 'bronze',
-                                wa: formaterNumeroWhatsApp(v.telephone || ''),
-                                deverrouille: isUnlocked,
-                                unlockTime: unlockTime ? parseInt(unlockTime, 10) : null
-                            };
-                        });
+                    let rawVideos = [];
+                    if (data.status === 'success' && Array.isArray(data.data) && data.data.length > 0) {
+                        rawVideos = data.data;
+                    } else {
+                        rawVideos = fallbackOldVideos; // Utilise les anciennes vidéos si la BDD est vide
                     }
+
+                    scenesData = rawVideos.map(v => {
+                        const realId = parseInt(v.id || Math.floor(Math.random() * 100000), 10);
+                        const storageKey = `bizi_video_display_id_${realId}`;
+                        const unlockKey = `bizi_unlocked_${realId}`;
+                        const unlockTimeKey = `bizi_unlock_time_${realId}`;
+
+                        let isUnlocked = false;
+                        const unlockTime = localStorage.getItem(unlockTimeKey);
+                        if (unlockTime) {
+                            const now = Date.now();
+                            const oneHour = 60 * 60 * 1000;
+                            if (now - parseInt(unlockTime, 10) < oneHour) {
+                                isUnlocked = true;
+                            } else {
+                                localStorage.removeItem(unlockKey);
+                                localStorage.removeItem(unlockTimeKey);
+                            }
+                        }
+                        
+                        let displayId = localStorage.getItem(storageKey);
+                        if (!displayId) {
+                            displayId = Math.floor(100 + Math.random() * 900);
+                            localStorage.setItem(storageKey, displayId);
+                        } else {
+                            displayId = parseInt(displayId, 10);
+                        }
+
+                        return {
+                            realId: realId,
+                            displayId: displayId,
+                            cat: v.cat ? v.cat.trim() : 'femme',
+                            partenaire: v.partenaire || "Admin",
+                            nom: v.nom,
+                            preview: v.preview,
+                            mega: v.mega,
+                            prix: parseInt(v.prix, 10),
+                            qualite: v.qualite || 'bronze',
+                            wa: formaterNumeroWhatsApp(v.telephone || v.wa || ''),
+                            deverrouille: isUnlocked,
+                            unlockTime: unlockTime ? parseInt(unlockTime, 10) : null
+                        };
+                    });
                     renderGrid();
                 })
                 .catch(err => {
-                    console.error("Erreur chargement vidéos BDD:", err);
+                    console.error("Erreur chargement vidéos BDD, utilisation secours:", err);
+                    scenesData = fallbackOldVideos.map(v => ({
+                        realId: v.id,
+                        displayId: Math.floor(100 + Math.random() * 900),
+                        cat: v.cat || 'femme',
+                        partenaire: v.partenaire,
+                        nom: v.nom,
+                        preview: v.preview,
+                        mega: v.mega,
+                        prix: v.prix,
+                        qualite: v.qualite,
+                        wa: formaterNumeroWhatsApp(v.wa),
+                        deverrouille: false,
+                        unlockTime: null
+                    }));
                     renderGrid();
                 });
         }
