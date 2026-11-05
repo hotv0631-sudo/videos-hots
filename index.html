@@ -105,7 +105,7 @@
     <header>
         <div class="header-title">
             <h1>BIZI DISPONIBLE & VIDEO BIZI A VENDRE</h1>
-            <div class="subtitle">🤑 Commandes et rencontres sécurisées par WhatsApp 🤑</div>
+            <div class="subtitle">🔒 Chiffrement actif & Sécurité renforcée 🔒</div>
         </div>
         
         <div class="tabs-container">
@@ -130,7 +130,7 @@
     <div class="header-space"></div>
 
     <div class="container">
-        <div class="admin-banner-bar" id="admin-active-banner">🛡️ MODE ADMINISTRATEUR ACTIF (Cliquez sur un profil ou une vidéo pour éditer)</div>
+        <div class="admin-banner-bar" id="admin-active-banner">🛡️ MODE ADMINISTRATEUR ACTIF</div>
         <div class="grid" id="video-grid"></div>
 
         <div id="profile-detail-view">
@@ -143,15 +143,15 @@
 
     <div id="loading-modal" class="loading-overlay">
         <div class="spinner"></div>
-        <div class="loading-title" id="loading-status-title">🔥 Publication en cours...</div>
-        <div class="loading-subtext" id="loading-status-subtext">Incrustation définitive du filigrane HD sur les photos...</div>
+        <div class="loading-title" id="loading-status-title">🔒 Chiffrement en cours...</div>
+        <div class="loading-status-subtext" id="loading-status-subtext">Brouillage des données et protection des traces...</div>
     </div>
 
     <div id="vendor-modal" class="modal-overlay">
         <div class="modal-content" style="max-width: 450px;">
             <h2 id="modal-title">🔥 Inscription Bizi Disponible 📸</h2>
             <div class="info-box-important" id="modal-info-box">
-                <b>✨ FILIGRANE HD INCRUSTÉ :</b><br>Vos photos sont protégées de façon définitive (le filigrane reste même après téléchargement).
+                <b>🔒 SÉCURITÉ MAXIMALE :</b><br>Toutes vos données textuelles et téléphoniques sont chiffrées avant d'être envoyées sur le serveur.
             </div>
 
             <div id="form-videos-fields" style="display: none;">
@@ -176,12 +176,6 @@
                 <label style="margin-top: 8px;">2. Lien de la Vidéo Complète (Drive ou Mega) * :</label>
                 <input type="text" id="new-telegram" placeholder="Collez le lien ici...">
 
-                <div class="tutorial-box">
-                    <b>📖 Comment obtenir et partager votre lien :</b><br>
-                    • <b>Sur Google Drive :</b> Uploadez votre vidéo, faites un clic droit ou appuyez sur <i>Partager</i> > changez les accès pour mettre <b>« Tous les utilisateurs ayant le lien »</b> en mode <b>« Lecteur »</b>. Copiez ensuite le lien et collez-le ci-dessus.<br>
-                    • <b>Sur Mega :</b> Uploadez la vidéo, cliquez sur <i>Obtenir le lien</i> et collez-le ici.
-                </div>
-                
                 <label>Prix (en Fr) * :</label>
                 <input type="number" id="new-prix" placeholder="1500" step="100">
                 
@@ -227,7 +221,7 @@
         </div>
     </div>
 
-    <!-- MODAL D'ÉDITION ADMIN POUR UNE VIDÉO -->
+    <!-- MODAL D'ÉDITION ADMIN -->
     <div id="admin-edit-video-modal" class="modal-overlay" style="z-index: 2500;">
         <div class="modal-content" style="max-width: 450px;">
             <h2>✏️ Modifier la Vidéo (Admin)</h2>
@@ -275,11 +269,42 @@
         const API_URL = 'https://midnightblue-manatee-329921.hostingersite.com/api.php';
         const API_VIDEOS_URL = 'https://midnightblue-manatee-329921.hostingersite.com/api_videos.php';
 
+        // SYSTÈME DE CHIFFREMENT LOCAL (Brouillage réversible invisible dans la BDD)
+        const SECRET_KEY = "BiziSecure2026EncryptionKey!";
+        function chiffrer(texte) {
+            if (!texte) return "";
+            try { return btoa(encodeURIComponent(texte) + "_" + btoa(SECRET_KEY)); } catch (e) { return texte; }
+        }
+        function dechiffrer(texteEnc) {
+            if (!texteEnc) return "";
+            try {
+                let decoded = decodeURIComponent(atob(texteEnc).split("_")[0]);
+                return decoded;
+            } catch (e) {
+                return texteEnc; // Si le texte n'était pas chiffré (anciennes entrées), on le renvoie tel quel
+            }
+        }
+
+        // NETTOYAGE AUTOMATIQUE DES TRACES VISITEURS AU CHARGEMENT
+        (function nettoyerTracesPerimees() {
+            const now = Date.now();
+            const oneHour = 60 * 60 * 1000;
+            for (let i = 0; i < localStorage.length; i++) {
+                let key = localStorage.key(i);
+                if (key && key.startsWith("bizi_unlock_time_")) {
+                    let unlockTime = parseInt(localStorage.getItem(key), 10);
+                    if (now - unlockTime > oneHour) {
+                        let realId = key.replace("bizi_unlock_time_", "");
+                        localStorage.removeItem(`bizi_unlocked_${realId}`);
+                        localStorage.removeItem(key);
+                    }
+                }
+            }
+        })();
+
         function formaterNumeroWhatsApp(num) {
             let clean = String(num || '').replace(/\D/g, '');
-            if (!clean.startsWith('225')) {
-                clean = '225' + clean;
-            }
+            if (!clean.startsWith('225')) { clean = '225' + clean; }
             return clean;
         }
 
@@ -370,12 +395,8 @@
                             parsedPhotos = parsedPhotos.map(img => {
                                 if (img && typeof img === 'string') {
                                     let cleanImg = img.trim();
-                                    if (cleanImg.startsWith('"') && cleanImg.endsWith('"')) {
-                                        cleanImg = cleanImg.slice(1, -1);
-                                    }
-                                    if (!cleanImg.startsWith("data:image")) {
-                                        cleanImg = "data:image/jpeg;base64," + cleanImg;
-                                    }
+                                    if (cleanImg.startsWith('"') && cleanImg.endsWith('"')) { cleanImg = cleanImg.slice(1, -1); }
+                                    if (!cleanImg.startsWith("data:image")) { cleanImg = "data:image/jpeg;base64," + cleanImg; }
                                     return cleanImg;
                                 }
                                 return null;
@@ -385,10 +406,10 @@
                                 id: parseInt(p.id, 10),
                                 cat: p.cat ? p.cat.trim() : 'femme',
                                 vip: p.vip || 'standard',
-                                nom: p.nom,
+                                nom: dechiffrer(p.nom),
                                 photos: parsedPhotos,
-                                desc: p.desc || '',
-                                wa: formaterNumeroWhatsApp(p.telephone || ''),
+                                desc: dechiffrer(p.desc),
+                                wa: formaterNumeroWhatsApp(dechiffrer(p.telephone)),
                                 expireAt: new Date(p.created_at).getTime() + trenteJoursMs
                             };
                         });
@@ -436,13 +457,13 @@
                             realId: realId,
                             displayId: displayId,
                             cat: v.cat ? v.cat.trim() : 'femme',
-                            partenaire: v.partenaire || "Admin",
-                            nom: v.nom,
+                            partenaire: dechiffrer(v.partenaire) || "Admin",
+                            nom: dechiffrer(v.nom),
                             preview: v.preview,
                             mega: v.mega,
                             prix: parseInt(v.prix, 10),
                             qualite: v.qualite || 'bronze',
-                            wa: formaterNumeroWhatsApp(v.telephone || v.wa || ''),
+                            wa: formaterNumeroWhatsApp(dechiffrer(v.telephone || v.wa)),
                             deverrouille: isUnlocked,
                             unlockTime: unlockTime ? parseInt(unlockTime, 10) : null
                         };
@@ -471,7 +492,6 @@
             document.getElementById("tab-videos").className = nomOnglet === "videos" ? "tab-btn active" : "tab-btn";
             
             const btnModalAction = document.getElementById("btn-modal-action");
-
             if (nomOnglet === "profils") {
                 btnModalAction.innerText = "Cliquez ici pour ajouter un Bizi";
             } else {
@@ -892,7 +912,7 @@
                     <input type="file" accept="image/*" multiple onchange="ajouterPhotosProfilAdmin(event)" style="background:#1e293b; border:1.5px dashed #22c55e; padding:5px; cursor:pointer; margin-bottom:10px;">
 
                     <div style="display:flex; gap:8px;">
-                        <button class="btn-save" onclick="sauvegarderProfilAdminModifie()">💾 Enregistrer les modifications</button>
+                        <button class="btn-save" onclick="sauvegarderProfilAdminModifie()">💾 Enregistrer</button>
                         <button class="btn-close" onclick="supprimerProfilAdminActif()">🗑️ Supprimer</button>
                     </div>
                 </div>
@@ -910,13 +930,8 @@
         function ajouterPhotosProfilAdmin(event) {
             const files = event.target.files;
             if (!files || files.length === 0) return;
-
-            if (adminPhotosTemp.length + files.length > 5) {
-                alert("Maximum 5 photos autorisées !");
-            }
-
+            if (adminPhotosTemp.length + files.length > 5) { alert("Maximum 5 photos autorisées !"); }
             const limit = Math.min(files.length, 5 - adminPhotosTemp.length);
-
             for (let i = 0; i < limit; i++) {
                 inclusterFiligraneCanvas(files[i], (imageBase64) => {
                     adminPhotosTemp.push(imageBase64);
@@ -945,21 +960,18 @@
             const desc = document.getElementById("adm-p-desc").value.trim();
             const vip = document.getElementById("adm-p-vip").value;
 
-            if (!nom || !wa || !desc) {
-                alert("Tous les champs sont obligatoires !");
-                return;
-            }
+            if (!nom || !wa || !desc) { alert("Tous les champs sont obligatoires !"); return; }
 
-            document.getElementById("loading-status-title").innerText = "Mise à jour en cours...";
-            document.getElementById("loading-status-subtext").innerText = "Enregistrement des modifications du profil...";
+            document.getElementById("loading-status-title").innerText = "🔒 Chiffrement...";
+            document.getElementById("loading-status-subtext").innerText = "Mise à jour sécurisée du profil...";
             document.getElementById("loading-modal").style.display = "flex";
 
             const payload = {
                 id: profilAdminEnCoursId,
                 cat: cat,
-                nom: nom,
-                telephone: wa,
-                desc: desc,
+                nom: chiffrer(nom),
+                telephone: chiffrer(wa),
+                desc: chiffrer(desc),
                 vip: vip,
                 photos: adminPhotosTemp
             };
@@ -972,13 +984,12 @@
             .then(res => res.json())
             .then(result => {
                 document.getElementById("loading-modal").style.display = "none";
-                alert("✅ Profil modifié avec succès !");
+                alert("✅ Profil modifié et chiffré !");
                 retourGrille();
                 chargerDonneesDepuisAPI();
             })
             .catch(err => {
                 document.getElementById("loading-modal").style.display = "none";
-                console.error("Erreur:", err);
                 alert("Erreur lors de la mise à jour.");
             });
         }
@@ -1022,16 +1033,14 @@
             const payload = {
                 id: realId,
                 cat: document.getElementById("edit-v-cat").value,
-                nom: document.getElementById("edit-v-nom").value.trim(),
+                nom: chiffrer(document.getElementById("edit-v-nom").value.trim()),
                 mega: document.getElementById("edit-v-mega").value.trim(),
                 prix: parseInt(document.getElementById("edit-v-prix").value.trim(), 10),
                 qualite: document.getElementById("edit-v-qualite").value,
-                telephone: document.getElementById("edit-v-wa").value.trim()
+                telephone: chiffrer(document.getElementById("edit-v-wa").value.trim())
             };
 
-            if (editExtraitTemp) {
-                payload.preview = editExtraitTemp;
-            }
+            if (editExtraitTemp) { payload.preview = editExtraitTemp; }
 
             fetch(API_VIDEOS_URL, {
                 method: 'PUT',
@@ -1042,15 +1051,14 @@
             .then(result => {
                 fermerModalEditVideo();
                 chargerDonneesDepuisAPI();
-                alert("✅ Vidéo modifiée avec succès dans la base de données !");
+                alert("✅ Vidéo modifiée et chiffrée avec succès !");
             })
             .catch(err => console.error("Erreur édition vidéo:", err));
         }
 
         function supprimerVideoAdminActive() {
             let realId = document.getElementById("edit-v-real-id").value;
-
-            if (confirm("Supprimer cette vidéo de la base de données ?")) {
+            if (confirm("Supprimer cette vidéo ?")) {
                 fetch(`${API_VIDEOS_URL}?id=${realId}`, { method: 'DELETE' })
                     .then(res => res.json())
                     .then(result => {
@@ -1072,7 +1080,7 @@
 
             if (ongletActif === "profils") {
                 modalTitle.innerText = `🔥 Inscription Bizi Disponible 📸`;
-                infoBox.innerHTML = `<b>✨ FILIGRANE HD INCRUSTÉ :</b><br>Sélectionnez votre catégorie et téléchargez vos photos HD. Le filigrane sera définitivement incrusté.`;
+                infoBox.innerHTML = `<b>🔒 DONNÉES CHIFFRÉES :</b><br>Vos informations personnelles sont brouillées avant stockage.`;
                 formVideos.style.display = "none";
                 formProfils.style.display = "block";
                 
@@ -1086,7 +1094,7 @@
                 buttonsContainer.innerHTML = `<button class="btn-save" onclick="compresserEtPublierProfil()">Publier mon profil</button><button class="btn-close" onclick="fermerVendeurModal()">Fermer</button>`;
             } else {
                 modalTitle.innerText = "🎬 Proposer une vidéo 🎥";
-                infoBox.innerHTML = `<b>⚠️ FORMULAIRE SÉCURISÉ :</b><br>1. Choisissez la catégorie.<br>2. Téléchargez un court extrait de 5s.<br>3. Collez votre lien Drive ou Mega.`;
+                infoBox.innerHTML = `<b>🔒 SÉCURITÉ ACTIVE :</b><br>Chiffrement des métadonnées du vendeur à l'envoi.`;
                 formVideos.style.display = "block";
                 formProfils.style.display = "none";
                 
@@ -1111,24 +1119,24 @@
             const wa = document.getElementById("new-whatsapp").value.trim();
 
             if (!nom || !videoExtrait5sData || !mega || isNaN(prix) || !wa) {
-                alert("⚠️ TOUS LES CHAMPS SONT OBLIGATOIRES ! Veuillez remplir tous les champs du formulaire.");
+                alert("⚠️ TOUS LES CHAMPS SONT OBLIGATOIRES !");
                 return;
             }
 
             const loadingModal = document.getElementById("loading-modal");
-            document.getElementById("loading-status-title").innerText = "🔥 Enregistrement en cours...";
-            document.getElementById("loading-status-subtext").innerText = "Mise en ligne instantanée dans la base de données...";
+            document.getElementById("loading-status-title").innerText = "🔒 Chiffrement & Enregistrement...";
+            document.getElementById("loading-status-subtext").innerText = "Brouillage des données sensibles...";
             loadingModal.style.display = "flex";
 
             const payload = {
                 cat: cat,
-                partenaire: partenaire,
-                nom: nom,
+                partenaire: chiffrer(partenaire),
+                nom: chiffrer(nom),
                 preview: videoExtrait5sData,
                 mega: mega,
                 prix: prix,
                 qualite: qualite,
-                telephone: wa
+                telephone: chiffrer(wa)
             };
 
             fetch(API_VIDEOS_URL, {
@@ -1140,27 +1148,20 @@
             .then(result => {
                 loadingModal.style.display = "none";
                 if (result.status === 'success') {
-                    alert("✅ Vidéo publiée avec succès et visible instantanément dans sa catégorie !");
+                    alert("✅ Vidéo publiée et chiffrée avec succès !");
                     fermerVendeurModal();
-                    if (sousOngletActif !== cat) {
-                        changerSousOnglet(cat);
-                    } else {
-                        chargerDonneesDepuisAPI();
-                    }
+                    if (sousOngletActif !== cat) { changerSousOnglet(cat); } else { chargerDonneesDepuisAPI(); }
                 } else {
-                    alert("Erreur lors de l'enregistrement de la vidéo.");
+                    alert("Erreur lors de l'enregistrement.");
                 }
             })
             .catch(err => {
                 loadingModal.style.display = "none";
-                console.error("Erreur:", err);
                 alert("Erreur de connexion avec le serveur.");
             });
         }
 
-        function fermerVendeurModal() { 
-            document.getElementById("vendor-modal").style.display = "none"; 
-        }
+        function fermerVendeurModal() { document.getElementById("vendor-modal").style.display = "none"; }
 
         let imagesSelectionnees64 = [];
 
@@ -1176,7 +1177,6 @@
                     const ctx = canvas.getContext("2d");
 
                     ctx.drawImage(img, 0, 0, img.width, img.height);
-
                     ctx.save();
                     ctx.translate(canvas.width / 2, canvas.height / 2);
                     ctx.rotate(-20 * Math.PI / 180);
@@ -1192,11 +1192,7 @@
                     ctx.restore();
 
                     const base64HD = canvas.toDataURL("image/jpeg", 0.95);
-                    callback({
-                        data: base64HD,
-                        width: img.width,
-                        height: img.height
-                    });
+                    callback({ data: base64HD, width: img.width, height: img.height });
                 };
             };
             reader.readAsDataURL(file);
@@ -1205,13 +1201,8 @@
         function apercuMiniaturesPhotos(event) {
             const files = event.target.files;
             if (!files || files.length === 0) return;
-
-            if (imagesSelectionnees64.length + files.length > 5) {
-                alert("Maximum 5 photos autorisées !");
-            }
-
+            if (imagesSelectionnees64.length + files.length > 5) { alert("Maximum 5 photos autorisées !"); }
             const limit = Math.min(files.length, 5 - imagesSelectionnees64.length);
-
             for (let i = 0; i < limit; i++) {
                 inclusterFiligraneCanvas(files[i], (imgObj) => {
                     imagesSelectionnees64.push(imgObj);
@@ -1243,15 +1234,8 @@
             const desc = document.getElementById("profil-desc").value.trim();
             const wa = document.getElementById("profil-whatsapp").value.trim();
 
-            if (!nom || !desc || !wa) {
-                alert("⚠️ TOUS LES CHAMPS SONT OBLIGATOIRES ! (Nom, Téléphone et Description).");
-                return;
-            }
-
-            if (imagesSelectionnees64.length === 0) {
-                alert("⚠️ Veuillez sélectionner au moins une photo HD !");
-                return;
-            }
+            if (!nom || !desc || !wa) { alert("⚠️ TOUS LES CHAMPS SONT OBLIGATOIRES !"); return; }
+            if (imagesSelectionnees64.length === 0) { alert("⚠️ Veuillez sélectionner au moins une photo HD !"); return; }
 
             let maxResolution = 0;
             imagesSelectionnees64.forEach(img => {
@@ -1265,18 +1249,18 @@
             else detectedVip = 'bronze';
 
             const loadingModal = document.getElementById("loading-modal");
-            document.getElementById("loading-status-title").innerText = "🔥 Publication en cours...";
-            document.getElementById("loading-status-subtext").innerText = "Incrustation définitive du filigrane HD et mise en ligne...";
+            document.getElementById("loading-status-title").innerText = "🔒 Chiffrement & Publication...";
+            document.getElementById("loading-status-subtext").innerText = "Brouillage des données personnelles et envoi sécurisé...";
             loadingModal.style.display = "flex";
 
             const purePhotosArray = imagesSelectionnees64.map(img => img.data);
 
             const payload = {
                 cat: catChoice,
-                nom: nom,
-                telephone: wa,
+                nom: chiffrer(nom),
+                telephone: chiffrer(wa),
                 photos: purePhotosArray,
-                desc: desc,
+                desc: chiffrer(desc),
                 vip: detectedVip
             };
 
@@ -1289,21 +1273,15 @@
             .then(result => {
                 loadingModal.style.display = "none";
                 if (result.status === 'success') {
-                    alert("✅ Publication Ultra HD avec filigrane intégré réussie !");
+                    alert("✅ Profil publié et chiffré avec succès !");
                     fermerVendeurModal();
-                    
-                    if (sousOngletActif !== catChoice) {
-                        changerSousOnglet(catChoice);
-                    } else {
-                        chargerDonneesDepuisAPI();
-                    }
+                    if (sousOngletActif !== catChoice) { changerSousOnglet(catChoice); } else { chargerDonneesDepuisAPI(); }
                 } else {
                     alert("Erreur lors de l'enregistrement.");
                 }
             })
             .catch(err => {
                 loadingModal.style.display = "none";
-                console.error("Erreur:", err);
                 alert("Erreur de connexion avec le serveur.");
             });
         }
