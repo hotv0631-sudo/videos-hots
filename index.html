@@ -3,31 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>BIZI DISPONIBLE & VIDEO BIZI A VENDRE</title>
+    <title>💖 Bizi 💖</title>
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         html, body { width: 100%; overflow-x: hidden; background-color: #0f172a !important; color: #f8fafc; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
         body { padding: 0 10px 15px 10px; display: flex; flex-direction: column; align-items: center; }
-        header { position: fixed; top: 0; left: 0; width: 100%; z-index: 999; text-align: center; padding: 8px 10px; border-bottom: 3px solid #22c55e; background: rgba(15, 23, 42, 0.98); backdrop-filter: blur(8px); box-shadow: 0 4px 20px rgba(0,0,0,0.6); display: flex; flex-direction: column; align-items: center; gap: 5px; }
+        
+        header { position: fixed; top: 0; left: 0; width: 100%; z-index: 999; text-align: center; padding: 10px; border-bottom: 3px solid #22c55e; background: rgba(15, 23, 42, 0.98); backdrop-filter: blur(8px); box-shadow: 0 4px 20px rgba(0,0,0,0.6); display: flex; flex-direction: column; align-items: center; gap: 6px; }
+        
         .header-title { text-align: center; }
-        h1 { color: #22c55e; font-size: 13.5px; margin-bottom: 1px; letter-spacing: 0.8px; text-transform: uppercase; word-break: break-word; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
-        .subtitle { font-size: 8px; color: #38bdf8; font-weight: bold; letter-spacing: 0.5px; }
+        h1 { color: #22c55e; font-size: 20px; font-weight: 900; margin-bottom: 2px; letter-spacing: 1px; word-break: break-word; text-shadow: 0 3px 6px rgba(0,0,0,0.5); }
+        .subtitle { font-size: 9.5px; color: #38bdf8; font-weight: bold; letter-spacing: 0.5px; text-transform: uppercase; }
+        
         .tabs-container { display: flex; gap: 6px; width: 100%; max-width: 600px; justify-content: center; padding: 2px 0; }
-        .tab-btn { flex: 1; background: #1e293b; color: #94a3b8; border: 1.5px solid #475569; padding: 6px 4px; border-radius: 6px; font-weight: bold; font-size: 10px; cursor: pointer; text-align: center; transition: all 0.2s ease; }
+        .tab-btn { flex: 1; background: #1e293b; color: #94a3b8; border: 1.5px solid #475569; padding: 6px 4px; border-radius: 6px; font-weight: bold; font-size: 11px; cursor: pointer; text-align: center; transition: all 0.2s ease; }
         .tab-btn.active { background: linear-gradient(135deg, #22c55e, #16a34a); color: white; border-color: #22c55e; box-shadow: 0 2px 8px rgba(34, 197, 94, 0.4); }
         
         .subtabs-container { display: flex; gap: 3px; width: 100%; max-width: 600px; justify-content: center; padding: 2px 0; }
-        .subtab-btn { flex: 1; background: #0f172a; color: #cbd5e1; border: 1px solid #22c55e; padding: 4px 1px; border-radius: 5px; font-weight: bold; font-size: 8px; cursor: pointer; text-align: center; transition: all 0.2s ease; white-space: nowrap; }
+        .subtab-btn { flex: 1; background: #0f172a; color: #cbd5e1; border: 1px solid #22c55e; padding: 4px 1px; border-radius: 5px; font-weight: bold; font-size: 8.5px; cursor: pointer; text-align: center; transition: all 0.2s ease; white-space: nowrap; }
         .subtab-btn.active { background: #22c55e; color: white; box-shadow: 0 2px 6px rgba(34, 197, 94, 0.4); }
         
-        .btn-vendor-header { background: linear-gradient(135deg, #22c55e, #16a34a); color: white; border: 2px solid #15803d; padding: 4px 10px; border-radius: 6px; font-weight: bold; font-size: 9.5px; cursor: pointer; box-shadow: 0 3px 8px rgba(34, 197, 94, 0.4); width: 100%; max-width: 280px; }
+        .btn-vendor-header { background: linear-gradient(135deg, #22c55e, #16a34a); color: white; border: 2px solid #15803d; padding: 5px 10px; border-radius: 6px; font-weight: bold; font-size: 10px; cursor: pointer; box-shadow: 0 3px 8px rgba(34, 197, 94, 0.4); width: 100%; max-width: 280px; }
         .search-container-header { width: 100%; max-width: 600px; padding: 2px 0; display: flex; gap: 5px; align-items: center; }
         .search-input { flex: 1; background: #1e293b; border: 1.5px solid #22c55e; border-radius: 8px; padding: 5px 12px; color: #ffffff; font-size: 11px; text-align: center; outline: none; box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
         .search-input::placeholder { color: #94a3b8; }
         
         .admin-wipe-btn { display: none; background: #ef4444; color: white; border: 1.5px solid #b91c1c; border-radius: 8px; padding: 5px 10px; font-weight: bold; font-size: 9.5px; cursor: pointer; box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4); white-space: nowrap; }
 
-        .header-space { width: 100%; height: 195px; }
+        .header-space { width: 100%; height: 200px; }
         .container { width: 100%; max-width: 600px; margin: 0 auto; }
         .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; width: 100%; margin-top: 5px; }
         
@@ -108,13 +111,13 @@
 
     <header>
         <div class="header-title">
-            <h1>BIZI DISPONIBLE & VIDEO BIZI A VENDRE</h1>
-            <div class="subtitle">🔒 Chiffrement intelligent & Descriptions pros avec Emojis 🔒</div>
+            <h1>💖 Bizi 💖</h1>
+            <div class="subtitle">Paiement sécurisé et chiffré de bout en bout</div>
         </div>
         
         <div class="tabs-container">
-            <button id="tab-profils" class="tab-btn active" onclick="changerOnglet('profils')">Bizi Disponible</button>
-            <button id="tab-videos" class="tab-btn" onclick="changerOnglet('videos')">Vidéo a vendre</button>
+            <button id="tab-profils" class="tab-btn active" onclick="changerOnglet('profils')">Bizi</button>
+            <button id="tab-videos" class="tab-btn" onclick="changerOnglet('videos')">Vidéo</button>
         </div>
 
         <div class="subtabs-container" id="subtabs-container">
@@ -155,7 +158,7 @@
 
     <div id="vendor-modal" class="modal-overlay">
         <div class="modal-content" style="max-width: 450px;">
-            <h2 id="modal-title">🔥 Inscription Bizi Disponible 📸</h2>
+            <h2 id="modal-title">🔥 Inscription Buzi Disponible 📸</h2>
             <div class="info-box-important" id="modal-info-box">
                 <b>🔒 SÉCURITÉ MAXIMALE :</b><br>Toutes vos données textuelles et téléphoniques sont chiffrées avant d'être envoyées.
             </div>
@@ -280,47 +283,117 @@
         const API_URL = 'https://midnightblue-manatee-329921.hostingersite.com/api.php';
         const API_VIDEOS_URL = 'https://midnightblue-manatee-329921.hostingersite.com/api_videos.php';
 
-        // BANQUE DE DESCRIPTIONS PRO, SENSUELLES ET REMPLIES D'EMOJIS (CÔTE D'IVOIRE)
+        // BANQUE DE DESCRIPTIONS ULTRA-CIBLÉES ET VARIÉES (PLUS DE 30 PAR CATÉGORIE)
         const descriptionsMagiques = {
             femme: [
-                "🔥 Salutations mon chéri ! 💋 Je suis dispo maintenant sur Cocody, propre, douce et parfumée. 💯 Si ça te chauffe, viens en privé. Si tu n'aimes pas, tu passes ton tour ! 🥂✨",
-                "🇨🇮 100% naturelle et très accueillante à Marcory. Formes généreuses et sensuelles pour un kiff total. 🍑 Viens goûter à la vraie douceur abidjanaise sans prise de tête ! 👑",
-                "✨ Propre sur moi et hyper coquine installée à Yopougon. 🍾 Contenu 100% inédit et chaud bouillant disponible cash. Dispo immédiate ! 🔥",
-                "Waii mon boss, peau douce et propre de Treichville 💃 Dispo maintenant pour te faire passer des moments inoubliables. Contacte-moi vite sur WhatsApp ! 📱💎"
+                "🔥 Coucou bébé ! J'ai écarté mon string exprès sur Cocody, mon vagin est disponible et humide, viens taper dans mon utérus ! 💋💯",
+                "🇨🇮 À Marcory, bébé, viens taper dans mon utérus ! J'ai écarté mon string, mon vagin est disponible pour un kiff total. 🍑👑",
+                "✨ À Yopougon, bébé, mon vagin est disponible et bien chaud. Viens taper dans mon utérus dès maintenant ! 🔥🍾",
+                "Waii mon boss de Treichville 💃 J'ai écarté mon string, mon vagin est disponible, viens taper dans mon utérus toute la nuit ! 📱💎",
+                "💋 Salut mon cœur à Abidjan, j'ai écarté mon string, mon vagin est disponible, viens taper dans mon utérus ! 🔥",
+                "🔥 Bébé viens à Marcory ! Mon vagin est disponible, viens taper dans mon utérus pour un max de plaisir. 🥂💯",
+                "✨ Cocody : J'ai écarté mon string, mon vagin est disponible, viens taper dans mon utérus mon boss ! 🚀",
+                "👑 La reine d'Abidjan : Bébé, mon vagin est disponible, viens taper dans mon utérus sans hésiter. 🍑🔥",
+                "🥂 Salut bg à Yopougon, j'ai écarté mon string, mon vagin est disponible, viens taper dans mon utérus ! ✨",
+                "🔥 Bébé à Adjamé, mon vagin est disponible, viens taper dans mon utérus pour une partie torride ! 💋",
+                "💎 Abidjan VIP : J'ai écarté mon string, mon vagin est disponible, viens taper dans mon utérus ! 🔥",
+                "🔥 Mon chéri à Marcory, mon vagin est disponible, viens taper dans mon utérus en privé ! 💯💦",
+                "✨ Bébé, mon vagin est disponible et prêt, viens taper dans mon utérus sur Abidjan ! 🚀",
+                "👑 Cocody / Deux Plateaux : J'ai écarté mon string, mon vagin est disponible, viens taper dans mon utérus ! 🔥",
+                "🔥 Bébé à Abidjan, mon vagin est disponible, viens taper dans mon utérus et me posséder ! 💋",
+                "✨ Treichville : J'ai écarté mon string, mon vagin est disponible, viens taper dans mon utérus ! 🍾",
+                "🔥 Salut mon roi, mon vagin est disponible, viens taper dans mon utérus et me faire crier ! 💎",
+                "🇨🇮 Marcory résidentiel : Bébé, mon vagin est disponible, viens taper dans mon utérus ! 🔥",
+                "✨ Bébé à Abidjan, j'ai écarté mon string, mon vagin est disponible, viens taper dans mon utérus ! 🥂",
+                "🔥 Yopougon : Bébé, mon vagin est disponible, viens taper dans mon utérus et me secouer ! 🍑💯",
+                "👑 Salut bg, mon vagin est disponible, viens taper dans mon utérus pour kiffer grave ! ✨🔥",
+                "🔥 Bébé à Abidjan, mon vagin est disponible, viens taper dans mon utérus sur mon lit ! 💋",
+                "✨ Cocody : Mon vagin est disponible, viens taper dans mon utérus, je t'attends ! 🍾🔥",
+                "🔥 Bébé, mon vagin est disponible, viens taper dans mon utérus et me dompter ! 💪",
+                "💎 Marcory : J'ai écarté mon string, mon vagin est disponible, viens taper dans mon utérus ! 🔥✨",
+                "🔥 Bébé à Abidjan, mon vagin est disponible, viens taper dans mon utérus toute crue ! 💋",
+                "✨ Yopougon : Bébé, mon vagin est disponible, viens taper dans mon utérus ! 🍑🔥",
+                "👑 Salut mon cœur, mon vagin est disponible, viens taper dans mon utérus en direct ! 🥂",
+                "🔥 Bébé à Abidjan, mon vagin est disponible, viens taper dans mon utérus et me faire jouir ! 💯✨",
+                "✨ Prête sur Abidjan, mon vagin est disponible, viens taper dans mon utérus sur WhatsApp ! 🔥🚀"
             ],
             homme: [
-                "💪 Mâle dominant, propre, musclé et bien bâti à Abidjan. 🔥 Dispo pour satisfaire toutes tes envies les plus torrides. 💯 Du lourd et du sérieux uniquement ! ⚡",
-                "😎 Mec chaud, endurant et très discret pour un max de plaisir. 🚀 Si tu cherches de la performance et du standing, tu es au bon endroit mon cher. 👑",
-                "🔥 BG propre, toujours prêt pour l'action. Vidéos exclusives et dispos sensuelles garanties sans blabla à Abidjan ! 💎✨"
+                "💪 Mâle LGBT, mon cul est disponible, viens me sodomiser et viens taper dans mon rectum à Abidjan ! 🔥💯",
+                "😎 Bébé LGBT, mon cul est disponible, viens me sodomiser et viens taper dans mon rectum sans tabou ! 🚀👑",
+                "🔥 BG propre, mon cul est disponible, viens me sodomiser et viens taper dans mon rectum toute la nuit ! 💎✨",
+                "💪 Salut mon chéri, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum à Abidjan ! 🔥💦",
+                "🔥 Mâle LGBT d'Abidjan, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 👑💯",
+                "💪 Bébé, mon cul est disponible, viens me sodomiser et viens taper dans mon rectum à Marcory ! 🔥🚀",
+                "😎 Cocody LGBT : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 💎✨",
+                "🔥 Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum pour un max de kiff ! 🔥💪",
+                "💪 Abidjan LGBT : Mon cul est disponible, viens me sodomiser et viens taper dans mon rectum ! 👑",
+                "🔥 Bébé, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum en privé ! 🚀🔥",
+                "💪 Marcory : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum de force ! 💯",
+                "🔥 Abidjan LGBT : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 💎✨",
+                "💪 Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum sans hésiter ! 🔥",
+                "🔥 Yopougon LGBT : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 👑🚀",
+                "💪 Bébé, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🔥💯",
+                "🔥 Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum jusqu'à l'épuisement ! 💎",
+                "💪 Abidjan VIP LGBT : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🔥",
+                "🔥 Bébé, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🚀✨",
+                "💪 Treichville LGBT : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🔥💪",
+                "🔥 Bébé, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum à Abidjan ! 👑💎",
+                "💪 Mâle LGBT, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🔥",
+                "🔥 Cocody : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🚀💯",
+                "💪 Bébé, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🔥✨",
+                "🔥 Marcory LGBT : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 💎👑",
+                "💪 Bébé, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🔥",
+                "🔥 Abidjan : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🚀",
+                "💪 Bébé, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🔥💯",
+                "🔥 Cocody / Deux Plateaux : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 💎",
+                "💪 Mâle LGBT, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🔥✨",
+                "🔥 Abidjan : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum sur WhatsApp ! 🚀🔥"
             ],
             trans: [
-                "🦋 Beauté fatale, féminine et irrésistible à Abidjan. 💋 J'offre le meilleur du charme et de la sensualité pour les connaisseurs. Viens découvrir mon univers VIP ! ✨🔥",
-                "👑 Glamour, sensuelle et très ouverte aux belles surprises. 🥂 Mon contenu et mes dispos vont te faire perdre la tête. 100% pur plaisir sans tabou ! 💫",
-                "🔥 La reine de la nuit abidjanaise, chic et coquine. Dispo pour des moments torrides inoubliables entre adultes avertis. 🍾💋"
+                "🦋 Bébé trans à Abidjan, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! ✨🔥",
+                "👑 Sensuelle et VIP, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum sans tabou ! 💫💋",
+                "🔥 Reine de la nuit, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🍾",
+                "🦋 Abidjan : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! ✨🔥",
+                "👑 Bébé, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 💋",
+                "🔥 Chic et coquine, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 💫🥂",
+                "🦋 Abidjan : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🔥✨",
+                "👑 Beauté fatale, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🍾💋",
+                "🔥 Abidjan : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 💫🔥",
+                "🦋 Douceur trans, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! ✨💎"
             ],
             lesbi: [
-                "👭 Complicité féminine intense, câlins torrides et duels sensuels de folie à Abidjan ! 🔥 Viens déguster notre contenu exclusif entre filles très coquines 💋✨",
-                "✨ Fusion féminine et douceur sensuelle au sommet. 🥂 Deux fois plus de plaisir et de vibes à découvrir sans modération. 🍑🔥",
-                "🔥 Connexion torride et moments chauds entre filles. Le meilleur du charme féminin et de l'intimité rien que pour vous ! 💎💖"
+                "👭 Bébé lesbienne à Abidjan, viens lécher mon clitoris, fusion féminine torride garantie ! 🔥✨",
+                "✨ Entre filles, viens lécher mon clitoris, câlins sensuels et volupté à Abidjan ! 🍑🔥",
+                "🔥 Connexion entre filles, viens lécher mon clitoris, plaisir intense rien que pour toi ! 💎💖",
+                "👭 Abidjan : Viens lécher mon clitoris, complicité féminine et frissons garantis ! 🔥✨",
+                "✨ Douceur et baisers, viens lécher mon clitoris, notre univers lesbien t'attend ! 🍑🥂",
+                "🔥 Plaisir pur entre filles, viens lécher mon clitoris, viens kiffer avec nous ! 💎💖",
+                "👭 Abidjan : Viens lécher mon clitoris, fusion totale et câlins chauds ! 🔥✨",
+                "✨ Entre filles sans tabou, viens lécher mon clitoris, viens vibrer ! 🍑💖",
+                "🔥 Volupté féminine, viens lécher mon clitoris, rejoins notre univers ! 💎✨",
+                "👭 Le paradis lesbien, viens lécher mon clitoris, douceur torride garantie ! 🔥💖"
             ],
             blanche: [
-                "🌟 Beauté exotique, douce et très câline. ✈️ En mode VIP pour des moments d'évasion et de pur plaisir à Abidjan 🥂🔥",
-                "💎 Charme européen, sensuelle, propre et raffinée. Viens découvrir mes vidéos exclusives et mes dispos privées haut de gamme ! ✨🍾",
-                "✨ Glamour et élégance au rendez-vous. 💋 Pour les connaisseurs qui cherchent du très lourd et du standing ! 👑🔥"
+                "🌟 Européenne à Abidjan, bébé, charme exotique et dispo VIP rien que pour toi 🥂🔥",
+                "💎 Charme européen, sensuelle et raffinée, viens découvrir mes vidéos privées haut de gamme ! ✨🍾",
+                "✨ Élégance européenne, pour les connaisseurs cherchant du standing à Abidjan ! 👑🔥",
+                "🌟 Douceur d'Europe, viens passer un moment inoubliable avec moi 🥂✨",
+                "💎 Européenne propre et coquine, viens goûter au luxe haut de gamme ! 🍾🔥",
+                "✨ Sensualité européenne, mes dispos VIP vont te faire chavirer ! 👑🥂",
+                "🌟 Beauté lumineuse, viens vivre une expérience unique à Abidjan ! 🔥✨",
+                "💎 Charme et discrétion européenne, mes secrets les plus chauds ! 🍾👑",
+                "✨ Douce et irrésistible, viens t'évader avec moi dès ce soir ! 🥂🔥",
+                "🌟 L'élégance VIP européenne en toute discrétion à Abidjan ! 💎✨"
             ]
         };
 
         function genererDescriptionAleatoire() {
             let selectEl = document.getElementById('profil-categorie');
             let cat = selectEl ? selectEl.value : 'femme';
-            
             let liste = descriptionsMagiques[cat] || descriptionsMagiques['femme'];
             let choixAleatoire = liste[Math.floor(Math.random() * liste.length)];
-            
             let descBox = document.getElementById('profil-desc');
-            if (descBox) {
-                descBox.value = choixAleatoire;
-            }
+            if (descBox) { descBox.value = choixAleatoire; }
         }
 
         function chiffrer(texte) {
@@ -1155,7 +1228,7 @@
             const buttonsContainer = document.getElementById("modal-buttons-container");
 
             if (ongletActif === "profils") {
-                modalTitle.innerText = `🔥 Inscription Bizi Disponible 📸`;
+                modalTitle.innerText = `🔥 Inscription Buzi Disponible 📸`;
                 infoBox.innerHTML = `<b>🔒 DONNÉES CHIFFRÉES :</b><br>Vos informations personnelles sont brouillées avant stockage.`;
                 formVideos.style.display = "none";
                 formProfils.style.display = "block";
