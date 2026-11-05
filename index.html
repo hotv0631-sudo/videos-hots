@@ -1269,10 +1269,12 @@
             const qualite = document.getElementById("new-qualite").value;
             const wa = document.getElementById("new-whatsapp").value.trim();
 
-            if (!nom || !videoExtrait5sData || !mega || isNaN(prix) || !wa) {
-                alert("⚠️ TOUS LES CHAMPS SONT OBLIGATOIRES !");
-                return;
-            }
+            // Vérification détaillée avec message précis pour identifier quel champ bloque
+            if (!nom) { alert("⚠️ Veuillez entrer un titre pour la vidéo !"); return; }
+            if (!videoExtrait5sData) { alert("⚠️ Veuillez patienter ou sélectionner un extrait vidéo de 5s valide !"); return; }
+            if (!mega) { alert("⚠️ Veuillez ajouter le lien de la vidéo complète !"); return; }
+            if (isNaN(prix) || prix <= 0) { alert("⚠️ Veuillez entrer un prix valide en FCFA !"); return; }
+            if (!wa) { alert("⚠️ Veuillez renseigner votre numéro WhatsApp !"); return; }
 
             const loadingModal = document.getElementById("loading-modal");
             document.getElementById("loading-status-title").innerText = "🔒 Chiffrement & Enregistrement...";
