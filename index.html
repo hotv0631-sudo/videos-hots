@@ -173,7 +173,6 @@
             </div>
 
             <div id="form-videos-fields" style="display: none;">
-                <!-- GUIDE PAS À PAS INTÉGRÉ -->
                 <div class="tutorial-box">
                     <b>📖 Guide pour poster une vidéo :</b><br>
                     1. Envoie l'extrait (5s) sur Telegram.<br>
@@ -815,7 +814,6 @@
                     
                     card.className = cardClass;
 
-                    // Affichage de la mini-vidéo animée en boucle directement depuis le lien direct Telegram (.mp4)
                     const mediaHtml = `
                         <div class="media-container" onclick="${adminModeConnecte ? `ouvrirModalEditVideo(${scene.realId})` : ''}">
                             <video class="preview-video" muted loop playsinline webkit-playsinline preload="metadata" ontimeupdate="if(this.currentTime>=5){this.currentTime=0;}">
@@ -1174,10 +1172,11 @@
 
         function sauvegarderEditionVideoAdmin() {
             let realId = document.getElementById("edit-v-real-id").value;
+            const cat = document.getElementById("edit-v-cat").value; // Récupère correctement la catégorie modifiée
 
             const payload = {
                 id: realId,
-                cat: document.getElementById("edit-v-cat").value,
+                cat: cat,
                 nom: chiffrer(document.getElementById("edit-v-nom").value.trim()),
                 preview: document.getElementById("edit-v-preview").value.trim(),
                 mega: document.getElementById("edit-v-mega").value.trim(),
