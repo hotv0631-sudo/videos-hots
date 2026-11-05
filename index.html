@@ -59,7 +59,7 @@
         .info-id { font-size: 9.5px; color: #94a3b8; margin-bottom: 6px; text-align: center; background: #0f172a; padding: 3px; border-radius: 4px; border: 1px dashed #475569; }
         .whatsapp-btn { display: flex; align-items: center; justify-content: center; gap: 4px; background: #22c55e; color: #ffffff; text-align: center; padding: 6px 4px; border-radius: 5px; text-decoration: none; font-weight: bold; font-size: 10px; margin-bottom: 6px; }
         input, select, textarea { width: 100%; background: #0f172a; border: 1.5px solid #22c55e; border-radius: 5px; padding: 5px; color: #ffffff; font-size: 11px; text-align: center; outline: none; }
-        textarea { text-align: left; resize: none; height: 60px; }
+        textarea { text-align: left; resize: none; height: 65px; }
         button.verify-btn { width: 100%; background: #22c55e; color: #ffffff; border: none; padding: 6px; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 11px; }
         .message { margin-top: 4px; font-size: 10px; text-align: center; font-weight: bold; }
         .telegram-link { display: block; background: #0088cc; color: #ffffff; padding: 6px; border-radius: 5px; text-decoration: none; font-weight: bold; margin-top: 4px; font-size: 11px; text-align: center; }
@@ -74,6 +74,8 @@
         .btn-save { background: #22c55e; color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 11px; padding: 8px; flex: 1; }
         .btn-close { background: #ef4444; color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 11px; padding: 8px; flex: 1; }
         
+        .btn-magic { background: linear-gradient(135deg, #38bdf8, #0284c7); color: white; border: none; border-radius: 4px; padding: 4px 8px; font-size: 9px; font-weight: bold; cursor: pointer; margin-top: 4px; float: right; }
+
         #profile-detail-view { display: none; width: 100%; max-width: 600px; background: #1e293b; border: 2.5px solid #22c55e; border-radius: 12px; padding: 15px; margin-top: 5px; box-shadow: 0 6px 20px rgba(0,0,0,0.6); position: relative; }
         .back-btn { background: #475569; color: white; border: none; padding: 6px 12px; border-radius: 5px; font-weight: bold; font-size: 10px; cursor: pointer; margin-bottom: 10px; }
         
@@ -107,7 +109,7 @@
     <header>
         <div class="header-title">
             <h1>BIZI DISPONIBLE & VIDEO BIZI A VENDRE</h1>
-            <div class="subtitle">🔒 Chiffrement intelligent & Sécurité renforcée 🔒</div>
+            <div class="subtitle">🔒 Chiffrement intelligent & Descriptions pros avec Emojis 🔒</div>
         </div>
         
         <div class="tabs-container">
@@ -115,7 +117,6 @@
             <button id="tab-videos" class="tab-btn" onclick="changerOnglet('videos')">Vidéo a vendre</button>
         </div>
 
-        <!-- 5 SOUS-ONGLETS SUR LA MÊME LIGNE -->
         <div class="subtabs-container" id="subtabs-container">
             <button id="subtab-femme" class="subtab-btn active" onclick="changerSousOnglet('femme')">Femme</button>
             <button id="subtab-homme" class="subtab-btn" onclick="changerSousOnglet('homme')">Homme</button>
@@ -156,12 +157,12 @@
         <div class="modal-content" style="max-width: 450px;">
             <h2 id="modal-title">🔥 Inscription Bizi Disponible 📸</h2>
             <div class="info-box-important" id="modal-info-box">
-                <b>🔒 SÉCURITÉ MAXIMALE :</b><br>Toutes vos données textuelles et téléphoniques sont chiffrées avant d'être envoyées sur le serveur.
+                <b>🔒 SÉCURITÉ MAXIMALE :</b><br>Toutes vos données textuelles et téléphoniques sont chiffrées avant d'être envoyées.
             </div>
 
             <div id="form-videos-fields" style="display: none;">
                 <label>Catégorie Vidéo * :</label>
-                <select id="new-video-categorie" style="background: #1e293b; color: #22c55e; font-weight: bold; border: 1.5px solid #22c55e; margin-bottom: 6px;">
+                <select id="new-video-categorie" style="background: #1e293b; color: #22c55e; font-weight: bold; border: 1.5px solid #22c55e; margin-bottom: 6px;" onchange="genererDescriptionAleatoire()">
                     <option value="femme">Femme</option>
                     <option value="homme">Homme</option>
                     <option value="trans">Trans</option>
@@ -173,7 +174,7 @@
                 <input type="text" id="new-partenaire" placeholder="Ex: Jean Kouassi">
                 
                 <label>Titre de la vidéo * :</label>
-                <input type="text" id="new-nom" placeholder="Ex: Bizi souriant">
+                <input type="text" id="new-nom" placeholder="Ex: Bizi sensuelle à Abidjan 💎">
                 
                 <label>1. Extrait Aperçu (Court extrait de 5s max) * :</label>
                 <input type="file" id="new-video-file" accept="video/*" onchange="traiterExtraitVideo5s(event)" style="background: #1e293b; border: 1.5px dashed #22c55e; padding: 6px; cursor: pointer;">
@@ -198,7 +199,7 @@
 
             <div id="form-profils-fields">
                 <label>Catégorie Bizi (Sélectionnable) * :</label>
-                <select id="profil-categorie" style="background: #1e293b; color: #22c55e; font-weight: bold; border: 1.5px solid #22c55e;">
+                <select id="profil-categorie" style="background: #1e293b; color: #22c55e; font-weight: bold; border: 1.5px solid #22c55e;" onchange="genererDescriptionAleatoire()">
                     <option value="femme">Femme</option>
                     <option value="homme">Homme</option>
                     <option value="trans">Trans</option>
@@ -207,15 +208,17 @@
                 </select>
 
                 <label>Votre Nom / Pseudo * :</label>
-                <input type="text" id="profil-nom" placeholder="Ex: Vanessa Bizi">
+                <input type="text" id="profil-nom" placeholder="Ex: Vanessa Bizi 👑">
 
                 <label>Vos Photos HD (Max 5 photos) * :</label>
                 <input type="file" id="profil-fichiers-input" accept="image/*" multiple onchange="apercuMiniaturesPhotos(event)" style="background: #1e293b; border: 1.5px dashed #22c55e; padding: 6px; cursor: pointer;">
                 
                 <div class="preview-thumbs-container" id="preview-thumbs-box"></div>
 
-                <label style="margin-top: 10px;">Description (Quartier, dispos, etc.) * :</label>
-                <textarea id="profil-desc" placeholder="Ex: Disponible à Cocody, propre et douce..."></textarea>
+                <label style="margin-top: 10px;">Description sensuelle & professionnelle (Modifiable) * :</label>
+                <textarea id="profil-desc" placeholder="Génération automatique avec emojis..."></textarea>
+                <button type="button" class="btn-magic" onclick="genererDescriptionAleatoire()">🎲 Générer une autre description</button>
+                <div style="clear:both;"></div>
 
                 <label>Votre Numéro de Téléphone * :</label>
                 <input type="text" id="profil-whatsapp" class="input-placeholder-rdm" placeholder="2250500000000">
@@ -276,6 +279,49 @@
     <script>
         const API_URL = 'https://midnightblue-manatee-329921.hostingersite.com/api.php';
         const API_VIDEOS_URL = 'https://midnightblue-manatee-329921.hostingersite.com/api_videos.php';
+
+        // BANQUE DE DESCRIPTIONS PRO, SENSUELLES ET REMPLIES D'EMOJIS (CÔTE D'IVOIRE)
+        const descriptionsMagiques = {
+            femme: [
+                "🔥 Salutations mon chéri ! 💋 Je suis dispo maintenant sur Cocody, propre, douce et parfumée. 💯 Si ça te chauffe, viens en privé. Si tu n'aimes pas, tu passes ton tour ! 🥂✨",
+                "🇨🇮 100% naturelle et très accueillante à Marcory. Formes généreuses et sensuelles pour un kiff total. 🍑 Viens goûter à la vraie douceur abidjanaise sans prise de tête ! 👑",
+                "✨ Propre sur moi et hyper coquine installée à Yopougon. 🍾 Contenu 100% inédit et chaud bouillant disponible cash. Dispo immédiate ! 🔥",
+                "Waii mon boss, peau douce et propre de Treichville 💃 Dispo maintenant pour te faire passer des moments inoubliables. Contacte-moi vite sur WhatsApp ! 📱💎"
+            ],
+            homme: [
+                "💪 Mâle dominant, propre, musclé et bien bâti à Abidjan. 🔥 Dispo pour satisfaire toutes tes envies les plus torrides. 💯 Du lourd et du sérieux uniquement ! ⚡",
+                "😎 Mec chaud, endurant et très discret pour un max de plaisir. 🚀 Si tu cherches de la performance et du standing, tu es au bon endroit mon cher. 👑",
+                "🔥 BG propre, toujours prêt pour l'action. Vidéos exclusives et dispos sensuelles garanties sans blabla à Abidjan ! 💎✨"
+            ],
+            trans: [
+                "🦋 Beauté fatale, féminine et irrésistible à Abidjan. 💋 J'offre le meilleur du charme et de la sensualité pour les connaisseurs. Viens découvrir mon univers VIP ! ✨🔥",
+                "👑 Glamour, sensuelle et très ouverte aux belles surprises. 🥂 Mon contenu et mes dispos vont te faire perdre la tête. 100% pur plaisir sans tabou ! 💫",
+                "🔥 La reine de la nuit abidjanaise, chic et coquine. Dispo pour des moments torrides inoubliables entre adultes avertis. 🍾💋"
+            ],
+            lesbi: [
+                "👭 Complicité féminine intense, câlins torrides et duels sensuels de folie à Abidjan ! 🔥 Viens déguster notre contenu exclusif entre filles très coquines 💋✨",
+                "✨ Fusion féminine et douceur sensuelle au sommet. 🥂 Deux fois plus de plaisir et de vibes à découvrir sans modération. 🍑🔥",
+                "🔥 Connexion torride et moments chauds entre filles. Le meilleur du charme féminin et de l'intimité rien que pour vous ! 💎💖"
+            ],
+            blanche: [
+                "🌟 Beauté exotique, douce et très câline. ✈️ En mode VIP pour des moments d'évasion et de pur plaisir à Abidjan 🥂🔥",
+                "💎 Charme européen, sensuelle, propre et raffinée. Viens découvrir mes vidéos exclusives et mes dispos privées haut de gamme ! ✨🍾",
+                "✨ Glamour et élégance au rendez-vous. 💋 Pour les connaisseurs qui cherchent du très lourd et du standing ! 👑🔥"
+            ]
+        };
+
+        function genererDescriptionAleatoire() {
+            let selectEl = document.getElementById('profil-categorie');
+            let cat = selectEl ? selectEl.value : 'femme';
+            
+            let liste = descriptionsMagiques[cat] || descriptionsMagiques['femme'];
+            let choixAleatoire = liste[Math.floor(Math.random() * liste.length)];
+            
+            let descBox = document.getElementById('profil-desc');
+            if (descBox) {
+                descBox.value = choixAleatoire;
+            }
+        }
 
         function chiffrer(texte) {
             if (!texte) return "";
@@ -1121,6 +1167,9 @@
                 document.getElementById("profil-fichiers-input").value = "";
                 document.getElementById("preview-thumbs-box").innerHTML = "";
                 imagesSelectionnees64 = [];
+                
+                genererDescriptionAleatoire();
+
                 buttonsContainer.innerHTML = `<button class="btn-save" onclick="compresserEtPublierProfil()">Publier mon profil</button><button class="btn-close" onclick="fermerVendeurModal()">Fermer</button>`;
             } else {
                 modalTitle.innerText = "🎬 Proposer une vidéo 🎥";
