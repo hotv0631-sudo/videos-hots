@@ -34,13 +34,12 @@
 
         .media-container { width: 100%; border-radius: 8px; overflow: hidden; background: #000000; margin-bottom: 6px; aspect-ratio: 9 / 16; display: flex; align-items: center; justify-content: center; position: relative; cursor: pointer; }
         video.preview-video { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
-        .profil-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .profil-img { width: 100%; height: 100%; object-fit: cover; display: block; transition: opacity 0.5s ease-in-out; }
         
-        .watermark-overlay { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-15deg); color: rgba(255, 255, 255, 0.35); font-size: 26px; font-weight: 900; letter-spacing: 2px; pointer-events: none; z-index: 10; text-transform: uppercase; white-space: nowrap; text-shadow: 0 2px 8px rgba(0,0,0,0.6); }
-
         .card h3 { margin: 0 0 3px 0; color: #f1f5f9; font-size: 11.5px; text-align: center; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .profil-desc { font-size: 10px; color: #cbd5e1; text-align: center; margin-bottom: 6px; min-height: 28px; max-height: 40px; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; line-height: 1.3; }
-        .countdown-badge { background: rgba(239, 68, 68, 0.2); border: 1px solid #ef4444; color: #f87171; font-size: 8.5px; font-weight: bold; text-align: center; padding: 3px; border-radius: 4px; margin-bottom: 6px; }
+        
+        .badge-expire-bottomright { position: absolute; bottom: 6px; right: 6px; background: rgba(15, 23, 42, 0.85); border: 1px solid #38bdf8; color: #38bdf8; font-size: 8px; font-weight: bold; padding: 2px 5px; border-radius: 4px; pointer-events: none; z-index: 12; }
         
         .quality-badge { font-size: 9px; font-weight: bold; text-align: center; padding: 3px 6px; border-radius: 4px; margin-bottom: 6px; display: inline-block; width: 100%; }
         .badge-gold { background: linear-gradient(135deg, #eab308, #ca8a04); color: #ffffff; }
@@ -57,7 +56,7 @@
         .message { margin-top: 4px; font-size: 10px; text-align: center; font-weight: bold; }
         .telegram-link { display: block; background: #0088cc; color: #ffffff; padding: 6px; border-radius: 5px; text-decoration: none; font-weight: bold; margin-top: 4px; font-size: 11px; text-align: center; }
         .admin-fab { position: fixed; bottom: 15px; right: 15px; background: #ef4444; color: white; border: none; border-radius: 50%; width: 45px; height: 45px; font-size: 20px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.5); z-index: 1000; display: flex; align-items: center; justify-content: center; }
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; justify-content: center; align-items: center; padding: 15px; }
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); z-index: 2000; justify-content: center; align-items: center; padding: 15px; }
         .modal-content { background: #1e293b; border: 2px solid #22c55e; padding: 15px; border-radius: 12px; width: 100%; max-width: 650px; max-height: 90vh; overflow-y: auto; color: #f8fafc; }
         .modal-content h2 { color: #22c55e; font-size: 15px; margin-bottom: 10px; text-align: center; }
         .info-box-important { background: rgba(34, 197, 94, 0.15); border: 2px dashed #22c55e; padding: 10px; border-radius: 6px; margin-bottom: 12px; font-size: 10.5px; color: #86efac; line-height: 1.4; text-align: left; }
@@ -66,12 +65,13 @@
         .btn-save { background: #22c55e; color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 11px; padding: 8px; flex: 1; }
         .btn-close { background: #ef4444; color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 11px; padding: 8px; flex: 1; }
         
-        #profile-detail-view { display: none; width: 100%; max-width: 600px; background: #1e293b; border: 2.5px solid #22c55e; border-radius: 12px; padding: 15px; margin-top: 5px; box-shadow: 0 6px 20px rgba(0,0,0,0.6); }
+        #profile-detail-view { display: none; width: 100%; max-width: 600px; background: #1e293b; border: 2.5px solid #22c55e; border-radius: 12px; padding: 15px; margin-top: 5px; box-shadow: 0 6px 20px rgba(0,0,0,0.6); position: relative; }
         .back-btn { background: #475569; color: white; border: none; padding: 6px 12px; border-radius: 5px; font-weight: bold; font-size: 10px; cursor: pointer; margin-bottom: 10px; }
+        
         .horizontal-slider-container { width: 100%; display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; gap: 0; border-radius: 8px; background: #000; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
         .horizontal-slider-container::-webkit-scrollbar { display: none; }
-        .profile-slide-img-wrapper { flex: 0 0 100%; width: 100%; position: relative; display: flex; align-items: center; justify-content: center; background: #000; scroll-snap-align: start; scroll-snap-stop: always; border-radius: 8px; }
-        .profile-slide-img { width: 100%; max-height: 380px; object-fit: contain; border-radius: 8px; }
+        .profile-slide-img-wrapper { flex: 0 0 100%; width: 100%; position: relative; display: flex; align-items: center; justify-content: center; background: #000; scroll-snap-align: start; scroll-snap-stop: always; border-radius: 8px; aspect-ratio: 9 / 14; }
+        .profile-slide-img { width: 100%; height: 100%; object-fit: cover; border-radius: 8px; }
         .slider-dots { display: flex; justify-content: center; gap: 6px; margin-top: 8px; margin-bottom: 10px; }
         .dot-btn { background: #475569; border: none; width: 28px; height: 6px; border-radius: 3px; cursor: pointer; transition: background 0.2s; }
         .dot-btn.active { background: #22c55e; }
@@ -85,6 +85,13 @@
         .thumb-delete-btn { position: absolute; top: 2px; right: 2px; background: #ef4444; color: white; border: none; border-radius: 50%; width: 18px; height: 18px; font-size: 10px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.5); }
 
         .admin-banner-bar { background: #ef4444; color: white; text-align: center; font-size: 11px; font-weight: bold; padding: 6px; border-radius: 6px; margin-bottom: 10px; display: none; }
+
+        /* Animation Modal Chargement Ultra Joli */
+        .loading-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(8px); z-index: 3000; justify-content: center; align-items: center; flex-direction: column; text-align: center; color: white; }
+        .spinner { width: 65px; height: 65px; border: 5px solid rgba(34, 197, 94, 0.2); border-top: 5px solid #22c55e; border-radius: 50%; animation: spin 0.8s linear infinite; margin-bottom: 20px; box-shadow: 0 0 20px rgba(34, 197, 94, 0.5); }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .loading-title { font-size: 17px; font-weight: bold; color: #22c55e; margin-bottom: 8px; letter-spacing: 0.5px; }
+        .loading-subtext { font-size: 12px; color: #cbd5e1; max-width: 300px; line-height: 1.5; }
     </style>
 </head>
 <body>
@@ -128,28 +135,35 @@
 
     <button class="admin-fab" onclick="gererBoutonAdmin()" title="Mode Admin">⚙️</button>
 
+    <!-- OVERLAY PUBLICATION EN COURS (SUPER JOLI) -->
+    <div id="loading-modal" class="loading-overlay">
+        <div class="spinner"></div>
+        <div class="loading-title" id="loading-status-title">🔥 Publication en cours...</div>
+        <div class="loading-subtext" id="loading-status-subtext">Traitement et sécurisation de vos médias en HD...</div>
+    </div>
+
     <!-- MODAL PUBLICATION CLIENT -->
     <div id="vendor-modal" class="modal-overlay">
         <div class="modal-content" style="max-width: 450px;">
             <h2 id="modal-title">🔥 Inscription Bizi Disponible 📸</h2>
             <div class="info-box-important" id="modal-info-box">
-                <b>✨ EXTRAIT SÉCURISÉ 5S :</b><br>Sélectionnez un court extrait vidéo (max 5s) pour l'aperçu, et collez votre lien Mega pour la vidéo complète.
+                <b>✨ FILIGRANE HD & SÉCURITÉ :</b><br>Vos photos sont automatiquement protégées avec le filigrane HD. Tous les champs sont obligatoires.
             </div>
 
             <div id="form-videos-fields" style="display: none;">
-                <label>Nom du Partenaire / Vendeur :</label>
+                <label>Nom du Partenaire / Vendeur * :</label>
                 <input type="text" id="new-partenaire" placeholder="Ex: Jean Kouassi">
-                <label>Titre de la vidéo :</label>
+                <label>Titre de la vidéo * :</label>
                 <input type="text" id="new-nom" placeholder="Ex: Bizi souriant">
                 
-                <label>Fichier Extrait Aperçu (5s max) :</label>
+                <label>Fichier Extrait Aperçu (5s max) * :</label>
                 <input type="file" id="new-video-file" accept="video/*" onchange="traiterExtraitVideo5s(event)" style="background: #1e293b; border: 1.5px dashed #22c55e; padding: 6px; cursor: pointer;">
                 <div id="video-preview-status" style="font-size: 10px; color: #38bdf8; margin-top: 4px; text-align: center;"></div>
 
-                <label style="margin-top: 8px;">Lien Vidéo Complet (Lien Mega direct) :</label>
+                <label style="margin-top: 8px;">Lien Vidéo Complet (Mega direct) * :</label>
                 <input type="text" id="new-telegram" placeholder="https://mega.nz/file/...">
                 
-                <label>Prix (en Fr) :</label>
+                <label>Prix (en Fr) * :</label>
                 <input type="number" id="new-prix" placeholder="1500" step="100">
                 <label>Qualité / Niveau de la vidéo :</label>
                 <select id="new-qualite">
@@ -157,31 +171,31 @@
                     <option value="moyen">🥇 Moyen / Standard (Or)</option>
                     <option value="basique">🥉 Basique (Bronze)</option>
                 </select>
-                <label>Votre Numéro WhatsApp :</label>
+                <label>Votre Numéro WhatsApp * :</label>
                 <input type="text" id="new-whatsapp" class="input-placeholder-rdm" placeholder="2250700000000">
             </div>
 
             <div id="form-profils-fields">
-                <label>Catégorie Bizi :</label>
-                <select id="profil-categorie" disabled style="background: #1e293b; color: #22c55e; font-weight: bold;">
+                <label>Catégorie Bizi (Sélectionnable) * :</label>
+                <select id="profil-categorie" style="background: #1e293b; color: #22c55e; font-weight: bold; border: 1.5px solid #22c55e;">
                     <option value="femme">Bizi Femme</option>
                     <option value="homme">Bizi Homme</option>
                     <option value="blanche">Bizi Blanche</option>
                     <option value="trans">Bizi Trans</option>
                 </select>
 
-                <label>Votre Nom / Pseudo :</label>
+                <label>Votre Nom / Pseudo * :</label>
                 <input type="text" id="profil-nom" placeholder="Ex: Vanessa Bizi">
 
-                <label>Vos Photos (Sélectionnez jusqu'à 5 photos) :</label>
+                <label>Vos Photos HD (Max 5 photos) * :</label>
                 <input type="file" id="profil-fichiers-input" accept="image/*" multiple onchange="apercuMiniaturesPhotos(event)" style="background: #1e293b; border: 1.5px dashed #22c55e; padding: 6px; cursor: pointer;">
                 
                 <div class="preview-thumbs-container" id="preview-thumbs-box"></div>
 
-                <label style="margin-top: 10px;">Description (Quartier, dispos, etc.) :</label>
+                <label style="margin-top: 10px;">Description (Quartier, dispos, etc.) * :</label>
                 <textarea id="profil-desc" placeholder="Ex: Disponible à Cocody, propre et douce..."></textarea>
 
-                <label>Votre Numéro de Téléphone :</label>
+                <label>Votre Numéro de Téléphone * :</label>
                 <input type="text" id="profil-whatsapp" class="input-placeholder-rdm" placeholder="2250500000000">
             </div>
 
@@ -201,10 +215,10 @@
             <label>Titre de la vidéo :</label>
             <input type="text" id="edit-v-nom">
 
-            <label>Fichier Aperçu 5s (Optionnel pour changer) :</label>
+            <label>Fichier Aperçu 5s (Optionnel) :</label>
             <input type="file" id="edit-v-file-input" accept="video/*" onchange="traiterExtraitAdmin(event)" style="background: #1e293b; border: 1.5px dashed #22c55e; padding: 5px; cursor: pointer; margin-bottom:6px;">
 
-            <label>Lien Mega (Vidéo complète - Accès direct Admin) :</label>
+            <label>Lien Mega Direct (Admin) :</label>
             <input type="text" id="edit-v-mega" style="border: 2px solid #38bdf8; background: #0f172a; font-weight: bold; color: #38bdf8;">
 
             <label>Prix (en Fr) :</label>
@@ -251,6 +265,7 @@
         let adminModeConnecte = false;
         let videoExtrait5sData = ""; 
         let editExtraitTemp = "";
+        let carouselIntervals = {};
 
         const ADMIN_PASS_1_ENCODED = "MDcwOTE1MjdhZG1pbg=="; 
         const ADMIN_CODE_2_ENCODED = "Qm9saQ==";             
@@ -279,7 +294,7 @@
             const statusDiv = document.getElementById("video-preview-status");
             if (!file) return;
 
-            statusDiv.innerText = "⏳ Traitement de l'extrait 5s en cours...";
+            statusDiv.innerText = "⏳ Préparation de l'extrait 5s...";
             const reader = new FileReader();
             reader.onload = function(e) {
                 videoExtrait5sData = e.target.result;
@@ -294,7 +309,7 @@
             const reader = new FileReader();
             reader.onload = function(e) {
                 editExtraitTemp = e.target.result;
-                alert("✅ Nouvel extrait pris en compte !");
+                alert("✅ Nouvel extrait vidéo pris en compte !");
             };
             reader.readAsDataURL(file);
         }
@@ -355,17 +370,15 @@
                 });
         }
 
-        function formatTempsRestant(expireAt) {
+        function getJoursRestantsHtml(expireAt) {
             const diff = expireAt - Date.now();
-            if (diff <= 0) return "Expiré";
-            const jours = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const heures = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const secondes = Math.floor((diff % (1000 * 60)) / 1000);
-            return `⏳ Expire dans : ${jours}j ${heures}h ${minutes}m ${secondes}s`;
+            if (diff <= 0) return `<div class="badge-expire-bottomright" style="color:#ef4444; border-color:#ef4444;">Expiré</div>`;
+            const jours = Math.ceil(diff / (1000 * 60 * 60 * 24));
+            return `<div class="badge-expire-bottomright">${jours}j restant</div>`;
         }
 
         function changerOnglet(nomOnglet) {
+            nettoyerCarrousels();
             ongletActif = nomOnglet;
             vueDetailleeActive = false;
             document.getElementById("tab-profils").className = nomOnglet === "profils" ? "tab-btn active" : "tab-btn";
@@ -388,6 +401,7 @@
         }
 
         function changerSousOnglet(cat) {
+            nettoyerCarrousels();
             sousOngletActif = cat;
             vueDetailleeActive = false;
             ['femme', 'homme', 'blanche', 'trans'].forEach(c => {
@@ -430,6 +444,7 @@
         }
 
         function afficherProfilDetail(id) {
+            nettoyerCarrousels();
             vueDetailleeActive = true;
             document.getElementById("video-grid").style.display = "none";
             const detailView = document.getElementById("profile-detail-view");
@@ -446,7 +461,6 @@
                 galerieHtml += `
                     <div class="profile-slide-img-wrapper" id="slide-${id}-${idx}">
                         <img class="profile-slide-img" src="${cleanUrl}" alt="${profil.nom}">
-                        <div class="watermark-overlay">Bizi 🤑</div>
                     </div>`;
                 dotsHtml += `<button class="dot-btn ${idx === 0 ? 'active' : ''}" onclick="scrollerVersSlide(${id}, ${idx})"></button>`;
             });
@@ -458,9 +472,9 @@
                 <div class="profile-detail-name">${profil.nom}</div>
                 <div class="quality-badge badge-profil" style="margin-bottom: 8px;">🔥 BIZI DISPONIBLE (${photosList.length} photo${photosList.length > 1 ? 's' : ''})</div>
                 <div class="profile-detail-desc">${profil.desc || 'Aucune description disponible.'}</div>
-                <div class="countdown-badge" style="margin-bottom: 10px;">${formatTempsRestant(profil.expireAt)}</div>
                 <div class="profile-detail-phone">📞 Téléphone : <b>${profil.wa}</b></div>
-                <button class="whatsapp-btn" style="border:none; width:100%; cursor:pointer;" onclick="window.open('https://wa.me/${profil.wa}?text=Salut,%20je%20te%20contacte%20depuis%20ton%20profil%20sur%20le%20site.', '_blank')">💬 Contacter sur WhatsApp</button>
+                <button class="whatsapp-btn" style="border:none; width:100%; cursor:pointer; padding:9px; font-size:11px;" onclick="window.open('https://wa.me/${profil.wa}?text=Salut,%20je%20te%20contacte%20depuis%20ton%20profil%20sur%20le%20site.', '_blank')">💬 Contacter sur WhatsApp</button>
+                ${getJoursRestantsHtml(profil.expireAt)}
             `;
         }
 
@@ -487,7 +501,15 @@
             renderGrid();
         }
 
+        function nettoyerCarrousels() {
+            Object.keys(carouselIntervals).forEach(key => {
+                clearInterval(carouselIntervals[key]);
+            });
+            carouselIntervals = {};
+        }
+
         function renderGrid() {
+            nettoyerCarrousels();
             const grid = document.getElementById("video-grid");
             const detailView = document.getElementById("profile-detail-view");
             
@@ -524,26 +546,40 @@
                     }
 
                     card.className = cardClass;
-                    const premierePhoto = (profil.photos && profil.photos.length > 0) ? profil.photos[0] : '';
-                    const imgHtml = premierePhoto ? `<img class="profil-img" src="${premierePhoto}" alt="${profil.nom}">` : `<div style="color:#94a3b8; font-size:10px; display:flex; align-items:center; justify-content:center; height:100%;">Aucune photo</div>`;
-
+                    const photos = profil.photos || [];
+                    const firstPhoto = photos.length > 0 ? photos[0] : '';
+                    
                     let btnActionHtml = `<button class="whatsapp-btn" style="border:none; width:100%; cursor:pointer;" onclick="declencherActionProfil(${profil.id})">💬 Contacter</button>`;
                     if (adminModeConnecte) {
                         btnActionHtml = `<button class="whatsapp-btn" style="border:none; width:100%; cursor:pointer; background:#ef4444;" onclick="declencherActionProfil(${profil.id})">✏️ Éditer ce Profil</button>`;
                     }
 
                     card.innerHTML = `
-                        <div class="media-container" onclick="declencherActionProfil(${profil.id})" title="Voir / Éditer">
-                            ${imgHtml}
-                            <div class="watermark-overlay">Bizi 🤑</div>
+                        <div class="media-container" onclick="declencherActionProfil(${profil.id})" title="Voir le profil">
+                            <img id="card-img-${profil.id}" class="profil-img" src="${firstPhoto}" alt="${profil.nom}">
                         </div>
                         <h3>${profil.nom}</h3>
                         ${badgeVipHtml}
                         <div class="profil-desc">${profil.desc || 'Pas de description'}</div>
-                        <div class="countdown-badge">${formatTempsRestant(profil.expireAt)}</div>
                         ${btnActionHtml}
+                        ${getJoursRestantsHtml(profil.expireAt)}
                     `;
                     grid.appendChild(card);
+
+                    if (photos.length > 1) {
+                        let currentIdx = 0;
+                        carouselIntervals[profil.id] = setInterval(() => {
+                            currentIdx = (currentIdx + 1) % photos.length;
+                            const imgEl = document.getElementById(`card-img-${profil.id}`);
+                            if (imgEl) {
+                                imgEl.style.opacity = '0.3';
+                                setTimeout(() => {
+                                    imgEl.src = photos[currentIdx];
+                                    imgEl.style.opacity = '1';
+                                }, 200);
+                            }
+                        }, 3500);
+                    }
                 });
             } else {
                 scenesData.forEach((scene, index) => {
@@ -558,7 +594,6 @@
                     
                     card.className = cardClass;
 
-                    // LECTURE EN BOUCLE STRICTE 5 SECONDES POUR L'APERÇU
                     const mediaHtml = `
                         <div class="media-container" onclick="${adminModeConnecte ? `ouvrirModalEditVideo(${index})` : ''}">
                             <video class="preview-video" muted loop playsinline webkit-playsinline preload="none" ontimeupdate="if(this.currentTime>=5){this.currentTime=0;}">
@@ -657,7 +692,6 @@
                 galerieHtml += `
                     <div class="profile-slide-img-wrapper" id="slide-${id}-${idx}">
                         <img class="profile-slide-img" src="${cleanUrl}" alt="${profil.nom}">
-                        <div class="watermark-overlay">Édition Admin</div>
                     </div>`;
             });
 
@@ -673,8 +707,16 @@
             const detailContent = document.getElementById("profile-detail-content");
             detailContent.innerHTML = `
                 <div style="background:#0f172a; border:2px solid #ef4444; padding:12px; border-radius:10px; margin-bottom:12px;">
-                    <h3 style="color:#ef4444; margin-bottom:8px; text-align:center;">🛠️ ÉDITION DU PROFIL</h3>
+                    <h3 style="color:#ef4444; margin-bottom:8px; text-align:center;">🛠️ ÉDITION DU PROFIL ADMIN</h3>
                     
+                    <label>Catégorie Bizi :</label>
+                    <select id="adm-p-cat" style="background:#1e293b; color:#22c55e; border:1.5px solid #22c55e; padding:5px; border-radius:5px; margin-bottom:6px; font-weight:bold;">
+                        <option value="femme" ${profil.cat==='femme'?'selected':''}>Bizi Femme</option>
+                        <option value="homme" ${profil.cat==='homme'?'selected':''}>Bizi Homme</option>
+                        <option value="blanche" ${profil.cat==='blanche'?'selected':''}>Bizi Blanche</option>
+                        <option value="trans" ${profil.cat==='trans'?'selected':''}>Bizi Trans</option>
+                    </select>
+
                     <label>Nom / Pseudo :</label>
                     <input type="text" id="adm-p-nom" value="${profil.nom}" style="margin-bottom:6px;">
 
@@ -695,17 +737,17 @@
                     <label>Photos actuelles (Max 5) :</label>
                     <div class="preview-thumbs-container" id="adm-thumbs-container" style="margin-bottom:6px;">${thumbsHtml}</div>
 
-                    <label>Ajouter de nouvelles photos :</label>
+                    <label>Ajouter de nouvelles photos HD :</label>
                     <input type="file" accept="image/*" multiple onchange="ajouterPhotosProfilAdmin(event)" style="background:#1e293b; border:1.5px dashed #22c55e; padding:5px; cursor:pointer; margin-bottom:10px;">
 
                     <div style="display:flex; gap:8px;">
-                        <button class="btn-save" onclick="sauvegarderProfilAdminModifie()">💾 Enregistrer</button>
+                        <button class="btn-save" onclick="sauvegarderProfilAdminModifie()">💾 Enregistrer les modifications</button>
                         <button class="btn-close" onclick="supprimerProfilAdminActif()">🗑️ Supprimer</button>
                     </div>
                 </div>
 
                 <div class="horizontal-slider-container" id="slider-${id}">${galerieHtml}</div>
-                <div class="profile-detail-name" style="margin-top:10px;">Carrousel des photos</div>
+                ${getJoursRestantsHtml(profil.expireAt)}
             `;
         }
 
@@ -725,12 +767,10 @@
             const limit = Math.min(files.length, 5 - adminPhotosTemp.length);
 
             for (let i = 0; i < limit; i++) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    adminPhotosTemp.push(e.target.result);
+                inclusterFiligraneCanvas(files[i], (imageBase64) => {
+                    adminPhotosTemp.push(imageBase64);
                     rafraichirAdminThumbs();
-                };
-                reader.readAsDataURL(files[i]);
+                });
             }
         }
 
@@ -748,25 +788,28 @@
         }
 
         function sauvegarderProfilAdminModifie() {
+            const cat = document.getElementById("adm-p-cat").value;
             const nom = document.getElementById("adm-p-nom").value.trim();
             const wa = document.getElementById("adm-p-wa").value.trim();
             const desc = document.getElementById("adm-p-desc").value.trim();
             const vip = document.getElementById("adm-p-vip").value;
 
-            if (!nom) {
-                alert("Le nom est obligatoire !");
+            if (!nom || !wa || !desc) {
+                alert("Tous les champs sont obligatoires !");
                 return;
             }
 
-            const profilActuel = profilsData.find(p => p.id === profilAdminEnCoursId);
+            document.getElementById("loading-status-title").innerText = "Mise à jour en cours...";
+            document.getElementById("loading-status-subtext").innerText = "Enregistrement des modifications du profil...";
+            document.getElementById("loading-modal").style.display = "flex";
 
             const payload = {
                 id: profilAdminEnCoursId,
+                cat: cat,
                 nom: nom,
                 telephone: wa,
                 desc: desc,
                 vip: vip,
-                cat: profilActuel.cat,
                 photos: adminPhotosTemp
             };
 
@@ -777,11 +820,13 @@
             })
             .then(res => res.json())
             .then(result => {
-                alert("✅ Profil mis à jour avec succès !");
+                document.getElementById("loading-modal").style.display = "none";
+                alert("✅ Profil modifié avec succès !");
                 retourGrille();
                 chargerProfilsDepuisAPI();
             })
             .catch(err => {
+                document.getElementById("loading-modal").style.display = "none";
                 console.error("Erreur:", err);
                 alert("Erreur lors de la mise à jour.");
             });
@@ -857,18 +902,22 @@
             const buttonsContainer = document.getElementById("modal-buttons-container");
 
             if (ongletActif === "profils") {
-                modalTitle.innerText = `🔥 Inscription Bizi (${sousOngletActif.toUpperCase()}) 📸`;
-                infoBox.innerHTML = `<b>✨ EXPIRATION 30 JOURS & DÉTECTION HD :</b><br>Votre profil restera actif 30 jours. Le système détecte automatiquement la qualité de vos photos.`;
+                modalTitle.innerText = `🔥 Inscription Bizi Disponible 📸`;
+                infoBox.innerHTML = `<b>✨ FILIGRANE HD & SÉCURITÉ :</b><br>Sélectionnez votre catégorie et téléchargez vos photos HD. Tous les champs sont obligatoires.`;
                 formVideos.style.display = "none";
                 formProfils.style.display = "block";
-                document.getElementById("profil-categorie").value = sousOngletActif;
+                
+                const catSelect = document.getElementById("profil-categorie");
+                catSelect.disabled = false;
+                catSelect.value = sousOngletActif;
+
                 document.getElementById("profil-fichiers-input").value = "";
                 document.getElementById("preview-thumbs-box").innerHTML = "";
                 imagesSelectionnees64 = [];
                 buttonsContainer.innerHTML = `<button class="btn-save" onclick="compresserEtPublierProfil()">Publier mon profil</button><button class="btn-close" onclick="fermerVendeurModal()">Fermer</button>`;
             } else {
                 modalTitle.innerText = "🎬 Proposer une vidéo 🎥";
-                infoBox.innerHTML = `<b>⚠️ FORMULAIRE SÉCURISÉ :</b><br>Chargez un court extrait (max 5s) et collez votre lien Mega direct.`;
+                infoBox.innerHTML = `<b>⚠️ FORMULAIRE SÉCURISÉ :</b><br>Tous les champs sont obligatoires (Titre, aperçu, Lien Mega, Prix et Téléphone).`;
                 formVideos.style.display = "block";
                 formProfils.style.display = "none";
                 document.getElementById("new-video-file").value = "";
@@ -885,10 +934,10 @@
             const mega = document.getElementById("new-telegram").value.trim();
             const prix = parseInt(document.getElementById("new-prix").value.trim(), 10);
             const qualite = document.getElementById("new-qualite").value;
-            const wa = document.getElementById("new-whatsapp").value.trim() || genererNumeroAleatoire();
+            const wa = document.getElementById("new-whatsapp").value.trim();
 
-            if (!nom || !videoExtrait5sData || !mega || isNaN(prix)) {
-                alert("⚠️ Veuillez sélectionner l'extrait vidéo 5s et remplir tous les champs obligatoires (Titre, Lien Mega, Prix) !");
+            if (!nom || !videoExtrait5sData || !mega || isNaN(prix) || !wa) {
+                alert("⚠️ TOUS LES CHAMPS SONT OBLIGATOIRES ! Veuillez remplir le titre, choisir l'extrait vidéo, le lien Mega, le prix et le téléphone.");
                 return;
             }
 
@@ -917,40 +966,59 @@
 
         let imagesSelectionnees64 = [];
 
+        function inclusterFiligraneCanvas(file, callback) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.src = e.target.result;
+                img.onload = function() {
+                    const canvas = document.createElement("canvas");
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    const ctx = canvas.getContext("2d");
+
+                    ctx.drawImage(img, 0, 0, img.width, img.height);
+
+                    ctx.save();
+                    ctx.translate(canvas.width / 2, canvas.height / 2);
+                    ctx.rotate(-15 * Math.PI / 180);
+                    
+                    const fontSize = Math.max(28, Math.floor(canvas.width / 10));
+                    ctx.font = `900 ${fontSize}px sans-serif`;
+                    ctx.fillStyle = "rgba(255, 255, 255, 0.4)";
+                    ctx.textAlign = "center";
+                    ctx.textBaseline = "middle";
+                    ctx.shadowColor = "rgba(0, 0, 0, 0.7)";
+                    ctx.shadowBlur = 8;
+                    ctx.fillText("BIZI 🤑", 0, 0);
+                    ctx.restore();
+
+                    const base64HD = canvas.toDataURL("image/jpeg", 0.95);
+                    callback({
+                        data: base64HD,
+                        width: img.width,
+                        height: img.height
+                    });
+                };
+            };
+            reader.readAsDataURL(file);
+        }
+
         function apercuMiniaturesPhotos(event) {
             const files = event.target.files;
             if (!files || files.length === 0) return;
 
             if (imagesSelectionnees64.length + files.length > 5) {
-                alert("Maximum 5 photos !");
+                alert("Maximum 5 photos autorisées !");
             }
 
             const limit = Math.min(files.length, 5 - imagesSelectionnees64.length);
 
             for (let i = 0; i < limit; i++) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const img = new Image();
-                    img.src = e.target.result;
-                    img.onload = function() {
-                        const canvas = document.createElement("canvas");
-                        let width = img.width;
-                        let height = img.height;
-                        const MAX = 600;
-                        if (width > height) {
-                            if (width > MAX) { height *= MAX / width; width = MAX; }
-                        } else {
-                            if (height > MAX) { width *= MAX / height; height = MAX; }
-                        }
-                        canvas.width = width;
-                        canvas.height = height;
-                        const ctx = canvas.getContext("2d");
-                        ctx.drawImage(img, 0, 0, width, height);
-                        imagesSelectionnees64.push({ data: canvas.toDataURL("image/jpeg", 0.6), width: img.width, height: img.height });
-                        afficherMiniaturesClient();
-                    };
-                };
-                reader.readAsDataURL(files[i]);
+                inclusterFiligraneCanvas(files[i], (imgObj) => {
+                    imagesSelectionnees64.push(imgObj);
+                    afficherMiniaturesClient();
+                });
             }
         }
 
@@ -960,7 +1028,7 @@
             imagesSelectionnees64.forEach((imgObj, index) => {
                 thumbsBox.innerHTML += `
                     <div class="thumb-box">
-                        <img src="${imgObj.data}" alt="Aperçu">
+                        <img src="${imgObj.data}" alt="Aperçu HD">
                         <button class="thumb-delete-btn" type="button" onclick="supprimerPhotoClient(${index})">✕</button>
                     </div>`;
             });
@@ -972,17 +1040,18 @@
         }
 
         function compresserEtPublierProfil() {
-            if (imagesSelectionnees64.length === 0) {
-                alert("Veuillez sélectionner au moins une photo !");
+            const catChoice = document.getElementById("profil-categorie").value;
+            const nom = document.getElementById("profil-nom").value.trim();
+            const desc = document.getElementById("profil-desc").value.trim();
+            const wa = document.getElementById("profil-whatsapp").value.trim();
+
+            if (!nom || !desc || !wa) {
+                alert("⚠️ TOUS LES CHAMPS SONT OBLIGATOIRES ! (Nom, Téléphone et Description).");
                 return;
             }
 
-            const nom = document.getElementById("profil-nom").value.trim();
-            const desc = document.getElementById("profil-desc").value.trim();
-            const wa = document.getElementById("profil-whatsapp").value.trim() || genererNumeroAleatoire();
-
-            if (!nom) {
-                alert("Veuillez entrer un nom !");
+            if (imagesSelectionnees64.length === 0) {
+                alert("⚠️ Veuillez sélectionner au moins une photo HD !");
                 return;
             }
 
@@ -997,10 +1066,15 @@
             else if (maxResolution > 800 * 800) detectedVip = 'gold';
             else detectedVip = 'bronze';
 
+            const loadingModal = document.getElementById("loading-modal");
+            document.getElementById("loading-status-title").innerText = "🔥 Publication en cours...";
+            document.getElementById("loading-status-subtext").innerText = "Application du filigrane HD et mise en ligne sécurisée...";
+            loadingModal.style.display = "flex";
+
             const purePhotosArray = imagesSelectionnees64.map(img => img.data);
 
             const payload = {
-                cat: sousOngletActif,
+                cat: catChoice,
                 nom: nom,
                 telephone: wa,
                 photos: purePhotosArray,
@@ -1015,17 +1089,24 @@
             })
             .then(res => res.json())
             .then(result => {
+                loadingModal.style.display = "none";
                 if (result.status === 'success') {
-                    alert("✅ Profil publié avec succès !");
+                    alert("✅ Publication Ultra HD réussie ! Votre profil est en ligne.");
                     fermerVendeurModal();
-                    chargerProfilsDepuisAPI();
+                    
+                    if (sousOngletActif !== catChoice) {
+                        changerSousOnglet(catChoice);
+                    } else {
+                        chargerProfilsDepuisAPI();
+                    }
                 } else {
                     alert("Erreur lors de l'enregistrement.");
                 }
             })
             .catch(err => {
+                loadingModal.style.display = "none";
                 console.error("Erreur:", err);
-                alert("Erreur de connexion.");
+                alert("Erreur de connexion avec le serveur.");
             });
         }
 
