@@ -223,7 +223,7 @@
     <div id="admin-edit-video-modal" class="modal-overlay" style="z-index: 2500;">
         <div class="modal-content" style="max-width: 450px;">
             <h2>✏️ Modifier la Vidéo (Admin)</h2>
-            <input type="hidden" id="edit-v-id">
+            <input type="hidden" id="edit-v-real-id">
             
             <label>Titre de la vidéo :</label>
             <input type="text" id="edit-v-nom">
@@ -356,12 +356,8 @@
                                 return null;
                             }).filter(img => img !== null && img.length > 50);
 
-                            // ID forcé à 3 chiffres (si l'ID BDD est inférieur à 100, on ajuste ou on affiche de manière complexe)
-                            let rawId = parseInt(p.id, 10);
-                            let formattedId = rawId < 100 ? rawId + 100 : rawId;
-
                             return {
-                                id: formattedId,
+                                id: parseInt(p.id, 10),
                                 cat: p.cat ? p.cat.trim() : 'femme',
                                 vip: p.vip || 'standard',
                                 nom: p.nom,
@@ -381,10 +377,11 @@
                 .then(data => {
                     if (data.status === 'success' && Array.isArray(data.data)) {
                         scenesData = data.data.map(v => {
-                            let rawId = parseInt(v.id, 10);
-                            let formattedId = rawId < 100 ? rawId + 100 : rawId;
+                            // Génération d'un ID aléatoire à 3 chiffres (entre 100 et 999) à chaque chargement de page
+                            const randomDisplayId = Math.floor(100 + Math.random() * 900);
                             return {
-                                id: formattedId,
+                                realId: parseInt(v.id, 10),
+                                displayId: randomDisplayId,
                                 partenaire: v.partenaire || "Admin",
                                 nom: v.nom,
                                 preview: v.preview,
@@ -450,9 +447,9 @@
             return `<div class="quality-badge badge-bronze">🥉 BASIQUE</div>`;
         }
 
-        function verifier(index, cleAttendue, videoId) {
+        function verifier(index, cleAttendue, realId) {
             if (adminModeConnecte) {
-                ouvrirModalEditVideo(videoId);
+                ouvrirModalEditVideo(realId);
                 return;
             }
             const inputVal = document.getElementById(`input-${index}`).value.trim();
@@ -629,8 +626,8 @@
                 scenesData.forEach((scene, index) => {
                     if (query && !scene.nom.toLowerCase().includes(query)) return;
 
-                    // Calcul exact de la clé sans arrondis de virgules (Math.floor)
-                    const cleAttendue = Math.floor((scene.id * 1996) / 20);
+                    // Calcul exact de la clé basé sur l'ID affiché aléatoire (sans arrondis de virgules -> Math.floor)
+                    const cleAttendue = Math.floor((scene.displayId * 1996) / 20);
                     const card = document.createElement("div");
                     
                     let cardClass = 'card card-vip-bronze';
@@ -640,7 +637,7 @@
                     card.className = cardClass;
 
                     const mediaHtml = `
-                        <div class="media-container" onclick="${adminModeConnecte ? `ouvrirModalEditVideo(${scene.id})` : ''}">
+                        <div class="media-container" onclick="${adminModeConnecte ? `ouvrirModalEditVideo(${scene.realId})` : ''}">
                             <video class="preview-video" muted loop playsinline webkit-playsinline preload="none" ontimeupdate="if(this.currentTime>=5){this.currentTime=0;}">
                                 <source src="${scene.preview}" type="video/mp4">
                             </video>
@@ -656,15 +653,15 @@
                             <div style="font-size:9.5px; color:#94a3b8; margin-bottom:4px;">👤 ${vendorName}</div>
                             ${badgeHtml}
                             <div class="price-badge">💎 ${scene.prix} Fr</div>
-                            <div class="info-id">ID : <b>${scene.id}</b></div>
+                            <div class="info-id">ID : <b>${scene.displayId}</b> (Réal: ${scene.realId})</div>
                             <a class="telegram-link" href="${scene.mega}" target="_blank" style="background:#38bdf8; margin-bottom:4px;">📂 Lien Vidéo Complet</a>
-                            <button class="whatsapp-btn" style="border:none; width:100%; cursor:pointer; background:#ef4444;" onclick="ouvrirModalEditVideo(${scene.id})">✏️ Éditer cette Vidéo</button>
+                            <button class="whatsapp-btn" style="border:none; width:100%; cursor:pointer; background:#ef4444;" onclick="ouvrirModalEditVideo(${scene.realId})">✏️ Éditer cette Vidéo</button>
                         `;
                     } else {
                         if (scene.deverrouille) {
-                            card.innerHTML = `${mediaHtml}<h3>${scene.nom}</h3><div style="font-size:9.5px; color:#94a3b8; margin-bottom:4px;">👤 ${vendorName}</div>${badgeHtml}<div class="price-badge">💎 ${scene.prix} Fr</div><div class="info-id">ID : <b>${scene.id}</b></div><div class="message" style="color: #4ade80;">✅ Déverrouillé<br><a class="telegram-link" href="${scene.mega}" target="_blank">📥 Regarder sur le lien</a></div>`;
+                            card.innerHTML = `${mediaHtml}<h3>${scene.nom}</h3><div style="font-size:9.5px; color:#94a3b8; margin-bottom:4px;">👤 ${vendorName}</div>${badgeHtml}<div class="price-badge">💎 ${scene.prix} Fr</div><div class="info-id">ID : <b>${scene.displayId}</b></div><div class="message" style="color: #4ade80;">✅ Déverrouillé<br><a class="telegram-link" href="${scene.mega}" target="_blank">📥 Regarder sur le lien</a></div>`;
                         } else {
-                            card.innerHTML = `${mediaHtml}<h3>${scene.nom}</h3><div style="font-size:9.5px; color:#94a3b8; margin-bottom:4px;">👤 ${vendorName}</div>${badgeHtml}<div class="price-badge">💎 ${scene.prix} Fr</div><div class="info-id">ID : <b>${scene.id}</b></div><a class="whatsapp-btn" href="https://wa.me/${scene.wa}?text=Bonjour,%20je%20veux%20acheter%20la%20clé%20pour%20la%20scène:%20${encodeURIComponent(scene.nom)}%20(ID:%20${scene.id})%20au%20prix%20de%20${scene.prix}Fr" target="_blank">💬 Commander (${scene.prix} Fr)</a><div style="margin-top:4px;"><input type="number" id="input-${index}" placeholder="Code clé..."><button class="verify-btn" style="margin-top:4px;" onclick="verifier(${index}, ${cleAttendue}, ${scene.id})">Valider</button></div><div class="message" id="msg-${index}"></div>`;
+                            card.innerHTML = `${mediaHtml}<h3>${scene.nom}</h3><div style="font-size:9.5px; color:#94a3b8; margin-bottom:4px;">👤 ${vendorName}</div>${badgeHtml}<div class="price-badge">💎 ${scene.prix} Fr</div><div class="info-id">ID : <b>${scene.displayId}</b></div><a class="whatsapp-btn" href="https://wa.me/${scene.wa}?text=Bonjour,%20je%20veux%20acheter%20la%20clé%20pour%20la%20scène:%20${encodeURIComponent(scene.nom)}%20(ID:%20${scene.displayId})%20au%20prix%20de%20${scene.prix}Fr" target="_blank">💬 Commander (${scene.prix} Fr)</a><div style="margin-top:4px;"><input type="number" id="input-${index}" placeholder="Code clé..."><button class="verify-btn" style="margin-top:4px;" onclick="verifier(${index}, ${cleAttendue}, ${scene.realId})">Valider</button></div><div class="message" id="msg-${index}"></div>`;
                         }
                     }
                     grid.appendChild(card);
@@ -849,7 +846,7 @@
             document.getElementById("loading-modal").style.display = "flex";
 
             const payload = {
-                id: profilAdminEnCoursId > 100 ? profilAdminEnCoursId - 100 : profilAdminEnCoursId,
+                id: profilAdminEnCoursId,
                 cat: cat,
                 nom: nom,
                 telephone: wa,
@@ -879,8 +876,7 @@
 
         function supprimerProfilAdminActif() {
             if (confirm("Voulez-vous vraiment supprimer ce profil ?")) {
-                let realId = profilAdminEnCoursId > 100 ? profilAdminEnCoursId - 100 : profilAdminEnCoursId;
-                fetch(`${API_URL}?id=${realId}`, { method: 'DELETE' })
+                fetch(`${API_URL}?id=${profilAdminEnCoursId}`, { method: 'DELETE' })
                     .then(res => res.json())
                     .then(result => {
                         alert("🗑️ Profil supprimé !");
@@ -891,12 +887,12 @@
             }
         }
 
-        function ouvrirModalEditVideo(id) {
-            const scene = scenesData.find(s => s.id === id);
+        function ouvrirModalEditVideo(realId) {
+            const scene = scenesData.find(s => s.realId === realId);
             if (!scene) return;
 
             editExtraitTemp = "";
-            document.getElementById("edit-v-id").value = scene.id;
+            document.getElementById("edit-v-real-id").value = scene.realId;
             document.getElementById("edit-v-nom").value = scene.nom;
             document.getElementById("edit-v-mega").value = scene.mega;
             document.getElementById("edit-v-prix").value = scene.prix;
@@ -911,8 +907,7 @@
         }
 
         function sauvegarderEditionVideoAdmin() {
-            let fakeId = document.getElementById("edit-v-id").value;
-            let realId = fakeId > 100 ? fakeId - 100 : fakeId;
+            let realId = document.getElementById("edit-v-real-id").value;
 
             const payload = {
                 id: realId,
@@ -942,8 +937,7 @@
         }
 
         function supprimerVideoAdminActive() {
-            let fakeId = document.getElementById("edit-v-id").value;
-            let realId = fakeId > 100 ? fakeId - 100 : fakeId;
+            let realId = document.getElementById("edit-v-real-id").value;
 
             if (confirm("Supprimer cette vidéo de la base de données ?")) {
                 fetch(`${API_VIDEOS_URL}?id=${realId}`, { method: 'DELETE' })
@@ -1049,7 +1043,6 @@
 
         let imagesSelectionnees64 = [];
 
-        // INCRUSTATION DÉFINITIVE DU FILIGRANE SUR L'IMAGE (VISIBLE PARTOUT ET AU TÉLÉCHARGEMENT)
         function inclusterFiligraneCanvas(file, callback) {
             const reader = new FileReader();
             reader.onload = function(e) {
@@ -1061,10 +1054,8 @@
                     canvas.height = img.height;
                     const ctx = canvas.getContext("2d");
 
-                    // Dessiner l'image originale sur le canvas
                     ctx.drawImage(img, 0, 0, img.width, img.height);
 
-                    // Incrustation du filigrane de manière répétée / centrée pour qu'il soit indélébile
                     ctx.save();
                     ctx.translate(canvas.width / 2, canvas.height / 2);
                     ctx.rotate(-20 * Math.PI / 180);
@@ -1079,7 +1070,6 @@
                     ctx.fillText("BIZI 🤑", 0, 0);
                     ctx.restore();
 
-                    // Générer l'image finale encodée avec le filigrane intégré définitivement
                     const base64HD = canvas.toDataURL("image/jpeg", 0.95);
                     callback({
                         data: base64HD,
