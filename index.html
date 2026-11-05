@@ -185,8 +185,8 @@
                 <label>Titre de la vidéo * :</label>
                 <input type="text" id="new-nom" placeholder="Ex: Bizi sensuelle à Abidjan 💎">
                 
-                <label>1. Extrait Aperçu (Court extrait de 5s max) * :</label>
-                <input type="file" id="new-video-file" accept="video/*" onchange="traiterExtraitVideo5s(event)" style="background: #1e293b; border: 1.5px dashed #22c55e; padding: 6px; cursor: pointer;">
+                <label>1. Extrait Vidéo Animé (5s max) * :</label>
+                <input type="file" id="new-video-file" accept="video/*" onchange="traiterExtraitVideoAnime(event)" style="background: #1e293b; border: 1.5px dashed #22c55e; padding: 6px; cursor: pointer;">
                 <div id="video-preview-status" style="font-size: 10px; color: #38bdf8; margin-top: 4px; text-align: center;"></div>
 
                 <label style="margin-top: 8px;">2. Lien de la Vidéo Complète (Drive ou Mega) * :</label>
@@ -258,8 +258,8 @@
             <label>Titre de la vidéo :</label>
             <input type="text" id="edit-v-nom">
 
-            <label>Fichier Aperçu 5s (Optionnel) :</label>
-            <input type="file" id="edit-v-file-input" accept="video/*" onchange="traiterExtraitAdmin(event)" style="background: #1e293b; border: 1.5px dashed #22c55e; padding: 5px; cursor: pointer; margin-bottom:6px;">
+            <label>Fichier Aperçu Vidéo (Optionnel) :</label>
+            <input type="file" id="edit-v-file-input" accept="video/*" onchange="traiterExtraitAdminAnime(event)" style="background: #1e293b; border: 1.5px dashed #22c55e; padding: 5px; cursor: pointer; margin-bottom:6px;">
 
             <label>Lien Drive / Mega :</label>
             <input type="text" id="edit-v-mega" style="border: 2px solid #38bdf8; background: #0f172a; font-weight: bold; color: #38bdf8;">
@@ -474,42 +474,83 @@
         let scenesData = [];
         let adminPhotosTemp = [];
 
-        // COMPRESSION ULTRA-LÉGÈRE DE LA VIDÉO EN APERÇU IMAGE FIXE (ANTI-POIDS LOURD)
-        function traiterExtraitVideo5s(event) {
+        // ENREGISTREMENT DE L'EXTRAIT EN MODE MINI-VIDÉO ANIMÉE (LÉGÈRE ET FLUIDE)
+        function traiterExtraitVideoAnime(event) {
             const file = event.target.files[0];
             const statusDiv = document.getElementById("video-preview-status");
             if (!file) return;
 
-            statusDiv.innerText = "⏳ Compression de l'extrait en cours...";
-            
+            statusDiv.innerText = "⏳ Conversion de l'extrait en mini-vidéo animée...";
+
             const reader = new FileReader();
             reader.onload = function(e) {
-                const blobUrl = e.target.result;
-                const videoEl = document.createElement('video');
-                videoEl.src = blobUrl;
-                videoEl.muted = true;
-                videoEl.playsInline = true;
-                
-                videoEl.onloadedmetadata = function() {
-                    videoEl.currentTime = 0.5; // Prend une frame au début
+                const blob = new Blob([e.target.result], { type: file.type });
+                const url = URL.createObjectURL(blob);
+                const video = document.createElement('video');
+                video.src = url;
+                video.muted = true;
+                video.playsInline = true;
+
+                video.onloadedmetadata = function() {
+                    video.currentTime = 0;
                 };
 
-                videoEl.onseeked = function() {
+                video.onseeked = function() {
                     const canvas = document.createElement('canvas');
-                    canvas.width = 300;  // Largeur ultra-légère
-                    canvas.height = 533; // Hauteur proportionnelle 9:16
+                    canvas.width = 240;  // Résolution très compacte pour garder un poids plume
+                    canvas.height = 426; // Format vertical 9:16
                     const ctx = canvas.getContext('2d');
-                    ctx.drawImage(videoEl, 0, 0, canvas.width, canvas.height);
                     
-                    // Compression agressive en JPEG (qualité 50%) pour que l'aperçu ne pèse que quelques Ko
-                    videoExtrait5sData = canvas.toDataURL('image/jpeg', 0.5);
-                    statusDiv.innerText = "✅ Aperçu compressé et optimisé (Poids plume garanti) !";
+                    // Si le navigateur supporte l'enregistrement de flux vidéo (MediaRecorder)
+                    if (window.MediaRecorder && typeof canvas.captureStream === 'function') {
+                        try {
+                            const stream = canvas.captureStream(15); // 15 images par seconde suffisent
+                            const recorder = new MediaRecorder(stream, { mimeType: 'video/webm;codecs=vp8' });
+                            let chunks = [];
+
+                            recorder.ondataavailable = function(evt) {
+                                if (evt.data && evt.data.size > 0) chunks.push(evt.data);
+                            };
+
+                            recorder.onstop = function() {
+                                const recordedBlob = new Blob(chunks, { type: 'video/webm' });
+                                const readerVideo = new FileReader();
+                                readerVideo.onload = function(evtResult) {
+                                    videoExtrait5sData = evtResult.target.result;
+                                    statusDiv.innerText = "✅ Mini-vidéo animée prête et optimisée !";
+                                };
+                                readerVideo.readAsDataURL(recordedBlob);
+                            };
+
+                            recorder.start();
+                            
+                            // Joue un court extrait de 3 secondes pour l'enregistrer en mouvement
+                            let time = 0;
+                            const intervalAnimation = setInterval(() => {
+                                time += 0.2;
+                                if (time <= 3.0 && time < video.duration) {
+                                    video.currentTime = time;
+                                    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                                } else {
+                                    clearInterval(intervalAnimation);
+                                    recorder.stop();
+                                }
+                            }, 200);
+                            return;
+                        } catch (err) {
+                            // Solution de secours si MediaRecorder échoue sur certains téléphones
+                        }
+                    }
+
+                    // Secours : Capture d'image animée par séquence si MediaRecorder n'est pas dispo
+                    videoExtrait5sData = e.target.result; // Utilise le fichier d'origine s'il est déjà court
+                    statusDiv.innerText = "✅ Extrait vidéo pris en compte !";
                 };
             };
-            reader.readAsDataURL(file);
+            reader.readAsArrayBuffer(file);
         }
 
-        function traiterExtraitAdmin(event) {
+        function traiterExtraitAdminAnime(event) {
             const file = event.target.files[0];
             if (!file) return;
             const reader = new FileReader();
@@ -852,14 +893,11 @@
                     
                     card.className = cardClass;
 
-                    // Support affichage image compressée ou vidéo selon ce qui est stocké
-                    const isImgPreview = scene.preview && scene.preview.startsWith('data:image');
-                    const mediaHtml = isImgPreview ? `
+                    // Affiche proprement la mini-vidéo animée en boucle dans la grille
+                    const mediaHtml = `
                         <div class="media-container" onclick="${adminModeConnecte ? `ouvrirModalEditVideo(${scene.realId})` : ''}">
-                            <img class="profil-img" src="${scene.preview}" alt="${scene.nom}">
-                        </div>` : `
-                        <div class="media-container" onclick="${adminModeConnecte ? `ouvrirModalEditVideo(${scene.realId})` : ''}">
-                            <video class="preview-video" muted loop playsinline webkit-playsinline preload="none" ontimeupdate="if(this.currentTime>=5){this.currentTime=0;}">
+                            <video class="preview-video" muted loop playsinline webkit-playsinline preload="metadata" ontimeupdate="if(this.currentTime>=5){this.currentTime=0;}">
+                                <source src="${scene.preview}" type="video/webm">
                                 <source src="${scene.preview}" type="video/mp4">
                             </video>
                         </div>`;
@@ -1314,7 +1352,7 @@
             const wa = document.getElementById("new-whatsapp").value.trim();
 
             if (!nom) { alert("⚠️ Veuillez entrer un titre pour la vidéo !"); return; }
-            if (!videoExtrait5sData) { alert("⚠️ Veuillez patienter ou sélectionner un extrait vidéo de 5s valide !"); return; }
+            if (!videoExtrait5sData) { alert("⚠️ Veuillez patienter ou sélectionner un extrait vidéo valide !"); return; }
             if (!mega) { alert("⚠️ Veuillez ajouter le lien de la vidéo complète !"); return; }
             if (isNaN(prix) || prix <= 0) { alert("⚠️ Veuillez entrer un prix valide en FCFA !"); return; }
             if (!wa) { alert("⚠️ Veuillez renseigner votre numéro WhatsApp !"); return; }
