@@ -100,11 +100,15 @@
 
         .admin-banner-bar { background: #ef4444; color: white; text-align: center; font-size: 11px; font-weight: bold; padding: 6px; border-radius: 6px; margin-bottom: 10px; display: none; }
 
-        .loading-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(8px); z-index: 3000; justify-content: center; align-items: center; flex-direction: column; text-align: center; color: white; }
-        .spinner { width: 65px; height: 65px; border: 5px solid rgba(34, 197, 94, 0.2); border-top: 5px solid #22c55e; border-radius: 50%; animation: spin 0.8s linear infinite; margin-bottom: 20px; box-shadow: 0 0 20px rgba(34, 197, 94, 0.5); }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .loading-title { font-size: 17px; font-weight: bold; color: #22c55e; margin-bottom: 8px; letter-spacing: 0.5px; }
-        .loading-subtext { font-size: 12px; color: #cbd5e1; max-width: 300px; line-height: 1.5; }
+        .loading-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(8px); z-index: 3000; justify-content: center; align-items: center; flex-direction: column; text-align: center; color: white; padding: 20px; }
+        
+        /* Styles de la barre de progression */
+        .progress-bar-container { width: 100%; max-width: 320px; background: #1e293b; border: 2px solid #22c55e; border-radius: 10px; height: 22px; overflow: hidden; margin-top: 15px; position: relative; box-shadow: 0 0 15px rgba(34, 197, 94, 0.3); }
+        .progress-bar-fill { width: 0%; height: 100%; background: linear-gradient(135deg, #22c55e, #16a34a); transition: width 0.2s ease-in-out; }
+        .progress-text { position: absolute; width: 100%; height: 100%; top: 0; left: 0; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold; color: #ffffff; text-shadow: 0 1px 3px rgba(0,0,0,0.8); }
+
+        .loading-title { font-size: 16px; font-weight: bold; color: #22c55e; margin-bottom: 5px; letter-spacing: 0.5px; }
+        .loading-status-subtext { font-size: 11px; color: #cbd5e1; max-width: 300px; line-height: 1.4; margin-top: 8px; }
     </style>
 </head>
 <body>
@@ -150,10 +154,14 @@
 
     <button class="admin-fab" onclick="gererBoutonAdmin()" title="Mode Admin">⚙️</button>
 
+    <!-- MODAL DE CHARGEMENT AVEC BARRE DE PROGRESSION -->
     <div id="loading-modal" class="loading-overlay">
-        <div class="spinner"></div>
         <div class="loading-title" id="loading-status-title">🔒 Traitement en cours...</div>
-        <div class="loading-status-subtext" id="loading-status-subtext">Veuillez patienter...</div>
+        <div class="progress-bar-container">
+            <div class="progress-bar-fill" id="progress-fill"></div>
+            <div class="progress-text" id="progress-text">0%</div>
+        </div>
+        <div class="loading-status-subtext" id="loading-status-subtext">Préparation de l'envoi sécurisé...</div>
     </div>
 
     <div id="vendor-modal" class="modal-overlay">
@@ -951,6 +959,8 @@
             }
 
             document.getElementById("loading-status-title").innerText = "🗑️ Suppression en masse...";
+            document.getElementById("progress-fill").style.width = "100%";
+            document.getElementById("progress-text").innerText = "100%";
             document.getElementById("loading-status-subtext").innerText = `Suppression des éléments de la catégorie ${sousOngletActif}...`;
             document.getElementById("loading-modal").style.display = "flex";
 
@@ -1118,7 +1128,9 @@
 
             if (!nom || !wa || !desc) { alert("Tous les champs sont obligatoires !"); return; }
 
-            document.getElementById("loading-status-title").innerText = "🔒 Chiffrement...";
+            document.getElementById("loading-status-title").innerText = "🔒 Chiffrement & Envoi...";
+            document.getElementById("progress-fill").style.width = "100%";
+            document.getElementById("progress-text").innerText = "100%";
             document.getElementById("loading-status-subtext").innerText = "Mise à jour sécurisée du profil...";
             document.getElementById("loading-modal").style.display = "flex";
 
@@ -1192,6 +1204,12 @@
 
             if (editExtraitTemp) { payload.preview = editExtraitTemp; }
 
+            document.getElementById("loading-status-title").innerText = "🔒 Enregistrement en cours...";
+            document.getElementById("progress-fill").style.width = "100%";
+            document.getElementById("progress-text").innerText = "100%";
+            document.getElementById("loading-status-subtext").innerText = "Mise à jour de la vidéo...";
+            document.getElementById("loading-modal").style.display = "flex";
+
             fetch(API_VIDEOS_URL, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
@@ -1199,10 +1217,12 @@
             })
             .then(res => res.json())
             .then(() => {
+                document.getElementById("loading-modal").style.display = "none";
                 fermerModalEditVideo();
                 chargerDonneesDepuisAPI();
                 alert("✅ Vidéo modifiée et chiffrée avec succès !");
-            });
+            })
+            .catch(() => document.getElementById("loading-modal").style.display = "none");
         }
 
         function supprimerVideoAdminActive() {
@@ -1269,7 +1289,6 @@
             const qualite = document.getElementById("new-qualite").value;
             const wa = document.getElementById("new-whatsapp").value.trim();
 
-            // Vérification détaillée avec message précis pour identifier quel champ bloque
             if (!nom) { alert("⚠️ Veuillez entrer un titre pour la vidéo !"); return; }
             if (!videoExtrait5sData) { alert("⚠️ Veuillez patienter ou sélectionner un extrait vidéo de 5s valide !"); return; }
             if (!mega) { alert("⚠️ Veuillez ajouter le lien de la vidéo complète !"); return; }
@@ -1277,9 +1296,25 @@
             if (!wa) { alert("⚠️ Veuillez renseigner votre numéro WhatsApp !"); return; }
 
             const loadingModal = document.getElementById("loading-modal");
-            document.getElementById("loading-status-title").innerText = "🔒 Chiffrement & Enregistrement...";
-            document.getElementById("loading-status-subtext").innerText = "Brouillage des données sensibles...";
+            const progressFill = document.getElementById("progress-fill");
+            const progressText = document.getElementById("progress-text");
+            
+            document.getElementById("loading-status-title").innerText = "🔒 Chiffrement & Envoi en cours...";
+            document.getElementById("loading-status-subtext").innerText = "Préparation et sécurisation des données...";
+            progressFill.style.width = "0%";
+            progressText.innerText = "0%";
             loadingModal.style.display = "flex";
+
+            // Simulation d'une progression fluide et réaliste jusqu'à 90% pendant l'envoi
+            let currentProgress = 0;
+            const progressInterval = setInterval(() => {
+                if (currentProgress < 90) {
+                    currentProgress += Math.floor(Math.random() * 8) + 3;
+                    if (currentProgress > 90) currentProgress = 90;
+                    progressFill.style.width = currentProgress + "%";
+                    progressText.innerText = currentProgress + "%";
+                }
+            }, 150);
 
             const payload = {
                 cat: cat,
@@ -1299,16 +1334,28 @@
             })
             .then(res => res.json())
             .then(result => {
-                loadingModal.style.display = "none";
-                if (result.status === 'success') {
-                    alert("✅ Vidéo publiée et chiffrée avec succès !");
-                    fermerVendeurModal();
-                    if (sousOngletActif !== cat) { changerSousOnglet(cat); } else { chargerDonneesDepuisAPI(); }
-                } else {
-                    alert("Erreur lors de l'enregistrement.");
-                }
+                clearInterval(progressInterval);
+                progressFill.style.width = "100%";
+                progressText.innerText = "100%";
+                document.getElementById("loading-status-title").innerText = "✅ Terminé avec succès !";
+                document.getElementById("loading-status-subtext").innerText = "Vidéo enregistrée et publiée.";
+
+                setTimeout(() => {
+                    loadingModal.style.display = "none";
+                    if (result.status === 'success') {
+                        alert("✅ Vidéo publiée et chiffrée avec succès !");
+                        fermerVendeurModal();
+                        if (sousOngletActif !== cat) { changerSousOnglet(cat); } else { chargerDonneesDepuisAPI(); }
+                    } else {
+                        alert("Erreur lors de l'enregistrement.");
+                    }
+                }, 400);
             })
-            .catch(() => loadingModal.style.display = "none");
+            .catch(() => {
+                clearInterval(progressInterval);
+                loadingModal.style.display = "none";
+                alert("❌ Une erreur réseau est survenue lors de l'envoi.");
+            });
         }
 
         function fermerVendeurModal() { document.getElementById("vendor-modal").style.display = "none"; }
@@ -1399,9 +1446,24 @@
             else detectedVip = 'bronze';
 
             const loadingModal = document.getElementById("loading-modal");
+            const progressFill = document.getElementById("progress-fill");
+            const progressText = document.getElementById("progress-text");
+
             document.getElementById("loading-status-title").innerText = "🔒 Chiffrement & Publication...";
-            document.getElementById("loading-status-subtext").innerText = "Brouillage des données personnelles et envoi sécurisé...";
+            document.getElementById("loading-status-subtext").innerText = "Traitement des images et envoi sécurisé...";
+            progressFill.style.width = "0%";
+            progressText.innerText = "0%";
             loadingModal.style.display = "flex";
+
+            let currentProgress = 0;
+            const progressInterval = setInterval(() => {
+                if (currentProgress < 90) {
+                    currentProgress += Math.floor(Math.random() * 10) + 5;
+                    if (currentProgress > 90) currentProgress = 90;
+                    progressFill.style.width = currentProgress + "%";
+                    progressText.innerText = currentProgress + "%";
+                }
+            }, 120);
 
             const purePhotosArray = imagesSelectionnees64.map(img => img.data);
 
@@ -1421,16 +1483,28 @@
             })
             .then(res => res.json())
             .then(result => {
-                loadingModal.style.display = "none";
-                if (result.status === 'success') {
-                    alert("✅ Profil publié et chiffré avec succès !");
-                    fermerVendeurModal();
-                    if (sousOngletActif !== catChoice) { changerSousOnglet(catChoice); } else { chargerDonneesDepuisAPI(); }
-                } else {
-                    alert("Erreur lors de l'enregistrement.");
-                }
+                clearInterval(progressInterval);
+                progressFill.style.width = "100%";
+                progressText.innerText = "100%";
+                document.getElementById("loading-status-title").innerText = "✅ Publication réussie !";
+                document.getElementById("loading-status-subtext").innerText = "Votre profil est en ligne.";
+
+                setTimeout(() => {
+                    loadingModal.style.display = "none";
+                    if (result.status === 'success') {
+                        alert("✅ Profil publié et chiffré avec succès !");
+                        fermerVendeurModal();
+                        if (sousOngletActif !== catChoice) { changerSousOnglet(catChoice); } else { chargerDonneesDepuisAPI(); }
+                    } else {
+                        alert("Erreur lors de l'enregistrement.");
+                    }
+                }, 400);
             })
-            .catch(() => loadingModal.style.display = "none");
+            .catch(() => {
+                clearInterval(progressInterval);
+                loadingModal.style.display = "none";
+                alert("❌ Une erreur est survenue lors de la publication.");
+            });
         }
 
         chargerDonneesDepuisAPI();
