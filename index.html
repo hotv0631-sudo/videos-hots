@@ -511,7 +511,7 @@
 
                             return {
                                 id: parseInt(p.id, 10),
-                                cat: p.cat ? p.cat.trim() : 'femme',
+                                cat: p.cat ? p.cat.trim().toLowerCase() : 'femme',
                                 vip: p.vip || 'standard',
                                 nom: dechiffrer(p.nom),
                                 photos: parsedPhotos,
@@ -558,7 +558,7 @@
                         return {
                             realId: realId,
                             displayId: displayId,
-                            cat: v.cat ? v.cat.trim() : 'femme',
+                            cat: v.cat ? v.cat.trim().toLowerCase() : 'femme',
                             partenaire: dechiffrer(v.partenaire) || "Admin",
                             nom: dechiffrer(v.nom),
                             preview: v.preview,
@@ -1172,7 +1172,7 @@
 
         function sauvegarderEditionVideoAdmin() {
             let realId = document.getElementById("edit-v-real-id").value;
-            const cat = document.getElementById("edit-v-cat").value; // Récupère correctement la catégorie modifiée
+            const cat = document.getElementById("edit-v-cat").value;
 
             const payload = {
                 id: realId,
