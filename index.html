@@ -288,6 +288,7 @@
         let videoExtrait5sData = ""; 
         let editExtraitTemp = "";
         let carouselIntervals = {};
+        let countdownInterval = null;
 
         const ADMIN_PASS_1_ENCODED = "MDcwOTE1MjdhZG1pbg=="; 
         const ADMIN_CODE_2_ENCODED = "Qm9saQ==";             
@@ -390,7 +391,6 @@
                             const unlockKey = `bizi_unlocked_${realId}`;
                             const unlockTimeKey = `bizi_unlock_time_${realId}`;
 
-                            // Gestion de l'expiration du déverrouillage (1 heure max)
                             let isUnlocked = false;
                             const unlockTime = localStorage.getItem(unlockTimeKey);
                             if (unlockTime) {
@@ -399,13 +399,11 @@
                                 if (now - parseInt(unlockTime, 10) < oneHour) {
                                     isUnlocked = true;
                                 } else {
-                                    // Expiré après 1 heure, on nettoie
                                     localStorage.removeItem(unlockKey);
                                     localStorage.removeItem(unlockTimeKey);
                                 }
                             }
                             
-                            // ID aléatoire fixe par navigateur
                             let displayId = localStorage.getItem(storageKey);
                             if (!displayId) {
                                 displayId = Math.floor(100 + Math.random() * 900);
@@ -424,7 +422,8 @@
                                 prix: parseInt(v.prix, 10),
                                 qualite: v.qualite || 'bronze',
                                 wa: formaterNumeroWhatsApp(v.telephone || ''),
-                                deverrouille: isUnlocked
+                                deverrouille: isUnlocked,
+                                unlockTime: unlockTime ? parseInt(unlockTime, 10) : null
                             };
                         });
                     }
@@ -490,14 +489,15 @@
             const inputVal = document.getElementById(`input-${index}`).value.trim();
             const msgBox = document.getElementById(`msg-${index}`);
             if (parseInt(inputVal, 10) === cleAttendue) {
+                const now = Date.now();
                 scenesData[index].deverrouille = true;
+                scenesData[index].unlockTime = now;
                 
-                // Enregistrement du déverrouillage avec horodatage (valable 1 heure)
                 localStorage.setItem(`bizi_unlocked_${realId}`, "true");
-                localStorage.setItem(`bizi_unlock_time_${realId}`, Date.now().toString());
+                localStorage.setItem(`bizi_unlock_time_${realId}`, now.toString());
 
                 msgBox.style.color = "#4ade80";
-                msgBox.innerHTML = "✅ Clé valide (valable 1h) !";
+                msgBox.innerHTML = "✅ Clé valide !";
                 setTimeout(() => renderGrid(), 500);
             } else {
                 msgBox.style.color = "#ef4444";
@@ -576,6 +576,10 @@
                 clearInterval(carouselIntervals[key]);
             });
             carouselIntervals = {};
+            if (countdownInterval) {
+                clearInterval(countdownInterval);
+                countdownInterval = null;
+            }
         }
 
         function renderGrid() {
@@ -666,7 +670,6 @@
                 scenesData.forEach((scene, index) => {
                     if (query && !scene.nom.toLowerCase().includes(query)) return;
 
-                    // Calcul exact de la clé basé sur l'ID fixe de ce navigateur (sans arrondis -> Math.floor)
                     const cleAttendue = Math.floor((scene.displayId * 1996) / 20);
                     const card = document.createElement("div");
                     
@@ -699,13 +702,39 @@
                         `;
                     } else {
                         if (scene.deverrouille) {
-                            card.innerHTML = `${mediaHtml}<h3>${scene.nom}</h3><div style="font-size:9.5px; color:#94a3b8; margin-bottom:4px;">👤 ${vendorName}</div>${badgeHtml}<div class="price-badge">💎 ${scene.prix} Fr</div><div class="info-id">ID : <b>${scene.displayId}</b></div><div class="message" style="color: #4ade80;">✅ Déverrouillé (1h)<br><a class="telegram-link" href="${scene.mega}" target="_blank">📥 Regarder sur le lien</a></div>`;
+                            card.innerHTML = `
+                                ${mediaHtml}
+                                <h3>${scene.nom}</h3>
+                                <div style="font-size:9.5px; color:#94a3b8; margin-bottom:4px;">👤 ${vendorName}</div>
+                                ${badgeHtml}
+                                <div class="price-badge">💎 ${scene.prix} Fr</div>
+                                <div class="info-id">ID : <b>${scene.displayId}</b></div>
+                                <div class="message" style="color: #4ade80;" id="countdown-${scene.realId}">⏳ Calcul du temps...</div>
+                                <a class="telegram-link" href="${scene.mega}" target="_blank">📥 Regarder sur le lien</a>
+                            `;
                         } else {
-                            card.innerHTML = `${mediaHtml}<h3>${scene.nom}</h3><div style="font-size:9.5px; color:#94a3b8; margin-bottom:4px;">👤 ${vendorName}</div>${badgeHtml}<div class="price-badge">💎 ${scene.prix} Fr</div><div class="info-id">ID : <b>${scene.displayId}</b></div><a class="whatsapp-btn" href="https://wa.me/${scene.wa}?text=Bonjour,%20je%20veux%20acheter%20la%20clé%20pour%20la%20scène:%20${encodeURIComponent(scene.nom)}%20(ID:%20${scene.displayId})%20au%20prix%20de%20${scene.prix}Fr" target="_blank">💬 Commander (${scene.prix} Fr)</a><div style="margin-top:4px;"><input type="number" id="input-${index}" placeholder="Code clé..."><button class="verify-btn" style="margin-top:4px;" onclick="verifier(${index}, ${cleAttendue}, ${scene.realId})">Valider</button></div><div class="message" id="msg-${index}"></div>`;
+                            card.innerHTML = `
+                                ${mediaHtml}
+                                <h3>${scene.nom}</h3>
+                                <div style="font-size:9.5px; color:#94a3b8; margin-bottom:4px;">👤 ${vendorName}</div>
+                                ${badgeHtml}
+                                <div class="price-badge">💎 ${scene.prix} Fr</div>
+                                <div class="info-id">ID : <b>${scene.displayId}</b></div>
+                                <a class="whatsapp-btn" href="https://wa.me/${scene.wa}?text=Bonjour,%20je%20veux%20acheter%20la%20clé%20pour%20la%20scène:%20${encodeURIComponent(scene.nom)}%20(ID:%20${scene.displayId})%20au%20prix%20de%20${scene.prix}Fr" target="_blank">💬 Commander (${scene.prix} Fr)</a>
+                                <div style="margin-top:4px;">
+                                    <input type="number" id="input-${index}" placeholder="Code clé...">
+                                    <button class="verify-btn" style="margin-top:4px;" onclick="verifier(${index}, ${cleAttendue}, ${scene.realId})">Valider</button>
+                                </div>
+                                <div class="message" id="msg-${index}"></div>
+                            `;
                         }
                     }
                     grid.appendChild(card);
                 });
+
+                // Lancement du compte à rebours minute par minute
+                misesAJourCompteursTemps();
+                countdownInterval = setInterval(misesAJourCompteursTemps, 1000);
 
                 setTimeout(() => {
                     const videoObserver = new IntersectionObserver((entries, observer) => {
@@ -724,6 +753,32 @@
                     });
                 }, 100);
             }
+        }
+
+        function misesAJourCompteursTemps() {
+            const now = Date.now();
+            const oneHour = 60 * 60 * 1000;
+
+            scenesData.forEach(scene => {
+                if (scene.deverrouille && scene.unlockTime) {
+                    const elapsed = now - scene.unlockTime;
+                    const timeLeft = oneHour - elapsed;
+
+                    const el = document.getElementById(`countdown-${scene.realId}`);
+                    if (el) {
+                        if (timeLeft <= 0) {
+                            // Expiré, on reverrouille
+                            scene.deverrouille = false;
+                            localStorage.removeItem(`bizi_unlocked_${scene.realId}`);
+                            localStorage.removeItem(`bizi_unlock_time_${scene.realId}`);
+                            renderGrid();
+                        } else {
+                            const totalMinutes = Math.ceil(timeLeft / (60 * 1000));
+                            el.innerHTML = `✅ Déverrouillé (${totalMinutes} min restantes)`;
+                        }
+                    }
+                }
+            });
         }
 
         function gererBoutonAdmin() {
