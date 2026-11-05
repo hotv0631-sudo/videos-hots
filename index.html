@@ -259,6 +259,14 @@
         const API_URL = 'https://midnightblue-manatee-329921.hostingersite.com/api.php';
         const API_VIDEOS_URL = 'https://midnightblue-manatee-329921.hostingersite.com/api_videos.php';
 
+        function formaterNumeroWhatsApp(num) {
+            let clean = num.replace(/\D/g, '');
+            if (!clean.startsWith('225')) {
+                clean = '225' + clean;
+            }
+            return clean;
+        }
+
         function genererNumeroAleatoire() {
             const prefixes = ["22507", "22505", "22501", "22556", "22549", "22503"];
             const prefixeChoisi = prefixes[Math.floor(Math.random() * prefixes.length)];
@@ -363,7 +371,7 @@
                                 nom: p.nom,
                                 photos: parsedPhotos,
                                 desc: p.desc || '',
-                                wa: p.telephone,
+                                wa: formaterNumeroWhatsApp(p.telephone || ''),
                                 expireAt: new Date(p.created_at).getTime() + trenteJoursMs
                             };
                         });
@@ -377,7 +385,7 @@
                 .then(data => {
                     if (data.status === 'success' && Array.isArray(data.data)) {
                         scenesData = data.data.map(v => {
-                            // Génération d'un ID aléatoire à 3 chiffres (entre 100 et 999) à chaque chargement de page
+                            // ID aléatoire à 3 chiffres à chaque chargement de page
                             const randomDisplayId = Math.floor(100 + Math.random() * 900);
                             return {
                                 realId: parseInt(v.id, 10),
@@ -388,7 +396,7 @@
                                 mega: v.mega,
                                 prix: parseInt(v.prix, 10),
                                 qualite: v.qualite || 'bronze',
-                                wa: v.telephone,
+                                wa: formaterNumeroWhatsApp(v.telephone || ''),
                                 deverrouille: false
                             };
                         });
