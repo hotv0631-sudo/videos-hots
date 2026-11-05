@@ -34,7 +34,11 @@
 
         .media-container { width: 100%; border-radius: 8px; overflow: hidden; background: #000000; margin-bottom: 6px; aspect-ratio: 9 / 16; display: flex; align-items: center; justify-content: center; position: relative; cursor: pointer; }
         video.preview-video { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
-        .profil-img { width: 100%; height: 100%; object-fit: cover; display: block; transition: opacity 0.5s ease-in-out; }
+        
+        /* Conteneur Glissement Horizontal pour les cartes (Grille) */
+        .card-slider-track { display: flex; width: 100%; height: 100%; transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1); will-change: transform; }
+        .card-slide-item { flex: 0 0 100%; width: 100%; height: 100%; }
+        .profil-img { width: 100%; height: 100%; object-fit: cover; display: block; }
         
         .card h3 { margin: 0 0 3px 0; color: #f1f5f9; font-size: 11.5px; text-align: center; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .profil-desc { font-size: 10px; color: #cbd5e1; text-align: center; margin-bottom: 6px; min-height: 28px; max-height: 40px; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; line-height: 1.3; }
@@ -86,7 +90,6 @@
 
         .admin-banner-bar { background: #ef4444; color: white; text-align: center; font-size: 11px; font-weight: bold; padding: 6px; border-radius: 6px; margin-bottom: 10px; display: none; }
 
-        /* Animation Modal Chargement Ultra Joli */
         .loading-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(8px); z-index: 3000; justify-content: center; align-items: center; flex-direction: column; text-align: center; color: white; }
         .spinner { width: 65px; height: 65px; border: 5px solid rgba(34, 197, 94, 0.2); border-top: 5px solid #22c55e; border-radius: 50%; animation: spin 0.8s linear infinite; margin-bottom: 20px; box-shadow: 0 0 20px rgba(34, 197, 94, 0.5); }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
@@ -135,14 +138,12 @@
 
     <button class="admin-fab" onclick="gererBoutonAdmin()" title="Mode Admin">⚙️</button>
 
-    <!-- OVERLAY PUBLICATION EN COURS (SUPER JOLI) -->
     <div id="loading-modal" class="loading-overlay">
         <div class="spinner"></div>
         <div class="loading-title" id="loading-status-title">🔥 Publication en cours...</div>
-        <div class="loading-subtext" id="loading-status-subtext">Traitement et sécurisation de vos médias en HD...</div>
+        <div class="loading-subtext" id="loading-status-subtext">Application du filigrane HD et mise en ligne sécurisée...</div>
     </div>
 
-    <!-- MODAL PUBLICATION CLIENT -->
     <div id="vendor-modal" class="modal-overlay">
         <div class="modal-content" style="max-width: 450px;">
             <h2 id="modal-title">🔥 Inscription Bizi Disponible 📸</h2>
@@ -547,8 +548,12 @@
 
                     card.className = cardClass;
                     const photos = profil.photos || [];
-                    const firstPhoto = photos.length > 0 ? photos[0] : '';
                     
+                    let slidesHtml = '';
+                    photos.forEach(photo => {
+                        slidesHtml += `<div class="card-slide-item"><img class="profil-img" src="${photo}" alt="${profil.nom}"></div>`;
+                    });
+
                     let btnActionHtml = `<button class="whatsapp-btn" style="border:none; width:100%; cursor:pointer;" onclick="declencherActionProfil(${profil.id})">💬 Contacter</button>`;
                     if (adminModeConnecte) {
                         btnActionHtml = `<button class="whatsapp-btn" style="border:none; width:100%; cursor:pointer; background:#ef4444;" onclick="declencherActionProfil(${profil.id})">✏️ Éditer ce Profil</button>`;
@@ -556,7 +561,9 @@
 
                     card.innerHTML = `
                         <div class="media-container" onclick="declencherActionProfil(${profil.id})" title="Voir le profil">
-                            <img id="card-img-${profil.id}" class="profil-img" src="${firstPhoto}" alt="${profil.nom}">
+                            <div class="card-slider-track" id="card-track-${profil.id}" style="width: ${photos.length * 100}%;">
+                                ${slidesHtml}
+                            </div>
                         </div>
                         <h3>${profil.nom}</h3>
                         ${badgeVipHtml}
@@ -566,17 +573,15 @@
                     `;
                     grid.appendChild(card);
 
+                    // GLISSEMENT AUTOMATIQUE FLUIDE DE DROITE À GAUCHE
                     if (photos.length > 1) {
                         let currentIdx = 0;
                         carouselIntervals[profil.id] = setInterval(() => {
                             currentIdx = (currentIdx + 1) % photos.length;
-                            const imgEl = document.getElementById(`card-img-${profil.id}`);
-                            if (imgEl) {
-                                imgEl.style.opacity = '0.3';
-                                setTimeout(() => {
-                                    imgEl.src = photos[currentIdx];
-                                    imgEl.style.opacity = '1';
-                                }, 200);
+                            const trackEl = document.getElementById(`card-track-${profil.id}`);
+                            if (trackEl) {
+                                const pourcent = currentIdx * (100 / photos.length);
+                                trackEl.style.transform = `translateX(-${pourcent}%)`;
                             }
                         }, 3500);
                     }
