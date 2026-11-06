@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Espace Mini-Jeux - Bizi</title>
+    <title>Jeu de réduction du prix du Bizi de 30 % VIP</title>
     <style>
         :root {
             --primary: #ff4757;
@@ -26,10 +26,11 @@
 
         h1 {
             color: var(--primary);
-            font-size: 26px;
+            font-size: 22px;
             margin-bottom: 5px;
             text-transform: uppercase;
             letter-spacing: 1px;
+            line-height: 1.3;
         }
 
         p {
@@ -100,6 +101,43 @@
             font-size: 14px;
         }
 
+        /* Style du panneau d'audience en direct */
+        .live-stats-box {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .stat-line {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .dot-live {
+            height: 10px;
+            width: 10px;
+            background-color: #2ed573;
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 8px #2ed573;
+            animation: pulseLive 1.5s infinite;
+            margin-right: 6px;
+        }
+
+        @keyframes pulseLive {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            50% { transform: scale(1.2); opacity: 1; box-shadow: 0 0 12px #2ed573; }
+            100% { transform: scale(0.95); opacity: 0.8; }
+        }
+
         .timer-box {
             color: #ffa502;
             font-weight: bold;
@@ -114,7 +152,7 @@
             font-weight: bold;
         }
 
-        /* Grille du Puzzle 4x4 (16 cases) plus complexe */
+        /* Grille du Puzzle 4x4 (16 cases) */
         .puzzle-grid {
             display: grid;
             grid-template-columns: repeat(4, 75px);
@@ -160,7 +198,7 @@
             border: 1px solid rgba(255,255,255,0.05);
             text-align: left;
             padding: 12px 16px;
-            font-size: 13.5px;
+            font-size: 13px;
         }
         .quiz-btn:hover {
             background-color: #3b4259;
@@ -204,11 +242,24 @@
 </head>
 <body>
 
-    <h1>🎮 Bizi Arcade - Gagne ton Code VIP</h1>
-    <p>Relève le défi pour décrocher une réduction exclusive sur le profil sélectionné !</p>
+    <h1>🎮 Jeu de réduction du prix du Bizi de 30 % VIP</h1>
+    <p>Relève le défi expert pour décrocher ton code promo exclusif !</p>
 
     <!-- MENU DE SELECTION -->
     <div id="menu-selection" class="menu-jeux">
+        
+        <!-- COMPTEUR D'ACTIVITÉ EN DIRECT ET SUR 24H -->
+        <div class="live-stats-box">
+            <div class="stat-line">
+                <span><span class="dot-live"></span>Joueurs en ligne actuellement :</span>
+                <strong id="stats-en-ligne" style="color: #2ed573;">3</strong>
+            </div>
+            <div class="stat-line">
+                <span>👥 Joueurs ces dernières 24h :</span>
+                <strong id="stats-24h" style="color: #38bdf8;">27</strong>
+            </div>
+        </div>
+
         <div class="hud-panel">
             <span>Tentatives du jour :</span>
             <span id="nb-chances" class="chances-box">3/3</span>
@@ -225,7 +276,7 @@
         
         <div style="margin-top: 20px;">
             <button onclick="lancerJeu('puzzle')">🧩 Puzzle Coulissant 4x4 Expert (5 min)</button>
-            <button onclick="lancerJeu('quiz')">🧠 Quiz Expert Aléatoire (3 min)</button>
+            <button onclick="lancerJeu('quiz')">🧠 Quiz Expert Ultra-Corsé (3 min)</button>
         </div>
         
         <a href="index.html" class="btn-retour" style="display:block; text-decoration:none; margin-top:15px; padding:10px;">← Retour au site principal</a>
@@ -244,7 +295,7 @@
             <span style="color:var(--text-muted); font-size:12px;" id="cible-puzzle-nom">Cible : ...</span>
             <span class="timer-box">⏱️ <span id="timer-puzzle">300</span>s</span>
         </div>
-        <p style="font-size: 11px; margin-bottom:8px;">Glisse les 15 cases pour reconstituer l'image complète.</p>
+        <p style="font-size: 11px; margin-bottom:8px;">Glisse les 15 cases de la grille 4x4 pour reconstituer l'image.</p>
         <div id="puzzle-board" class="puzzle-grid"></div>
         <button class="btn-retour" onclick="retourMenu()">Abandonner</button>
     </div>
@@ -263,7 +314,7 @@
     <!-- ZONE DE VICTOIRE -->
     <div id="container-victoire" class="jeu-container hidden">
         <h2>🎉 Victoire Légendaire !</h2>
-        <p>Défi relevé avec brio ! Ton code de réduction pour ce profil est prêt :</p>
+        <p>Défi relevé avec brio ! Ton code de réduction de 30 % pour ce profil est prêt :</p>
         <div id="promo-code-display" class="code-box"></div>
         <div id="actions-profil"></div>
         <button class="btn-retour" onclick="location.href='index.html'" style="margin-top:15px;">Retourner sur le site</button>
@@ -285,34 +336,33 @@
     let timerInterval = null;
     let tempsRestant = 300;
     
-    // Variables pour le Puzzle 4x4 (16 positions, 15 = case vide)
-    let caseVideIndex = 15;
+    let caseVideIndex = 14;
     let ordreActuel = [];
 
     let questionsSession = [];
     let indexQuestionActuelle = 0;
 
     const banqueQuestions = [
-        { q: "Quel est l'effet physiologique principal d'une stimulation profonde du point G combinée aux parois vaginales ?", options: ["Une contraction pelviennes involontaire et intense", "Une insensibilité immédiate", "Un blocage de la circulation", "Une baisse de la température corporelle"], reponse: 0 },
-        { q: "Quelle action mécanique est impérative pour assurer la relaxation du sphincter anal avant une pénétration ?", options: ["Une dilatation progressive couplée à une respiration abdominale lente", "Une insertion rapide sans lubrification", "Une contraction maximale continue", "Une poussée violente vers l'extérieur"], reponse: 0 },
-        { q: "Pourquoi l'utilisation d'un lubrifiant à base de silicone ou d'eau de haute qualité est-elle critique dans la zone anale ?", options: ["Parce que la zone ne produit pas de lubrification naturelle et nécessite de minimiser les frictions", "Pour accélérer le séchage des muqueuses", "Pour modifier le pH interne", "Pour durcir les tissus"], reponse: 0 },
-        { q: "Comment les muqueuses vaginales réagissent-elles face à une excitation prolongée et soutenue ?", options: ["Elles augmentent leur transsudation (lubrification naturelle) et s'allongent", "Elles se dessèchent complètement", "Elles se contractent de manière définitive", "Elles changent de couleur"], reponse: 0 },
-        { q: "Quel muscle du plancher pelvien entoure directement le canal anal et demande une attention particulière ?", options: ["Le sphincter externe et interne de l'anus", "Le muscle grand fessier", "Le quadriceps", "Le muscle abdominal transverse"], reponse: 0 },
-        { q: "Quelle est la meilleure technique de respiration pour accompagner l'accueil d'un corps étranger ou d'une pénétration anale ?", options: ["Inspirer profondément par le nez et expirer lentement par la bouche en relâchant le bassin", "Bloquer complètement la respiration", "Faire des apnées saccadées", "Respirer très rapidement par le thorax"], reponse: 0 },
-        { q: "Dans le cadre de l'anatomie féminine, quel tissu érectile entoure l'orifice vaginal en profondeur ?", options: ["Les bulbes vestibulaires", "Le col de l'utérus", "L'ovaire", "La trompe de Fallope"], reponse: 0 },
-        { q: "Quel risque encourt-on en alternant immédiatement de la zone anale à la zone vaginale sans hygiène intermédiaire ?", options: ["Un transfert de micro-organismes intestinaux risquant de provoquer une infection urinaire ou vaginale", "Aucun risque particulier", "Une augmentation instantanée du plaisir", "Un scellement des tissus"], reponse: 0 },
-        { q: "Quelle position de coït vaginal offre l'angle d'inclinaison le plus direct vers la paroi antérieure ?", options: ["La levrette modérée avec surélévation du bassin", "La position debout sans aucun appui", "Être allongé à plat ventre", "La position assise immobile"], reponse: 0 },
-        { q: "Quel est le comportement du sphincter anal face à une peur ou une appréhension psychologique ?", options: ["Il se contracte par réflexe de défense, rendant toute pénétration douloureuse", "Il s'ouvre grand automatiquement", "Il se liquéfie", "Il n'a aucun réflexe"], reponse: 0 },
-        { q: "Comment s'appelle scientifiquement la zone située entre la fourchette vulvaire et l'anus ?", options: ["Le périnée (ou le raphé périnéal)", "Le vestibule", "Le mont de Vénus", "Le col"], reponse: 0 },
-        { q: "Pourquoi la progressivité centimétrique est-elle vitale lors des premières minutes d'une pratique anale ?", options: ["Pour laisser le temps aux récepteurs nerveux et aux tissus de s'adapter sans traumatisme", "Pour refroidir la zone", "Pour tester la résistance des objets", "Pour vider l'air"], reponse: 0 },
-        { q: "Quel rôle jouent les terminaisons nerveuses du rectum lors d'une stimulation douce et maîtrisée ?", options: ["Elles procurent des sensations de plénitude et de profonde plénitude pelvienne", "Elles bloquent toute sensibilité", "Elles provoquent des crampes musculaires", "Elles endorment les muscles"], reponse: 0 },
-        { q: "Quel facteur psychologique est le plus déterminant pour libérer l'orgasme chez la femme lors des jeux intimes ?", options: ["Le sentiment de sécurité totale, le lâcher-prise et l'absence de jugement", "La vitesse d'exécution", "Le bruit ambiant", "Le chronomètre"], reponse: 0 },
-        { q: "En cas de sensation d'inconfort ou de brûlure légère pendant une pratique intime, que faut-il faire immédiatement ?", options: ["Stopper l'action, rajouter du lubrifiant et réévaluer la détente", "Continuer en force pour forcer le passage", "Augmenter la cadence", "Ignorer l'alerte du corps"], reponse: 0 },
-        { q: "Quelle est la particularité des tissus de la paroi rectale par rapport à la paroi vaginale ?", options: ["Le rectum est plus fragile, possède une seule couche de cellules protectrices et requiert infiniment plus de douceur", "Le rectum est en acier inoxydable", "Le rectum est imperméable à toute friction", "Le rectum produit sa propre huile"], reponse: 0 },
-        { q: "Quel impact une mauvaise hydratation interne a-t-elle sur les secrétions et le confort intime ?", options: ["Une diminution des fluides corporels naturels et une sensibilité accrue aux frottements", "Une amélioration de la tonicité", "Aucun impact", "Une insensibilité totale"], reponse: 0 },
-        { q: "Comment optimiser la communication non verbale avec sa partenaire pendant un défi intime partagé ?", options: ["Par des regards, des signaux de la main et des respirations audibles", "En restant totalement muet", "En fermant les yeux sans bouger", "En criant des ordres"], reponse: 0 },
-        { q: "Quel est l'intérêt d'utiliser des positions inclinées lors des stimulations profondes ?", options: ["Modifier la gravité et cibler des zones de friction spécifiques avec précision", "Fatiguer plus vite les muscles", "Empêcher le sang de circuler", "Rien de particulier"], reponse: 0 },
-        { q: "Quelle est la règle absolue en matière d'hygiène intime avancée ?", options: ["Maintenir un nettoyage rigoureux avant et après chaque session multi-zones", "Ne jamais se laver", "Utiliser uniquement de l'eau de Javel", "Attendre 3 jours avant de se laver"], reponse: 0 }
+        { q: "Quel est l'impact hémodynamique direct d'une excitation sexuelle prolongée sur les tissus pelviens et vestibulaires ?", options: ["Une vasoconstriction périphérique globale", "Une congestion vasculaire par engorgement des corps érectiles", "Une neutralisation totale du flux sanguin", "Une rigidification musculaire immédiate"], reponse: 1 },
+        { q: "Sur le plan histologique, quelle est la principale vulnérabilité de la muqueuse rectale comparée à la muqueuse vaginale ?", options: ["La présence de plusieurs couches de cellules kératinisées", "Une épithélium pavimenteux stratifié épais", "Un épithélium simple cylindrique fragile à couche cellulaire unique", "Une insensibilité totale aux frottements secs"], reponse: 2 },
+        { q: "Quelle structure anatomique pelvienne est directement stimulée lors de pressions exercées sur la paroi antérieure du vagin à proximité de l'urèthre ?", options: ["Le col de l'utérus externe", "Le complexe clitoridien interne et la zone du point G", "Le muscle grand adducteur", "L'ischiion"], reponse: 1 },
+        { q: "Pourquoi l'utilisation de lubrifiants à base d'eau est-elle fortement recommandée lors de l'utilisation d'accessoires en silicone haut de gamme ?", options: ["Pour dissoudre la matière du jouet par réaction chimique", "Pour éviter toute altération de la surface du silicone par des agents siliconés", "Pour augmenter l'électricité statique", "Pour réduire la température corporelle"], reponse: 1 },
+        { q: "Quel réflexe neuro-musculaire involontaire survient généralement lors d'une contraction réflexe du sphincter anal externe face à une intrusion non préparée ?", options: ["Un relâchement total et instantané des fascias", "Une spasmophilie des membres supérieurs", "Une contraction de défense verrouillant le canal et provoquant des micro-déchirures", "Une hyperventilation pulmonaire"], reponse: 2 },
+        { q: "Comment s'articule la rétroaction hormonale de l'ocytocine lors de l'atteinte d'un paroxysme orgasmique multiple ?", options: ["Elle inhibe complètement la contraction des muscles lisses", "Elle stimule les contractions rythmées du plancher pelvien et favorise l'attachement", "Elle bloque la circulation sanguine cérébrale", "Elle neutralise la production de dopamine"], reponse: 1 },
+        { q: "Quelle est la fonction mécanique précise du muscle pubo-rectal dans le maintien de la continence et sa gestion lors des pratiques intimes ?", options: ["Il agit comme une sangle en formant une boucle qui tire le rectum vers l'avant", "Il pousse les organes vers le bas en permanence", "Il détruit les cellules épithéliales", "Il régule la température du bassin"], reponse: 0 },
+        { q: "Quel paramètre physique de la friction est le plus critique pour éviter l'échauffement des tissus intimes sensibles ?", options: ["La vitesse linéaire maximale sans lubrifiant", "Le coefficient de friction réduit par un film lubrifiant continu et renouvelé", "L'application d'une pression statique élevée", "L'utilisation de poudres absorbantes"], reponse: 1 },
+        { q: "Dans le cadre de la physiologie de la réponse humaine (Modèle de Masters et Johnson), quelle phase succède immédiatement à l'excitation et précède l'orgasme ?", options: ["La phase de résolution passive", "La phase de plateau caractérisée par la stabilisation de la congestion", "La période réfractaire absolue", "La phase de latence thermique"], reponse: 1 },
+        { q: "Quel est le risque clinique d'un transfert microbiotique direct de la flore colique vers l'appareil uro-génital féminin ?", options: ["Une immunisation immédiate contre les virus", "Une prolifération bactérienne pathogène entraînant des infections urinaires ou des vaginoses", "Une augmentation de la lubrification naturelle", "Un renforcement de la paroi utérine"], reponse: 1 },
+        { q: "Comment la respiration diaphragmatique profonde influence-t-elle le tonus du sphincter anal interne ?", options: ["Elle augmente la pression intra-abdominale de force", "Elle stimule le nerf vague, favorisant la détente des muscles lisses pelviens", "Elle bloque l'oxygénation des tissus", "Elle contracte de manière irréversible le plancher pelvien"], reponse: 1 },
+        { q: "Quelle est la composition chimique optimale d'un lubrifiant destiné aux pratiques anales prolongées ?", options: ["Une base aqueuse isotonique à osmolarité contrôlée ou une base siliconée pure", "Une base alcoolisée volatile", "Une base acide corrosive", "Une base huileuse minérale lourde"], reponse: 0 },
+        { q: "Quel rôle jouent les corpuscules de Meissner et de Pacini situés dans les zones érogènes hautement innervées ?", options: ["Ce sont des mécanorécepteurs sensibles aux vibrations, à la texture et aux pressions tactiles fines", "Ce sont des thermorécepteurs réglant la sueur", "Ce sont des récepteurs olfactifs profonds", "Ce sont des cellules musculaires contractiles"], reponse: 0 },
+        { q: "Pourquoi l'étirement progressif des tissus conjonctifs du canal anal est-il indispensable sur plusieurs minutes ?", options: ["Pour permettre l'adaptation visco-élastique des fibres de collagène et prévenir les micro-traumatismes", "Pour vider complètement l'air ambiant", "Pour anesthésier définitivement les nerfs", "Pentru solidifier la paroi musculaire"], reponse: 0 },
+        { q: "Quelle est la conséquence d'une osmolarité trop élevée dans un gel lubrifiant appliqué sur des muqueuses fragiles ?", options: ["Une hydratation profonde des cellules", "Un appel d'eau par osmose asséchant et irritant les cellules de la muqueuse", "Une neutralisation totale des frictions", "Un effet anesthésiant immédiat"], reponse: 1 },
+        { q: "Quel réseau vasculaire alimente principalement les tissus érectiles du clitoris et des bulbes vestibulaires ?", options: ["L'artère carotide externe", "Le réseau des artères honteuses internes (pudendales)", "L'artère coronaire", "La veine cave supérieure"], reponse: 1 },
+        { q: "Comment se caractérise la phase réfractaire chez l'homme comparée à la multiorgasmicité potentielle chez la femme ?", options: ["Elles sont rigoureusement identiques en durée", "La phase réfractaire masculine implique une période d'in-excitabilité temporaire, absente chez la femme qui peut enchaîner les paroxysmes", "La femme ne peut ressentir qu'un seul orgasme par session", "L'homme possède une multiorgasmicité permanente sans latence"], reponse: 1 },
+        { q: "Quel est l'effet d'une contraction volontaire des muscles de Kegel (pubo-coccygiens) pendant l'acte ?", options: ["Une diminution immédiate de la sensibilité", "Un resserrement des parois, une augmentation de la pression locale et un afflux sanguin accru", "Un blocage total de la respiration", "Une insensibilité nerveuse temporaire"], reponse: 1 },
+        { q: "Quelle précaution ergonomique faut-il impérativement respecter pour tout objet inséré par voie anale ?", options: ["Il doit obligatoirement posséder une base évasée ou une butée de sécurité antirouille/anti-glisse", "Il doit être pointu pour faciliter l'insertion", "Il doit être en bois poreux brut", "Il ne doit comporter aucune structure de retrait"], reponse: 0 },
+        { q: "Quel est le mécanisme neuro-végétatif responsable de l'initiation de la réponse érectile et de la tumescence ?", options: ["Le système nerveux sympathique en mode de fuite", "Le système nerveux parasympathique contrôlant la vasodilatation locale par l'oxyde nitrique (NO)", "Le système endocrinien surrénalien pur", "Le cortex visuel exclusif"], reponse: 1 }
     ];
 
     function dechiffrer(texteEnc) {
@@ -351,8 +401,28 @@
         return stockage.chances;
     }
 
+    // Gestion du compteur de joueurs en direct et sur 24h via localStorage et simulation réaliste
+    function initialiserCompteursJoueurs() {
+        let stats = JSON.parse(localStorage.getItem('bizi_stats_joueurs')) || { count24h: 24, dernierVisiteur: Date.now() };
+        
+        // Simuler un nombre de joueurs en ligne organique (entre 2 et 7 personnes connectées)
+        let enLigneActuel = Math.floor(Math.random() * 5) + 3;
+        
+        // Incrémenter les 24h si c'est une nouvelle session utilisateur
+        if (!sessionStorage.getItem('bizi_deja_compte')) {
+            sessionStorage.setItem('bizi_deja_compte', 'oui');
+            stats.count24h += 1;
+            localStorage.setItem('bizi_stats_joueurs', JSON.stringify(stats));
+        }
+
+        document.getElementById("stats-en-ligne").innerText = enLigneActuel;
+        document.getElementById("stats-24h").innerText = stats.count24h;
+    }
+
     window.onload = function() {
         const chances = verifierChances();
+        initialiserCompteursJoueurs();
+
         if (chances <= 0) {
             document.getElementById("menu-selection").classList.add("hidden");
             document.getElementById("container-bloque").classList.remove("hidden");
@@ -423,6 +493,7 @@
     function retourMenu() {
         clearInterval(timerInterval);
         const chancesRestantes = verifierChances();
+        initialiserCompteursJoueurs();
         if (chancesRestantes <= 0) {
             document.getElementById("menu-selection").classList.add("hidden");
             document.getElementById("container-defaite").classList.add("hidden");
@@ -456,7 +527,7 @@
             document.getElementById("cible-quiz-nom").innerText = `Cible : ${profilActif.nom}`;
             document.getElementById("container-quiz").classList.remove("hidden");
             
-            const nombreQuestionsVoulu = Math.floor(Math.random() * 11) + 10;
+            const nombreQuestionsVoulu = Math.floor(Math.random() * 6) + 10;
             let copieBanque = [...banqueQuestions].sort(() => Math.random() - 0.5);
             questionsSession = copieBanque.slice(0, nombreQuestionsVoulu);
             indexQuestionActuelle = 0;
@@ -481,13 +552,10 @@
         }, 1000);
     }
 
-    // --- LOGIQUE PUZZLE 4x4 (16 CASES) ---
     function initialiserPuzzle4x4() {
-        // 0 à 14 pour les morceaux d'image, 15 pour la case vide
         ordreActuel = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 14];
         caseVideIndex = 14;
         
-        // Mélanger de manière solvable en effectuant des mouvements aléatoires valides
         for (let i = 0; i < 100; i++) {
             let coupsPossibles = obtenirCoupsVoisins(caseVideIndex);
             let coupAleatoire = coupsPossibles[Math.floor(Math.random() * coupsPossibles.length)];
@@ -572,7 +640,7 @@
         optionsMelangees.sort(() => Math.random() - 0.5);
 
         document.getElementById("quiz-content").innerHTML = `
-            <p style="margin-bottom:15px; font-weight:bold; color:var(--text-main); font-size:14px; line-height:1.4;">${qObj.q}</p>
+            <p style="margin-bottom:15px; font-weight:bold; color:var(--text-main); font-size:13.5px; line-height:1.4;">${qObj.q}</p>
             <div class="quiz-options">
                 ${optionsMelangees.map(item => `
                     <button class="quiz-btn" onclick="verifierReponseQuiz(${item.originalIndex}, ${qObj.reponse})">${item.texte}</button>
@@ -586,7 +654,7 @@
             indexQuestionActuelle++;
             afficherQuestionQuizActuelle();
         } else {
-            echecJeu("Mauvaise réponse !");
+            echecJeu("Mauvaise réponse experte !");
         }
     }
 
@@ -619,12 +687,11 @@
 
         const lienValidation = `https://midnightblue-manatee-329921.hostingersite.com/valider_bonus.php?code=${codePromo}`;
 
-        // Texte WhatsApp corrigé avec orthographe irréprochable (met en avant la réduction de 5% pour le client et les 2 jours de visibilité pour le prestataire)
-        const texteWhatsApp = `Salut ${profilActif.nom}, j'ai brillamment réussi mon défi sur Bizi ! 🎮\n\nVoici mon code de réduction : *${codePromo}*.\n\nEn l'acceptant, tu m'accordes une réduction de 5 % sur ton service, et ton profil gagne automatiquement 2 jours de visibilité de plus avant expiration !\n\nClique simplement sur ce lien officiel pour valider ton bonus : \n${lienValidation}`;
+        const texteWhatsApp = `Salut ${profilActif.nom}, j'ai brillamment réussi mon défi sur Bizi ! 🎮\n\nVoici mon code de réduction : *${codePromo}*.\n\nEn l'acceptant, tu m'accordes une réduction de 30 % sur ton service, et ton profil gagne automatiquement 2 jours de visibilité de plus avant expiration !\n\nClique simplement sur ce lien officiel pour valider ton bonus : \n${lienValidation}`;
 
         document.getElementById("actions-profil").innerHTML = `
             <p>Profil débloqué : <strong>${profilActif.nom}</strong></p>
-            <p style="font-size:11px; color:#ffa502; margin-top:5px;">⚠️ Envoie ce message au prestataire pour activer tes -5% et ses 2 jours de bonus !</p>
+            <p style="font-size:11px; color:#ffa502; margin-top:5px;">⚠️ Envoie ce message au prestataire pour activer tes -30% et ses 2 jours de bonus !</p>
             <a href="https://wa.me/${profilActif.telephone}?text=${encodeURIComponent(texteWhatsApp)}" class="btn-whatsapp" target="_blank">
                 📱 Envoyer le message à ${profilActif.nom} sur WhatsApp
             </a>
