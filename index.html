@@ -24,13 +24,37 @@
         .subtab-btn.active { background: #22c55e; color: white; box-shadow: 0 2px 6px rgba(34, 197, 94, 0.4); }
         
         .btn-vendor-header { background: linear-gradient(135deg, #22c55e, #16a34a); color: white; border: 2px solid #15803d; padding: 5px 10px; border-radius: 6px; font-weight: bold; font-size: 10px; cursor: pointer; box-shadow: 0 3px 8px rgba(34, 197, 94, 0.4); width: 100%; max-width: 280px; }
+        
+        /* Style du bouton Jeux intégré dans le header */
+        .nav-btn-jeux {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            background: linear-gradient(135deg, #ff4757, #ff6b81);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 10px;
+            box-shadow: 0 3px 8px rgba(255, 71, 87, 0.4);
+            border: 2px solid #e84118;
+            width: 100%;
+            max-width: 280px;
+            transition: transform 0.2s ease;
+        }
+        .nav-btn-jeux:hover { transform: translateY(-1px); }
+        .badge-vip-nav { background: #2ed573; color: #0f172a; font-size: 9px; padding: 1px 5px; border-radius: 4px; font-weight: 800; text-transform: uppercase; }
+
         .search-container-header { width: 100%; max-width: 600px; padding: 2px 0; display: flex; gap: 5px; align-items: center; }
         .search-input { flex: 1; background: #1e293b; border: 1.5px solid #22c55e; border-radius: 8px; padding: 5px 12px; color: #ffffff; font-size: 11px; text-align: center; outline: none; box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
         .search-input::placeholder { color: #94a3b8; }
         
         .admin-wipe-btn { display: none; background: #ef4444; color: white; border: 1.5px solid #b91c1c; border-radius: 8px; padding: 5px 10px; font-weight: bold; font-size: 9.5px; cursor: pointer; box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4); white-space: nowrap; }
 
-        .header-space { width: 100%; height: 200px; }
+        /* Ajustement de l'espace en haut pour accueillir le nouveau bouton */
+        .header-space { width: 100%; height: 235px; }
         .container { width: 100%; max-width: 600px; margin: 0 auto; }
         .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; width: 100%; margin-top: 5px; }
         
@@ -135,6 +159,11 @@
         </div>
 
         <button class="btn-vendor-header" id="btn-modal-action" onclick="ouvrirVendeurModal()">Cliquez ici pour ajouter un Bizi</button>
+        
+        <!-- Bouton d'accès direct à la page des mini-jeux -->
+        <a href="jeux.html" class="nav-btn-jeux">
+            🎮 Espace Jeux & Réductions <span class="badge-vip-nav">VIP</span>
+        </a>
         
         <div class="search-container-header">
             <input type="text" id="search-bar" class="search-input" placeholder="🔍 Rechercher..." oninput="renderGrid()">
