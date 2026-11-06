@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Espace Mini-Jeux - Bizi</title>
+    <style>
+        :root {
+            --primary: #ff4757;
+            --primary-hover: #ff6b81;
+            --bg-dark: #0f111a;
+            --card-bg: #1e222f;
+            --accent: #2ed573;
+            --text-main: #ffffff;
+            --text-muted: #a4b0be;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            color: var(--primary);
+            font-size: 28px;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        p {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .menu-jeux, .jeu-container {
+            max-width: 480px;
+            margin: 20px auto;
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hidden { display: none !important; }
+
+        button, select {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            margin: 10px 0;
+            font-size: 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            width: 100%;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 15px rgba(255, 71, 87,.3);
+        }
+
+        button:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 71, 87,.4);
+        }
+
+        select {
+            background-color: #2b3042;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            cursor: pointer;
+        }
+
+        .btn-retour {
+            background-color: #3f4759;
+            box-shadow: none;
+        }
+        .btn-retour:hover { background-color: #4b5568; }
+
+        /* HUD & Infos de jeu */
+        .hud-panel {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .timer-box {
+            color: #ffa502;
+            font-weight: bold;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .chances-box {
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        /* Grille du Puzzle style App */
+        .puzzle-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            grid-template-rows: repeat(3, 100px);
+            gap: 4px;
+            justify-content: center;
+            margin: 20px auto;
+            background: #111;
+            padding: 6px;
+            border-radius: 12px;
+            box-shadow: inset 0 4px 10px rgba(0,0,0,0.8);
+            width: fit-content;
+        }
+
+        .tile {
+            width: 100px;
+            height: 100px;
+            background-size: 300px 300px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: transform 0.1s ease, filter 0.1s ease;
+        }
+
+        .tile:hover {
+            filter: brightness(1.15);
+        }
+
+        .tile.empty {
+            background: #181b24 !important;
+            cursor: default;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);
+        }
+
+        /* Styles Quiz */
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .quiz-btn {
+            background-color: #2b3042;
+            margin: 0;
+            box-shadow: none;
+            border: 1px solid rgba(255,255,255,0.05);
+            text-align: left;
+            padding: 12px 16px;
+            font-size: 14px;
+        }
+        .quiz-btn:hover {
+            background-color: #3b4259;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Écrans de fin */
+        .code-box {
+            background: rgba(46, 213, 115, 0.1);
+            border: 1px dashed var(--accent);
+            color: var(--accent);
+            font-size: 22px;
+            font-weight: bold;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 10px;
+            letter-spacing: 3px;
+        }
+
+        .btn-whatsapp {
+            background-color: #25d366;
+            display: block;
+            text-decoration: none;
+            color: white;
+            padding: 14px;
+            border-radius: 10px;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+            margin-top: 15px;
+        }
+        .btn-whatsapp:hover { background-color: #2bbe5d; }
+
+        .blocage-msg {
+            color: var(--primary);
+            font-weight: bold;
+            font-size: 16px;
+            line-height: 1.5;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🎮 Bizi Arcade</h1>
+    <p>Relève le défi, gagne ton code promo exclusif !</p>
+
+    <!-- MENU DE SELECTION -->
+    <div id="menu-selection" class="menu-jeux">
+        <div class="hud-panel">
+            <span>Tentatives du jour :</span>
+            <span id="nb-chances" class="chances-box">3/3</span>
+        </div>
+        
+        <label style="display:block; text-align:left; font-size:12px; color:var(--text-muted); margin-bottom:5px;">CHOISIS TA CATÉGORIE</label>
+        <select id="select-cat">
+            <option value="femme">Femme</option>
+        </select>
+        
+        <div style="margin-top: 20px;">
+            <button onclick="lancerJeu('puzzle')">🧩 Puzzle Coulissant (5 min)</button>
+            <button onclick="lancerJeu('quiz')">🧠 Quiz Spécialisé (3 min)</button>
+        </div>
+    </div>
+
+    <!-- ÉCRAN DE BLOCAGE 24H -->
+    <div id="container-bloque" class="jeu-container hidden">
+        <h2>🔒 Accès Suspendu</h2>
+        <p class="blocage-msg">Tu as épuisé tes 3 tentatives quotidiennes.<br>Reviens demain pour tenter ta chance à nouveau !</p>
+        <button class="btn-retour" onclick="location.reload()">Fermer</button>
+    </div>
+
+    <!-- CONTENEUR PUZZLE -->
+    <div id="container-puzzle" class="jeu-container hidden">
+        <div class="hud-panel">
+            <span style="color:var(--text-muted)">Puzzle 3x3</span>
+            <span class="timer-box">⏱️ <span id="timer-puzzle">300</span>s</span>
+        </div>
+        <p>Glisse les cases adjacentes pour reformer l'image originale.</p>
+        <div id="puzzle-board" class="puzzle-grid"></div>
+        <button class="btn-retour" onclick="retourMenu()">Abandonner</button>
+    </div>
+
+    <!-- CONTENEUR QUIZ -->
+    <div id="container-quiz" class="jeu-container hidden">
+        <div class="hud-panel">
+            <span style="color:var(--text-muted)">Quiz Expert</span>
+            <span class="timer-box">⏱️ <span id="timer-quiz">180</span>s</span>
+        </div>
+        <div id="quiz-content">Chargement...</div>
+        <button class="btn-retour" onclick="retourMenu()" style="margin-top:20px;">Abandonner</button>
+    </div>
+
+    <!-- ZONE DE VICTOIRE -->
+    <div id="container-victoire" class="jeu-container hidden">
+        <h2>🎉 Victoire Légendaire !</h2>
+        <p>Défi relevé avec brio ! Voici ton code de réduction unique :</p>
+        <div id="promo-code-display" class="code-box"></div>
+        <div id="actions-profil"></div>
+    </div>
+
+    <!-- ZONE DE DÉFAITE -->
+    <div id="container-defaite" class="jeu-container hidden">
+        <h2>❌ Échec du Défi</h2>
+        <p>Le temps est écoulé ou tu as commis une erreur.</p>
+        <div id="info-tentative-perdue" class="chances-box" style="margin: 20px 0; font-size:16px;"></div>
+        <button onclick="retourMenu()">Réessayer</button>
+    </div>
+
+<script>
+    let profilActif = null;
+    let timerInterval = null;
+    let tempsRestant = 300;
+    let caseVideIndex = 7;
+    let ordreActuel = [];
+
+    // Base de dizaines de questions spécialisées (vaginales et anales) par catégorie
+    const questionsParCategorie = {
+        femme: [
+            {
+                q: "Quelle est la principale caractéristique d'une stimulation vaginale profonde ?",
+                options: ["Un rythme rapide sans pause", "L'implication des zones sensibles internes et du point G", "Uniquement de la vitesse", "Aucune préparation requise"],
+                reponse: 1
+            },
+            {
+                q: "Quel élément est indispensable pour assurer le confort et la sécurité lors d'une pratique anale ?",
+                options: ["Un gel lubrifiant adapté et généreux", "De l'eau froide uniquement", "Travailler sans préparation", "Augmenter la vitesse immédiatement"],
+                reponse: 0
+            },
+            {
+                q: "Comment se caractérise généralement l'élasticité naturelle des parois vaginales ?",
+                options: ["Rigide et fixe", "Très adaptable et extensible", "Sensible uniquement au froid", "Fragile et cassante"],
+                reponse: 1
+            },
+            {
+                q: "Quelle précaution prendre avant d'alterner entre stimulation anale et vaginale ?",
+                options: ["Ne rien changer", "Changer de protection ou nettoyer pour l'hygiène", "Accélérer le rythme", "Utiliser du savon de Marseille"],
+                reponse: 1
+            },
+            {
+                q: "Quel est le rôle du sphincter anal lors d'une approche progressive ?",
+                options: ["Il doit se contracter de force", "Il nécessite de la détente et de la progressivité", "Il s'ouvre instantanément", "Il n'a aucun rôle"],
+                reponse: 1
+            },
+            {
+                q: "Quelle position favorise le meilleur contrôle de l'angle et de la profondeur pour le plaisir vaginal ?",
+                options: ["La position du missionnaire classique ou levrette modérée", "Courir", "Etre debout sans appui", "Rester immobile"],
+                reponse: 0
+            },
+            {
+                q: "Pourquoi la relaxation musculaire est-elle capitale en pratique anale ?",
+                options: ["Pour éviter toute tension et douleur", "Pour aller plus vite", "Pour bloquer la respiration", "Pour réduire la lubrification"],
+                reponse: 0
+            },
+            {
+                q: "Quel type de mouvement externe est souvent apprécié en complément d'une pénétration vaginale ?",
+                options: ["Des frictions brusques", "Des pressions circulaires douces sur le clitoris", "Des tirs secs", "Aucun mouvement"],
+                reponse: 1
+            },
+            {
+                q: "Quelle est la meilleure approche pour stimuler la zone anale pour la première fois ?",
+                options: ["Y aller directement sans préparation", "Commencer par des stimulations externes et de la détente", "Utiliser des objets tranchants", "Forcer le passage"],
+                reponse: 1
+            },
+            {
+                q: "Quel facteur garantit une expérience intime réussie et sécurisée dans ces pratiques ?",
+                options: ["L'écoute, la communication et la lubrification", "La vitesse maximale", "L'absence totale de dialogue", "Ignorer les signaux du corps"],
+                reponse: 0
+            }
+        ]
+    };
+
+    function verifierChances() {
+        const aujourdhui = new Date().toDateString();
+        let stockage = JSON.parse(localStorage.getItem('bizi_jeu_tentatives')) || { date: aujourdhui, chances: 3 };
+
+        if (stockage.date !== aujourdhui) {
+            stockage = { date: aujourdhui, chances: 3 };
+            localStorage.setItem('bizi_jeu_tentatives', JSON.stringify(stockage));
+        }
+
+        document.getElementById("nb-chances").innerText = stockage.chances + "/3";
+        return stockage.chances;
+    }
+
+    function consommerChance() {
+        const aujourdhui = new Date().toDateString();
+        let stockage = JSON.parse(localStorage.getItem('bizi_jeu_tentatives')) || { date: aujourdhui, chances: 3 };
+        stockage.chances = Math.max(0, stockage.chances - 1);
+        localStorage.setItem('bizi_jeu_tentatives', JSON.stringify(stockage));
+        return stockage.chances;
+    }
+
+    window.onload = function() {
+        const chances = verifierChances();
+        if (chances <= 0) {
+            document.getElementById("menu-selection").classList.add("hidden");
+            document.getElementById("container-bloque").classList.remove("hidden");
+        }
+    };
+
+    async function recupererProfilEtCategorie() {
+        const categorieChoisie = document.getElementById("select-cat").value;
+        try {
+            const res = await fetch("https://midnightblue-manatee-329921.hostingersite.com/api.php");
+            const data = await res.json();
+            if (data.status === "success" && data.data.length > 0) {
+                const filtres = data.data.filter(p => p.cat === categorieChoisie && p.photos);
+                if (filtres.length === 0) {
+                    alert("Aucun profil disponible dans cette catégorie pour le moment !");
+                    return false;
+                }
+                profilActif = filtres[Math.floor(Math.random() * filtres.length)];
+                try {
+                    let parsed = JSON.parse(profilActif.photos);
+                    profilActif.imageURL = Array.isArray(parsed) ? parsed[0] : profilActif.photos;
+                } catch(e) {
+                    profilActif.imageURL = profilActif.photos;
+                }
+                return true;
+            }
+        } catch (e) {
+            console.error("Erreur API", e);
+        }
+        return false;
+    }
+
+    function retourMenu() {
+        clearInterval(timerInterval);
+        const chancesRestantes = verifierChances();
+        if (chancesRestantes <= 0) {
+            document.getElementById("menu-selection").classList.add("hidden");
+            document.getElementById("container-defaite").classList.add("hidden");
+            document.getElementById("container-bloque").classList.remove("hidden");
+        } else {
+            document.getElementById("menu-selection").classList.remove("hidden");
+            document.getElementById("container-puzzle").classList.add("hidden");
+            document.getElementById("container-quiz").classList.add("hidden");
+            document.getElementById("container-defaite").classList.add("hidden");
+        }
+    }
+
+    async function lancerJeu(type) {
+        if (verifierChances() <= 0) {
+            document.getElementById("menu-selection").classList.add("hidden");
+            document.getElementById("container-bloque").classList.remove("hidden");
+            return;
+        }
+
+        const ok = await recupererProfilEtCategorie();
+        if (!ok) return;
+
+        document.getElementById("menu-selection").classList.add("hidden");
+
+        if (type === 'puzzle') {
+            document.getElementById("container-puzzle").classList.remove("hidden");
+            initialiserPuzzle();
+            lancerChronometre(300, "timer-puzzle", echecJeu); // 300 secondes = 5 minutes
+        } else {
+            document.getElementById("container-quiz").classList.remove("hidden");
+            initialiserQuiz();
+            lancerChronometre(180, "timer-quiz", echecJeu); // 180 secondes = 3 minutes
+        }
+    }
+
+    function lancerChronometre(secondes, elementId, callbackEchec) {
+        clearInterval(timerInterval);
+        tempsRestant = secondes;
+        document.getElementById(elementId).innerText = tempsRestant;
+
+        timerInterval = setInterval(() => {
+            tempsRestant--;
+            document.getElementById(elementId).innerText = tempsRestant;
+            if (tempsRestant <= 0) {
+                clearInterval(timerInterval);
+                callbackEchec();
+            }
+        }, 1000);
+    }
+
+    function initialiserPuzzle() {
+        ordreActuel = [0, 1, 2, 3, 4, 5, 6, 8, 7];
+        caseVideIndex = 7;
+        afficherGrillePuzzle();
+    }
+
+    function afficherGrillePuzzle() {
+        const board = document.getElementById("puzzle-board");
+        board.innerHTML = "";
+
+        ordreActuel.forEach((val, index) => {
+            const tile = document.createElement("div");
+            tile.className = "tile";
+            if (val === 8) {
+                tile.classList.add("empty");
+            } else {
+                const x = (val % 3) * 100;
+                const y = Math.floor(val / 3) * 100;
+                tile.style.backgroundImage = `url('${profilActif.imageURL}')`;
+                tile.style.backgroundPosition = `-${x}px -${y}px`;
+            }
+            tile.onclick = () => bougerTuile(index);
+            board.appendChild(tile);
+        });
+    }
+
+    function bougerTuile(index) {
+        const ligneClicked = Math.floor(index / 3);
+        const colClicked = index % 3;
+        const ligneEmpty = Math.floor(caseVideIndex / 3);
+        const colEmpty = caseVideIndex % 3;
+
+        const distance = Math.abs(ligneClicked - ligneEmpty) + Math.abs(colClicked - colEmpty);
+
+        if (distance === 1) {
+            ordreActuel[caseVideIndex] = ordreActuel[index];
+            ordreActuel[index] = 8;
+            caseVideIndex = index;
+            afficherGrillePuzzle();
+
+            let gagne = true;
+            for (let i = 0; i < 9; i++) {
+                if (ordreActuel[i] !== i) {
+                    gagne = false;
+                    break;
+                }
+            }
+            if (gagne) {
+                clearInterval(timerInterval);
+                validerVictoire();
+            }
+        }
+    }
+
+    function initialiserQuiz() {
+        const cat = document.getElementById("select-cat").value;
+        const listeQuestions = questionsParCategorie[cat] || questionsParCategorie.femme;
+        // Sélectionner une question aléatoire parmi les dizaines disponibles
+        const questionObj = listeQuestions[Math.floor(Math.random() * listeQuestions.length)];
+
+        document.getElementById("quiz-content").innerHTML = `
+            <p style="margin-bottom:15px; font-weight:bold; color:var(--text-main);">${questionObj.q}</p>
+            <div class="quiz-options">
+                ${questionObj.options.map((opt, index) => `
+                    <button class="quiz-btn" onclick="verifierQuiz(${index}, ${questionObj.reponse})">${opt}</button>
+                `).join('')}
+            </div>
+        `;
+    }
+
+    function verifierQuiz(choixIndex, bonneReponseIndex) {
+        clearInterval(timerInterval);
+        if (choixIndex === bonneReponseIndex) {
+            validerVictoire();
+        } else {
+            echecJeu();
+        }
+    }
+
+    function echecJeu() {
+        clearInterval(timerInterval);
+        const restants = consommerChance();
+
+        document.getElementById("container-puzzle").classList.add("hidden");
+        document.getElementById("container-quiz").classList.add("hidden");
+        document.getElementById("container-defaite").classList.remove("hidden");
+
+        document.getElementById("info-tentative-perdue").innerText = `Il te reste ${restants} chance(s) aujourd'hui.`;
+
+        if (restants <= 0) {
+            setTimeout(() => {
+                document.getElementById("container-defaite").classList.add("hidden");
+                document.getElementById("container-bloque").classList.remove("hidden");
+            }, 2500);
+        }
+    }
+
+    async function validerVictoire() {
+        document.getElementById("container-puzzle").classList.add("hidden");
+        document.getElementById("container-quiz").classList.add("hidden");
+        document.getElementById("container-victoire").classList.remove("hidden");
+
+        const codePromo = `BIZI-VIP-${profilActif.id}-${Math.floor(1000 + Math.random() * 9000)}`;
+        document.getElementById("promo-code-display").innerText = codePromo;
+
+        try {
+            await fetch("https://midnightblue-manatee-329921.hostingersite.com/api.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ action: "ajouter_jours", id: profilActif.id })
+            });
+        } catch (e) {
+            console.error("Erreur crédit jours vendeuse", e);
+        }
+
+        document.getElementById("actions-profil").innerHTML = `
+            <p>Profil débloqué : <strong>${profilActif.nom}</strong></p>
+            <a href="https://wa.me/${profilActif.telephone}?text=Bonjour,%20voici%20mon%20code%20gagné%20au%20jeu:%20${codePromo}" class="btn-whatsapp" target="_blank">
+                📱 Récupérer ma réduction sur WhatsApp
+            </a>
+        `;
+    }
+</script>
+
+</body>
+</html>
