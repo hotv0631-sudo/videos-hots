@@ -135,9 +135,57 @@
 
         .loading-title { font-size: 16px; font-weight: bold; color: #22c55e; margin-bottom: 5px; letter-spacing: 0.5px; }
         .loading-status-subtext { font-size: 11px; color: #cbd5e1; max-width: 300px; line-height: 1.4; margin-top: 8px; }
+
+        /* --- CODE AJOUTÉ : Barre de trafic Admin discrète --- */
+        .admin-live-badge {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: #0b0f19;
+            border-bottom: 2px solid #2ed573;
+            color: #ffffff;
+            padding: 8px 15px;
+            font-size: 13px;
+            font-weight: 600;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            z-index: 99999;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.7);
+        }
+
+        .admin-live-badge .dot-live {
+            height: 9px;
+            width: 9px;
+            background-color: #2ed573;
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 8px #2ed573;
+            animation: pulseLive 1.5s infinite;
+        }
+
+        @keyframes pulseLive {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            50% { transform: scale(1.3); opacity: 1; box-shadow: 0 0 12px #2ed573; }
+            100% { transform: scale(0.95); opacity: 0.8; }
+        }
     </style>
 </head>
 <body>
+
+    <!-- --- CODE AJOUTÉ : Affichage du trafic Admin --- -->
+    <div id="admin-bar" class="admin-live-badge">
+        <div style="display: flex; align-items: center; gap: 6px;">
+            <span class="dot-live"></span>
+            <span>En ligne actuellement : <strong id="admin-live-count" style="color: #2ed573;">...</strong></span>
+        </div>
+        <span style="color: #475569;">|</span>
+        <div>
+            👥 Visiteurs uniques (24h) : <strong id="admin-24h-count" style="color: #38bdf8;">...</strong>
+        </div>
+    </div>
 
     <header>
         <div class="header-title">
@@ -1517,6 +1565,38 @@
         }
 
         chargerDonneesDepuisAPI();
+
+        // --- CODE AJOUTÉ : Logique de mise à jour du trafic Admin ---
+        const API_PRESENCE_URL_ADMIN = 'https://midnightblue-manatee-329921.hostingersite.com/presence.php';
+
+        async function chargerStatistiquesAdminSecurit() {
+            try {
+                const res = await fetch(API_PRESENCE_URL_ADMIN);
+                const data = await res.json();
+                if (data.status === "success") {
+                    document.getElementById("admin-live-count").innerText = data.en_ligne;
+                    document.getElementById("admin-24h-count").innerText = data["24h"];
+                }
+            } catch (e) {
+                console.error("Erreur stats admin", e);
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            
+            if (urlParams.get('admin') === '1' || localStorage.getItem('bizi_admin_active') === 'true') {
+                localStorage.setItem('bizi_admin_active', 'true');
+                
+                const adminBar = document.getElementById("admin-bar");
+                if (adminBar) {
+                    adminBar.style.display = "flex";
+                }
+                
+                chargerStatistiquesAdminSecurit();
+                setInterval(chargerStatistiquesAdminSecurit, 10000);
+            }
+        });
     </script>
 </body>
 </html>
