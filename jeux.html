@@ -287,11 +287,9 @@
     let caseVideIndex = 7;
     let ordreActuel = [];
 
-    // Variables pour le quiz en série (10 à 20 questions aléatoires)
     let questionsSession = [];
     let indexQuestionActuelle = 0;
 
-    // Banque riche de questions complexes (vaginales et anales)
     const banqueQuestions = [
         { q: "Quel est l'effet physiologique principal d'une stimulation profonde du point G combinée aux parois vaginales ?", options: ["Une contraction pelviennes involontaire et intense", "Une insensibilité immédiate", "Un blocage de la circulation", "Une baisse de la température corporelle"], reponse: 0 },
         { q: "Quelle action mécanique est impérative pour assurer la relaxation du sphincter anal avant une pénétration ?", options: ["Une dilatation progressive couplée à une respiration abdominale lente", "Une insertion rapide sans lubrification", "Une contraction maximale continue", "Une poussée violente vers l'extérieur"], reponse: 0 },
@@ -456,16 +454,13 @@
             document.getElementById("cible-quiz-nom").innerText = `Cible : ${profilActif.nom}`;
             document.getElementById("container-quiz").classList.remove("hidden");
             
-            // --- GESTION DU NOMBRE DE QUESTIONS ALÉATOIRE (Entre 10 et 20) ---
-            const nombreQuestionsVoulu = Math.floor(Math.random() * 11) + 10; // Entre 10 et 20 inclus
-            
-            // Mélanger la banque de questions et en prendre le nombre exact
+            const nombreQuestionsVoulu = Math.floor(Math.random() * 11) + 10;
             let copieBanque = [...banqueQuestions].sort(() => Math.random() - 0.5);
             questionsSession = copieBanque.slice(0, nombreQuestionsVoulu);
             indexQuestionActuelle = 0;
 
             afficherQuestionQuizActuelle();
-            lancerChronometre(180, "timer-quiz", echecJeu); // 3 minutes = 180s pour toute la série
+            lancerChronometre(180, "timer-quiz", echecJeu);
         }
     }
 
@@ -538,10 +533,8 @@
         }
     }
 
-    // --- LOGIQUE QUIZ EN SÉRIE ALÉATOIRE (10 à 20 questions) ---
     function afficherQuestionQuizActuelle() {
         if (indexQuestionActuelle >= questionsSession.length) {
-            // Toutes les questions de la session ont été réussies !
             clearInterval(timerInterval);
             validerVictoire();
             return;
@@ -550,7 +543,6 @@
         const qObj = questionsSession[indexQuestionActuelle];
         document.getElementById("quiz-progress-text").innerText = `Question ${indexQuestionActuelle + 1} / ${questionsSession.length}`;
 
-        // Mélanger les options de réponse pour plus de complexité
         let optionsMelangees = qObj.options.map((opt, idx) => ({ texte: opt, originalIndex: idx }));
         optionsMelangees.sort(() => Math.random() - 0.5);
 
@@ -566,11 +558,9 @@
 
     function verifierReponseQuiz(choixOriginalIndex, bonneReponseOriginalIndex) {
         if (choixOriginalIndex === bonneReponseOriginalIndex) {
-            // Bonne réponse : on passe à la question suivante de la série
             indexQuestionActuelle++;
             afficherQuestionQuizActuelle();
         } else {
-            // Mauvaise réponse : échec immédiat de la partie
             echecJeu("Mauvaise réponse !");
         }
     }
@@ -602,21 +592,23 @@
         const codePromo = `BIZI-VIP-${profilActif.id}-${Math.floor(1000 + Math.random() * 9000)}`;
         document.getElementById("promo-code-display").innerText = codePromo;
 
-        // Créditer les 2 jours bonus à la vendeuse sur l'API dédiée
         try {
             await fetch(API_JEUX_URL, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ action: "ajouter_jours", id: profilActif.id })
+                body: JSON.stringify({ action: "creer_code_attente", id: profilActif.id, code: codePromo })
             });
         } catch (e) {
-            console.error("Erreur crédit jours vendeuse", e);
+            console.error("Erreur enregistrement code attente", e);
         }
+
+        const lienValidation = `https://midnightblue-manatee-329921.hostingersite.com/valider_bonus.php?code=${codePromo}`;
 
         document.getElementById("actions-profil").innerHTML = `
             <p>Profil débloqué : <strong>${profilActif.nom}</strong></p>
-            <a href="https://wa.me/${profilActif.telephone}?text=Bonjour,%20voici%20mon%20code%20gagné%20au%20quiz%20expert%20pour%20ton%20profil:%20${codePromo}" class="btn-whatsapp" target="_blank">
-                📱 Réclamer ma réduction à ${profilActif.nom} sur WhatsApp
+            <p style="font-size:11px; color:#ffa502; margin-top:5px;">⚠️ Envoie ce message à la vendeuse pour qu'elle valide tes +2 jours et ta réduction !</p>
+            <a href="https://wa.me/${profilActif.telephone}?text=Salut%20${encodeURIComponent(profilActif.nom)},%20j'ai%20gagné%20mon%20défi%20sur%20Bizi%20!%20Voici%20mon%20code%20de%20réduction%20:%20${codePromo}.%20Clique%20sur%20ce%20lien%20pour%20valider%20mes%20+2%20jours%20de%20visibilité%20et%20ma%20réduc%20:%20${encodeURIComponent(lienValidation)}" class="btn-whatsapp" target="_blank">
+                📱 Envoyer le code à ${profilActif.nom} sur WhatsApp
             </a>
         `;
     }
