@@ -1,35 +1,779 @@
-.pulse-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr); /* 4 colonnes */
-    grid-template-rows: repeat(4, 1fr);    /* 4 lignes */
-    gap: 8px;
-    width: 100%;
-    max-width: 360px;
-    margin: 0 auto;
-}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jeu de réduction du prix du Bizi de 30 % VIP</title>
+    <style>
+        :root {
+            --primary: #ff4757;
+            --primary-hover: #ff6b81;
+            --bg-dark: #0f111a;
+            --card-bg: #1e222f;
+            --accent: #2ed573;
+            --text-main: #ffffff;
+            --text-muted: #a4b0be;
+        }
 
-.pulse-tile {
-    aspect-ratio: 1 / 1;
-    background-color: #1e293b;
-    border: 2px solid #22c55e;
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: bold;
-    color: #ffffff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: transform 0.15s ease, background-color 0.2s ease;
-    user-select: none;
-}
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
 
-.pulse-tile:active {
-    transform: scale(0.95);
-}
+        h1 {
+            color: var(--primary);
+            font-size: 22px;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            line-height: 1.3;
+        }
 
-.pulse-tile.active {
-    background-color: #22c55e;
-    color: #0f172a;
-    box-shadow: 0 0 15px rgba(34, 197, 94, 0.8);
-}
+        p {
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        .menu-jeux, .jeu-container {
+            max-width: 480px;
+            margin: 20px auto;
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hidden { display: none !important; }
+
+        button, select {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            margin: 10px 0;
+            font-size: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            width: 100%;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 15px rgba(255, 71, 87,.3);
+        }
+
+        button:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 71, 87,.4);
+        }
+
+        select {
+            background-color: #2b3042;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            cursor: pointer;
+        }
+
+        .btn-retour {
+            background-color: #3f4759;
+            box-shadow: none;
+        }
+        .btn-retour:hover { background-color: #4b5568; }
+
+        .hud-panel {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .live-stats-box {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .stat-line {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .dot-live {
+            height: 10px;
+            width: 10px;
+            background-color: #2ed573;
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 8px #2ed573;
+            animation: pulseLive 1.5s infinite;
+            margin-right: 6px;
+        }
+
+        @keyframes pulseLive {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            50% { transform: scale(1.2); opacity: 1; box-shadow: 0 0 12px #2ed573; }
+            100% { transform: scale(0.95); opacity: 0.8; }
+        }
+
+        .timer-box {
+            color: #ffa502;
+            font-weight: bold;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .chances-box {
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        /* Grille du Puzzle 4x4 (16 cases) */
+        .puzzle-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 75px);
+            grid-template-rows: repeat(4, 75px);
+            gap: 2px;
+            justify-content: center;
+            margin: 20px auto;
+            background: #111;
+            padding: 6px;
+            border-radius: 12px;
+            box-shadow: inset 0 4px 10px rgba(0,0,0,0.8);
+            width: fit-content;
+        }
+
+        .tile {
+            width: 75px;
+            height: 75px;
+            background-size: 300px 300px;
+            cursor: pointer;
+            border-radius: 2px;
+            transition: transform 0.1s ease, filter 0.1s ease;
+        }
+
+        .tile:hover { filter: brightness(1.15); }
+        .tile.empty {
+            background: #181b24 !important;
+            cursor: default;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .quiz-btn {
+            background-color: #2b3042;
+            margin: 0;
+            box-shadow: none;
+            border: 1px solid rgba(255,255,255,0.05);
+            text-align: left;
+            padding: 12px 16px;
+            font-size: 13px;
+        }
+        .quiz-btn:hover {
+            background-color: #3b4259;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .code-box {
+            background: rgba(46, 213, 115, 0.1);
+            border: 1px dashed var(--accent);
+            color: var(--accent);
+            font-size: 20px;
+            font-weight: bold;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 10px;
+            letter-spacing: 2px;
+        }
+
+        .btn-whatsapp {
+            background-color: #25d366;
+            display: block;
+            text-decoration: none;
+            color: white;
+            padding: 14px;
+            border-radius: 10px;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+            margin-top: 15px;
+        }
+        .btn-whatsapp:hover { background-color: #2bbe5d; }
+
+        .blocage-msg {
+            color: var(--primary);
+            font-weight: bold;
+            font-size: 16px;
+            line-height: 1.5;
+            margin: 20px 0;
+        }
+
+        .recap-box {
+            max-height: 180px;
+            overflow-y: auto;
+            text-align: left;
+            font-size: 12px;
+            background: rgba(0,0,0,0.3);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🎮 Jeu de réduction du prix du Bizi de 30 % VIP</h1>
+    <p>Mode Test 4x4 : Résous le puzzle rapidement pour tester ton lien WhatsApp !</p>
+
+    <!-- MENU DE SELECTION -->
+    <div id="menu-selection" class="menu-jeux">
+        
+        <div class="live-stats-box">
+            <div class="stat-line">
+                <span><span class="dot-live"></span>Joueurs en ligne actuellement :</span>
+                <strong id="stats-en-ligne" style="color: #2ed573;">...</strong>
+            </div>
+            <div class="stat-line">
+                <span>👥 Joueurs uniques ces 24h :</span>
+                <strong id="stats-24h" style="color: #38bdf8;">...</strong>
+            </div>
+        </div>
+
+        <div class="hud-panel">
+            <span>Tentatives du jour :</span>
+            <span id="nb-chances" class="chances-box">5/5</span>
+        </div>
+        
+        <label style="display:block; text-align:left; font-size:12px; color:var(--text-muted); margin-bottom:5px;">CHOISIS TA CATÉGORIE</label>
+        <select id="select-cat">
+            <option value="femme">Femme</option>
+            <option value="homme">Homme</option>
+            <option value="trans">Trans</option>
+            <option value="lesbi">Lesbi</option>
+            <option value="blanche">Blanche</option>
+        </select>
+        
+        <div style="margin-top: 20px;">
+            <button onclick="lancerJeu('puzzle')">🧩 Puzzle Coulissant 4x4 (Test Rapide)</button>
+            <button onclick="lancerJeu('quiz')">🧠 Quiz Expert Ultra-Corsé (3 min)</button>
+        </div>
+        
+        <a href="index.html" class="btn-retour" style="display:block; text-decoration:none; margin-top:15px; padding:10px;">← Retour au site principal</a>
+    </div>
+
+    <!-- ÉCRAN DE BLOCAGE 24H -->
+    <div id="container-bloque" class="jeu-container hidden">
+        <h2>🔒 Accès Suspendu</h2>
+        <p class="blocage-msg">Tu as épuisé tes 5 tentatives quotidiennes.<br>Reviens demain pour tenter ta chance à nouveau !</p>
+        <button class="btn-retour" onclick="location.href='index.html'">Retour au site</button>
+    </div>
+
+    <!-- CONTENEUR PUZZLE -->
+    <div id="container-puzzle" class="jeu-container hidden">
+        <div class="hud-panel">
+            <span style="color:var(--text-muted); font-size:12px;" id="cible-puzzle-nom">Cible : ...</span>
+            <span class="timer-box">⏱️ <span id="timer-puzzle">300</span>s</span>
+        </div>
+        <p style="font-size: 11px; margin-bottom:8px;">Glisse les 15 cases pour reconstituer l'image correctement.</p>
+        <div id="puzzle-board" class="puzzle-grid"></div>
+        <button class="btn-retour" onclick="retourMenu()">Abandonner</button>
+    </div>
+
+    <!-- CONTENEUR QUIZ -->
+    <div id="container-quiz" class="jeu-container hidden">
+        <div class="hud-panel">
+            <span style="color:var(--text-muted); font-size:12px;" id="cible-quiz-nom">Cible : ...</span>
+            <span class="timer-box">⏱️ <span id="timer-quiz">180</span>s</span>
+        </div>
+        <div style="font-size: 11px; color: #38bdf8; margin-bottom: 10px; font-weight:bold;" id="quiz-progress-text">Question 1 / 15</div>
+        <div id="quiz-content">Chargement...</div>
+        <button class="btn-retour" onclick="retourMenu()" style="margin-top:20px;">Abandonner</button>
+    </div>
+
+    <!-- ZONE DE VICTOIRE -->
+    <div id="container-victoire" class="jeu-container hidden">
+        <h2>🎉 Victoire Légendaire !</h2>
+        <p id="message-score-victoire"></p>
+        <div id="promo-code-display" class="code-box"></div>
+        <div id="actions-profil"></div>
+        <button class="btn-retour" onclick="location.href='index.html'" style="margin-top:15px;">Retourner sur le site</button>
+    </div>
+
+    <!-- ZONE DE DÉFAITE / ÉCHEC -->
+    <div id="container-defaite" class="jeu-container hidden">
+        <h2>❌ Échec du Défi</h2>
+        <p id="motif-echec">Le temps est écoulé ou tu n'as pas obtenu la moyenne.</p>
+        <div id="message-score-echec" style="font-weight:bold; color:var(--primary); margin:10px 0; font-size:16px;"></div>
+        
+        <div id="recap-erreurs" class="recap-box"></div>
+
+        <div id="info-tentative-perdue" class="chances-box" style="margin: 15px 0; font-size:14px;"></div>
+        <button onclick="retourMenu()">Réessayer</button>
+    </div>
+
+<script>
+    const API_URL = 'https://midnightblue-manatee-329921.hostingersite.com/api.php';
+    const API_PRESENCE_URL = 'https://midnightblue-manatee-329921.hostingersite.com/presence.php';
+
+    let profilActif = null;
+    let timerInterval = null;
+    let tempsRestant = 300;
+    
+    let caseVideIndex = 15;
+    let ordreActuel = [];
+
+    let questionsSession = [];
+    let indexQuestionActuelle = 0;
+    let historiqueReponses = [];
+
+    const banqueQuestions = [
+        { q: "Quel est l'impact hémodynamique direct d'une excitation sexuelle prolongée sur les tissus pelviens et vestibulaires ?", options: ["Une vasoconstriction périphérique globale", "Une congestion vasculaire par engorgement des corps érectiles", "Une neutralisation totale du flux sanguin", "Une rigidification musculaire immédiate"], reponse: 1 },
+        { q: "Sur le plan histologique, quelle est la principale vulnérabilité de la muqueuse rectale comparée à la muqueuse vaginale ?", options: ["La présence de plusieurs couches de cellules kératinisées", "Une épithélium pavimenteux stratifié épais", "Un épithélium simple cylindrique fragile à couche cellulaire unique", "Une insensibilité totale aux frottements secs"], reponse: 2 },
+        { q: "Quelle structure anatomique pelvienne est directement stimulée lors de pressions exercées sur la paroi antérieure du vagin à proximité de l'urèthre ?", options: ["Le col de l'utérus externe", "Le complexe clitoridien interne et la zone du point G", "Le muscle grand adducteur", "L'ischiion"], reponse: 1 },
+        { q: "Pourquoi l'utilisation de lubrifiants à base d'eau est-elle fortement recommandée lors de l'utilisation d'accessoires en silicone haut de gamme ?", options: ["Pour dissoudre la matière du jouet par réaction chimique", "Pour éviter toute altération de la surface du silicone par des agents siliconés", "Pour augmenter l'électricité statique", "Pour réduire la température corporelle"], reponse: 1 },
+        { q: "Quel réflexe neuro-musculaire involontaire survient généralement lors d'une contraction réflexe du sphincter anal externe face à une intrusion non préparée ?", options: ["Un relâchement total et instantané des fascias", "Une spasmophilie des membres supérieurs", "Une contraction de défense verrouillant le canal et provoquant des micro-déchirures", "Une hyperventilation pulmonaire"], reponse: 2 },
+        { q: "Comment s'articule la rétroaction hormonale de l'ocytocine lors de l'atteinte d'un paroxysme orgasmique multiple ?", options: ["Elle inhibe complètement la contraction des muscles lisses", "Elle stimule les contractions rythmées du plancher pelvien et favorise l'attachement", "Elle bloque la circulation sanguine cérébrale", "Elle neutralise la production de dopamine"], reponse: 1 },
+        { q: "Quelle est la fonction mécanique précise du muscle pubo-rectal dans le maintien de la continence et sa gestion lors des pratiques intimes ?", options: ["Il agit comme une sangle en formant une boucle qui tire le rectum vers l'avant", "Il pousse les organes vers le bas en permanence", "Il détruit les cellules épithéliales", "Il régule la température du bassin"], reponse: 0 },
+        { q: "Quel paramètre physique de la friction est le plus critique pour éviter l'échauffement des tissus intimes sensibles ?", options: ["La vitesse linéaire maximale sans lubrifiant", "Le coefficient de friction réduit par un film lubrifiant continu et renouvelé", "L'application d'une pression statique élevée", "L'utilisation de poudres absorbantes"], reponse: 1 },
+        { q: "Dans le cadre de la physiologie de la réponse humaine (Modèle de Masters et Johnson), quelle phase succède immédiatement à l'excitation et précède l'orgasme ?", options: ["La phase de résolution passive", "La phase de plateau caractérisée par la stabilisation de la congestion", "La période réfractaire absolue", "La phase de latence thermique"], reponse: 1 },
+        { q: "Quel est le risque clinique d'un transfert microbiotique direct de la flore colique vers l'appareil uro-génital féminin ?", options: ["Une immunisation immédiate contre les virus", "Une prolifération bactérienne pathogène entraînant des infections urinaires ou des vaginoses", "Une augmentation de la lubrification naturelle", "Un renforcement de la paroi utérine"], reponse: 1 },
+        { q: "Comment la respiration diaphragmatique profonde influence-t-elle le tonus du sphincter anal interne ?", options: ["Elle augmente la pression intra-abdominale de force", "Elle stimule le nerf vague, favorisant la détente des muscles lisses pelviens", "Elle bloque l'oxygénation des tissus", "Elle contracte de manière irréversible le plancher pelvien"], reponse: 1 },
+        { q: "Quelle est la composition chimique optimale d'un lubrifiant destiné aux pratiques anales prolongées ?", options: ["Une base aqueuse isotonique à osmolarité contrôlée ou une base siliconée pure", "Une base alcoolisée volatile", "Une base acide corrosive", "Une base huileuse minérale lourde"], reponse: 0 },
+        { q: "Quel rôle jouent les corpuscules de Meissner et de Pacini situés dans les zones érogènes hautement innervées ?", options: ["Ce sont des mécanorécepteurs sensibles aux vibrations, à la texture et aux pressions tactiles fines", "Ce sont des thermorécepteurs réglant la sueur", "Ce sont des récepteurs olfactifs profonds", "Ce sont des cellules musculaires contractiles"], reponse: 0 },
+        { q: "Pourquoi l'étirement progressif des tissus conjonctifs du canal anal est-il indispensable sur plusieurs minutes ?", options: ["Pour permettre l'adaptation visco-élastique des fibres de collagène et prévenir les micro-traumatismes", "Pour vider complètement l'air ambiant", "Pour anesthésier définitivement les nerfs", "Pour solidifier la paroi musculaire"], reponse: 0 },
+        { q: "Quelle est la conséquence d'une osmolarité trop élevée dans un gel lubrifiant appliqué sur des muqueuses fragiles ?", options: ["Une hydratation profonde des cellules", "Un appel d'eau par osmose asséchant et irritant les cellules de la muqueuse", "Une neutralisation totale des frictions", "Un effet anesthésiant immédiat"], reponse: 1 }
+    ];
+
+    function dechiffrer(texteEnc) {
+        if (!texteEnc) return "";
+        if (typeof texteEnc === 'string' && !texteEnc.startsWith("BIZI_ENC:")) { return texteEnc; }
+        try {
+            let cleanBase64 = texteEnc.replace("BIZI_ENC:", "");
+            return decodeURIComponent(atob(cleanBase64));
+        } catch (e) { return texteEnc; }
+    }
+
+    function formaterNumeroWhatsApp(num) {
+        let clean = String(num || '').replace(/\D/g, '');
+        if (!clean.startsWith('225')) { clean = '225' + clean; }
+        return clean;
+    }
+
+    function verifierChances() {
+        const aujourdhui = new Date().toDateString();
+        let stockage = JSON.parse(localStorage.getItem('bizi_jeu_tentatives')) || { date: aujourdhui, chances: 5 };
+
+        if (stockage.date !== aujourdhui) {
+            stockage = { date: aujourdhui, chances: 5 };
+            localStorage.setItem('bizi_jeu_tentatives', JSON.stringify(stockage));
+        }
+
+        document.getElementById("nb-chances").innerText = stockage.chances + "/5";
+        return stockage.chances;
+    }
+
+    function consommerChance() {
+        const aujourdhui = new Date().toDateString();
+        let stockage = JSON.parse(localStorage.getItem('bizi_jeu_tentatives')) || { date: aujourdhui, chances: 5 };
+        stockage.chances = Math.max(0, stockage.chances - 1);
+        localStorage.setItem('bizi_jeu_tentatives', JSON.stringify(stockage));
+        return stockage.chances;
+    }
+
+    async function actualiserStatistiquesReelles() {
+        try {
+            const res = await fetch(API_PRESENCE_URL);
+            const data = await res.json();
+            if (data.status === "success") {
+                document.getElementById("stats-en-ligne").innerText = data.en_ligne;
+                document.getElementById("stats-24h").innerText = data["24h"];
+            }
+        } catch (e) {
+            console.error("Erreur stats présence", e);
+        }
+    }
+
+    window.onload = function() {
+        const chances = verifierChances();
+        actualiserStatistiquesReelles();
+        setInterval(actualiserStatistiquesReelles, 15000);
+
+        if (chances <= 0) {
+            document.getElementById("menu-selection").classList.add("hidden");
+            document.getElementById("container-bloque").classList.remove("hidden");
+        }
+    };
+
+    async function recupererProfilAleatoireParCategorie() {
+        const categorieChoisie = document.getElementById("select-cat").value;
+        try {
+            const res = await fetch(API_URL);
+            const data = await res.json();
+            if (data.status === "success" && data.data.length > 0) {
+                const filtres = data.data.filter(p => {
+                    let catP = p.cat ? p.cat.trim().toLowerCase() : 'femme';
+                    return catP === categorieChoisie && p.photos;
+                });
+
+                if (filtres.length > 0) {
+                    let rawProfil = filtres[Math.floor(Math.random() * filtres.length)];
+                    let parsedPhotos = [];
+                    try {
+                        if (typeof rawProfil.photos === 'string') {
+                            let cleaned = rawProfil.photos.trim();
+                            if (cleaned.startsWith('[')) { parsedPhotos = JSON.parse(cleaned); } 
+                            else { parsedPhotos = [cleaned]; }
+                        } else if (Array.isArray(rawProfil.photos)) {
+                            parsedPhotos = rawProfil.photos;
+                        }
+                    } catch(e) { parsedPhotos = [rawProfil.photos]; }
+
+                    parsedPhotos = parsedPhotos.map(img => {
+                        if (img && typeof img === 'string') {
+                            let cleanImg = img.trim();
+                            if (cleanImg.startsWith('"') && cleanImg.endsWith('"')) { cleanImg = cleanImg.slice(1, -1); }
+                            if (!cleanImg.startsWith("data:image")) { cleanImg = "data:image/jpeg;base64," + cleanImg; }
+                            return cleanImg;
+                        }
+                        return null;
+                    }).filter(img => img !== null && img.length > 50);
+
+                    if (parsedPhotos.length > 0) {
+                        profilActif = {
+                            id: parseInt(rawProfil.id, 10),
+                            nom: dechiffrer(rawProfil.nom) || "Profil VIP",
+                            telephone: formaterNumeroWhatsApp(dechiffrer(rawProfil.telephone)),
+                            imageURL: parsedPhotos[0]
+                        };
+                        return true;
+                    }
+                }
+            }
+        } catch (e) {
+            console.error("Erreur API", e);
+        }
+
+        profilActif = {
+            id: 1,
+            nom: "Profil VIP Bizi",
+            telephone: "22500000000",
+            imageURL: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&h=300&fit=crop"
+        };
+        return true;
+    }
+
+    function retourMenu() {
+        clearInterval(timerInterval);
+        const chancesRestantes = verifierChances();
+        actualiserStatistiquesReelles();
+        if (chancesRestantes <= 0) {
+            document.getElementById("menu-selection").classList.add("hidden");
+            document.getElementById("container-defaite").classList.add("hidden");
+            document.getElementById("container-bloque").classList.remove("hidden");
+        } else {
+            document.getElementById("menu-selection").classList.remove("hidden");
+            document.getElementById("container-puzzle").classList.add("hidden");
+            document.getElementById("container-quiz").classList.add("hidden");
+            document.getElementById("container-defaite").classList.add("hidden");
+        }
+    }
+
+    async function lancerJeu(type) {
+        if (verifierChances() <= 0) {
+            document.getElementById("menu-selection").classList.add("hidden");
+            document.getElementById("container-bloque").classList.remove("hidden");
+            return;
+        }
+
+        await recupererProfilAleatoireParCategorie();
+        document.getElementById("menu-selection").classList.add("hidden");
+
+        if (type === 'puzzle') {
+            document.getElementById("cible-puzzle-nom").innerText = `Cible : ${profilActif.nom}`;
+            document.getElementById("container-puzzle").classList.remove("hidden");
+            initialiserPuzzle4x4();
+            lancerChronometre(300, "timer-puzzle", echecJeuPuzzle);
+        } else {
+            document.getElementById("cible-quiz-nom").innerText = `Cible : ${profilActif.nom}`;
+            document.getElementById("container-quiz").classList.remove("hidden");
+            
+            let copieBanque = [...banqueQuestions].sort(() => Math.random() - 0.5);
+            questionsSession = copieBanque.slice(0, 15);
+            indexQuestionActuelle = 0;
+            historiqueReponses = [];
+
+            afficherQuestionQuizActuelle();
+            lancerChronometre(180, "timer-quiz", echecTempsQuiz);
+        }
+    }
+
+    function lancerChronometre(secondes, elementId, callbackEchec) {
+        clearInterval(timerInterval);
+        tempsRestant = secondes;
+        document.getElementById(elementId).innerText = tempsRestant;
+
+        timerInterval = setInterval(() => {
+            tempsRestant--;
+            document.getElementById(elementId).innerText = tempsRestant;
+            if (tempsRestant <= 0) {
+                clearInterval(timerInterval);
+                callbackEchec();
+            }
+        }, 1000);
+    }
+
+    // --- PUZZLE 4x4 (16 cases) ---
+    function initialiserPuzzle4x4() {
+        ordreActuel = [];
+        for (let i = 0; i < 16; i++) {
+            ordreActuel.push(i);
+        }
+        caseVideIndex = 15;
+        
+        for (let i = 0; i < 60; i++) {
+            let coupsPossibles = obtenirCoupsVoisins4x4(caseVideIndex);
+            let coupAleatoire = coupsPossibles[Math.floor(Math.random() * coupsPossibles.length)];
+            
+            ordreActuel[caseVideIndex] = ordreActuel[coupAleatoire];
+            ordreActuel[coupAleatoire] = 15;
+            caseVideIndex = coupAleatoire;
+        }
+        afficherGrillePuzzle4x4();
+    }
+
+    function obtenirCoupsVoisins4x4(idx) {
+        let ligne = Math.floor(idx / 4);
+        let col = idx % 4;
+        let voisins = [];
+        if (ligne > 0) voisins.push(idx - 4);
+        if (ligne < 3) voisins.push(idx + 4);
+        if (col > 0) voisins.push(idx - 1);
+        if (col < 3) voisins.push(idx + 1);
+        return voisins;
+    }
+
+    function afficherGrillePuzzle4x4() {
+        const board = document.getElementById("puzzle-board");
+        board.innerHTML = "";
+
+        ordreActuel.forEach((val, index) => {
+            const tile = document.createElement("div");
+            tile.className = "tile";
+            if (val === 15) {
+                tile.classList.add("empty");
+            } else {
+                let x = (val % 4) * 75;
+                let y = Math.floor(val / 4) * 75;
+                tile.style.backgroundImage = `url('${profilActif.imageURL}')`;
+                tile.style.backgroundPosition = `-${x}px -${y}px`;
+            }
+            tile.onclick = () => bougerTuile4x4(index);
+            board.appendChild(tile);
+        });
+    }
+
+    function bougerTuile4x4(index) {
+        let ligneClicked = Math.floor(index / 4);
+        let colClicked = index % 4;
+        let ligneEmpty = Math.floor(caseVideIndex / 4);
+        let colEmpty = caseVideIndex % 4;
+
+        let distance = Math.abs(ligneClicked - ligneEmpty) + Math.abs(colClicked - colEmpty);
+
+        if (distance === 1) {
+            ordreActuel[caseVideIndex] = ordreActuel[index];
+            ordreActuel[index] = 15;
+            caseVideIndex = index;
+            afficherGrillePuzzle4x4();
+
+            let gagne = true;
+            for (let i = 0; i < 16; i++) {
+                if (ordreActuel[i] !== i) {
+                    gagne = false;
+                    break;
+                }
+            }
+            if (gagne) {
+                clearInterval(timerInterval);
+                validerVictoirePuzzle();
+            }
+        }
+    }
+
+    function afficherQuestionQuizActuelle() {
+        if (indexQuestionActuelle >= questionsSession.length) {
+            clearInterval(timerInterval);
+            traulerFinQuiz();
+            return;
+        }
+
+        const qObj = questionsSession[indexQuestionActuelle];
+        document.getElementById("quiz-progress-text").innerText = `Question ${indexQuestionActuelle + 1} / ${questionsSession.length}`;
+
+        let optionsMelangees = qObj.options.map((opt, idx) => ({ texte: opt, originalIndex: idx }));
+        optionsMelangees.sort(() => Math.random() - 0.5);
+
+        document.getElementById("quiz-content").innerHTML = `
+            <p style="margin-bottom:15px; font-weight:bold; color:var(--text-main); font-size:13.5px; line-height:1.4;">${qObj.q}</p>
+            <div class="quiz-options">
+                ${optionsMelangees.map(item => `
+                    <button class="quiz-btn" onclick="verifierReponseQuiz(${item.originalIndex}, ${qObj.reponse}, '${item.texte.replace(/'/g, "\\'")}')">${item.texte}</button>
+                `).join('')}
+            </div>
+        `;
+    }
+
+    function verifierReponseQuiz(choixOriginalIndex, bonneReponseOriginalIndex, texteChoisi) {
+        const qObj = questionsSession[indexQuestionActuelle];
+        const estCorrect = (choixOriginalIndex === bonneReponseOriginalIndex);
+
+        historiqueReponses.push({
+            question: qObj.q,
+            choixUtilisateur: texteChoisi,
+            correct: estCorrect
+        });
+
+        indexQuestionActuelle++;
+        afficherQuestionQuizActuelle();
+    }
+
+    function traulerFinQuiz() {
+        let bonnesReponses = historiqueReponses.filter(h => h.correct).length;
+        let total = questionsSession.length;
+        let noteSur20 = Math.round((bonnesReponses / total) * 20 * 10) / 10;
+
+        document.getElementById("container-quiz").classList.add("hidden");
+
+        if (noteSur20 >= 10) {
+            document.getElementById("container-victoire").classList.remove("hidden");
+            document.getElementById("message-score-victoire").innerHTML = `Score exceptionnel : <strong>${noteSur20} / 20</strong> (${bonnesReponses}/${total} bonnes réponses). Ton code de réduction de 30 % est débloqué !`;
+            
+            const codePromo = `BIZI-VIP-${profilActif.id}-${Math.floor(1000 + Math.random() * 9000)}`;
+            document.getElementById("promo-code-display").innerText = codePromo;
+
+            const lienValidation = `https://midnightblue-manatee-329921.hostingersite.com/valider_bonus.php?code=${codePromo}`;
+            const texteWhatsApp = `Salut ${profilActif.nom}, j'ai brillamment réussi mon quiz expert sur Bizi avec ${noteSur20}/20 ! 🎮\n\nVoici mon code de réduction : *${codePromo}*.\n\nEn l'acceptant, tu m'accordes une réduction de 30 % sur ton service, et ton profil gagne automatiquement 2 jours de visibilité de plus avant expiration !\n\nClique simplement sur ce lien officiel pour valider ton bonus : \n${lienValidation}`;
+
+            document.getElementById("actions-profil").innerHTML = `
+                <p>Profil débloqué : <strong>${profilActif.nom}</strong></p>
+                <p style="font-size:11px; color:#ffa502; margin-top:5px;">⚠️ Envoie ce message au prestataire pour activer tes -30% et ses 2 jours de bonus !</p>
+                <a href="https://wa.me/${profilActif.telephone}?text=${encodeURIComponent(texteWhatsApp)}" class="btn-whatsapp" target="_blank">
+                    📱 Envoyer le message à ${profilActif.nom} sur WhatsApp
+                </a>
+            `;
+        } else {
+            const restants = consommerChance();
+            document.getElementById("container-defaite").classList.remove("hidden");
+            document.getElementById("motif-echec").innerText = "Tu n'as pas obtenu la moyenne requise (10/20). Pas de code promo pour cette fois !";
+            document.getElementById("message-score-echec").innerText = `Note finale : ${noteSur20} / 20`;
+
+            let recapHTML = "<strong>📋 Récapitulatif de tes réponses :</strong><br><br>";
+            historiqueReponses.forEach((h, idx) => {
+                if (h.correct) {
+                    recapHTML += `<div style="color:#2ed573; margin-bottom:6px;">Q${idx+1}: ✔️ Correct (${h.choixUtilisateur})</div>`;
+                } else {
+                    recapHTML += `<div style="color:#ff4757; margin-bottom:6px;">Q${idx+1}: ❌ Incorrect (Ta réponse : ${h.choixUtilisateur})</div>`;
+                }
+            });
+            document.getElementById("recap-erreurs").innerHTML = recapHTML;
+            document.getElementById("info-tentative-perdue").innerText = `Il te reste ${restants} chance(s) aujourd'hui.`;
+
+            if (restants <= 0) {
+                setTimeout(() => {
+                    document.getElementById("container-defaite").classList.add("hidden");
+                    document.getElementById("container-bloque").classList.remove("hidden");
+                }, 4000);
+            }
+        }
+    }
+
+    function echecTempsQuiz() {
+        clearInterval(timerInterval);
+        const restants = consommerChance();
+        document.getElementById("container-quiz").classList.add("hidden");
+        document.getElementById("container-defaite").classList.remove("hidden");
+        document.getElementById("motif-echec").innerText = "Le temps imparti est écoulé !";
+        document.getElementById("message-score-echec").innerText = `Note finale : 0 / 20`;
+        document.getElementById("recap-erreurs").innerHTML = "Temps écoulé avant la fin du questionnaire.";
+        document.getElementById("info-tentative-perdue").innerText = `Il te reste ${restants} chance(s) aujourd'hui.`;
+
+        if (restants <= 0) {
+            setTimeout(() => {
+                document.getElementById("container-defaite").classList.add("hidden");
+                document.getElementById("container-bloque").classList.remove("hidden");
+            }, 3000);
+        }
+    }
+
+    function validerVictoirePuzzle() {
+        document.getElementById("container-puzzle").classList.add("hidden");
+        document.getElementById("container-victoire").classList.remove("hidden");
+        document.getElementById("message-score-victoire").innerHTML = `Défi du puzzle 4x4 relevé avec brio ! Ton code de réduction de 30 % est prêt :`;
+
+        const codePromo = `BIZI-VIP-${profilActif.id}-${Math.floor(1000 + Math.random() * 9000)}`;
+        document.getElementById("promo-code-display").innerText = codePromo;
+
+        const lienValidation = `https://midnightblue-manatee-329921.hostingersite.com/valider_bonus.php?code=${codePromo}`;
+        const texteWhatsApp = `Salut ${profilActif.nom}, j'ai brillamment réussi mon puzzle sur Bizi ! 🎮\n\nVoici mon code de réduction : *${codePromo}*.\n\nEn l'acceptant, tu m'accordes une réduction de 30 % sur ton service, et ton profil gagne automatiquement 2 jours de visibilité de plus avant expiration !\n\nClique simplement sur ce lien officiel pour valider ton bonus : \n${lienValidation}`;
+
+        document.getElementById("actions-profil").innerHTML = `
+            <p>Profil débloqué : <strong>${profilActif.nom}</strong></p>
+            <p style="font-size:11px; color:#ffa502; margin-top:5px;">⚠️ Envoie ce message au prestataire pour activer tes -30% et ses 2 jours de bonus !</p>
+            <a href="https://wa.me/${profilActif.telephone}?text=${encodeURIComponent(texteWhatsApp)}" class="btn-whatsapp" target="_blank">
+                📱 Envoyer le message à ${profilActif.nom} sur WhatsApp
+            </a>
+        `;
+    }
+
+    function echecJeuPuzzle(motif = "Temps écoulé !") {
+        clearInterval(timerInterval);
+        const restants = consommerChance();
+
+        document.getElementById("container-puzzle").classList.add("hidden");
+        document.getElementById("container-defaite").classList.remove("hidden");
+
+        document.getElementById("motif-echec").innerText = motif;
+        document.getElementById("message-score-echec").innerText = "Échec du puzzle";
+        document.getElementById("recap-erreurs").innerHTML = "Temps écoulé avant d'avoir pu replacer les cases.";
+        document.getElementById("info-tentative-perdue").innerText = `Il te reste ${restants} chance(s) aujourd'hui.`;
+
+        if (restants <= 0) {
+            setTimeout(() => {
+                document.getElementById("container-defaite").classList.add("hidden");
+                document.getElementById("container-bloque").classList.remove("hidden");
+            }, 2500);
+        }
+    }
+</script>
+
+</body>
+</html>
