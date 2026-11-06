@@ -151,11 +151,12 @@
             font-weight: bold;
         }
 
+        /* Grille du Puzzle 2x2 (4 cases - Mode Test Rapide) */
         .puzzle-grid {
             display: grid;
-            grid-template-columns: repeat(4, 75px);
-            grid-template-rows: repeat(4, 75px);
-            gap: 3px;
+            grid-template-columns: repeat(2, 110px);
+            grid-template-rows: repeat(2, 110px);
+            gap: 4px;
             justify-content: center;
             margin: 20px auto;
             background: #111;
@@ -166,11 +167,11 @@
         }
 
         .tile {
-            width: 75px;
-            height: 75px;
-            background-size: 300px 300px;
+            width: 110px;
+            height: 110px;
+            background-size: 220px 220px;
             cursor: pointer;
-            border-radius: 3px;
+            border-radius: 4px;
             transition: transform 0.1s ease, filter 0.1s ease;
         }
 
@@ -251,7 +252,7 @@
 <body>
 
     <h1>🎮 Jeu de réduction du prix du Bizi de 30 % VIP</h1>
-    <p>Relève le défi expert pour décrocher ton code promo exclusif !</p>
+    <p>Mode Test Rapide : Résous le puzzle 2x2 pour tester ton lien WhatsApp !</p>
 
     <!-- MENU DE SELECTION -->
     <div id="menu-selection" class="menu-jeux">
@@ -282,7 +283,7 @@
         </select>
         
         <div style="margin-top: 20px;">
-            <button onclick="lancerJeu('puzzle')">🧩 Puzzle Coulissant 4x4 Expert (5 min)</button>
+            <button onclick="lancerJeu('puzzle')">🧩 Puzzle Coulissant 2x2 (Test Rapide)</button>
             <button onclick="lancerJeu('quiz')">🧠 Quiz Expert Ultra-Corsé (3 min)</button>
         </div>
         
@@ -302,7 +303,7 @@
             <span style="color:var(--text-muted); font-size:12px;" id="cible-puzzle-nom">Cible : ...</span>
             <span class="timer-box">⏱️ <span id="timer-puzzle">300</span>s</span>
         </div>
-        <p style="font-size: 11px; margin-bottom:8px;">Glisse les 15 cases de la grille 4x4 pour reconstituer l'image.</p>
+        <p style="font-size: 11px; margin-bottom:8px;">Glisse les 3 cases pour reconstituer l'image instantanément.</p>
         <div id="puzzle-board" class="puzzle-grid"></div>
         <button class="btn-retour" onclick="retourMenu()">Abandonner</button>
     </div>
@@ -347,12 +348,12 @@
     let timerInterval = null;
     let tempsRestant = 300;
     
-    let caseVideIndex = 14;
+    let caseVideIndex = 3;
     let ordreActuel = [];
 
     let questionsSession = [];
     let indexQuestionActuelle = 0;
-    let historiqueReponses = []; // Stocke les réponses pour le récapitulatif final
+    let historiqueReponses = [];
 
     const banqueQuestions = [
         { q: "Quel est l'impact hémodynamique direct d'une excitation sexuelle prolongée sur les tissus pelviens et vestibulaires ?", options: ["Une vasoconstriction périphérique globale", "Une congestion vasculaire par engorgement des corps érectiles", "Une neutralisation totale du flux sanguin", "Une rigidification musculaire immédiate"], reponse: 1 },
@@ -369,12 +370,7 @@
         { q: "Quelle est la composition chimique optimale d'un lubrifiant destiné aux pratiques anales prolongées ?", options: ["Une base aqueuse isotonique à osmolarité contrôlée ou une base siliconée pure", "Une base alcoolisée volatile", "Une base acide corrosive", "Une base huileuse minérale lourde"], reponse: 0 },
         { q: "Quel rôle jouent les corpuscules de Meissner et de Pacini situés dans les zones érogènes hautement innervées ?", options: ["Ce sont des mécanorécepteurs sensibles aux vibrations, à la texture et aux pressions tactiles fines", "Ce sont des thermorécepteurs réglant la sueur", "Ce sont des récepteurs olfactifs profonds", "Ce sont des cellules musculaires contractiles"], reponse: 0 },
         { q: "Pourquoi l'étirement progressif des tissus conjonctifs du canal anal est-il indispensable sur plusieurs minutes ?", options: ["Pour permettre l'adaptation visco-élastique des fibres de collagène et prévenir les micro-traumatismes", "Pour vider complètement l'air ambiant", "Pour anesthésier définitivement les nerfs", "Pour solidifier la paroi musculaire"], reponse: 0 },
-        { q: "Quelle est la conséquence d'une osmolarité trop élevée dans un gel lubrifiant appliqué sur des muqueuses fragiles ?", options: ["Une hydratation profonde des cellules", "Un appel d'eau par osmose asséchant et irritant les cellules de la muqueuse", "Une neutralisation totale des frictions", "Un effet anesthésiant immédiat"], reponse: 1 },
-        { q: "Quel réseau vasculaire alimente principalement les tissus érectiles du clitoris et des bulbes vestibulaires ?", options: ["L'artère carotide externe", "Le réseau des artères honteuses internes (pudendales)", "L'artère coronaire", "La veine cave supérieure"], reponse: 1 },
-        { q: "Comment se caractérise la phase réfractaire chez l'homme comparée à la multiorgasmicité potentielle chez la femme ?", options: ["Elles sont rigoureusement identiques en durée", "La phase réfractaire masculine implique une période d'in-excitabilité temporaire, absente chez la femme qui peut enchaîner les paroxysmes", "La femme ne peut ressentir qu'un seul orgasme par session", "L'homme possède une multiorgasmicité permanente sans latence"], reponse: 1 },
-        { q: "Quel est l'effet d'une contraction volontaire des muscles de Kegel (pubo-coccygiens) pendant l'acte ?", options: ["Une diminution immédiate de la sensibilité", "Un resserrement des parois, une augmentation de la pression locale et un afflux sanguin accru", "Un blocage total de la respiration", "Une insensibilité nerveuse temporaire"], reponse: 1 },
-        { q: "Quelle précaution ergonomique faut-il impérativement respecter pour tout objet inséré par voie anale ?", options: ["Il doit obligatoirement posséder une base évasée ou une butée de sécurité antirouille/anti-glisse", "Il doit être pointu pour faciliter l'insertion", "Il doit être en bois poreux brut", "Il ne doit comporter aucune structure de retrait"], reponse: 0 },
-        { q: "Quel est le mécanisme neuro-végétatif responsable de l'initiation de la réponse érectile et de la tumescence ?", options: ["Le système nerveux sympathique en mode de fuite", "Le système nerveux parasympathique contrôlant la vasodilatation locale par l'oxyde nitrique (NO)", "Le système endocrinien surrénalien pur", "Le cortex visuel exclusif"], reponse: 1 }
+        { q: "Quelle est la conséquence d'une osmolarité trop élevée dans un gel lubrifiant appliqué sur des muqueuses fragiles ?", options: ["Une hydratation profonde des cellules", "Un appel d'eau par osmose asséchant et irritant les cellules de la muqueuse", "Une neutralisation totale des frictions", "Un effet anesthésiant immédiat"], reponse: 1 }
     ];
 
     function dechiffrer(texteEnc) {
@@ -524,15 +520,14 @@
         if (type === 'puzzle') {
             document.getElementById("cible-puzzle-nom").innerText = `Cible : ${profilActif.nom}`;
             document.getElementById("container-puzzle").classList.remove("hidden");
-            initialiserPuzzle4x4();
+            initialiserPuzzle2x2();
             lancerChronometre(300, "timer-puzzle", echecJeuPuzzle);
         } else {
             document.getElementById("cible-quiz-nom").innerText = `Cible : ${profilActif.nom}`;
             document.getElementById("container-quiz").classList.remove("hidden");
             
-            const nombreQuestionsVoulu = 15; // Fixé à 15 questions pour la notation sur 20 propre
             let copieBanque = [...banqueQuestions].sort(() => Math.random() - 0.5);
-            questionsSession = copieBanque.slice(0, nombreQuestionsVoulu);
+            questionsSession = copieBanque.slice(0, 15);
             indexQuestionActuelle = 0;
             historiqueReponses = [];
 
@@ -556,68 +551,69 @@
         }, 1000);
     }
 
-    function initialiserPuzzle4x4() {
-        ordreActuel = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 14];
-        caseVideIndex = 14;
+    // --- PUZZLE 2x2 (4 cases pour test rapide) ---
+    function initialiserPuzzle2x2() {
+        ordreActuel = [0, 1, 3, 2]; // 3 est la case vide
+        caseVideIndex = 3;
         
-        for (let i = 0; i < 100; i++) {
-            let coupsPossibles = obtenirCoupsVoisins(caseVideIndex);
+        for (let i = 0; i < 10; i++) {
+            let coupsPossibles = obtenirCoupsVoisins2x2(caseVideIndex);
             let coupAleatoire = coupsPossibles[Math.floor(Math.random() * coupsPossibles.length)];
             
             ordreActuel[caseVideIndex] = ordreActuel[coupAleatoire];
-            ordreActuel[coupAleatoire] = 15;
+            ordreActuel[coupAleatoire] = 3;
             caseVideIndex = coupAleatoire;
         }
-        afficherGrillePuzzle4x4();
+        afficherGrillePuzzle2x2();
     }
 
-    function obtenirCoupsVoisins(idx) {
-        let ligne = Math.floor(idx / 4);
-        let col = idx % 4;
+    function obtenirCoupsVoisins2x2(idx) {
+        let ligne = Math.floor(idx / 2);
+        let col = idx % 2;
         let voisins = [];
-        if (ligne > 0) voisins.push(idx - 4);
-        if (ligne < 3) voisins.push(idx + 4);
+        if (ligne > 0) voisins.push(idx - 2);
+        if (ligne < 1) voisins.push(idx + 2);
         if (col > 0) voisins.push(idx - 1);
-        if (col < 3) voisins.push(idx + 1);
+        if (col < 1) voisins.push(idx + 1);
         return voisins;
     }
 
-    function afficherGrillePuzzle4x4() {
+    function afficherGrillePuzzle2x2() {
         const board = document.getElementById("puzzle-board");
         board.innerHTML = "";
 
         ordreActuel.forEach((val, index) => {
             const tile = document.createElement("div");
             tile.className = "tile";
-            if (val === 15) {
+            if (val === 3) {
                 tile.classList.add("empty");
             } else {
-                const x = (val % 4) * 75;
-                const y = Math.floor(val / 4) * 75;
+                let x = (val % 2) * 110;
+                let y = Math.floor(val / 2) * 110;
                 tile.style.backgroundImage = `url('${profilActif.imageURL}')`;
                 tile.style.backgroundPosition = `-${x}px -${y}px`;
             }
-            tile.onclick = () => bougerTuile4x4(index);
+            tile.onclick = () => bougerTuile2x2(index);
             board.appendChild(tile);
         });
     }
 
-    function bougerTuile4x4(index) {
-        let ligneClicked = Math.floor(index / 4);
-        let colClicked = index % 4;
-        let ligneEmpty = Math.floor(caseVideIndex / 4);
-        let colEmpty = caseVideIndex % 4;
+    function bougerTuile2x2(index) {
+        let ligneClicked = Math.floor(index / 2);
+        let colClicked = index % 2;
+        let ligneEmpty = Math.floor(caseVideIndex / 2);
+        let colEmpty = caseVideIndex % 2;
 
         let distance = Math.abs(ligneClicked - ligneEmpty) + Math.abs(colClicked - colEmpty);
 
         if (distance === 1) {
             ordreActuel[caseVideIndex] = ordreActuel[index];
-            ordreActuel[index] = 15;
+            ordreActuel[index] = 3;
             caseVideIndex = index;
-            afficherGrillePuzzle4x4();
+            afficherGrillePuzzle2x2();
 
             let gagne = true;
-            for (let i = 0; i < 16; i++) {
+            for (let i = 0; i < 4; i++) {
                 if (ordreActuel[i] !== i) {
                     gagne = false;
                     break;
@@ -657,12 +653,10 @@
         const qObj = questionsSession[indexQuestionActuelle];
         const estCorrect = (choixOriginalIndex === bonneReponseOriginalIndex);
 
-        // Enregistrer la réponse pour le récapitulatif
         historiqueReponses.push({
             question: qObj.q,
             choixUtilisateur: texteChoisi,
-            correct: estCorrect,
-            bonneReponseTexte: qObj.options[bonneReponseOriginalIndex]
+            correct: estCorrect
         });
 
         indexQuestionActuelle++;
@@ -670,15 +664,13 @@
     }
 
     function traulerFinQuiz() {
-        // Calculer le score sur 20 (basé sur 15 questions)
         let bonnesReponses = historiqueReponses.filter(h => h.correct).length;
         let total = questionsSession.length;
-        let noteSur20 = Math.round((bonnesReponses / total) * 20 * 10) / 10; // Arrondi à 1 décimale
+        let noteSur20 = Math.round((bonnesReponses / total) * 20 * 10) / 10;
 
         document.getElementById("container-quiz").classList.add("hidden");
 
         if (noteSur20 >= 10) {
-            // Victoire : moyenne atteinte >= 10/20
             document.getElementById("container-victoire").classList.remove("hidden");
             document.getElementById("message-score-victoire").innerHTML = `Score exceptionnel : <strong>${noteSur20} / 20</strong> (${bonnesReponses}/${total} bonnes réponses). Ton code de réduction de 30 % est débloqué !`;
             
@@ -696,13 +688,11 @@
                 </a>
             `;
         } else {
-            // Échec : pas la moyenne (< 10/20)
             const restants = consommerChance();
             document.getElementById("container-defaite").classList.remove("hidden");
             document.getElementById("motif-echec").innerText = "Tu n'as pas obtenu la moyenne requise (10/20). Pas de code promo pour cette fois !";
             document.getElementById("message-score-echec").innerText = `Note finale : ${noteSur20} / 20`;
 
-            // Générer le récapitulatif sans donner la correction des erreurs
             let recapHTML = "<strong>📋 Récapitulatif de tes réponses :</strong><br><br>";
             historiqueReponses.forEach((h, idx) => {
                 if (h.correct) {
@@ -744,13 +734,13 @@
     function validerVictoirePuzzle() {
         document.getElementById("container-puzzle").classList.add("hidden");
         document.getElementById("container-victoire").classList.remove("hidden");
-        document.getElementById("message-score-victoire").innerHTML = `Défi du puzzle 4x4 relevé avec brio ! Ton code de réduction de 30 % est prêt :`;
+        document.getElementById("message-score-victoire").innerHTML = `Défi du puzzle 2x2 relevé avec brio ! Ton code de réduction de 30 % est prêt :`;
 
         const codePromo = `BIZI-VIP-${profilActif.id}-${Math.floor(1000 + Math.random() * 9000)}`;
         document.getElementById("promo-code-display").innerText = codePromo;
 
         const lienValidation = `https://midnightblue-manatee-329921.hostingersite.com/valider_bonus.php?code=${codePromo}`;
-        const texteWhatsApp = `Salut ${profilActif.nom}, j'ai brillamment réussi mon puzzle expert sur Bizi ! 🎮\n\nVoici mon code de réduction : *${codePromo}*.\n\nEn l'acceptant, tu m'accordes une réduction de 30 % sur ton service, et ton profil gagne automatiquement 2 jours de visibilité de plus avant expiration !\n\nClique simplement sur ce lien officiel pour valider ton bonus : \n${lienValidation}`;
+        const texteWhatsApp = `Salut ${profilActif.nom}, j'ai brillamment réussi mon puzzle sur Bizi ! 🎮\n\nVoici mon code de réduction : *${codePromo}*.\n\nEn l'acceptant, tu m'accordes une réduction de 30 % sur ton service, et ton profil gagne automatiquement 2 jours de visibilité de plus avant expiration !\n\nClique simplement sur ce lien officiel pour valider ton bonus : \n${lienValidation}`;
 
         document.getElementById("actions-profil").innerHTML = `
             <p>Profil débloqué : <strong>${profilActif.nom}</strong></p>
@@ -769,8 +759,8 @@
         document.getElementById("container-defaite").classList.remove("hidden");
 
         document.getElementById("motif-echec").innerText = motif;
-        document.getElementById("message-score-echec").innerText = "Échec du puzzle 4x4";
-        document.getElementById("recap-erreurs").innerHTML = "Temps écoulé avant d'avoir pu replacer toutes les cases.";
+        document.getElementById("message-score-echec").innerText = "Échec du puzzle";
+        document.getElementById("recap-erreurs").innerHTML = "Temps écoulé avant d'avoir pu replacer les cases.";
         document.getElementById("info-tentative-perdue").innerText = `Il te reste ${restants} chance(s) aujourd'hui.`;
 
         if (restants <= 0) {
