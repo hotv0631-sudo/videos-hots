@@ -114,12 +114,12 @@
             font-weight: bold;
         }
 
-        /* Grille du Puzzle */
+        /* Grille du Puzzle 4x4 (16 cases) plus complexe */
         .puzzle-grid {
             display: grid;
-            grid-template-columns: repeat(3, 100px);
-            grid-template-rows: repeat(3, 100px);
-            gap: 4px;
+            grid-template-columns: repeat(4, 75px);
+            grid-template-rows: repeat(4, 75px);
+            gap: 3px;
             justify-content: center;
             margin: 20px auto;
             background: #111;
@@ -130,11 +130,11 @@
         }
 
         .tile {
-            width: 100px;
-            height: 100px;
+            width: 75px;
+            height: 75px;
             background-size: 300px 300px;
             cursor: pointer;
-            border-radius: 4px;
+            border-radius: 3px;
             transition: transform 0.1s ease, filter 0.1s ease;
         }
 
@@ -224,7 +224,7 @@
         </select>
         
         <div style="margin-top: 20px;">
-            <button onclick="lancerJeu('puzzle')">🧩 Puzzle Coulissant (5 min)</button>
+            <button onclick="lancerJeu('puzzle')">🧩 Puzzle Coulissant 4x4 Expert (5 min)</button>
             <button onclick="lancerJeu('quiz')">🧠 Quiz Expert Aléatoire (3 min)</button>
         </div>
         
@@ -244,7 +244,7 @@
             <span style="color:var(--text-muted); font-size:12px;" id="cible-puzzle-nom">Cible : ...</span>
             <span class="timer-box">⏱️ <span id="timer-puzzle">300</span>s</span>
         </div>
-        <p>Glisse les cases adjacentes pour reformer la photo du profil cible.</p>
+        <p style="font-size: 11px; margin-bottom:8px;">Glisse les 15 cases pour reconstituer l'image complète.</p>
         <div id="puzzle-board" class="puzzle-grid"></div>
         <button class="btn-retour" onclick="retourMenu()">Abandonner</button>
     </div>
@@ -284,7 +284,9 @@
     let profilActif = null;
     let timerInterval = null;
     let tempsRestant = 300;
-    let caseVideIndex = 7;
+    
+    // Variables pour le Puzzle 4x4 (16 positions, 15 = case vide)
+    let caseVideIndex = 15;
     let ordreActuel = [];
 
     let questionsSession = [];
@@ -448,7 +450,7 @@
         if (type === 'puzzle') {
             document.getElementById("cible-puzzle-nom").innerText = `Cible : ${profilActif.nom}`;
             document.getElementById("container-puzzle").classList.remove("hidden");
-            initialiserPuzzle();
+            initialiserPuzzle4x4();
             lancerChronometre(300, "timer-puzzle", echecJeu);
         } else {
             document.getElementById("cible-quiz-nom").innerText = `Cible : ${profilActif.nom}`;
@@ -479,48 +481,71 @@
         }, 1000);
     }
 
-    function initialiserPuzzle() {
-        ordreActuel = [0, 1, 2, 3, 4, 5, 6, 8, 7];
-        caseVideIndex = 7;
-        afficherGrillePuzzle();
+    // --- LOGIQUE PUZZLE 4x4 (16 CASES) ---
+    function initialiserPuzzle4x4() {
+        // 0 à 14 pour les morceaux d'image, 15 pour la case vide
+        ordreActuel = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 14];
+        caseVideIndex = 14;
+        
+        // Mélanger de manière solvable en effectuant des mouvements aléatoires valides
+        for (let i = 0; i < 100; i++) {
+            let coupsPossibles = obtenirCoupsVoisins(caseVideIndex);
+            let coupAleatoire = coupsPossibles[Math.floor(Math.random() * coupsPossibles.length)];
+            
+            ordreActuel[caseVideIndex] = ordreActuel[coupAleatoire];
+            ordreActuel[coupAleatoire] = 15;
+            caseVideIndex = coupAleatoire;
+        }
+        afficherGrillePuzzle4x4();
     }
 
-    function afficherGrillePuzzle() {
+    function obtenirCoupsVoisins(idx) {
+        let ligne = Math.floor(idx / 4);
+        let col = idx % 4;
+        let voisins = [];
+        if (ligne > 0) voisins.push(idx - 4);
+        if (ligne < 3) voisins.push(idx + 4);
+        if (col > 0) voisins.push(idx - 1);
+        if (col < 3) voisins.push(idx + 1);
+        return voisins;
+    }
+
+    function afficherGrillePuzzle4x4() {
         const board = document.getElementById("puzzle-board");
         board.innerHTML = "";
 
         ordreActuel.forEach((val, index) => {
             const tile = document.createElement("div");
             tile.className = "tile";
-            if (val === 8) {
+            if (val === 15) {
                 tile.classList.add("empty");
             } else {
-                const x = (val % 3) * 100;
-                const y = Math.floor(val / 3) * 100;
+                const x = (val % 4) * 75;
+                const y = Math.floor(val / 4) * 75;
                 tile.style.backgroundImage = `url('${profilActif.imageURL}')`;
                 tile.style.backgroundPosition = `-${x}px -${y}px`;
             }
-            tile.onclick = () => bougerTuile(index);
+            tile.onclick = () => bougerTuile4x4(index);
             board.appendChild(tile);
         });
     }
 
-    function bougerTuile(index) {
-        const ligneClicked = Math.floor(index / 3);
-        const colClicked = index % 3;
-        const ligneEmpty = Math.floor(caseVideIndex / 3);
-        const colEmpty = caseVideIndex % 3;
+    function bougerTuile4x4(index) {
+        let ligneClicked = Math.floor(index / 4);
+        let colClicked = index % 4;
+        let ligneEmpty = Math.floor(caseVideIndex / 4);
+        let colEmpty = caseVideIndex % 4;
 
-        const distance = Math.abs(ligneClicked - ligneEmpty) + Math.abs(colClicked - colEmpty);
+        let distance = Math.abs(ligneClicked - ligneEmpty) + Math.abs(colClicked - colEmpty);
 
         if (distance === 1) {
             ordreActuel[caseVideIndex] = ordreActuel[index];
-            ordreActuel[index] = 8;
+            ordreActuel[index] = 15;
             caseVideIndex = index;
-            afficherGrillePuzzle();
+            afficherGrillePuzzle4x4();
 
             let gagne = true;
-            for (let i = 0; i < 9; i++) {
+            for (let i = 0; i < 16; i++) {
                 if (ordreActuel[i] !== i) {
                     gagne = false;
                     break;
@@ -592,23 +617,16 @@
         const codePromo = `BIZI-VIP-${profilActif.id}-${Math.floor(1000 + Math.random() * 9000)}`;
         document.getElementById("promo-code-display").innerText = codePromo;
 
-        try {
-            await fetch(API_JEUX_URL, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ action: "creer_code_attente", id: profilActif.id, code: codePromo })
-            });
-        } catch (e) {
-            console.error("Erreur enregistrement code attente", e);
-        }
-
         const lienValidation = `https://midnightblue-manatee-329921.hostingersite.com/valider_bonus.php?code=${codePromo}`;
+
+        // Texte WhatsApp corrigé avec orthographe irréprochable (met en avant la réduction de 5% pour le client et les 2 jours de visibilité pour le prestataire)
+        const texteWhatsApp = `Salut ${profilActif.nom}, j'ai brillamment réussi mon défi sur Bizi ! 🎮\n\nVoici mon code de réduction : *${codePromo}*.\n\nEn l'acceptant, tu m'accordes une réduction de 5 % sur ton service, et ton profil gagne automatiquement 2 jours de visibilité de plus avant expiration !\n\nClique simplement sur ce lien officiel pour valider ton bonus : \n${lienValidation}`;
 
         document.getElementById("actions-profil").innerHTML = `
             <p>Profil débloqué : <strong>${profilActif.nom}</strong></p>
-            <p style="font-size:11px; color:#ffa502; margin-top:5px;">⚠️ Envoie ce message à la vendeuse pour qu'elle valide tes +2 jours et ta réduction !</p>
-            <a href="https://wa.me/${profilActif.telephone}?text=Salut%20${encodeURIComponent(profilActif.nom)},%20j'ai%20gagné%20mon%20défi%20sur%20Bizi%20!%20Voici%20mon%20code%20de%20réduction%20:%20${codePromo}.%20Clique%20sur%20ce%20lien%20pour%20valider%20mes%20+2%20jours%20de%20visibilité%20et%20ma%20réduc%20:%20${encodeURIComponent(lienValidation)}" class="btn-whatsapp" target="_blank">
-                📱 Envoyer le code à ${profilActif.nom} sur WhatsApp
+            <p style="font-size:11px; color:#ffa502; margin-top:5px;">⚠️ Envoie ce message au prestataire pour activer tes -5% et ses 2 jours de bonus !</p>
+            <a href="https://wa.me/${profilActif.telephone}?text=${encodeURIComponent(texteWhatsApp)}" class="btn-whatsapp" target="_blank">
+                📱 Envoyer le message à ${profilActif.nom} sur WhatsApp
             </a>
         `;
     }
