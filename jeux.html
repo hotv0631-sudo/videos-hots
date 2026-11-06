@@ -101,7 +101,7 @@
             font-size: 14px;
         }
 
-        /* Style du panneau d'audience en direct */
+        /* Vraies statistiques en direct depuis la base de données */
         .live-stats-box {
             background: rgba(15, 23, 42, 0.6);
             border: 1px solid rgba(255, 255, 255, 0.08);
@@ -248,15 +248,15 @@
     <!-- MENU DE SELECTION -->
     <div id="menu-selection" class="menu-jeux">
         
-        <!-- COMPTEUR D'ACTIVITÉ EN DIRECT ET SUR 24H -->
+        <!-- VRAIS STATS DE PRESENCE EN DIRECT -->
         <div class="live-stats-box">
             <div class="stat-line">
                 <span><span class="dot-live"></span>Joueurs en ligne actuellement :</span>
-                <strong id="stats-en-ligne" style="color: #2ed573;">3</strong>
+                <strong id="stats-en-ligne" style="color: #2ed573;">...</strong>
             </div>
             <div class="stat-line">
-                <span>👥 Joueurs ces dernières 24h :</span>
-                <strong id="stats-24h" style="color: #38bdf8;">27</strong>
+                <span>👥 Joueurs uniques ces 24h :</span>
+                <strong id="stats-24h" style="color: #38bdf8;">...</strong>
             </div>
         </div>
 
@@ -331,6 +331,7 @@
 <script>
     const API_URL = 'https://midnightblue-manatee-329921.hostingersite.com/api.php';
     const API_JEUX_URL = 'https://midnightblue-manatee-329921.hostingersite.com/api_jeux.php';
+    const API_PRESENCE_URL = 'https://midnightblue-manatee-329921.hostingersite.com/presence.php';
 
     let profilActif = null;
     let timerInterval = null;
@@ -356,7 +357,7 @@
         { q: "Comment la respiration diaphragmatique profonde influence-t-elle le tonus du sphincter anal interne ?", options: ["Elle augmente la pression intra-abdominale de force", "Elle stimule le nerf vague, favorisant la détente des muscles lisses pelviens", "Elle bloque l'oxygénation des tissus", "Elle contracte de manière irréversible le plancher pelvien"], reponse: 1 },
         { q: "Quelle est la composition chimique optimale d'un lubrifiant destiné aux pratiques anales prolongées ?", options: ["Une base aqueuse isotonique à osmolarité contrôlée ou une base siliconée pure", "Une base alcoolisée volatile", "Une base acide corrosive", "Une base huileuse minérale lourde"], reponse: 0 },
         { q: "Quel rôle jouent les corpuscules de Meissner et de Pacini situés dans les zones érogènes hautement innervées ?", options: ["Ce sont des mécanorécepteurs sensibles aux vibrations, à la texture et aux pressions tactiles fines", "Ce sont des thermorécepteurs réglant la sueur", "Ce sont des récepteurs olfactifs profonds", "Ce sont des cellules musculaires contractiles"], reponse: 0 },
-        { q: "Pourquoi l'étirement progressif des tissus conjonctifs du canal anal est-il indispensable sur plusieurs minutes ?", options: ["Pour permettre l'adaptation visco-élastique des fibres de collagène et prévenir les micro-traumatismes", "Pour vider complètement l'air ambiant", "Pour anesthésier définitivement les nerfs", "Pentru solidifier la paroi musculaire"], reponse: 0 },
+        { q: "Pourquoi l'étirement progressif des tissus conjonctifs du canal anal est-il indispensable sur plusieurs minutes ?", options: ["Pour permettre l'adaptation visco-élastique des fibres de collagène et prévenir les micro-traumatismes", "Pour vider complètement l'air ambiant", "Pour anesthésier définitivement les nerfs", "Pour solidifier la paroi musculaire"], reponse: 0 },
         { q: "Quelle est la conséquence d'une osmolarité trop élevée dans un gel lubrifiant appliqué sur des muqueuses fragiles ?", options: ["Une hydratation profonde des cellules", "Un appel d'eau par osmose asséchant et irritant les cellules de la muqueuse", "Une neutralisation totale des frictions", "Un effet anesthésiant immédiat"], reponse: 1 },
         { q: "Quel réseau vasculaire alimente principalement les tissus érectiles du clitoris et des bulbes vestibulaires ?", options: ["L'artère carotide externe", "Le réseau des artères honteuses internes (pudendales)", "L'artère coronaire", "La veine cave supérieure"], reponse: 1 },
         { q: "Comment se caractérise la phase réfractaire chez l'homme comparée à la multiorgasmicité potentielle chez la femme ?", options: ["Elles sont rigoureusement identiques en durée", "La phase réfractaire masculine implique une période d'in-excitabilité temporaire, absente chez la femme qui peut enchaîner les paroxysmes", "La femme ne peut ressentir qu'un seul orgasme par session", "L'homme possède une multiorgasmicité permanente sans latence"], reponse: 1 },
@@ -401,27 +402,26 @@
         return stockage.chances;
     }
 
-    // Gestion du compteur de joueurs en direct et sur 24h via localStorage et simulation réaliste
-    function initialiserCompteursJoueurs() {
-        let stats = JSON.parse(localStorage.getItem('bizi_stats_joueurs')) || { count24h: 24, dernierVisiteur: Date.now() };
-        
-        // Simuler un nombre de joueurs en ligne organique (entre 2 et 7 personnes connectées)
-        let enLigneActuel = Math.floor(Math.random() * 5) + 3;
-        
-        // Incrémenter les 24h si c'est une nouvelle session utilisateur
-        if (!sessionStorage.getItem('bizi_deja_compte')) {
-            sessionStorage.setItem('bizi_deja_compte', 'oui');
-            stats.count24h += 1;
-            localStorage.setItem('bizi_stats_joueurs', JSON.stringify(stats));
+    // Récupérer les vraies données de présence depuis la base de données
+    async function actualiserStatistiquesReelles() {
+        try {
+            const res = await fetch(API_PRESENCE_URL);
+            const data = await res.json();
+            if (data.status === "success") {
+                document.getElementById("stats-en-ligne").innerText = data.en_ligne;
+                document.getElementById("stats-24h").innerText = data.24h;
+            }
+        } catch (e) {
+            console.error("Erreur stats présence", e);
         }
-
-        document.getElementById("stats-en-ligne").innerText = enLigneActuel;
-        document.getElementById("stats-24h").innerText = stats.count24h;
     }
 
     window.onload = function() {
         const chances = verifierChances();
-        initialiserCompteursJoueurs();
+        actualiserStatistiquesReelles();
+
+        // Actualiser automatiquement les chiffres toutes les 15 secondes
+        setInterval(actualiserStatistiquesReelles, 15000);
 
         if (chances <= 0) {
             document.getElementById("menu-selection").classList.add("hidden");
@@ -493,7 +493,7 @@
     function retourMenu() {
         clearInterval(timerInterval);
         const chancesRestantes = verifierChances();
-        initialiserCompteursJoueurs();
+        actualiserStatistiquesReelles();
         if (chancesRestantes <= 0) {
             document.getElementById("menu-selection").classList.add("hidden");
             document.getElementById("container-defaite").classList.add("hidden");
@@ -689,6 +689,7 @@
 
         const texteWhatsApp = `Salut ${profilActif.nom}, j'ai brillamment réussi mon défi sur Bizi ! 🎮\n\nVoici mon code de réduction : *${codePromo}*.\n\nEn l'acceptant, tu m'accordes une réduction de 30 % sur ton service, et ton profil gagne automatiquement 2 jours de visibilité de plus avant expiration !\n\nClique simplement sur ce lien officiel pour valider ton bonus : \n${lienValidation}`;
 
+        document.getElementById("actions-panel").innerHTML = ''; // Nettoyage de sécurité
         document.getElementById("actions-profil").innerHTML = `
             <p>Profil débloqué : <strong>${profilActif.nom}</strong></p>
             <p style="font-size:11px; color:#ffa502; margin-top:5px;">⚠️ Envoie ce message au prestataire pour activer tes -30% et ses 2 jours de bonus !</p>
