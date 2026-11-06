@@ -235,6 +235,17 @@
             line-height: 1.5;
             margin: 20px 0;
         }
+
+        .recap-box {
+            max-height: 180px;
+            overflow-y: auto;
+            text-align: left;
+            font-size: 12px;
+            background: rgba(0,0,0,0.3);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
     </style>
 </head>
 <body>
@@ -310,17 +321,21 @@
     <!-- ZONE DE VICTOIRE -->
     <div id="container-victoire" class="jeu-container hidden">
         <h2>🎉 Victoire Légendaire !</h2>
-        <p>Défi relevé avec brio ! Ton code de réduction de 30 % pour ce profil est prêt :</p>
+        <p id="message-score-victoire"></p>
         <div id="promo-code-display" class="code-box"></div>
         <div id="actions-profil"></div>
         <button class="btn-retour" onclick="location.href='index.html'" style="margin-top:15px;">Retourner sur le site</button>
     </div>
 
-    <!-- ZONE DE DÉFAITE -->
+    <!-- ZONE DE DÉFAITE / ÉCHEC -->
     <div id="container-defaite" class="jeu-container hidden">
         <h2>❌ Échec du Défi</h2>
-        <p id="motif-echec">Le temps est écoulé ou tu as commis une erreur.</p>
-        <div id="info-tentative-perdue" class="chances-box" style="margin: 20px 0; font-size:16px;"></div>
+        <p id="motif-echec">Le temps est écoulé ou tu n'as pas obtenu la moyenne.</p>
+        <div id="message-score-echec" style="font-weight:bold; color:var(--primary); margin:10px 0; font-size:16px;"></div>
+        
+        <div id="recap-erreurs" class="recap-box"></div>
+
+        <div id="info-tentative-perdue" class="chances-box" style="margin: 15px 0; font-size:14px;"></div>
         <button onclick="retourMenu()">Réessayer</button>
     </div>
 
@@ -337,6 +352,7 @@
 
     let questionsSession = [];
     let indexQuestionActuelle = 0;
+    let historiqueReponses = []; // Stocke les réponses pour le récapitulatif final
 
     const banqueQuestions = [
         { q: "Quel est l'impact hémodynamique direct d'une excitation sexuelle prolongée sur les tissus pelviens et vestibulaires ?", options: ["Une vasoconstriction périphérique globale", "Une congestion vasculaire par engorgement des corps érectiles", "Une neutralisation totale du flux sanguin", "Une rigidification musculaire immédiate"], reponse: 1 },
@@ -378,7 +394,6 @@
 
     function verifierChances() {
         const aujourdhui = new Date().toDateString();
-        // Gestion de 5 chances par jour maximum
         let stockage = JSON.parse(localStorage.getItem('bizi_jeu_tentatives')) || { date: aujourdhui, chances: 5 };
 
         if (stockage.date !== aujourdhui) {
@@ -471,7 +486,6 @@
             console.error("Erreur API", e);
         }
 
-        // Profil de secours par défaut si l'API ne répond pas ou n'a pas d'image, pour ne jamais bloquer le joueur
         profilActif = {
             id: 1,
             nom: "Profil VIP Bizi",
@@ -511,18 +525,19 @@
             document.getElementById("cible-puzzle-nom").innerText = `Cible : ${profilActif.nom}`;
             document.getElementById("container-puzzle").classList.remove("hidden");
             initialiserPuzzle4x4();
-            lancerChronometre(300, "timer-puzzle", echecJeu);
+            lancerChronometre(300, "timer-puzzle", echecJeuPuzzle);
         } else {
             document.getElementById("cible-quiz-nom").innerText = `Cible : ${profilActif.nom}`;
             document.getElementById("container-quiz").classList.remove("hidden");
             
-            const nombreQuestionsVoulu = Math.floor(Math.random() * 6) + 10;
+            const nombreQuestionsVoulu = 15; // Fixé à 15 questions pour la notation sur 20 propre
             let copieBanque = [...banqueQuestions].sort(() => Math.random() - 0.5);
             questionsSession = copieBanque.slice(0, nombreQuestionsVoulu);
             indexQuestionActuelle = 0;
+            historiqueReponses = [];
 
             afficherQuestionQuizActuelle();
-            lancerChronometre(180, "timer-quiz", echecJeu);
+            lancerChronometre(180, "timer-quiz", echecTempsQuiz);
         }
     }
 
@@ -536,7 +551,7 @@
             document.getElementById(elementId).innerText = tempsRestant;
             if (tempsRestant <= 0) {
                 clearInterval(timerInterval);
-                callbackEchec("Temps écoulé !");
+                callbackEchec();
             }
         }, 1000);
     }
@@ -610,7 +625,7 @@
             }
             if (gagne) {
                 clearInterval(timerInterval);
-                validerVictoire();
+                validerVictoirePuzzle();
             }
         }
     }
@@ -618,7 +633,7 @@
     function afficherQuestionQuizActuelle() {
         if (indexQuestionActuelle >= questionsSession.length) {
             clearInterval(timerInterval);
-            validerVictoire();
+            traulerFinQuiz();
             return;
         }
 
@@ -632,51 +647,110 @@
             <p style="margin-bottom:15px; font-weight:bold; color:var(--text-main); font-size:13.5px; line-height:1.4;">${qObj.q}</p>
             <div class="quiz-options">
                 ${optionsMelangees.map(item => `
-                    <button class="quiz-btn" onclick="verifierReponseQuiz(${item.originalIndex}, ${qObj.reponse})">${item.texte}</button>
+                    <button class="quiz-btn" onclick="verifierReponseQuiz(${item.originalIndex}, ${qObj.reponse}, '${item.texte.replace(/'/g, "\\'")}')">${item.texte}</button>
                 `).join('')}
             </div>
         `;
     }
 
-    function verifierReponseQuiz(choixOriginalIndex, bonneReponseOriginalIndex) {
-        if (choixOriginalIndex === bonneReponseOriginalIndex) {
-            indexQuestionActuelle++;
-            afficherQuestionQuizActuelle();
+    function verifierReponseQuiz(choixOriginalIndex, bonneReponseOriginalIndex, texteChoisi) {
+        const qObj = questionsSession[indexQuestionActuelle];
+        const estCorrect = (choixOriginalIndex === bonneReponseOriginalIndex);
+
+        // Enregistrer la réponse pour le récapitulatif
+        historiqueReponses.push({
+            question: qObj.q,
+            choixUtilisateur: texteChoisi,
+            correct: estCorrect,
+            bonneReponseTexte: qObj.options[bonneReponseOriginalIndex]
+        });
+
+        indexQuestionActuelle++;
+        afficherQuestionQuizActuelle();
+    }
+
+    function traulerFinQuiz() {
+        // Calculer le score sur 20 (basé sur 15 questions)
+        let bonnesReponses = historiqueReponses.filter(h => h.correct).length;
+        let total = questionsSession.length;
+        let noteSur20 = Math.round((bonnesReponses / total) * 20 * 10) / 10; // Arrondi à 1 décimale
+
+        document.getElementById("container-quiz").classList.add("hidden");
+
+        if (noteSur20 >= 10) {
+            // Victoire : moyenne atteinte >= 10/20
+            document.getElementById("container-victoire").classList.remove("hidden");
+            document.getElementById("message-score-victoire").innerHTML = `Score exceptionnel : <strong>${noteSur20} / 20</strong> (${bonnesReponses}/${total} bonnes réponses). Ton code de réduction de 30 % est débloqué !`;
+            
+            const codePromo = `BIZI-VIP-${profilActif.id}-${Math.floor(1000 + Math.random() * 9000)}`;
+            document.getElementById("promo-code-display").innerText = codePromo;
+
+            const lienValidation = `https://midnightblue-manatee-329921.hostingersite.com/valider_bonus.php?code=${codePromo}`;
+            const texteWhatsApp = `Salut ${profilActif.nom}, j'ai brillamment réussi mon quiz expert sur Bizi avec ${noteSur20}/20 ! 🎮\n\nVoici mon code de réduction : *${codePromo}*.\n\nEn l'acceptant, tu m'accordes une réduction de 30 % sur ton service, et ton profil gagne automatiquement 2 jours de visibilité de plus avant expiration !\n\nClique simplement sur ce lien officiel pour valider ton bonus : \n${lienValidation}`;
+
+            document.getElementById("actions-profil").innerHTML = `
+                <p>Profil débloqué : <strong>${profilActif.nom}</strong></p>
+                <p style="font-size:11px; color:#ffa502; margin-top:5px;">⚠️ Envoie ce message au prestataire pour activer tes -30% et ses 2 jours de bonus !</p>
+                <a href="https://wa.me/${profilActif.telephone}?text=${encodeURIComponent(texteWhatsApp)}" class="btn-whatsapp" target="_blank">
+                    📱 Envoyer le message à ${profilActif.nom} sur WhatsApp
+                </a>
+            `;
         } else {
-            echecJeu("Mauvaise réponse experte !");
+            // Échec : pas la moyenne (< 10/20)
+            const restants = consommerChance();
+            document.getElementById("container-defaite").classList.remove("hidden");
+            document.getElementById("motif-echec").innerText = "Tu n'as pas obtenu la moyenne requise (10/20). Pas de code promo pour cette fois !";
+            document.getElementById("message-score-echec").innerText = `Note finale : ${noteSur20} / 20`;
+
+            // Générer le récapitulatif sans donner la correction des erreurs
+            let recapHTML = "<strong>📋 Récapitulatif de tes réponses :</strong><br><br>";
+            historiqueReponses.forEach((h, idx) => {
+                if (h.correct) {
+                    recapHTML += `<div style="color:#2ed573; margin-bottom:6px;">Q${idx+1}: ✔️ Correct (${h.choixUtilisateur})</div>`;
+                } else {
+                    recapHTML += `<div style="color:#ff4757; margin-bottom:6px;">Q${idx+1}: ❌ Incorrect (Ta réponse : ${h.choixUtilisateur})</div>`;
+                }
+            });
+            document.getElementById("recap-erreurs").innerHTML = recapHTML;
+            document.getElementById("info-tentative-perdue").innerText = `Il te reste ${restants} chance(s) aujourd'hui.`;
+
+            if (restants <= 0) {
+                setTimeout(() => {
+                    document.getElementById("container-defaite").classList.add("hidden");
+                    document.getElementById("container-bloque").classList.remove("hidden");
+                }, 4000);
+            }
         }
     }
 
-    function echecJeu(motif = "Temps écoulé ou erreur.") {
+    function echecTempsQuiz() {
         clearInterval(timerInterval);
         const restants = consommerChance();
-
-        document.getElementById("container-puzzle").classList.add("hidden");
         document.getElementById("container-quiz").classList.add("hidden");
         document.getElementById("container-defaite").classList.remove("hidden");
-
-        document.getElementById("motif-echec").innerText = motif;
+        document.getElementById("motif-echec").innerText = "Le temps imparti est écoulé !";
+        document.getElementById("message-score-echec").innerText = `Note finale : 0 / 20`;
+        document.getElementById("recap-erreurs").innerHTML = "Temps écoulé avant la fin du questionnaire.";
         document.getElementById("info-tentative-perdue").innerText = `Il te reste ${restants} chance(s) aujourd'hui.`;
 
         if (restants <= 0) {
             setTimeout(() => {
                 document.getElementById("container-defaite").classList.add("hidden");
                 document.getElementById("container-bloque").classList.remove("hidden");
-            }, 2500);
+            }, 3000);
         }
     }
 
-    async function validerVictoire() {
+    function validerVictoirePuzzle() {
         document.getElementById("container-puzzle").classList.add("hidden");
-        document.getElementById("container-quiz").classList.add("hidden");
         document.getElementById("container-victoire").classList.remove("hidden");
+        document.getElementById("message-score-victoire").innerHTML = `Défi du puzzle 4x4 relevé avec brio ! Ton code de réduction de 30 % est prêt :`;
 
         const codePromo = `BIZI-VIP-${profilActif.id}-${Math.floor(1000 + Math.random() * 9000)}`;
         document.getElementById("promo-code-display").innerText = codePromo;
 
         const lienValidation = `https://midnightblue-manatee-329921.hostingersite.com/valider_bonus.php?code=${codePromo}`;
-
-        const texteWhatsApp = `Salut ${profilActif.nom}, j'ai brillamment réussi mon défi sur Bizi ! 🎮\n\nVoici mon code de réduction : *${codePromo}*.\n\nEn l'acceptant, tu m'accordes une réduction de 30 % sur ton service, et ton profil gagne automatiquement 2 jours de visibilité de plus avant expiration !\n\nClique simplement sur ce lien officiel pour valider ton bonus : \n${lienValidation}`;
+        const texteWhatsApp = `Salut ${profilActif.nom}, j'ai brillamment réussi mon puzzle expert sur Bizi ! 🎮\n\nVoici mon code de réduction : *${codePromo}*.\n\nEn l'acceptant, tu m'accordes une réduction de 30 % sur ton service, et ton profil gagne automatiquement 2 jours de visibilité de plus avant expiration !\n\nClique simplement sur ce lien officiel pour valider ton bonus : \n${lienValidation}`;
 
         document.getElementById("actions-profil").innerHTML = `
             <p>Profil débloqué : <strong>${profilActif.nom}</strong></p>
@@ -685,6 +759,26 @@
                 📱 Envoyer le message à ${profilActif.nom} sur WhatsApp
             </a>
         `;
+    }
+
+    function echecJeuPuzzle(motif = "Temps écoulé !") {
+        clearInterval(timerInterval);
+        const restants = consommerChance();
+
+        document.getElementById("container-puzzle").classList.add("hidden");
+        document.getElementById("container-defaite").classList.remove("hidden");
+
+        document.getElementById("motif-echec").innerText = motif;
+        document.getElementById("message-score-echec").innerText = "Échec du puzzle 4x4";
+        document.getElementById("recap-erreurs").innerHTML = "Temps écoulé avant d'avoir pu replacer toutes les cases.";
+        document.getElementById("info-tentative-perdue").innerText = `Il te reste ${restants} chance(s) aujourd'hui.`;
+
+        if (restants <= 0) {
+            setTimeout(() => {
+                document.getElementById("container-defaite").classList.add("hidden");
+                document.getElementById("container-bloque").classList.remove("hidden");
+            }, 2500);
+        }
     }
 </script>
 
