@@ -26,7 +26,7 @@
 
         h1 {
             color: var(--primary);
-            font-size: 28px;
+            font-size: 26px;
             margin-bottom: 5px;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -34,7 +34,7 @@
 
         p {
             color: var(--text-muted);
-            font-size: 14px;
+            font-size: 13px;
         }
 
         .menu-jeux, .jeu-container {
@@ -61,7 +61,7 @@
             border: none;
             padding: 14px 24px;
             margin: 10px 0;
-            font-size: 16px;
+            font-size: 15px;
             border-radius: 10px;
             cursor: pointer;
             font-weight: 600;
@@ -89,7 +89,6 @@
         }
         .btn-retour:hover { background-color: #4b5568; }
 
-        /* HUD & Infos de jeu */
         .hud-panel {
             display: flex;
             justify-content: space-between;
@@ -115,7 +114,7 @@
             font-weight: bold;
         }
 
-        /* Grille du Puzzle style App */
+        /* Grille du Puzzle */
         .puzzle-grid {
             display: grid;
             grid-template-columns: repeat(3, 100px);
@@ -139,10 +138,7 @@
             transition: transform 0.1s ease, filter 0.1s ease;
         }
 
-        .tile:hover {
-            filter: brightness(1.15);
-        }
-
+        .tile:hover { filter: brightness(1.15); }
         .tile.empty {
             background: #181b24 !important;
             cursor: default;
@@ -153,8 +149,8 @@
         .quiz-options {
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            margin-top: 20px;
+            gap: 10px;
+            margin-top: 15px;
         }
 
         .quiz-btn {
@@ -164,7 +160,7 @@
             border: 1px solid rgba(255,255,255,0.05);
             text-align: left;
             padding: 12px 16px;
-            font-size: 14px;
+            font-size: 13.5px;
         }
         .quiz-btn:hover {
             background-color: #3b4259;
@@ -172,17 +168,16 @@
             box-shadow: none;
         }
 
-        /* Écrans de fin */
         .code-box {
             background: rgba(46, 213, 115, 0.1);
             border: 1px dashed var(--accent);
             color: var(--accent);
-            font-size: 22px;
+            font-size: 20px;
             font-weight: bold;
             padding: 15px;
             margin: 20px 0;
             border-radius: 10px;
-            letter-spacing: 3px;
+            letter-spacing: 2px;
         }
 
         .btn-whatsapp {
@@ -209,8 +204,8 @@
 </head>
 <body>
 
-    <h1>🎮 Bizi Arcade</h1>
-    <p>Relève le défi, gagne ton code promo exclusif !</p>
+    <h1>🎮 Bizi Arcade - Gagne ton Code VIP</h1>
+    <p>Relève le défi pour décrocher une réduction exclusive sur le profil sélectionné !</p>
 
     <!-- MENU DE SELECTION -->
     <div id="menu-selection" class="menu-jeux">
@@ -222,28 +217,34 @@
         <label style="display:block; text-align:left; font-size:12px; color:var(--text-muted); margin-bottom:5px;">CHOISIS TA CATÉGORIE</label>
         <select id="select-cat">
             <option value="femme">Femme</option>
+            <option value="homme">Homme</option>
+            <option value="trans">Trans</option>
+            <option value="lesbi">Lesbi</option>
+            <option value="blanche">Blanche</option>
         </select>
         
         <div style="margin-top: 20px;">
             <button onclick="lancerJeu('puzzle')">🧩 Puzzle Coulissant (5 min)</button>
-            <button onclick="lancerJeu('quiz')">🧠 Quiz Spécialisé (3 min)</button>
+            <button onclick="lancerJeu('quiz')">🧠 Quiz Expert Aléatoire (3 min)</button>
         </div>
+        
+        <a href="index.html" class="btn-retour" style="display:block; text-decoration:none; margin-top:15px; padding:10px;">← Retour au site principal</a>
     </div>
 
     <!-- ÉCRAN DE BLOCAGE 24H -->
     <div id="container-bloque" class="jeu-container hidden">
         <h2>🔒 Accès Suspendu</h2>
         <p class="blocage-msg">Tu as épuisé tes 3 tentatives quotidiennes.<br>Reviens demain pour tenter ta chance à nouveau !</p>
-        <button class="btn-retour" onclick="location.reload()">Fermer</button>
+        <button class="btn-retour" onclick="location.href='index.html'">Retour au site</button>
     </div>
 
     <!-- CONTENEUR PUZZLE -->
     <div id="container-puzzle" class="jeu-container hidden">
         <div class="hud-panel">
-            <span style="color:var(--text-muted)">Puzzle 3x3</span>
+            <span style="color:var(--text-muted); font-size:12px;" id="cible-puzzle-nom">Cible : ...</span>
             <span class="timer-box">⏱️ <span id="timer-puzzle">300</span>s</span>
         </div>
-        <p>Glisse les cases adjacentes pour reformer l'image originale.</p>
+        <p>Glisse les cases adjacentes pour reformer la photo du profil cible.</p>
         <div id="puzzle-board" class="puzzle-grid"></div>
         <button class="btn-retour" onclick="retourMenu()">Abandonner</button>
     </div>
@@ -251,9 +252,10 @@
     <!-- CONTENEUR QUIZ -->
     <div id="container-quiz" class="jeu-container hidden">
         <div class="hud-panel">
-            <span style="color:var(--text-muted)">Quiz Expert</span>
+            <span style="color:var(--text-muted); font-size:12px;" id="cible-quiz-nom">Cible : ...</span>
             <span class="timer-box">⏱️ <span id="timer-quiz">180</span>s</span>
         </div>
+        <div style="font-size: 11px; color: #38bdf8; margin-bottom: 10px; font-weight:bold;" id="quiz-progress-text">Question 1 / 15</div>
         <div id="quiz-content">Chargement...</div>
         <button class="btn-retour" onclick="retourMenu()" style="margin-top:20px;">Abandonner</button>
     </div>
@@ -261,81 +263,72 @@
     <!-- ZONE DE VICTOIRE -->
     <div id="container-victoire" class="jeu-container hidden">
         <h2>🎉 Victoire Légendaire !</h2>
-        <p>Défi relevé avec brio ! Voici ton code de réduction unique :</p>
+        <p>Défi relevé avec brio ! Ton code de réduction pour ce profil est prêt :</p>
         <div id="promo-code-display" class="code-box"></div>
         <div id="actions-profil"></div>
+        <button class="btn-retour" onclick="location.href='index.html'" style="margin-top:15px;">Retourner sur le site</button>
     </div>
 
     <!-- ZONE DE DÉFAITE -->
     <div id="container-defaite" class="jeu-container hidden">
         <h2>❌ Échec du Défi</h2>
-        <p>Le temps est écoulé ou tu as commis une erreur.</p>
+        <p id="motif-echec">Le temps est écoulé ou tu as commis une erreur.</p>
         <div id="info-tentative-perdue" class="chances-box" style="margin: 20px 0; font-size:16px;"></div>
         <button onclick="retourMenu()">Réessayer</button>
     </div>
 
 <script>
+    const API_URL = 'https://midnightblue-manatee-329921.hostingersite.com/api.php';
+    const API_JEUX_URL = 'https://midnightblue-manatee-329921.hostingersite.com/api_jeux.php';
+
     let profilActif = null;
     let timerInterval = null;
     let tempsRestant = 300;
     let caseVideIndex = 7;
     let ordreActuel = [];
 
-    // Base de dizaines de questions spécialisées (vaginales et anales) par catégorie
-    const questionsParCategorie = {
-        femme: [
-            {
-                q: "Quelle est la principale caractéristique d'une stimulation vaginale profonde ?",
-                options: ["Un rythme rapide sans pause", "L'implication des zones sensibles internes et du point G", "Uniquement de la vitesse", "Aucune préparation requise"],
-                reponse: 1
-            },
-            {
-                q: "Quel élément est indispensable pour assurer le confort et la sécurité lors d'une pratique anale ?",
-                options: ["Un gel lubrifiant adapté et généreux", "De l'eau froide uniquement", "Travailler sans préparation", "Augmenter la vitesse immédiatement"],
-                reponse: 0
-            },
-            {
-                q: "Comment se caractérise généralement l'élasticité naturelle des parois vaginales ?",
-                options: ["Rigide et fixe", "Très adaptable et extensible", "Sensible uniquement au froid", "Fragile et cassante"],
-                reponse: 1
-            },
-            {
-                q: "Quelle précaution prendre avant d'alterner entre stimulation anale et vaginale ?",
-                options: ["Ne rien changer", "Changer de protection ou nettoyer pour l'hygiène", "Accélérer le rythme", "Utiliser du savon de Marseille"],
-                reponse: 1
-            },
-            {
-                q: "Quel est le rôle du sphincter anal lors d'une approche progressive ?",
-                options: ["Il doit se contracter de force", "Il nécessite de la détente et de la progressivité", "Il s'ouvre instantanément", "Il n'a aucun rôle"],
-                reponse: 1
-            },
-            {
-                q: "Quelle position favorise le meilleur contrôle de l'angle et de la profondeur pour le plaisir vaginal ?",
-                options: ["La position du missionnaire classique ou levrette modérée", "Courir", "Etre debout sans appui", "Rester immobile"],
-                reponse: 0
-            },
-            {
-                q: "Pourquoi la relaxation musculaire est-elle capitale en pratique anale ?",
-                options: ["Pour éviter toute tension et douleur", "Pour aller plus vite", "Pour bloquer la respiration", "Pour réduire la lubrification"],
-                reponse: 0
-            },
-            {
-                q: "Quel type de mouvement externe est souvent apprécié en complément d'une pénétration vaginale ?",
-                options: ["Des frictions brusques", "Des pressions circulaires douces sur le clitoris", "Des tirs secs", "Aucun mouvement"],
-                reponse: 1
-            },
-            {
-                q: "Quelle est la meilleure approche pour stimuler la zone anale pour la première fois ?",
-                options: ["Y aller directement sans préparation", "Commencer par des stimulations externes et de la détente", "Utiliser des objets tranchants", "Forcer le passage"],
-                reponse: 1
-            },
-            {
-                q: "Quel facteur garantit une expérience intime réussie et sécurisée dans ces pratiques ?",
-                options: ["L'écoute, la communication et la lubrification", "La vitesse maximale", "L'absence totale de dialogue", "Ignorer les signaux du corps"],
-                reponse: 0
-            }
-        ]
-    };
+    // Variables pour le quiz en série (10 à 20 questions aléatoires)
+    let questionsSession = [];
+    let indexQuestionActuelle = 0;
+
+    // Banque riche de questions complexes (vaginales et anales)
+    const banqueQuestions = [
+        { q: "Quel est l'effet physiologique principal d'une stimulation profonde du point G combinée aux parois vaginales ?", options: ["Une contraction pelviennes involontaire et intense", "Une insensibilité immédiate", "Un blocage de la circulation", "Une baisse de la température corporelle"], reponse: 0 },
+        { q: "Quelle action mécanique est impérative pour assurer la relaxation du sphincter anal avant une pénétration ?", options: ["Une dilatation progressive couplée à une respiration abdominale lente", "Une insertion rapide sans lubrification", "Une contraction maximale continue", "Une poussée violente vers l'extérieur"], reponse: 0 },
+        { q: "Pourquoi l'utilisation d'un lubrifiant à base de silicone ou d'eau de haute qualité est-elle critique dans la zone anale ?", options: ["Parce que la zone ne produit pas de lubrification naturelle et nécessite de minimiser les frictions", "Pour accélérer le séchage des muqueuses", "Pour modifier le pH interne", "Pour durcir les tissus"], reponse: 0 },
+        { q: "Comment les muqueuses vaginales réagissent-elles face à une excitation prolongée et soutenue ?", options: ["Elles augmentent leur transsudation (lubrification naturelle) et s'allongent", "Elles se dessèchent complètement", "Elles se contractent de manière définitive", "Elles changent de couleur"], reponse: 0 },
+        { q: "Quel muscle du plancher pelvien entoure directement le canal anal et demande une attention particulière ?", options: ["Le sphincter externe et interne de l'anus", "Le muscle grand fessier", "Le quadriceps", "Le muscle abdominal transverse"], reponse: 0 },
+        { q: "Quelle est la meilleure technique de respiration pour accompagner l'accueil d'un corps étranger ou d'une pénétration anale ?", options: ["Inspirer profondément par le nez et expirer lentement par la bouche en relâchant le bassin", "Bloquer complètement la respiration", "Faire des apnées saccadées", "Respirer très rapidement par le thorax"], reponse: 0 },
+        { q: "Dans le cadre de l'anatomie féminine, quel tissu érectile entoure l'orifice vaginal en profondeur ?", options: ["Les bulbes vestibulaires", "Le col de l'utérus", "L'ovaire", "La trompe de Fallope"], reponse: 0 },
+        { q: "Quel risque encourt-on en alternant immédiatement de la zone anale à la zone vaginale sans hygiène intermédiaire ?", options: ["Un transfert de micro-organismes intestinaux risquant de provoquer une infection urinaire ou vaginale", "Aucun risque particulier", "Une augmentation instantanée du plaisir", "Un scellement des tissus"], reponse: 0 },
+        { q: "Quelle position de coït vaginal offre l'angle d'inclinaison le plus direct vers la paroi antérieure ?", options: ["La levrette modérée avec surélévation du bassin", "La position debout sans aucun appui", "Être allongé à plat ventre", "La position assise immobile"], reponse: 0 },
+        { q: "Quel est le comportement du sphincter anal face à une peur ou une appréhension psychologique ?", options: ["Il se contracte par réflexe de défense, rendant toute pénétration douloureuse", "Il s'ouvre grand automatiquement", "Il se liquéfie", "Il n'a aucun réflexe"], reponse: 0 },
+        { q: "Comment s'appelle scientifiquement la zone située entre la fourchette vulvaire et l'anus ?", options: ["Le périnée (ou le raphé périnéal)", "Le vestibule", "Le mont de Vénus", "Le col"], reponse: 0 },
+        { q: "Pourquoi la progressivité centimétrique est-elle vitale lors des premières minutes d'une pratique anale ?", options: ["Pour laisser le temps aux récepteurs nerveux et aux tissus de s'adapter sans traumatisme", "Pour refroidir la zone", "Pour tester la résistance des objets", "Pour vider l'air"], reponse: 0 },
+        { q: "Quel rôle jouent les terminaisons nerveuses du rectum lors d'une stimulation douce et maîtrisée ?", options: ["Elles procurent des sensations de plénitude et de profonde plénitude pelvienne", "Elles bloquent toute sensibilité", "Elles provoquent des crampes musculaires", "Elles endorment les muscles"], reponse: 0 },
+        { q: "Quel facteur psychologique est le plus déterminant pour libérer l'orgasme chez la femme lors des jeux intimes ?", options: ["Le sentiment de sécurité totale, le lâcher-prise et l'absence de jugement", "La vitesse d'exécution", "Le bruit ambiant", "Le chronomètre"], reponse: 0 },
+        { q: "En cas de sensation d'inconfort ou de brûlure légère pendant une pratique intime, que faut-il faire immédiatement ?", options: ["Stopper l'action, rajouter du lubrifiant et réévaluer la détente", "Continuer en force pour forcer le passage", "Augmenter la cadence", "Ignorer l'alerte du corps"], reponse: 0 },
+        { q: "Quelle est la particularité des tissus de la paroi rectale par rapport à la paroi vaginale ?", options: ["Le rectum est plus fragile, possède une seule couche de cellules protectrices et requiert infiniment plus de douceur", "Le rectum est en acier inoxydable", "Le rectum est imperméable à toute friction", "Le rectum produit sa propre huile"], reponse: 0 },
+        { q: "Quel impact une mauvaise hydratation interne a-t-elle sur les secrétions et le confort intime ?", options: ["Une diminution des fluides corporels naturels et une sensibilité accrue aux frottements", "Une amélioration de la tonicité", "Aucun impact", "Une insensibilité totale"], reponse: 0 },
+        { q: "Comment optimiser la communication non verbale avec sa partenaire pendant un défi intime partagé ?", options: ["Par des regards, des signaux de la main et des respirations audibles", "En restant totalement muet", "En fermant les yeux sans bouger", "En criant des ordres"], reponse: 0 },
+        { q: "Quel est l'intérêt d'utiliser des positions inclinées lors des stimulations profondes ?", options: ["Modifier la gravité et cibler des zones de friction spécifiques avec précision", "Fatiguer plus vite les muscles", "Empêcher le sang de circuler", "Rien de particulier"], reponse: 0 },
+        { q: "Quelle est la règle absolue en matière d'hygiène intime avancée ?", options: ["Maintenir un nettoyage rigoureux avant et après chaque session multi-zones", "Ne jamais se laver", "Utiliser uniquement de l'eau de Javel", "Attendre 3 jours avant de se laver"], reponse: 0 }
+    ];
+
+    function dechiffrer(texteEnc) {
+        if (!texteEnc) return "";
+        if (typeof texteEnc === 'string' && !texteEnc.startsWith("BIZI_ENC:")) { return texteEnc; }
+        try {
+            let cleanBase64 = texteEnc.replace("BIZI_ENC:", "");
+            return decodeURIComponent(atob(cleanBase64));
+        } catch (e) { return texteEnc; }
+    }
+
+    function formaterNumeroWhatsApp(num) {
+        let clean = String(num || '').replace(/\D/g, '');
+        if (!clean.startsWith('225')) { clean = '225' + clean; }
+        return clean;
+    }
 
     function verifierChances() {
         const aujourdhui = new Date().toDateString();
@@ -366,28 +359,63 @@
         }
     };
 
-    async function recupererProfilEtCategorie() {
+    async function recupererProfilAleatoireParCategorie() {
         const categorieChoisie = document.getElementById("select-cat").value;
         try {
-            const res = await fetch("https://midnightblue-manatee-329921.hostingersite.com/api.php");
+            const res = await fetch(API_URL);
             const data = await res.json();
             if (data.status === "success" && data.data.length > 0) {
-                const filtres = data.data.filter(p => p.cat === categorieChoisie && p.photos);
+                const filtres = data.data.filter(p => {
+                    let catP = p.cat ? p.cat.trim().toLowerCase() : 'femme';
+                    return catP === categorieChoisie && p.photos;
+                });
+
                 if (filtres.length === 0) {
-                    alert("Aucun profil disponible dans cette catégorie pour le moment !");
+                    alert(`Aucun profil disponible dans la catégorie "${categorieChoisie.toUpperCase()}" pour le moment !`);
                     return false;
                 }
-                profilActif = filtres[Math.floor(Math.random() * filtres.length)];
+
+                let rawProfil = filtres[Math.floor(Math.random() * filtres.length)];
+                
+                let parsedPhotos = [];
                 try {
-                    let parsed = JSON.parse(profilActif.photos);
-                    profilActif.imageURL = Array.isArray(parsed) ? parsed[0] : profilActif.photos;
-                } catch(e) {
-                    profilActif.imageURL = profilActif.photos;
+                    if (typeof rawProfil.photos === 'string') {
+                        let cleaned = rawProfil.photos.trim();
+                        if (cleaned.startsWith('[')) { parsedPhotos = JSON.parse(cleaned); } 
+                        else { parsedPhotos = [cleaned]; }
+                    } else if (Array.isArray(rawProfil.photos)) {
+                        parsedPhotos = rawProfil.photos;
+                    }
+                } catch(e) { parsedPhotos = [rawProfil.photos]; }
+
+                parsedPhotos = parsedPhotos.map(img => {
+                    if (img && typeof img === 'string') {
+                        let cleanImg = img.trim();
+                        if (cleanImg.startsWith('"') && cleanImg.endsWith('"')) { cleanImg = cleanImg.slice(1, -1); }
+                        if (!cleanImg.startsWith("data:image")) { cleanImg = "data:image/jpeg;base64," + cleanImg; }
+                        return cleanImg;
+                    }
+                    return null;
+                }).filter(img => img !== null && img.length > 50);
+
+                if (parsedPhotos.length === 0) {
+                    alert("Ce profil n'a pas d'image valide pour le jeu. Essaye une autre catégorie !");
+                    return false;
                 }
+
+                profilActif = {
+                    id: parseInt(rawProfil.id, 10),
+                    nom: dechiffrer(rawProfil.nom) || "Profil VIP",
+                    telephone: formaterNumeroWhatsApp(dechiffrer(rawProfil.telephone)),
+                    imageURL: parsedPhotos[0]
+                };
                 return true;
+            } else {
+                alert("Impossible de charger les profils depuis la base de données.");
             }
         } catch (e) {
             console.error("Erreur API", e);
+            alert("Erreur de connexion au serveur.");
         }
         return false;
     }
@@ -414,19 +442,30 @@
             return;
         }
 
-        const ok = await recupererProfilEtCategorie();
+        const ok = await recupererProfilAleatoireParCategorie();
         if (!ok) return;
 
         document.getElementById("menu-selection").classList.add("hidden");
 
         if (type === 'puzzle') {
+            document.getElementById("cible-puzzle-nom").innerText = `Cible : ${profilActif.nom}`;
             document.getElementById("container-puzzle").classList.remove("hidden");
             initialiserPuzzle();
-            lancerChronometre(300, "timer-puzzle", echecJeu); // 300 secondes = 5 minutes
+            lancerChronometre(300, "timer-puzzle", echecJeu);
         } else {
+            document.getElementById("cible-quiz-nom").innerText = `Cible : ${profilActif.nom}`;
             document.getElementById("container-quiz").classList.remove("hidden");
-            initialiserQuiz();
-            lancerChronometre(180, "timer-quiz", echecJeu); // 180 secondes = 3 minutes
+            
+            // --- GESTION DU NOMBRE DE QUESTIONS ALÉATOIRE (Entre 10 et 20) ---
+            const nombreQuestionsVoulu = Math.floor(Math.random() * 11) + 10; // Entre 10 et 20 inclus
+            
+            // Mélanger la banque de questions et en prendre le nombre exact
+            let copieBanque = [...banqueQuestions].sort(() => Math.random() - 0.5);
+            questionsSession = copieBanque.slice(0, nombreQuestionsVoulu);
+            indexQuestionActuelle = 0;
+
+            afficherQuestionQuizActuelle();
+            lancerChronometre(180, "timer-quiz", echecJeu); // 3 minutes = 180s pour toute la série
         }
     }
 
@@ -440,7 +479,7 @@
             document.getElementById(elementId).innerText = tempsRestant;
             if (tempsRestant <= 0) {
                 clearInterval(timerInterval);
-                callbackEchec();
+                callbackEchec("Temps écoulé !");
             }
         }, 1000);
     }
@@ -499,32 +538,44 @@
         }
     }
 
-    function initialiserQuiz() {
-        const cat = document.getElementById("select-cat").value;
-        const listeQuestions = questionsParCategorie[cat] || questionsParCategorie.femme;
-        // Sélectionner une question aléatoire parmi les dizaines disponibles
-        const questionObj = listeQuestions[Math.floor(Math.random() * listeQuestions.length)];
+    // --- LOGIQUE QUIZ EN SÉRIE ALÉATOIRE (10 à 20 questions) ---
+    function afficherQuestionQuizActuelle() {
+        if (indexQuestionActuelle >= questionsSession.length) {
+            // Toutes les questions de la session ont été réussies !
+            clearInterval(timerInterval);
+            validerVictoire();
+            return;
+        }
+
+        const qObj = questionsSession[indexQuestionActuelle];
+        document.getElementById("quiz-progress-text").innerText = `Question ${indexQuestionActuelle + 1} / ${questionsSession.length}`;
+
+        // Mélanger les options de réponse pour plus de complexité
+        let optionsMelangees = qObj.options.map((opt, idx) => ({ texte: opt, originalIndex: idx }));
+        optionsMelangees.sort(() => Math.random() - 0.5);
 
         document.getElementById("quiz-content").innerHTML = `
-            <p style="margin-bottom:15px; font-weight:bold; color:var(--text-main);">${questionObj.q}</p>
+            <p style="margin-bottom:15px; font-weight:bold; color:var(--text-main); font-size:14px; line-height:1.4;">${qObj.q}</p>
             <div class="quiz-options">
-                ${questionObj.options.map((opt, index) => `
-                    <button class="quiz-btn" onclick="verifierQuiz(${index}, ${questionObj.reponse})">${opt}</button>
+                ${optionsMelangees.map(item => `
+                    <button class="quiz-btn" onclick="verifierReponseQuiz(${item.originalIndex}, ${qObj.reponse})">${item.texte}</button>
                 `).join('')}
             </div>
         `;
     }
 
-    function verifierQuiz(choixIndex, bonneReponseIndex) {
-        clearInterval(timerInterval);
-        if (choixIndex === bonneReponseIndex) {
-            validerVictoire();
+    function verifierReponseQuiz(choixOriginalIndex, bonneReponseOriginalIndex) {
+        if (choixOriginalIndex === bonneReponseOriginalIndex) {
+            // Bonne réponse : on passe à la question suivante de la série
+            indexQuestionActuelle++;
+            afficherQuestionQuizActuelle();
         } else {
-            echecJeu();
+            // Mauvaise réponse : échec immédiat de la partie
+            echecJeu("Mauvaise réponse !");
         }
     }
 
-    function echecJeu() {
+    function echecJeu(motif = "Temps écoulé ou erreur.") {
         clearInterval(timerInterval);
         const restants = consommerChance();
 
@@ -532,6 +583,7 @@
         document.getElementById("container-quiz").classList.add("hidden");
         document.getElementById("container-defaite").classList.remove("hidden");
 
+        document.getElementById("motif-echec").innerText = motif;
         document.getElementById("info-tentative-perdue").innerText = `Il te reste ${restants} chance(s) aujourd'hui.`;
 
         if (restants <= 0) {
@@ -550,8 +602,9 @@
         const codePromo = `BIZI-VIP-${profilActif.id}-${Math.floor(1000 + Math.random() * 9000)}`;
         document.getElementById("promo-code-display").innerText = codePromo;
 
+        // Créditer les 2 jours bonus à la vendeuse sur l'API dédiée
         try {
-            await fetch("https://midnightblue-manatee-329921.hostingersite.com/api.php", {
+            await fetch(API_JEUX_URL, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ action: "ajouter_jours", id: profilActif.id })
@@ -562,8 +615,8 @@
 
         document.getElementById("actions-profil").innerHTML = `
             <p>Profil débloqué : <strong>${profilActif.nom}</strong></p>
-            <a href="https://wa.me/${profilActif.telephone}?text=Bonjour,%20voici%20mon%20code%20gagné%20au%20jeu:%20${codePromo}" class="btn-whatsapp" target="_blank">
-                📱 Récupérer ma réduction sur WhatsApp
+            <a href="https://wa.me/${profilActif.telephone}?text=Bonjour,%20voici%20mon%20code%20gagné%20au%20quiz%20expert%20pour%20ton%20profil:%20${codePromo}" class="btn-whatsapp" target="_blank">
+                📱 Réclamer ma réduction à ${profilActif.nom} sur WhatsApp
             </a>
         `;
     }
