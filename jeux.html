@@ -101,7 +101,6 @@
             font-size: 14px;
         }
 
-        /* Vraies statistiques en direct depuis la base de données */
         .live-stats-box {
             background: rgba(15, 23, 42, 0.6);
             border: 1px solid rgba(255, 255, 255, 0.08);
@@ -152,7 +151,6 @@
             font-weight: bold;
         }
 
-        /* Grille du Puzzle 4x4 (16 cases) */
         .puzzle-grid {
             display: grid;
             grid-template-columns: repeat(4, 75px);
@@ -183,7 +181,6 @@
             box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);
         }
 
-        /* Styles Quiz */
         .quiz-options {
             display: flex;
             flex-direction: column;
@@ -248,7 +245,6 @@
     <!-- MENU DE SELECTION -->
     <div id="menu-selection" class="menu-jeux">
         
-        <!-- VRAIS STATS DE PRESENCE EN DIRECT -->
         <div class="live-stats-box">
             <div class="stat-line">
                 <span><span class="dot-live"></span>Joueurs en ligne actuellement :</span>
@@ -262,7 +258,7 @@
 
         <div class="hud-panel">
             <span>Tentatives du jour :</span>
-            <span id="nb-chances" class="chances-box">3/3</span>
+            <span id="nb-chances" class="chances-box">5/5</span>
         </div>
         
         <label style="display:block; text-align:left; font-size:12px; color:var(--text-muted); margin-bottom:5px;">CHOISIS TA CATÉGORIE</label>
@@ -285,7 +281,7 @@
     <!-- ÉCRAN DE BLOCAGE 24H -->
     <div id="container-bloque" class="jeu-container hidden">
         <h2>🔒 Accès Suspendu</h2>
-        <p class="blocage-msg">Tu as épuisé tes 3 tentatives quotidiennes.<br>Reviens demain pour tenter ta chance à nouveau !</p>
+        <p class="blocage-msg">Tu as épuisé tes 5 tentatives quotidiennes.<br>Reviens demain pour tenter ta chance à nouveau !</p>
         <button class="btn-retour" onclick="location.href='index.html'">Retour au site</button>
     </div>
 
@@ -330,7 +326,6 @@
 
 <script>
     const API_URL = 'https://midnightblue-manatee-329921.hostingersite.com/api.php';
-    const API_JEUX_URL = 'https://midnightblue-manatee-329921.hostingersite.com/api_jeux.php';
     const API_PRESENCE_URL = 'https://midnightblue-manatee-329921.hostingersite.com/presence.php';
 
     let profilActif = null;
@@ -383,33 +378,33 @@
 
     function verifierChances() {
         const aujourdhui = new Date().toDateString();
-        let stockage = JSON.parse(localStorage.getItem('bizi_jeu_tentatives')) || { date: aujourdhui, chances: 3 };
+        // Gestion de 5 chances par jour maximum
+        let stockage = JSON.parse(localStorage.getItem('bizi_jeu_tentatives')) || { date: aujourdhui, chances: 5 };
 
         if (stockage.date !== aujourdhui) {
-            stockage = { date: aujourdhui, chances: 3 };
+            stockage = { date: aujourdhui, chances: 5 };
             localStorage.setItem('bizi_jeu_tentatives', JSON.stringify(stockage));
         }
 
-        document.getElementById("nb-chances").innerText = stockage.chances + "/3";
+        document.getElementById("nb-chances").innerText = stockage.chances + "/5";
         return stockage.chances;
     }
 
     function consommerChance() {
         const aujourdhui = new Date().toDateString();
-        let stockage = JSON.parse(localStorage.getItem('bizi_jeu_tentatives')) || { date: aujourdhui, chances: 3 };
+        let stockage = JSON.parse(localStorage.getItem('bizi_jeu_tentatives')) || { date: aujourdhui, chances: 5 };
         stockage.chances = Math.max(0, stockage.chances - 1);
         localStorage.setItem('bizi_jeu_tentatives', JSON.stringify(stockage));
         return stockage.chances;
     }
 
-    // Récupérer les vraies données de présence depuis la base de données
     async function actualiserStatistiquesReelles() {
         try {
             const res = await fetch(API_PRESENCE_URL);
             const data = await res.json();
             if (data.status === "success") {
                 document.getElementById("stats-en-ligne").innerText = data.en_ligne;
-                document.getElementById("stats-24h").innerText = data.24h;
+                document.getElementById("stats-24h").innerText = data["24h"];
             }
         } catch (e) {
             console.error("Erreur stats présence", e);
@@ -419,8 +414,6 @@
     window.onload = function() {
         const chances = verifierChances();
         actualiserStatistiquesReelles();
-
-        // Actualiser automatiquement les chiffres toutes les 15 secondes
         setInterval(actualiserStatistiquesReelles, 15000);
 
         if (chances <= 0) {
@@ -440,54 +433,52 @@
                     return catP === categorieChoisie && p.photos;
                 });
 
-                if (filtres.length === 0) {
-                    alert(`Aucun profil disponible dans la catégorie "${categorieChoisie.toUpperCase()}" pour le moment !`);
-                    return false;
-                }
+                if (filtres.length > 0) {
+                    let rawProfil = filtres[Math.floor(Math.random() * filtres.length)];
+                    let parsedPhotos = [];
+                    try {
+                        if (typeof rawProfil.photos === 'string') {
+                            let cleaned = rawProfil.photos.trim();
+                            if (cleaned.startsWith('[')) { parsedPhotos = JSON.parse(cleaned); } 
+                            else { parsedPhotos = [cleaned]; }
+                        } else if (Array.isArray(rawProfil.photos)) {
+                            parsedPhotos = rawProfil.photos;
+                        }
+                    } catch(e) { parsedPhotos = [rawProfil.photos]; }
 
-                let rawProfil = filtres[Math.floor(Math.random() * filtres.length)];
-                
-                let parsedPhotos = [];
-                try {
-                    if (typeof rawProfil.photos === 'string') {
-                        let cleaned = rawProfil.photos.trim();
-                        if (cleaned.startsWith('[')) { parsedPhotos = JSON.parse(cleaned); } 
-                        else { parsedPhotos = [cleaned]; }
-                    } else if (Array.isArray(rawProfil.photos)) {
-                        parsedPhotos = rawProfil.photos;
+                    parsedPhotos = parsedPhotos.map(img => {
+                        if (img && typeof img === 'string') {
+                            let cleanImg = img.trim();
+                            if (cleanImg.startsWith('"') && cleanImg.endsWith('"')) { cleanImg = cleanImg.slice(1, -1); }
+                            if (!cleanImg.startsWith("data:image")) { cleanImg = "data:image/jpeg;base64," + cleanImg; }
+                            return cleanImg;
+                        }
+                        return null;
+                    }).filter(img => img !== null && img.length > 50);
+
+                    if (parsedPhotos.length > 0) {
+                        profilActif = {
+                            id: parseInt(rawProfil.id, 10),
+                            nom: dechiffrer(rawProfil.nom) || "Profil VIP",
+                            telephone: formaterNumeroWhatsApp(dechiffrer(rawProfil.telephone)),
+                            imageURL: parsedPhotos[0]
+                        };
+                        return true;
                     }
-                } catch(e) { parsedPhotos = [rawProfil.photos]; }
-
-                parsedPhotos = parsedPhotos.map(img => {
-                    if (img && typeof img === 'string') {
-                        let cleanImg = img.trim();
-                        if (cleanImg.startsWith('"') && cleanImg.endsWith('"')) { cleanImg = cleanImg.slice(1, -1); }
-                        if (!cleanImg.startsWith("data:image")) { cleanImg = "data:image/jpeg;base64," + cleanImg; }
-                        return cleanImg;
-                    }
-                    return null;
-                }).filter(img => img !== null && img.length > 50);
-
-                if (parsedPhotos.length === 0) {
-                    alert("Ce profil n'a pas d'image valide pour le jeu. Essaye une autre catégorie !");
-                    return false;
                 }
-
-                profilActif = {
-                    id: parseInt(rawProfil.id, 10),
-                    nom: dechiffrer(rawProfil.nom) || "Profil VIP",
-                    telephone: formaterNumeroWhatsApp(dechiffrer(rawProfil.telephone)),
-                    imageURL: parsedPhotos[0]
-                };
-                return true;
-            } else {
-                alert("Impossible de charger les profils depuis la base de données.");
             }
         } catch (e) {
             console.error("Erreur API", e);
-            alert("Erreur de connexion au serveur.");
         }
-        return false;
+
+        // Profil de secours par défaut si l'API ne répond pas ou n'a pas d'image, pour ne jamais bloquer le joueur
+        profilActif = {
+            id: 1,
+            nom: "Profil VIP Bizi",
+            telephone: "22500000000",
+            imageURL: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&h=300&fit=crop"
+        };
+        return true;
     }
 
     function retourMenu() {
@@ -513,9 +504,7 @@
             return;
         }
 
-        const ok = await recupererProfilAleatoireParCategorie();
-        if (!ok) return;
-
+        await recupererProfilAleatoireParCategorie();
         document.getElementById("menu-selection").classList.add("hidden");
 
         if (type === 'puzzle') {
@@ -689,7 +678,6 @@
 
         const texteWhatsApp = `Salut ${profilActif.nom}, j'ai brillamment réussi mon défi sur Bizi ! 🎮\n\nVoici mon code de réduction : *${codePromo}*.\n\nEn l'acceptant, tu m'accordes une réduction de 30 % sur ton service, et ton profil gagne automatiquement 2 jours de visibilité de plus avant expiration !\n\nClique simplement sur ce lien officiel pour valider ton bonus : \n${lienValidation}`;
 
-        document.getElementById("actions-panel").innerHTML = ''; // Nettoyage de sécurité
         document.getElementById("actions-profil").innerHTML = `
             <p>Profil débloqué : <strong>${profilActif.nom}</strong></p>
             <p style="font-size:11px; color:#ffa502; margin-top:5px;">⚠️ Envoie ce message au prestataire pour activer tes -30% et ses 2 jours de bonus !</p>
