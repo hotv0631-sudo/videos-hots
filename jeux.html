@@ -151,12 +151,12 @@
             font-weight: bold;
         }
 
-        /* Grille du Puzzle 2x2 (4 cases - Mode Test Rapide) */
+        /* Grille du Puzzle 3x3 (9 cases - Image complète et propre) */
         .puzzle-grid {
             display: grid;
-            grid-template-columns: repeat(2, 110px);
-            grid-template-rows: repeat(2, 110px);
-            gap: 4px;
+            grid-template-columns: repeat(3, 90px);
+            grid-template-rows: repeat(3, 90px);
+            gap: 3px;
             justify-content: center;
             margin: 20px auto;
             background: #111;
@@ -167,11 +167,11 @@
         }
 
         .tile {
-            width: 110px;
-            height: 110px;
-            background-size: 220px 220px;
+            width: 90px;
+            height: 90px;
+            background-size: 270px 270px;
             cursor: pointer;
-            border-radius: 4px;
+            border-radius: 3px;
             transition: transform 0.1s ease, filter 0.1s ease;
         }
 
@@ -252,7 +252,7 @@
 <body>
 
     <h1>🎮 Jeu de réduction du prix du Bizi de 30 % VIP</h1>
-    <p>Mode Test Rapide : Résous le puzzle 2x2 pour tester ton lien WhatsApp !</p>
+    <p>Mode Test 3x3 : Résous le puzzle rapidement pour tester ton lien WhatsApp !</p>
 
     <!-- MENU DE SELECTION -->
     <div id="menu-selection" class="menu-jeux">
@@ -283,7 +283,7 @@
         </select>
         
         <div style="margin-top: 20px;">
-            <button onclick="lancerJeu('puzzle')">🧩 Puzzle Coulissant 2x2 (Test Rapide)</button>
+            <button onclick="lancerJeu('puzzle')">🧩 Puzzle Coulissant 3x3 (Test Rapide)</button>
             <button onclick="lancerJeu('quiz')">🧠 Quiz Expert Ultra-Corsé (3 min)</button>
         </div>
         
@@ -303,7 +303,7 @@
             <span style="color:var(--text-muted); font-size:12px;" id="cible-puzzle-nom">Cible : ...</span>
             <span class="timer-box">⏱️ <span id="timer-puzzle">300</span>s</span>
         </div>
-        <p style="font-size: 11px; margin-bottom:8px;">Glisse les 3 cases pour reconstituer l'image instantanément.</p>
+        <p style="font-size: 11px; margin-bottom:8px;">Glisse les 8 cases pour reconstituer l'image correctement.</p>
         <div id="puzzle-board" class="puzzle-grid"></div>
         <button class="btn-retour" onclick="retourMenu()">Abandonner</button>
     </div>
@@ -348,7 +348,7 @@
     let timerInterval = null;
     let tempsRestant = 300;
     
-    let caseVideIndex = 3;
+    let caseVideIndex = 8;
     let ordreActuel = [];
 
     let questionsSession = [];
@@ -520,7 +520,7 @@
         if (type === 'puzzle') {
             document.getElementById("cible-puzzle-nom").innerText = `Cible : ${profilActif.nom}`;
             document.getElementById("container-puzzle").classList.remove("hidden");
-            initialiserPuzzle2x2();
+            initialiserPuzzle3x3();
             lancerChronometre(300, "timer-puzzle", echecJeuPuzzle);
         } else {
             document.getElementById("cible-quiz-nom").innerText = `Cible : ${profilActif.nom}`;
@@ -551,69 +551,69 @@
         }, 1000);
     }
 
-    // --- PUZZLE 2x2 (4 cases pour test rapide) ---
-    function initialiserPuzzle2x2() {
-        ordreActuel = [0, 1, 3, 2]; // 3 est la case vide
-        caseVideIndex = 3;
+    // --- PUZZLE 3x3 (9 cases - Image complète et propre) ---
+    function initialiserPuzzle3x3() {
+        ordreActuel = [0, 1, 2, 3, 4, 5, 6, 7, 8]; // 8 est la case vide
+        caseVideIndex = 8;
         
-        for (let i = 0; i < 10; i++) {
-            let coupsPossibles = obtenirCoupsVoisins2x2(caseVideIndex);
+        for (let i = 0; i < 30; i++) {
+            let coupsPossibles = obtenirCoupsVoisins3x3(caseVideIndex);
             let coupAleatoire = coupsPossibles[Math.floor(Math.random() * coupsPossibles.length)];
             
             ordreActuel[caseVideIndex] = ordreActuel[coupAleatoire];
-            ordreActuel[coupAleatoire] = 3;
+            ordreActuel[coupAleatoire] = 8;
             caseVideIndex = coupAleatoire;
         }
-        afficherGrillePuzzle2x2();
+        afficherGrillePuzzle3x3();
     }
 
-    function obtenirCoupsVoisins2x2(idx) {
-        let ligne = Math.floor(idx / 2);
-        let col = idx % 2;
+    function obtenirCoupsVoisins3x3(idx) {
+        let ligne = Math.floor(idx / 3);
+        let col = idx % 3;
         let voisins = [];
-        if (ligne > 0) voisins.push(idx - 2);
-        if (ligne < 1) voisins.push(idx + 2);
+        if (ligne > 0) voisins.push(idx - 3);
+        if (ligne < 2) voisins.push(idx + 3);
         if (col > 0) voisins.push(idx - 1);
-        if (col < 1) voisins.push(idx + 1);
+        if (col < 2) voisins.push(idx + 1);
         return voisins;
     }
 
-    function afficherGrillePuzzle2x2() {
+    function afficherGrillePuzzle3x3() {
         const board = document.getElementById("puzzle-board");
         board.innerHTML = "";
 
         ordreActuel.forEach((val, index) => {
             const tile = document.createElement("div");
             tile.className = "tile";
-            if (val === 3) {
+            if (val === 8) {
                 tile.classList.add("empty");
             } else {
-                let x = (val % 2) * 110;
-                let y = Math.floor(val / 2) * 110;
+                let x = (val % 3) * 90;
+                let y = Math.floor(val / 3) * 90;
                 tile.style.backgroundImage = `url('${profilActif.imageURL}')`;
                 tile.style.backgroundPosition = `-${x}px -${y}px`;
             }
-            tile.onclick = () => bougerTuile2x2(index);
+            tile.onclick = () => bougerTuile3x3(index);
             board.appendChild(tile);
         });
     }
 
-    function bougerTuile2x2(index) {
-        let ligneClicked = Math.floor(index / 2);
-        let colClicked = index % 2;
-        let ligneEmpty = Math.floor(caseVideIndex / 2);
-        let colEmpty = caseVideIndex % 2;
+    function bougerTuile3x3(index) {
+        let ligneClicked = Math.floor(index / 3);
+        let colClicked = index % 3;
+        let ligneEmpty = Math.floor(caseVideIndex / 3);
+        let colEmpty = caseVideIndex % 3;
 
         let distance = Math.abs(ligneClicked - ligneEmpty) + Math.abs(colClicked - colEmpty);
 
         if (distance === 1) {
             ordreActuel[caseVideIndex] = ordreActuel[index];
-            ordreActuel[index] = 3;
+            ordreActuel[index] = 8;
             caseVideIndex = index;
-            afficherGrillePuzzle2x2();
+            afficherGrillePuzzle3x3();
 
             let gagne = true;
-            for (let i = 0; i < 4; i++) {
+            for (let i = 0; i < 9; i++) {
                 if (ordreActuel[i] !== i) {
                     gagne = false;
                     break;
@@ -734,7 +734,7 @@
     function validerVictoirePuzzle() {
         document.getElementById("container-puzzle").classList.add("hidden");
         document.getElementById("container-victoire").classList.remove("hidden");
-        document.getElementById("message-score-victoire").innerHTML = `Défi du puzzle 2x2 relevé avec brio ! Ton code de réduction de 30 % est prêt :`;
+        document.getElementById("message-score-victoire").innerHTML = `Défi du puzzle 3x3 relevé avec brio ! Ton code de réduction de 30 % est prêt :`;
 
         const codePromo = `BIZI-VIP-${profilActif.id}-${Math.floor(1000 + Math.random() * 9000)}`;
         document.getElementById("promo-code-display").innerText = codePromo;
