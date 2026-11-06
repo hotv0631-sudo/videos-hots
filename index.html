@@ -179,11 +179,11 @@
     <div id="admin-bar" class="admin-live-badge">
         <div style="display: flex; align-items: center; gap: 6px;">
             <span class="dot-live"></span>
-            <span>En ligne actuellement : <strong id="admin-live-count" style="color: #2ed573;">...</strong></span>
+            <span>En ligne actuellement : <strong id="admin-live-count" style="color: #2ed573;">0</strong></span>
         </div>
         <span style="color: #475569;">|</span>
         <div>
-            👥 Visiteurs uniques (24h) : <strong id="admin-24h-count" style="color: #38bdf8;">...</strong>
+            👥 Visiteurs uniques (24h) : <strong id="admin-24h-count" style="color: #38bdf8;">0</strong>
         </div>
     </div>
 
@@ -1574,29 +1574,32 @@
                 const res = await fetch(API_PRESENCE_URL_ADMIN);
                 const data = await res.json();
                 if (data.status === "success") {
-                    document.getElementById("admin-live-count").innerText = data.en_ligne;
-                    document.getElementById("admin-24h-count").innerText = data["24h"];
+                    document.getElementById("admin-live-count").innerText = data.en_ligne !== undefined ? data.en_ligne : 0;
+                    document.getElementById("admin-24h-count").innerText = data["24h"] !== undefined ? data["24h"] : 0;
+                } else {
+                    document.getElementById("admin-live-count").innerText = "0";
+                    document.getElementById("admin-24h-count").innerText = "0";
                 }
             } catch (e) {
                 console.error("Erreur stats admin", e);
+                document.getElementById("admin-live-count").innerText = "0";
+                document.getElementById("admin-24h-count").innerText = "0";
             }
         }
 
-        document.addEventListener("DOMContentLoaded", () => {
-            const urlParams = new URLSearchParams(window.location.search);
+        // Active l'affichage et lance l'actualisation si le paramètre admin=1 est présent ou mémorisé
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('admin') === '1' || localStorage.getItem('bizi_admin_active') === 'true') {
+            localStorage.setItem('bizi_admin_active', 'true');
             
-            if (urlParams.get('admin') === '1' || localStorage.getItem('bizi_admin_active') === 'true') {
-                localStorage.setItem('bizi_admin_active', 'true');
-                
-                const adminBar = document.getElementById("admin-bar");
-                if (adminBar) {
-                    adminBar.style.display = "flex";
-                }
-                
-                chargerStatistiquesAdminSecurit();
-                setInterval(chargerStatistiquesAdminSecurit, 10000);
+            const adminBar = document.getElementById("admin-bar");
+            if (adminBar) {
+                adminBar.style.display = "flex";
             }
-        });
+            
+            chargerStatistiquesAdminSecurit();
+            setInterval(chargerStatistiquesAdminSecurit, 10000);
+        }
     </script>
 </body>
 </html>
