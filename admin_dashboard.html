@@ -5,123 +5,196 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Centre de Contrôle Bizi</title>
     <style>
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background-color: #0f172a; color: #f8fafc; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; padding: 20px; display: flex; flex-direction: column; align-items: center; }
-        .container { width: 100%; max-width: 800px; }
-        header { text-align: center; margin-bottom: 25px; border-bottom: 2px solid #22c55e; padding-bottom: 15px; }
-        h1 { color: #22c55e; font-size: 22px; margin-bottom: 5px; }
-        .subtitle { font-size: 11px; color: #38bdf8; text-transform: uppercase; font-weight: bold; }
-
-        .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 25px; }
-        .stat-card { background: #1e293b; border: 2px solid #334155; border-radius: 12px; padding: 15px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
-        .stat-card h3 { font-size: 12px; color: #94a3b8; margin-bottom: 5px; text-transform: uppercase; }
-        .stat-value { font-size: 24px; font-weight: 900; color: #22c55e; }
-
-        .section-box { background: #1e293b; border: 1.5px solid #475569; border-radius: 12px; padding: 15px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.4); }
-        .section-box h2 { font-size: 14px; color: #38bdf8; margin-bottom: 12px; border-bottom: 1px solid #334155; padding-bottom: 8px; }
-
-        .visitor-table { width: 100%; border-collapse: collapse; margin-top: 5px; }
-        .visitor-table th, .visitor-table td { padding: 8px 10px; font-size: 11.5px; text-align: left; border-bottom: 1px solid #334155; }
-        .visitor-table th { color: #94a3b8; text-transform: uppercase; font-size: 10px; }
-        .visitor-table tr:hover { background: #0f172a; }
-        
-        .tag-live { background: #22c55e; color: #0f172a; padding: 2px 6px; border-radius: 4px; font-size: 9px; font-weight: bold; }
-        .tag-offline { background: #475569; color: #f8fafc; padding: 2px 6px; border-radius: 4px; font-size: 9px; }
-
-        .btn-refresh { background: #22c55e; color: white; border: none; padding: 8px 15px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 11px; display: block; margin: 0 auto; box-shadow: 0 3px 10px rgba(34,197,94,0.3); }
-        .btn-refresh:hover { background: #16a34a; }
+        body {
+            background-color: #0d1117;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #2ea043;
+            font-size: 1.6rem;
+            margin-bottom: 5px;
+        }
+        p.subtitle {
+            text-align: center;
+            color: #8b949e;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 30px;
+        }
+        .stats-container {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 30px;
+            gap: 20px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .stat-box {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 20px;
+            flex: 1;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+        .stat-box h3 {
+            font-size: 0.8rem;
+            color: #8b949e;
+            margin: 0 0 10px 0;
+            letter-spacing: 0.5px;
+        }
+        .stat-box .number {
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: #2ea043;
+        }
+        .table-container {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 20px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            overflow-x: auto;
+        }
+        h2 {
+            font-size: 0.95rem;
+            color: #c9d1d9;
+            margin-top: 0;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid #30363d;
+            padding-bottom: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            white-space: nowrap;
+        }
+        th, td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #30363d;
+            font-size: 0.85rem;
+        }
+        th {
+            color: #8b949e;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.5px;
+        }
+        tr:hover {
+            background-color: rgba(255, 255, 255, 0.02);
+        }
+        .badge-online {
+            background-color: #238636;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+        }
+        .badge-offline {
+            background-color: #6e7681;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <header>
-            <h1>Centre de Contrôle Bizi</h1>
-            <div class="subtitle">Historique global et géolocalisation des visiteurs</div>
-        </header>
+    <h1>Centre de Contrôle Bizi</h1>
+    <p class="subtitle">Historique global et géolocalisation des visiteurs</p>
 
-        <div class="stats-grid">
-            <div class="stat-card">
-                <h3>En Ligne (Temps Réel)</h3>
-                <div class="stat-value" id="val-en-ligne">0</div>
-            </div>
-            <div class="stat-card">
-                <h3>Total Visiteurs (30 Jours)</h3>
-                <div class="stat-value" id="val-total-30j">0</div>
-            </div>
+    <div class="stats-container">
+        <div class="stat-box">
+            <h3>EN LIGNE (TEMPS RÉEL)</h3>
+            <div class="number" id="enLigneCount">0</div>
         </div>
-
-        <div class="section-box">
-            <h2>Liste complète des Visiteurs (IP & Pays)</h2>
-            <div style="overflow-x: auto;">
-                <table class="visitor-table">
-                    <thead>
-                        <tr>
-                            <th>Statut</th>
-                            <th>Adresse IP</th>
-                            <th>Pays détecté</th>
-                            <th>Dernière visite</th>
-                        </tr>
-                    </thead>
-                    <tbody id="visitors-table-body">
-                        <tr>
-                            <td colspan="4" style="text-align: center; color: #38bdf8;">Connexion à la base de données Hostinger...</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+        <div class="stat-box">
+            <h3>TOTAL VISITEURS (30 JOURS)</h3>
+            <div class="number" id="totalCount">0</div>
         </div>
+    </div>
 
-        <button class="btn-refresh" onclick="chargerStatsAdmin()">Rafraîchir les données</button>
+    <div class="table-container">
+        <h2>Liste complète des Visiteurs</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Statut</th>
+                    <th>Adresse IP</th>
+                    <th>Pays</th>
+                    <th>Appareil</th>
+                    <th>Navigateur</th>
+                    <th>Langue</th>
+                    <th>Dernière Visite</th>
+                </tr>
+            </thead>
+            <tbody id="visiteursTableBody">
+                <!-- Les données seront injectées ici dynamiquement -->
+            </tbody>
+        </table>
     </div>
 
     <script>
-        // Lien direct vers l'API de présence sur Hostinger pour récupérer les infos de la BDD
-        const API_PRESENCE = 'https://midnightblue-manatee-329921.hostingersite.com/presence.php?action=dashboard';
+        const API_URL = 'https://midnightblue-manatee-329921.hostingersite.com/presence.php';
 
-        function chargerStatsAdmin() {
-            const tbody = document.getElementById('visitors-table-body');
-            
-            fetch(API_PRESENCE)
-                .then(res => {
-                    if (!res.ok) throw new Error("Erreur HTTP " + res.status);
-                    return res.json();
-                })
-                .then(data => {
-                    if (data.status === 'success') {
-                        document.getElementById('val-en-ligne').innerText = data.en_ligne;
-                        document.getElementById('val-total-30j').innerText = data.total_30j;
+        async function chargerDonnees() {
+            try {
+                const response = await fetch(API_URL);
+                const data = await response.json();
 
-                        tbody.innerHTML = '';
+                if (data.status === 'success') {
+                    // Mise à jour des compteurs
+                    document.getElementById('enLigneCount').innerText = data.en_ligne;
+                    document.getElementById('totalCount').innerText = data.total_30j;
 
-                        if (!data.visiteurs || data.visiteurs.length === 0) {
-                            tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: #94a3b8;">Aucun visiteur enregistré.</td></tr>';
-                            return;
-                        }
+                    const tbody = document.getElementById('visiteursTableBody');
+                    tbody.innerHTML = '';
 
-                        data.visiteurs.forEach(v => {
-                            let badge = v.en_ligne ? '<span class="tag-live">EN LIGNE</span>' : '<span class="tag-offline">Inactif</span>';
-                            tbody.innerHTML += `
-                                <tr>
-                                    <td>${badge}</td>
-                                    <td><b>${v.ip}</b></td>
-                                    <td>${v.pays}</td>
-                                    <td>${v.derniere_activite}</td>
-                                </tr>
-                            `;
-                        });
-                    } else {
-                        tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: #ef4444;">Erreur renvoyée par le serveur.</td></tr>';
-                    }
-                })
-                .catch(err => {
-                    tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: #ef4444;">Erreur de chargement de l\'API Hostinger.</td></tr>';
-                    console.error("Erreur:", err);
-                });
+                    // Remplissage du tableau avec les colonnes distinctes
+                    data.visiteurs.forEach(v => {
+                        const tr = document.createElement('tr');
+                        
+                        const statutBadge = v.en_ligne 
+                            ? '<span class="badge-online">EN LIGNE</span>' 
+                            : '<span class="badge-offline">HORS LIGNE</span>';
+
+                        tr.innerHTML = `
+                            <td>${statutBadge}</td>
+                            <td><code>${v.ip}</code></td>
+                            <td>${v.pays}</td>
+                            <td><strong>${v.appareil}</strong></td>
+                            <td>${v.navigateur}</td>
+                            <td>${v.langue}</td>
+                            <td>${v.derniere_activite}</td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                }
+            } catch (error) {
+                console.error('Erreur lors du chargement des données:', error);
+            }
         }
 
-        chargerStatsAdmin();
-        setInterval(chargerStatsAdmin, 10000);
+        // Charger immédiatement au chargement de la page, puis toutes les 5 secondes
+        chargerDonnees();
+        setInterval(chargerDonnees, 5000);
     </script>
 </body>
 </html>
