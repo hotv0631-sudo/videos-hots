@@ -56,21 +56,22 @@
     </div>
 
     <script>
-        // Sécurité : Vérifie si le mode admin est actif dans le navigateur
+        // Sécurité : Vérifie si le mode admin est actif
         if (localStorage.getItem('bizi_admin_active') !== 'true') {
             alert("❌ Accès refusé. Réservé à l'administrateur.");
             window.location.href = 'index.html';
         }
 
-        const API_PRESENCE_URL = 'https://midnightblue-manatee-329921.hostingersite.com/presence.php?action=dashboard';
+        // URL exacte de ton API de présence sur Hostinger
+        const API_PRESENCE_DASHBOARD = 'https://midnightblue-manatee-329921.hostingersite.com/presence.php?action=dashboard';
 
         async function chargerTableauDeBordReel() {
             try {
-                const res = await fetch(API_PRESENCE_URL);
+                const res = await fetch(API_PRESENCE_DASHBOARD);
                 const data = await res.json();
 
                 if (data.status === 'success') {
-                    document.getElementById('stat-en-ligne').innerText = data.en_ligne;
+                    document.getElementById('stat-en-ligne').innerText = data.en_ligne !== undefined ? data.en_ligne : 0;
                     document.getElementById('stat-total').innerText = data.historique ? data.historique.length : 0;
 
                     const tbody = document.getElementById('historique-tbody');
@@ -88,11 +89,14 @@
                             `;
                         });
                     } else {
-                        tbody.innerHTML = `<tr><td colspan="4" style="text-align: center; color: #94a3b8; padding: 20px;">Aucun visiteur enregistré pour l'instant (0 personne).</td></tr>`;
+                        tbody.innerHTML = `<tr><td colspan="4" style="text-align: center; color: #94a3b8; padding: 20px;">Aucun visiteur enregistré pour l'instant.</td></tr>`;
                     }
+                } else {
+                    document.getElementById('historique-tbody').innerHTML = `<tr><td colspan="4" style="text-align: center; color: #ef4444; padding: 20px;">Erreur renvoyée par le serveur.</td></tr>`;
                 }
             } catch (e) {
-                document.getElementById('historique-tbody').innerHTML = `<tr><td colspan="4" style="text-align: center; color: #ef4444; padding: 20px;">Erreur de connexion au serveur de statistiques.</td></tr>`;
+                console.error(e);
+                document.getElementById('historique-tbody').innerHTML = `<tr><td colspan="4" style="text-align: center; color: #ef4444; padding: 20px;">Erreur de connexion au serveur de statistiques. Vérifie l'URL de l'API.</td></tr>`;
             }
         }
 
