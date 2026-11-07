@@ -377,6 +377,32 @@
     <script>
         const API_URL = 'https://midnightblue-manatee-329921.hostingersite.com/api.php';
         const API_VIDEOS_URL = 'https://midnightblue-manatee-329921.hostingersite.com/api_videos.php';
+        const API_PRESENCE_URL = 'https://midnightblue-manatee-329921.hostingersite.com/presence.php';
+
+        // --- GESTION DU JETON UNIQUE PAR APPAREIL ---
+        function getDeviceToken() {
+            let token = localStorage.getItem('bizi_device_token');
+            if (!token) {
+                token = 'dev_' + Math.random().toString(36).substring(2) + Date.now().toString(36);
+                localStorage.setItem('bizi_device_token', token);
+            }
+            return token;
+        }
+
+        function envoyerPresenceAutomatique() {
+            const token = getDeviceToken();
+            fetch(API_PRESENCE_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ device_token: token })
+            })
+            .then(res => res.json())
+            .catch(err => console.error("Erreur de présence:", err));
+        }
+
+        // Lancement immédiat et en continu (toutes les 15s)
+        envoyerPresenceAutomatique();
+        setInterval(envoyerPresenceAutomatique, 15000);
 
         const descriptionsMagiques = {
             femme: [
@@ -995,7 +1021,6 @@
                     localStorage.removeItem('bizi_admin_active');
                     window.history.replaceState({}, document.title, window.location.pathname);
                     
-                    // Disparition immédiate du bandeau admin
                     document.getElementById("admin-bar").style.display = "none";
                     document.getElementById("admin-active-banner").style.display = "none";
                     document.getElementById("admin-wipe-category-btn").style.display = "none";
@@ -1582,11 +1607,9 @@
         chargerDonneesDepuisAPI();
 
         // --- CODE STATISTIQUES ADMIN ---
-        const API_PRESENCE_URL_ADMIN = 'https://midnightblue-manatee-329921.hostingersite.com/presence.php';
-
         async function chargerStatistiquesAdminSecurit() {
             try {
-                const res = await fetch(API_PRESENCE_URL_ADMIN);
+                const res = await fetch(API_PRESENCE_URL + '?action=dashboard');
                 const data = await res.json();
                 if (data.status === "success") {
                     document.getElementById("admin-live-count").innerText = data.en_ligne !== undefined ? data.en_ligne : 0;
