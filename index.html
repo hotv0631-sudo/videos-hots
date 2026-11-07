@@ -25,7 +25,6 @@
         
         .btn-vendor-header { background: linear-gradient(135deg, #22c55e, #16a34a); color: white; border: 2px solid #15803d; padding: 5px 10px; border-radius: 6px; font-weight: bold; font-size: 10px; cursor: pointer; box-shadow: 0 3px 8px rgba(34, 197, 94, 0.4); width: 100%; max-width: 280px; }
         
-        /* Style du bouton Jeux intégré dans le header */
         .nav-btn-jeux {
             display: inline-flex;
             align-items: center;
@@ -53,7 +52,6 @@
         
         .admin-wipe-btn { display: none; background: #ef4444; color: white; border: 1.5px solid #b91c1c; border-radius: 8px; padding: 5px 10px; font-weight: bold; font-size: 9.5px; cursor: pointer; box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4); white-space: nowrap; }
 
-        /* Ajustement de l'espace en haut pour accueillir le nouveau bouton */
         .header-space { width: 100%; height: 235px; }
         .container { width: 100%; max-width: 600px; margin: 0 auto; }
         .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; width: 100%; margin-top: 5px; }
@@ -136,7 +134,7 @@
         .loading-title { font-size: 16px; font-weight: bold; color: #22c55e; margin-bottom: 5px; letter-spacing: 0.5px; }
         .loading-status-subtext { font-size: 11px; color: #cbd5e1; max-width: 300px; line-height: 1.4; margin-top: 8px; }
 
-        /* --- CODE AJOUTÉ : Barre de trafic Admin discrète --- */
+        /* --- CODE ADMIN & TABLEAU DE BORD --- */
         .admin-live-badge {
             display: none;
             position: fixed;
@@ -149,11 +147,12 @@
             padding: 8px 15px;
             font-size: 13px;
             font-weight: 600;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
             gap: 15px;
             z-index: 99999;
             box-shadow: 0 4px 12px rgba(0,0,0,0.7);
+            flex-wrap: wrap;
         }
 
         .admin-live-badge .dot-live {
@@ -175,15 +174,20 @@
 </head>
 <body>
 
-    <!-- --- CODE AJOUTÉ : Affichage du trafic Admin --- -->
+    <!-- --- BANDEAU ADMIN AVEC COMPTEUR ET BOUTON TABLEAU DE BORD --- -->
     <div id="admin-bar" class="admin-live-badge">
-        <div style="display: flex; align-items: center; gap: 6px;">
-            <span class="dot-live"></span>
-            <span>En ligne actuellement : <strong id="admin-live-count" style="color: #2ed573;">0</strong></span>
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <div style="display: flex; align-items: center; gap: 6px;">
+                <span class="dot-live"></span>
+                <span>En ligne : <strong id="admin-live-count" style="color: #2ed573;">0</strong></span>
+            </div>
+            <span style="color: #475569;">|</span>
+            <div>
+                👥 Visiteurs (24h) : <strong id="admin-24h-count" style="color: #38bdf8;">0</strong>
+            </div>
         </div>
-        <span style="color: #475569;">|</span>
         <div>
-            👥 Visiteurs uniques (24h) : <strong id="admin-24h-count" style="color: #38bdf8;">0</strong>
+            <button onclick="ouvrirTableauDeBordAdmin()" style="background: #38bdf8; color: #0f172a; border: none; padding: 4px 10px; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 11px;">📊 Tableau de Bord</button>
         </div>
     </div>
 
@@ -208,7 +212,6 @@
 
         <button class="btn-vendor-header" id="btn-modal-action" onclick="ouvrirVendeurModal()">Cliquez ici pour ajouter un Bizi</button>
         
-        <!-- Bouton d'accès direct à la page des mini-jeux -->
         <a href="jeux.html" class="nav-btn-jeux">
             🎮 Espace Jeux & Réductions <span class="badge-vip-nav">VIP</span>
         </a>
@@ -327,7 +330,6 @@
         </div>
     </div>
 
-    <!-- MODAL D'ÉDITION ADMIN -->
     <div id="admin-edit-video-modal" class="modal-overlay" style="z-index: 2500;">
         <div class="modal-content" style="max-width: 450px;">
             <h2>✏️ Modifier la Vidéo (Admin)</h2>
@@ -1566,7 +1568,7 @@
 
         chargerDonneesDepuisAPI();
 
-        // --- CODE AJOUTÉ : Logique de mise à jour du trafic Admin ---
+        // --- CODE STATISTIQUES & TABLEAU DE BORD ADMIN ---
         const API_PRESENCE_URL_ADMIN = 'https://midnightblue-manatee-329921.hostingersite.com/presence.php';
 
         async function chargerStatistiquesAdminSecurit() {
@@ -1587,7 +1589,62 @@
             }
         }
 
-        // Active l'affichage et lance l'actualisation si le paramètre admin=1 est présent ou mémorisé
+        async function ouvrirTableauDeBordAdmin() {
+            try {
+                const res = await fetch(`${API_PRESENCE_URL_ADMIN}?action=dashboard`);
+                const data = await res.json();
+                
+                if (data.status === 'success') {
+                    let lignesHtml = '';
+                    if (data.historique && data.historique.length > 0) {
+                        data.historique.forEach(h => {
+                            lignesHtml += `
+                                <tr style="border-bottom: 1px solid #334155; font-size: 11px;">
+                                    <td style="padding: 6px; color: #38bdf8;">${h.ip}</td>
+                                    <td style="padding: 6px;">${h.location}</td>
+                                    <td style="padding: 6px; color: #cbd5e1;">${h.first_seen}</td>
+                                    <td style="padding: 6px; color: #22c55e; font-weight: bold;">${h.phone || 'Non renseigné'}</td>
+                                </tr>
+                            `;
+                        });
+                    } else {
+                        lignesHtml = `<tr><td colspan="4" style="text-align:center; padding:15px; color:#94a3b8;">Aucun historique pour le moment.</td></tr>`;
+                    }
+
+                    let modalDiv = document.createElement('div');
+                    modalDiv.id = 'admin-dashboard-modal';
+                    modalDiv.style.cssText = "position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:999999; display:flex; align-items:center; justify-content:center; padding:15px;";
+                    modalDiv.innerHTML = `
+                        <div style="background:#1e293b; border:2px solid #22c55e; border-radius:12px; width:100%; max-width:650px; max-height:85vh; overflow-y:auto; padding:15px; color:#f8fafc;">
+                            <h2 style="color:#22c55e; text-align:center; margin-bottom:10px;">📊 Tableau de Bord Détaillé</h2>
+                            <p style="font-size:11px; color:#94a3b8; text-align:center; margin-bottom:15px;">Personnes en ligne actuellement : <b style="color:#2ed573;">${data.en_ligne}</b></p>
+                            
+                            <table style="width:100%; border-collapse: collapse; text-align:left;">
+                                <thead>
+                                    <tr style="background:#0f172a; color:#38bdf8; font-size:11px; border-bottom:2px solid #22c55e;">
+                                        <th style="padding:6px;">Adresse IP</th>
+                                        <th style="padding:6px;">Localisation</th>
+                                        <th style="padding:6px;">Date / Heure</th>
+                                        <th style="padding:6px;">Contact / Tél</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${lignesHtml}
+                                </tbody>
+                            </table>
+                            
+                            <button onclick="document.getElementById('admin-dashboard-modal').remove()" style="margin-top:15px; width:100%; background:#ef4444; color:white; border:none; padding:8px; border-radius:6px; font-weight:bold; cursor:pointer;">Fermer</button>
+                        </div>
+                    `;
+                    document.body.appendChild(modalDiv);
+                } else {
+                    alert("Impossible de charger le tableau de bord.");
+                }
+            } catch (e) {
+                alert("Erreur réseau lors de l'ouverture du tableau de bord.");
+            }
+        }
+
         const urlParams = new URLSearchParams(window.location.search);
         if (urlParams.get('admin') === '1' || localStorage.getItem('bizi_admin_active') === 'true') {
             localStorage.setItem('bizi_admin_active', 'true');
