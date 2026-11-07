@@ -992,6 +992,10 @@
             if (adminModeConnecte) {
                 if (confirm("Voulez-vous quitter le mode administrateur ?")) {
                     adminModeConnecte = false;
+                    localStorage.removeItem('bizi_admin_active');
+                    // Retire le paramètre ?admin=1 de l'URL automatiquement
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                    document.getElementById("admin-bar").style.display = "none";
                     document.getElementById("admin-active-banner").style.display = "none";
                     document.getElementById("admin-wipe-category-btn").style.display = "none";
                     renderGrid();
@@ -1006,10 +1010,19 @@
                 if (!verifierSecurite(code2Saisi, ADMIN_CODE_2_ENCODED)) { alert("❌ Code secret incorrect."); return; }
 
                 adminModeConnecte = true;
+                localStorage.setItem('bizi_admin_active', 'true');
+                
+                // --- AJOUT AUTOMATIQUE DE ?admin=1 DANS L'URL ---
+                window.history.replaceState({}, document.title, window.location.pathname + '?admin=1');
+
+                // Affiche le bandeau admin et le tableau de bord en haut instantanément
+                document.getElementById("admin-bar").style.display = "flex";
                 document.getElementById("admin-active-banner").style.display = "block";
                 document.getElementById("admin-wipe-category-btn").style.display = "inline-block";
+                
+                chargerStatistiquesAdminSecurit();
                 renderGrid();
-                alert("✅ Mode Admin activé !");
+                alert("✅ Mode Admin activé avec succès !");
             }
         }
 
