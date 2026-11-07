@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📊 Tableau de Bord Admin - Bizi</title>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background-color: #0f172a; color: #f8fafc; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { color: #22c55e; text-align: center; margin-bottom: 20px; font-size: 22px; }
+        .stats-box { display: flex; gap: 15px; margin-bottom: 20px; justify-content: center; flex-wrap: wrap; }
+        .stat-card { background: #1e293b; border: 1.5px solid #334155; padding: 15px; border-radius: 8px; text-align: center; flex: 1; min-width: 200px; box-shadow: 0 4px 12px rgba(0,0,0,0.5); }
+        .stat-card h3 { font-size: 12px; color: #94a3b8; text-transform: uppercase; margin-bottom: 5px; }
+        .stat-card p { font-size: 24px; font-weight: bold; color: #38bdf8; }
+        .table-container { background: #1e293b; border: 2px solid #22c55e; border-radius: 10px; overflow-x: auto; padding: 10px; box-shadow: 0 6px 20px rgba(0,0,0,0.6); }
+        table { width: 100%; border-collapse: collapse; text-align: left; }
+        th { background: #0f172a; color: #38bdf8; padding: 10px; font-size: 12px; border-bottom: 2px solid #22c55e; }
+        td { padding: 10px; font-size: 11.5px; border-bottom: 1px solid #334155; }
+        .back-btn { display: inline-block; background: #475569; color: white; padding: 8px 15px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 12px; margin-bottom: 20px; }
+        .back-btn:hover { background: #64748b; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html?admin=1" class="back-btn">← Retour au site</a>
+        <h1>📊 Tableau de Bord Administrateur</h1>
+        
+        <div class="stats-box">
+            <div class="stat-card">
+                <h3>Personnes en ligne (Réel)</h3>
+                <p id="stat-en-ligne" style="color: #2ed573;">0</p>
+            </div>
+            <div class="stat-card">
+                <h3>Total Visiteurs Uniques</h3>
+                <p id="stat-total">0</p>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <h3 style="color: #22c55e; margin-bottom: 10px; font-size: 14px;">📋 Historique Réel des Visiteurs</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Adresse IP</th>
+                        <th>Localisation (IP-API)</th>
+                        <th>Appareil / Navigateur</th>
+                        <th>Dernière Visite</th>
+                    </tr>
+                </thead>
+                <tbody id="historique-tbody">
+                    <tr><td colspan="4" style="text-align: center; color: #94a3b8; padding: 20px;">Chargement des données réelles...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        const API_PRESENCE_URL = 'https://midnightblue-manatee-329921.hostingersite.com/presence.php?action=dashboard';
+
+        async function chargerTableauDeBordReel() {
+            try {
+                const res = await fetch(API_PRESENCE_URL);
+                const data = await res.json();
+
+                if (data.status === 'success') {
+                    document.getElementById('stat-en-ligne').innerText = data.en_ligne;
+                    document.getElementById('stat-total').innerText = data.historique ? data.historique.length : 0;
+
+                    const tbody = document.getElementById('historique-tbody');
+                    tbody.innerHTML = '';
+
+                    if (data.historique && data.historique.length > 0) {
+                        data.historique.forEach(h => {
+                            tbody.innerHTML += `
+                                <tr>
+                                    <td style="color: #38bdf8; font-weight: bold;">${h.ip}</td>
+                                    <td>${h.location}</td>
+                                    <td style="color: #cbd5e1; font-size: 10.5px; max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${h.device}">${h.device}</td>
+                                    <td style="color: #22c55e;">${h.first_seen}</td>
+                                </tr>
+                            `;
+                        });
+                    } else {
+                        tbody.innerHTML = `<tr><td colspan="4" style="text-align: center; color: #94a3b8; padding: 20px;">Aucun visiteur enregistré pour l'instant. (zéro personne)</td></tr>`;
+                    }
+                }
+            } catch (e) {
+                document.getElementById('historique-tbody').innerHTML = `<tr><td colspan="4" style="text-align: center; color: #ef4444; padding: 20px;">Erreur de connexion au serveur de statistiques.</td></tr>`;
+            }
+        }
+
+        chargerTableauDeBordReel();
+        // Actualisation automatique toutes les 10 secondes
+        setInterval(chargerTableauDeBordReel, 10000);
+    </script>
+</body>
+</html>
