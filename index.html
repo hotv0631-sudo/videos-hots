@@ -134,7 +134,7 @@
         .loading-title { font-size: 16px; font-weight: bold; color: #22c55e; margin-bottom: 5px; letter-spacing: 0.5px; }
         .loading-status-subtext { font-size: 11px; color: #cbd5e1; max-width: 300px; line-height: 1.4; margin-top: 8px; }
 
-        /* --- CODE ADMIN & TABLEAU DE BORD --- */
+        /* --- BANDEAU ADMIN CACHÉ PAR DÉFAUT POUR LES VISITEURS --- */
         .admin-live-badge {
             display: none;
             position: fixed;
@@ -174,7 +174,7 @@
 </head>
 <body>
 
-    <!-- --- BANDEAU ADMIN AVEC COMPTEUR ET BOUTON TABLEAU DE BORD (NOUVEL ONGLET) --- -->
+    <!-- --- BANDEAU ADMIN STRICTEMENT RÉSERVÉ À L'ADMINISTRATEUR --- -->
     <div id="admin-bar" class="admin-live-badge">
         <div style="display: flex; align-items: center; gap: 10px;">
             <div style="display: flex; align-items: center; gap: 6px;">
@@ -994,10 +994,13 @@
                     adminModeConnecte = false;
                     localStorage.removeItem('bizi_admin_active');
                     window.history.replaceState({}, document.title, window.location.pathname);
+                    
+                    // Disparition immédiate du bandeau admin
                     document.getElementById("admin-bar").style.display = "none";
                     document.getElementById("admin-active-banner").style.display = "none";
                     document.getElementById("admin-wipe-category-btn").style.display = "none";
                     renderGrid();
+                    alert("🔒 Mode administrateur désactivé.");
                 }
             } else {
                 const mdpSaisi = prompt("🔒 Entrez le mot de passe admin :");
@@ -1011,7 +1014,6 @@
                 adminModeConnecte = true;
                 localStorage.setItem('bizi_admin_active', 'true');
                 
-                // Ajout automatique de ?admin=1 dans l'URL
                 window.history.replaceState({}, document.title, window.location.pathname + '?admin=1');
 
                 document.getElementById("admin-bar").style.display = "flex";
@@ -1600,14 +1602,20 @@
             }
         }
 
+        // Vérification au chargement si l'admin était déjà connecté
         const urlParams = new URLSearchParams(window.location.search);
         if (urlParams.get('admin') === '1' || localStorage.getItem('bizi_admin_active') === 'true') {
+            adminModeConnecte = true;
             localStorage.setItem('bizi_admin_active', 'true');
             
             const adminBar = document.getElementById("admin-bar");
-            if (adminBar) {
-                adminBar.style.display = "flex";
-            }
+            if (adminBar) { adminBar.style.display = "flex"; }
+            
+            const adminBanner = document.getElementById("admin-active-banner");
+            if (adminBanner) { adminBanner.style.display = "block"; }
+
+            const wipeBtn = document.getElementById("admin-wipe-category-btn");
+            if (wipeBtn) { wipeBtn.style.display = "inline-block"; }
             
             chargerStatistiquesAdminSecurit();
             setInterval(chargerStatistiquesAdminSecurit, 10000);
