@@ -4,6 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>💖 Bizi 💖</title>
+
+    <!-- --- BALISES OPEN GRAPH POUR APERÇU WHATSAPP & TELEGRAM --- -->
+    <meta property="og:title" content="💖 Bizi - Découvre ce profil exclusif 💖" />
+    <meta property="og:description" content="Viens voir les photos et le profil complet en direct sur Bizi." />
+    <meta property="og:image" content="https://voltigestudio.online/logo.jpg" />
+    <meta property="og:url" content="" id="metaOpenGraphUrl" />
+    <meta property="og:type" content="website" />
+
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         html, body { width: 100%; overflow-x: hidden; background-color: #0f172a !important; color: #f8fafc; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
@@ -83,6 +91,10 @@
         .price-badge { background: linear-gradient(135deg, #ff6600, #ff8533); color: #ffffff; font-size: 12px; font-weight: bold; text-align: center; padding: 5px; border-radius: 6px; margin-bottom: 6px; }
         .info-id { font-size: 9.5px; color: #94a3b8; margin-bottom: 6px; text-align: center; background: #0f172a; padding: 3px; border-radius: 4px; border: 1px dashed #475569; }
         .whatsapp-btn { display: flex; align-items: center; justify-content: center; gap: 4px; background: #22c55e; color: #ffffff; text-align: center; padding: 6px 4px; border-radius: 5px; text-decoration: none; font-weight: bold; font-size: 10px; margin-bottom: 6px; }
+        
+        /* Bouton de Partage Profil */
+        .share-profile-btn { display: flex; align-items: center; justify-content: center; gap: 6px; background: linear-gradient(135deg, #0ea5e9, #0284c7); color: #ffffff; text-align: center; padding: 9px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 11px; margin-bottom: 8px; width: 100%; border: none; cursor: pointer; box-shadow: 0 3px 10px rgba(14, 165, 233, 0.4); }
+
         input, select, textarea { width: 100%; background: #0f172a; border: 1.5px solid #22c55e; border-radius: 5px; padding: 5px; color: #ffffff; font-size: 11px; text-align: center; outline: none; }
         textarea { text-align: left; resize: none; height: 65px; }
         button.verify-btn { width: 100%; background: #22c55e; color: #ffffff; border: none; padding: 6px; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 11px; }
@@ -134,7 +146,6 @@
         .loading-title { font-size: 16px; font-weight: bold; color: #22c55e; margin-bottom: 5px; letter-spacing: 0.5px; }
         .loading-status-subtext { font-size: 11px; color: #cbd5e1; max-width: 300px; line-height: 1.4; margin-top: 8px; }
 
-        /* --- BANDEAU ADMIN CACHÉ PAR DÉFAUT POUR LES VISITEURS --- */
         .admin-live-badge {
             display: none;
             position: fixed;
@@ -174,7 +185,6 @@
 </head>
 <body>
 
-    <!-- --- BANDEAU ADMIN STRICTEMENT RÉSERVÉ À L'ADMINISTRATEUR --- -->
     <div id="admin-bar" class="admin-live-badge">
         <div style="display: flex; align-items: center; gap: 10px;">
             <div style="display: flex; align-items: center; gap: 6px;">
@@ -379,7 +389,6 @@
         const API_VIDEOS_URL = 'https://midnightblue-manatee-329921.hostingersite.com/api_videos.php';
         const API_PRESENCE_URL = 'https://midnightblue-manatee-329921.hostingersite.com/presence.php';
 
-        // --- GESTION DU JETON UNIQUE PAR APPAREIL ---
         function getDeviceToken() {
             let token = localStorage.getItem('bizi_device_token');
             if (!token) {
@@ -400,7 +409,6 @@
             .catch(err => console.error("Erreur de présence:", err));
         }
 
-        // Lancement immédiat et en continu (toutes les 15s)
         envoyerPresenceAutomatique();
         setInterval(envoyerPresenceAutomatique, 15000);
 
@@ -410,100 +418,24 @@
                 "🇨🇮 À Marcory, bébé, viens taper dans mon utérus ! J'ai écarté mon string, mon vagin est disponible pour un kiff total. 🍑👑",
                 "✨ À Yopougon, bébé, mon vagin est disponible et bien chaud. Viens taper dans mon utérus dès maintenant ! 🔥🍾",
                 "Waii mon boss de Treichville 💃 J'ai écarté mon string, mon vagin est disponible, viens taper dans mon utérus toute la nuit ! 📱💎",
-                "💋 Salut mon cœur à Abidjan, j'ai écarté mon string, mon vagin est disponible, viens taper dans mon utérus ! 🔥",
-                "🔥 Bébé viens à Marcory ! Mon vagin est disponible, viens taper dans mon utérus pour un max de plaisir. 🥂💯",
-                "✨ Cocody : J'ai écarté mon string, mon vagin est disponible, viens taper dans mon utérus mon boss ! 🚀",
-                "👑 La reine d'Abidjan : Bébé, mon vagin est disponible, viens taper dans mon utérus sans hésiter. 🍑🔥",
-                "🥂 Salut bg à Yopougon, j'ai écarté mon string, mon vagin est disponible, viens taper dans mon utérus ! ✨",
-                "🔥 Bébé à Adjamé, mon vagin est disponible, viens taper dans mon utérus pour une partie torride ! 💋",
-                "💎 Abidjan VIP : J'ai écarté mon string, mon vagin est disponible, viens taper dans mon utérus ! 🔥",
-                "🔥 Mon chéri à Marcory, mon vagin est disponible, viens taper dans mon utérus en privé ! 💯💦",
-                "✨ Bébé, mon vagin est disponible et prêt, viens taper dans mon utérus sur Abidjan ! 🚀",
-                "👑 Cocody / Deux Plateaux : J'ai écarté mon string, mon vagin est disponible, viens taper dans mon utérus ! 🔥",
-                "🔥 Bébé à Abidjan, mon vagin est disponible, viens taper dans mon utérus et me posséder ! 💋",
-                "✨ Treichville : J'ai écarté mon string, mon vagin est disponible, viens taper dans mon utérus ! 🍾",
-                "🔥 Salut mon roi, mon vagin est disponible, viens taper dans mon utérus et me faire crier ! 💎",
-                "🇨🇮 Marcory résidentiel : Bébé, mon vagin est disponible, viens taper dans mon utérus ! 🔥",
-                "✨ Bébé à Abidjan, j'ai écarté mon string, mon vagin est disponible, viens taper dans mon utérus ! 🥂",
-                "🔥 Yopougon : Bébé, mon vagin est disponible, viens taper dans mon utérus et me secouer ! 🍑💯",
-                "👑 Salut bg, mon vagin est disponible, viens taper dans mon utérus pour kiffer grave ! ✨🔥",
-                "🔥 Bébé à Abidjan, mon vagin est disponible, viens taper dans mon utérus sur mon lit ! 💋",
-                "✨ Cocody : Mon vagin est disponible, viens taper dans mon utérus, je t'attends ! 🍾🔥",
-                "🔥 Bébé, mon vagin est disponible, viens taper dans mon utérus et me dompter ! 💪",
-                "💎 Marcory : J'ai écarté mon string, mon vagin est disponible, viens taper dans mon utérus ! 🔥✨",
-                "🔥 Bébé à Abidjan, mon vagin est disponible, viens taper dans mon utérus toute crue ! 💋",
-                "✨ Yopougon : Bébé, mon vagin est disponible, viens taper dans mon utérus ! 🍑🔥",
-                "👑 Salut mon cœur, mon vagin est disponible, viens taper dans mon utérus en direct ! 🥂",
-                "🔥 Bébé à Abidjan, mon vagin est disponible, viens taper dans mon utérus et me faire jouir ! 💯✨",
-                "✨ Prête sur Abidjan, mon vagin est disponible, viens taper dans mon utérus sur WhatsApp ! 🔥🚀"
+                "💋 Salut mon cœur à Abidjan, j'ai écarté mon string, mon vagin est disponible, viens taper dans mon utérus ! 🔥"
             ],
             homme: [
                 "💪 Mâle LGBT, mon cul est disponible, viens me sodomiser et viens taper dans mon rectum à Abidjan ! 🔥💯",
                 "😎 Bébé LGBT, mon cul est disponible, viens me sodomiser et viens taper dans mon rectum sans tabou ! 🚀👑",
-                "🔥 BG propre, mon cul est disponible, viens me sodomiser et viens taper dans mon rectum toute la nuit ! 💎✨",
-                "💪 Salut mon chéri, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum à Abidjan ! 🔥💦",
-                "🔥 Mâle LGBT d'Abidjan, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 👑💯",
-                "💪 Bébé, mon cul est disponible, viens me sodomiser et viens taper dans mon rectum à Marcory ! 🔥🚀",
-                "😎 Cocody LGBT : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 💎✨",
-                "🔥 Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum pour un max de kiff ! 🔥💪",
-                "💪 Abidjan LGBT : Mon cul est disponible, viens me sodomiser et viens taper dans mon rectum ! 👑",
-                "🔥 Bébé, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum en privé ! 🚀🔥",
-                "💪 Marcory : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum de force ! 💯",
-                "🔥 Abidjan LGBT : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 💎✨",
-                "💪 Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum sans hésiter ! 🔥",
-                "🔥 Yopougon LGBT : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 👑🚀",
-                "💪 Bébé, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🔥💯",
-                "🔥 Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum jusqu'à l'épuisement ! 💎",
-                "💪 Abidjan VIP LGBT : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🔥",
-                "🔥 Bébé, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🚀✨",
-                "💪 Treichville LGBT : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🔥💪",
-                "🔥 Bébé, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum à Abidjan ! 👑💎",
-                "💪 Mâle LGBT, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🔥",
-                "🔥 Cocody : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🚀💯",
-                "💪 Bébé, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🔥✨",
-                "🔥 Marcory LGBT : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 💎👑",
-                "💪 Bébé, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🔥",
-                "🔥 Abidjan : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🚀",
-                "💪 Bébé, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🔥💯",
-                "🔥 Cocody / Deux Plateaux : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 💎",
-                "💪 Mâle LGBT, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🔥✨",
-                "🔥 Abidjan : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum sur WhatsApp ! 🚀🔥"
+                "🔥 BG propre, mon cul est disponible, viens me sodomiser et viens taper dans mon rectum toute la nuit ! 💎✨"
             ],
             trans: [
                 "🦋 Bébé trans à Abidjan, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! ✨🔥",
-                "👑 Sensuelle et VIP, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum sans tabou ! 💫💋",
-                "🔥 Reine de la nuit, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🍾",
-                "🦋 Abidjan : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! ✨🔥",
-                "👑 Bébé, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 💋",
-                "🔥 Chic et coquine, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 💫🥂",
-                "🦋 Abidjan : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🔥✨",
-                "👑 Beauté fatale, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🍾💋",
-                "🔥 Abidjan : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 💫🔥",
-                "🦋 Douceur trans, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! ✨💎"
+                "👑 Sensuelle et VIP, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum sans tabou ! 💫💋"
             ],
             lesbi: [
                 "👭 Bébé lesbienne à Abidjan, viens lécher mon clitoris, fusion féminine torride garantie ! 🔥✨",
-                "✨ Entre filles, viens lécher mon clitoris, câlins sensuels et volupté à Abidjan ! 🍑🔥",
-                "🔥 Connexion entre filles, viens lécher mon clitoris, plaisir intense rien que pour toi ! 💎💖",
-                "👭 Abidjan : Viens lécher mon clitoris, complicité féminine et frissons garantis ! 🔥✨",
-                "✨ Douceur et baisers, viens lécher mon clitoris, notre univers lesbien t'attend ! 🍑🥂",
-                "🔥 Plaisir pur entre filles, viens lécher mon clitoris, viens kiffer avec nous ! 💎💖",
-                "👭 Abidjan : Viens lécher mon clitoris, fusion totale et câlins chauds ! 🔥✨",
-                "✨ Entre filles sans tabou, viens lécher mon clitoris, viens vibrer ! 🍑💖",
-                "🔥 Volupté féminine, viens lécher mon clitoris, rejoins notre univers ! 💎✨",
-                "👭 Le paradis lesbien, viens lécher mon clitoris, douceur torride garantie ! 🔥💖"
+                "✨ Entre filles, viens lécher mon clitoris, câlins sensuels et volupté à Abidjan ! 🍑🔥"
             ],
             blanche: [
                 "🌟 Européenne à Abidjan, bébé, charme exotique et dispo VIP rien que pour toi 🥂🔥",
-                "💎 Charme européen, sensuelle et raffinée, viens découvrir mes vidéos privées haut de gamme ! ✨🍾",
-                "✨ Élégance européenne, pour les connaisseurs cherchant du standing à Abidjan ! 👑🔥",
-                "🌟 Douceur d'Europe, viens passer un moment inoubliable avec moi 🥂✨",
-                "💎 Européenne propre et coquine, viens goûter au luxe haut de gamme ! 🍾🔥",
-                "✨ Sensualité européenne, mes dispos VIP vont te faire chavirer ! 👑🥂",
-                "🌟 Beauté lumineuse, viens vivre une expérience unique à Abidjan ! 🔥✨",
-                "💎 Charme et discrétion européenne, mes secrets les plus chauds ! 🍾👑",
-                "✨ Douce et irrésistible, viens t'évader avec moi dès ce soir ! 🥂🔥",
-                "🌟 L'élégance VIP européenne en toute discrétion à Abidjan ! 💎✨"
+                "💎 Charme européen, sensuelle et raffinée, viens découvrir mes vidéos privées haut de gamme ! ✨🍾"
             ]
         };
 
@@ -627,6 +559,9 @@
                         });
                     }
                     renderGrid();
+
+                    // --- VÉRIFICATION SI UN PROFIL EST DEMANDÉ DIRECTEMENT DANS L'URL ---
+                    verifierLienPartageDirect();
                 })
                 .catch(err => console.error("Erreur chargement profils:", err));
 
@@ -681,6 +616,24 @@
                     scenesData = [];
                     renderGrid();
                 });
+        }
+
+        // --- GESTION DU LIEN DIRECT PARTAGÉ (WHATSAPP / TELEGRAM) ---
+        function verifierLienPartageDirect() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const profilIdUrl = urlParams.get('profil');
+            if (profilIdUrl) {
+                const idNum = parseInt(profilIdUrl, 10);
+                const profilTrouve = profilsData.find(p => p.id === idNum);
+                if (profilTrouve) {
+                    sousOngletActif = profilTrouve.cat;
+                    ['femme', 'homme', 'trans', 'lesbi', 'blanche'].forEach(c => {
+                        const btn = document.getElementById(`subtab-${c}`);
+                        if (btn) btn.className = c === sousOngletActif ? "subtab-btn active" : "subtab-btn";
+                    });
+                    afficherProfilDetail(idNum);
+                }
+            }
         }
 
         function getJoursRestantsHtml(expireAt) {
@@ -754,6 +707,27 @@
             }
         }
 
+        // --- FONCTION DE PARTAGE DE PROFIL (WHATSAPP, TELEGRAM, ETC.) ---
+        async function partagerProfilActuel(id, nomProfil) {
+            const urlPartage = `${window.location.origin}${window.location.pathname}?profil=${id}`;
+            const shareData = {
+                title: `💖 Profil Bizi de ${nomProfil} 💖`,
+                text: `Viens découvrir le profil de ${nomProfil} sur Bizi !`,
+                url: urlPartage
+            };
+
+            try {
+                if (navigator.share) {
+                    await navigator.share(shareData);
+                } else {
+                    await navigator.clipboard.writeText(urlPartage);
+                    alert("🔗 Lien du profil copié dans le presse-papier ! Tu peux le coller dans WhatsApp ou Telegram.");
+                }
+            } catch (err) {
+                console.log("Partage annulé ou non pris en charge", err);
+            }
+        }
+
         function afficherProfilDetail(id) {
             nettoyerCarrousels();
             vueDetailleeActive = true;
@@ -763,6 +737,11 @@
 
             const profil = profilsData.find(p => p.id === id);
             if (!profil) return;
+
+            // Met à jour dynamiquement la balise open graph pour le partage précis de ce profil
+            const currentShareUrl = `${window.location.origin}${window.location.pathname}?profil=${profil.id}`;
+            const metaTagUrl = document.getElementById("metaOpenGraphUrl");
+            if (metaTagUrl) metaTagUrl.setAttribute("content", currentShareUrl);
 
             const photosList = profil.photos;
             let galerieHtml = '';
@@ -784,6 +763,12 @@
                 <div class="quality-badge badge-profil" style="margin-bottom: 8px;">🔥 BIZI DISPONIBLE (${photosList.length} photo${photosList.length > 1 ? 's' : ''})</div>
                 <div class="profile-detail-desc">${profil.desc || 'Aucune description disponible.'}</div>
                 <div class="profile-detail-phone">📞 Téléphone : <b>${profil.wa}</b></div>
+                
+                <!-- BOUTON DE PARTAGE DU PROFIL -->
+                <button class="share-profile-btn" onclick="partagerProfilActuel(${profil.id}, '${profil.nom.replace(/'/g, "\\'")}')">
+                    📤 Partager ce profil (WhatsApp / Telegram)
+                </button>
+
                 <button class="whatsapp-btn" style="border:none; width:100%; cursor:pointer; padding:9px; font-size:11px;" onclick="window.open('https://wa.me/${profil.wa}?text=Salut,%20je%20te%20contacte%20depuis%20ton%20profil%20sur%20le%20site.', '_blank')">💬 Contacter sur WhatsApp</button>
                 ${getJoursRestantsHtml(profil.expireAt)}
             `;
@@ -809,6 +794,9 @@
             vueDetailleeActive = false;
             document.getElementById("profile-detail-view").style.display = "none";
             document.getElementById("video-grid").style.display = "grid";
+            
+            // Remet l'URL d'origine sans paramètre profil
+            window.history.replaceState({}, document.title, window.location.pathname);
             renderGrid();
         }
 
@@ -1606,7 +1594,6 @@
 
         chargerDonneesDepuisAPI();
 
-        // --- CODE STATISTIQUES ADMIN ---
         async function chargerStatistiquesAdminSecurit() {
             try {
                 const res = await fetch(API_PRESENCE_URL + '?action=dashboard');
@@ -1625,7 +1612,6 @@
             }
         }
 
-        // Vérification au chargement si l'admin était déjà connecté
         const urlParams = new URLSearchParams(window.location.search);
         if (urlParams.get('admin') === '1' || localStorage.getItem('bizi_admin_active') === 'true') {
             adminModeConnecte = true;
