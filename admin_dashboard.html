@@ -37,7 +37,10 @@
         .subtab-btn { flex: 1; background: #0f172a; color: #cbd5e1; border: 1px solid #22c55e; padding: 4px 1px; border-radius: 5px; font-weight: bold; font-size: 8.5px; cursor: pointer; text-align: center; transition: all 0.2s ease; white-space: nowrap; }
         .subtab-btn.active { background: #22c55e; color: white; box-shadow: 0 2px 6px rgba(34, 197, 94, 0.4); }
         
-        .subtab-count { background: rgba(0, 0, 0, 0.4); padding: 1px 4px; border-radius: 3px; font-size: 7.5px; color: #f8fafc; font-weight: 900; margin-left: 2px; }
+        /* Les compteurs sont masqués par défaut pour les visiteurs normaux */
+        .subtab-count { display: none; background: rgba(0, 0, 0, 0.4); padding: 1px 4px; border-radius: 3px; font-size: 7.5px; color: #f8fafc; font-weight: 900; margin-left: 2px; }
+        /* Affiché uniquement si la classe admin-active est présente sur le body */
+        body.admin-active .subtab-count { display: inline; }
 
         .btn-vendor-header { background: linear-gradient(135deg, #22c55e, #16a34a); color: white; border: 2px solid #15803d; padding: 5px 10px; border-radius: 6px; font-weight: bold; font-size: 10px; cursor: pointer; box-shadow: 0 3px 8px rgba(34, 197, 94, 0.4); width: 100%; max-width: 280px; }
         
@@ -159,7 +162,7 @@
         .loading-title { font-size: 16px; font-weight: bold; color: #22c55e; margin-bottom: 5px; letter-spacing: 0.5px; }
         .loading-status-subtext { font-size: 11px; color: #cbd5e1; max-width: 300px; line-height: 1.4; margin-top: 8px; }
 
-        /* --- STYLES POP-UP D'INSTALLATION APPLICATION (PWA) --- */
+        /* --- STYLES POP-UP D'INSTALLATION APPLICATION (PWA) TRÈS ÉLÉGANT --- */
         #pwa-install-banner {
             display: none;
             position: fixed;
@@ -168,28 +171,30 @@
             transform: translateX(-50%);
             width: 92%;
             max-width: 420px;
-            background: #1e293b;
+            background: linear-gradient(145deg, #1e293b, #0f172a);
             border: 2.5px solid #22c55e;
-            border-radius: 14px;
-            padding: 15px;
+            border-radius: 16px;
+            padding: 18px;
             z-index: 999999;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-            animation: slideUp 0.3s ease-out;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.85), 0 0 20px rgba(34, 197, 94, 0.3);
+            animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
             text-align: center;
         }
 
         @keyframes slideUp {
-            0% { transform: translate(-50%, 50px); opacity: 0; }
+            0% { transform: translate(-50%, 60px); opacity: 0; }
             100% { transform: translate(-50%, 0); opacity: 1; }
         }
 
-        .pwa-logo { font-size: 26px; font-weight: 900; color: #22c55e; margin-bottom: 4px; }
-        .pwa-title { font-size: 15px; font-weight: bold; color: #f8fafc; margin-bottom: 6px; }
-        .pwa-text { font-size: 11.5px; color: #cbd5e1; line-height: 1.4; margin-bottom: 12px; }
+        .pwa-logo { font-size: 28px; font-weight: 900; color: #22c55e; margin-bottom: 4px; text-shadow: 0 2px 8px rgba(34,197,94,0.4); }
+        .pwa-title { font-size: 16px; font-weight: bold; color: #f8fafc; margin-bottom: 6px; }
+        .pwa-text { font-size: 12px; color: #cbd5e1; line-height: 1.4; margin-bottom: 14px; }
         
         .pwa-buttons { display: flex; gap: 10px; }
-        .btn-pwa-install { flex: 1; background: linear-gradient(135deg, #22c55e, #16a34a); color: white; border: none; padding: 10px; border-radius: 8px; font-weight: bold; font-size: 12px; cursor: pointer; box-shadow: 0 3px 10px rgba(34, 197, 94, 0.4); }
-        .btn-pwa-close { background: #475569; color: white; border: none; padding: 10px 14px; border-radius: 8px; font-weight: bold; font-size: 12px; cursor: pointer; }
+        .btn-pwa-install { flex: 1; background: linear-gradient(135deg, #22c55e, #16a34a); color: white; border: none; padding: 11px; border-radius: 8px; font-weight: bold; font-size: 12px; cursor: pointer; box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4); transition: transform 0.2s; }
+        .btn-pwa-install:hover { transform: translateY(-2px); }
+        .btn-pwa-close { background: #334155; color: #94a3b8; border: none; padding: 11px 14px; border-radius: 8px; font-weight: bold; font-size: 12px; cursor: pointer; transition: color 0.2s; }
+        .btn-pwa-close:hover { color: white; }
 
         /* --- STYLE DE LA FENÊTRE DE VÉRIFICATION D'ÂGE --- */
         #age-gate-overlay {
@@ -344,7 +349,7 @@
         <div class="pwa-logo">💖 Bizi 💖</div>
         <div class="pwa-title">Installer l'application Bizi</div>
         <div class="pwa-text" id="pwa-banner-text">
-            Installe l'application sur ton téléphone pour accéder à tous les profils en un clic sans taper de lien !
+            Installe l'application sur ton téléphone pour accéder à tous les profils en un seul clic sans taper de lien !
         </div>
         <div class="pwa-buttons">
             <button class="btn-pwa-install" id="pwa-install-btn" onclick="declencherInstallationPWA()">Installer maintenant</button>
@@ -582,8 +587,10 @@
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-            // Afficher la bannière sur Android
-            document.getElementById('pwa-install-banner').style.display = 'block';
+            // Afficher automatiquement la bannière sur Android
+            setTimeout(() => {
+                document.getElementById('pwa-install-banner').style.display = 'block';
+            }, 1000);
         });
 
         // Détection iPhone / Safari pour afficher la consigne d'installation manuelle
@@ -596,10 +603,23 @@
                     bannerText.innerHTML = `Pour installer l'application sur ton iPhone :<br>Appuie sur le bouton de partage <b><svg style="display:inline;vertical-align:middle;" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13"/></svg></b> puis sur <b>"Sur l'écran d'accueil"</b>.`;
                 }
                 document.getElementById('pwa-install-btn').style.display = 'none';
-                document.getElementById('pwa-install-banner').style.display = 'block';
+                setTimeout(() => {
+                    document.getElementById('pwa-install-banner').style.display = 'block';
+                }, 1000);
             }
         }
         window.addEventListener('load', verifierModeIOS);
+
+        // Affichage de secours sur Android si l'événement avant l'installation tarde ou est déjà passé
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const isIos = /iphone|ipad|ipod/.test(window.navigator.userAgent.toLowerCase());
+                const isInStandaloneMode = ('standalone' in window.navigator) && (window.navigator.standalone);
+                if (!isIos && !isInStandaloneMode && !window.matchMedia('(display-mode: standalone)').matches) {
+                    document.getElementById('pwa-install-banner').style.display = 'block';
+                }
+            }, 1500);
+        });
 
         function declencherInstallationPWA() {
             if (deferredPrompt) {
@@ -611,6 +631,8 @@
                     deferredPrompt = null;
                     document.getElementById('pwa-install-banner').style.display = 'none';
                 });
+            } else {
+                alert("Pour installer l'application, utilise le menu de ton navigateur (les 3 points en haut à droite) et sélectionne 'Installer l'application' ou 'Ajouter à l'écran d'accueil'.");
             }
         }
 
@@ -1524,6 +1546,7 @@
                     localStorage.removeItem('bizi_admin_active');
                     window.history.replaceState({}, document.title, window.location.pathname);
                     
+                    document.body.classList.remove('admin-active');
                     document.getElementById("admin-bar").style.display = "none";
                     document.getElementById("admin-active-banner").style.display = "none";
                     document.getElementById("admin-wipe-category-btn").style.display = "none";
@@ -1544,6 +1567,7 @@
                 
                 window.history.replaceState({}, document.title, window.location.pathname + '?admin=1');
 
+                document.body.classList.add('admin-active');
                 document.getElementById("admin-bar").style.display = "flex";
                 document.getElementById("admin-active-banner").style.display = "block";
                 document.getElementById("admin-wipe-category-btn").style.display = "inline-block";
@@ -2135,6 +2159,8 @@
             adminModeConnecte = true;
             localStorage.setItem('bizi_admin_active', 'true');
             
+            document.body.classList.add('admin-active');
+
             const adminBar = document.getElementById("admin-bar");
             if (adminBar) { adminBar.style.display = "flex"; }
             
