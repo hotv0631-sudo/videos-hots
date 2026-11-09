@@ -163,84 +163,85 @@
         .loading-title { font-size: 16px; font-weight: bold; color: #22c55e; margin-bottom: 5px; letter-spacing: 0.5px; }
         .loading-status-subtext { font-size: 11px; color: #cbd5e1; max-width: 300px; line-height: 1.4; margin-top: 8px; }
 
-        /* --- STYLE DE LA BANNIÈRE D'INSTALLATION PWA --- */
+        /* --- BANNIÈRE D'INSTALLATION PWA CENTRÉE AU MILIEU DE L'ÉCRAN --- */
         #pwa-install-banner {
             display: none;
             position: fixed;
-            bottom: 15px;
+            top: 50%;
             left: 50%;
-            transform: translateX(-50%);
+            transform: translate(-50%, -50%);
             width: 92%;
-            max-width: 500px;
+            max-width: 450px;
             background: #1e293b;
-            border: 2px solid #22c55e;
-            border-radius: 14px;
-            padding: 12px 15px;
-            z-index: 99999;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.8);
+            border: 2.5px solid #22c55e;
+            border-radius: 16px;
+            padding: 20px;
+            z-index: 999999;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.85);
+            flex-direction: column;
             align-items: center;
-            gap: 12px;
-            animation: slideUp 0.4s ease-out;
+            text-align: center;
+            animation: popInCenter 0.3s ease-out;
         }
 
-        @keyframes slideUp {
-            0% { transform: translate(-50%, 100px); opacity: 0; }
-            100% { transform: translate(-50%, 0); opacity: 1; }
+        @keyframes popInCenter {
+            0% { transform: translate(-50%, -50%) scale(0.85); opacity: 0; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
         }
 
         .pwa-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 10px;
+            width: 64px;
+            height: 64px;
+            border-radius: 14px;
             object-fit: cover;
-            border: 1.5px solid #22c55e;
-        }
-
-        .pwa-text-box {
-            flex: 1;
-            text-align: left;
+            border: 2px solid #22c55e;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
         }
 
         .pwa-title {
-            font-size: 13px;
+            font-size: 16px;
             font-weight: bold;
             color: #22c55e;
-            margin-bottom: 2px;
+            margin-bottom: 6px;
         }
 
         .pwa-desc {
-            font-size: 10.5px;
+            font-size: 12px;
             color: #cbd5e1;
-            line-height: 1.3;
+            line-height: 1.4;
+            margin-bottom: 18px;
         }
 
         .pwa-buttons {
             display: flex;
-            flex-direction: column;
-            gap: 5px;
+            gap: 10px;
+            width: 100%;
         }
 
         .pwa-btn-install {
+            flex: 1;
             background: linear-gradient(135deg, #22c55e, #16a34a);
             color: white;
             border: none;
-            padding: 6px 12px;
-            border-radius: 6px;
+            padding: 10px;
+            border-radius: 8px;
             font-weight: bold;
-            font-size: 10.5px;
+            font-size: 12px;
             cursor: pointer;
-            box-shadow: 0 2px 6px rgba(34, 197, 94, 0.4);
-            white-space: nowrap;
+            box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4);
         }
 
         .pwa-btn-later {
-            background: transparent;
-            color: #94a3b8;
+            flex: 1;
+            background: #475569;
+            color: white;
             border: none;
-            font-size: 9.5px;
-            cursor: pointer;
-            text-align: center;
+            padding: 10px;
+            border-radius: 8px;
             font-weight: bold;
+            font-size: 12px;
+            cursor: pointer;
         }
 
         /* --- STYLE DE LA FENÊTRE DE VÉRIFICATION D'ÂGE --- */
@@ -412,16 +413,14 @@
         </div>
     </div>
 
-    <!-- --- BANNIÈRE D'INSTALLATION PWA (BJR / VOULEZ-VOUS INSTALLER) --- -->
+    <!-- --- POPUP D'INSTALLATION PWA CENTRÉ --- -->
     <div id="pwa-install-banner">
         <img src="/logo-nora.png" alt="Nora" class="pwa-icon">
-        <div class="pwa-text-box">
-            <div class="pwa-title">Installer Nora</div>
-            <div class="pwa-desc">Installe l'application sur ton téléphone pour accéder à tous les profils en un seul clic !</div>
-        </div>
+        <div class="pwa-title">Installer Nora</div>
+        <div class="pwa-desc">Voulez-vous installer cette application sur votre appareil pour un accès rapide et direct en un clic ?</div>
         <div class="pwa-buttons">
             <button class="pwa-btn-install" onclick="installerApplicationPWA()">Installer</button>
-            <button class="pwa-btn-later" onclick="fermerPwaBanner()">Plus tard</button>
+            <button class="pwa-btn-later" onclick="fermerPwaBanner()">Ignorer</button>
         </div>
     </div>
 
