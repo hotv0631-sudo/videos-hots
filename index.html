@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>💖 Bizi 💖</title>
 
-    <!-- --- CONFIGURATION PWA & ICÔNE (ANDROID & IOS) --- -->
+    <!-- --- CONFIGURATION PWA NORA (ICÔNE ET MANIFESTE) --- -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Nora">
-    <meta name="theme-color" content="#0d9488">
+    <meta name="theme-color" content="#0f172a">
     <link rel="manifest" href="/manifest.json">
     <link rel="apple-touch-icon" href="/logo-nora.png">
     <link rel="icon" type="image/png" href="/logo-nora.png">
@@ -26,23 +26,24 @@
         html, body { width: 100%; overflow-x: hidden; background-color: #0f172a !important; color: #f8fafc; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
         body { padding: 0 10px 15px 10px; display: flex; flex-direction: column; align-items: center; }
         
-        header { position: fixed; top: 0; left: 0; width: 100%; z-index: 999; text-align: center; padding: 10px; border-bottom: 3px solid #0d9488; background: rgba(15, 23, 42, 0.98); backdrop-filter: blur(8px); box-shadow: 0 4px 20px rgba(0,0,0,0.6); display: flex; flex-direction: column; align-items: center; gap: 6px; }
+        header { position: fixed; top: 0; left: 0; width: 100%; z-index: 999; text-align: center; padding: 10px; border-bottom: 3px solid #22c55e; background: rgba(15, 23, 42, 0.98); backdrop-filter: blur(8px); box-shadow: 0 4px 20px rgba(0,0,0,0.6); display: flex; flex-direction: column; align-items: center; gap: 6px; }
         
         .header-title { text-align: center; }
-        h1 { color: #0d9488; font-size: 20px; font-weight: 900; margin-bottom: 2px; letter-spacing: 1px; word-break: break-word; text-shadow: 0 3px 6px rgba(0,0,0,0.5); }
+        h1 { color: #22c55e; font-size: 20px; font-weight: 900; margin-bottom: 2px; letter-spacing: 1px; word-break: break-word; text-shadow: 0 3px 6px rgba(0,0,0,0.5); }
         .subtitle { font-size: 9.5px; color: #38bdf8; font-weight: bold; letter-spacing: 0.5px; text-transform: uppercase; }
         
         .tabs-container { display: flex; gap: 6px; width: 100%; max-width: 600px; justify-content: center; padding: 2px 0; }
         .tab-btn { flex: 1; background: #1e293b; color: #94a3b8; border: 1.5px solid #475569; padding: 6px 4px; border-radius: 6px; font-weight: bold; font-size: 11px; cursor: pointer; text-align: center; transition: all 0.2s ease; }
-        .tab-btn.active { background: linear-gradient(135deg, #0d9488, #115e59); color: white; border-color: #0d9488; box-shadow: 0 2px 8px rgba(13, 148, 136, 0.4); }
+        .tab-btn.active { background: linear-gradient(135deg, #22c55e, #16a34a); color: white; border-color: #22c55e; box-shadow: 0 2px 8px rgba(34, 197, 94, 0.4); }
         
         .subtabs-container { display: flex; gap: 3px; width: 100%; max-width: 600px; justify-content: center; padding: 2px 0; }
-        .subtab-btn { flex: 1; background: #0f172a; color: #cbd5e1; border: 1px solid #0d9488; padding: 4px 1px; border-radius: 5px; font-weight: bold; font-size: 8.5px; cursor: pointer; text-align: center; transition: all 0.2s ease; white-space: nowrap; }
-        .subtab-btn.active { background: #0d9488; color: white; box-shadow: 0 2px 6px rgba(13, 148, 136, 0.4); }
+        .subtab-btn { flex: 1; background: #0f172a; color: #cbd5e1; border: 1px solid #22c55e; padding: 4px 1px; border-radius: 5px; font-weight: bold; font-size: 8.5px; cursor: pointer; text-align: center; transition: all 0.2s ease; white-space: nowrap; }
+        .subtab-btn.active { background: #22c55e; color: white; box-shadow: 0 2px 6px rgba(34, 197, 94, 0.4); }
         
+        /* Classe pour masquer les compteurs aux visiteurs normaux */
         .admin-counter { display: none; }
 
-        .btn-vendor-header { background: linear-gradient(135deg, #0d9488, #115e59); color: white; border: 2px solid #115e59; padding: 5px 10px; border-radius: 6px; font-weight: bold; font-size: 10px; cursor: pointer; box-shadow: 0 3px 8px rgba(13, 148, 136, 0.4); width: 100%; max-width: 280px; }
+        .btn-vendor-header { background: linear-gradient(135deg, #22c55e, #16a34a); color: white; border: 2px solid #15803d; padding: 5px 10px; border-radius: 6px; font-weight: bold; font-size: 10px; cursor: pointer; box-shadow: 0 3px 8px rgba(34, 197, 94, 0.4); width: 100%; max-width: 280px; }
         
         .nav-btn-jeux {
             display: inline-flex;
@@ -63,10 +64,10 @@
             transition: transform 0.2s ease;
         }
         .nav-btn-jeux:hover { transform: translateY(-1px); }
-        .badge-vip-nav { background: #0d9488; color: #ffffff; font-size: 9px; padding: 1px 5px; border-radius: 4px; font-weight: 800; text-transform: uppercase; }
+        .badge-vip-nav { background: #2ed573; color: #0f172a; font-size: 9px; padding: 1px 5px; border-radius: 4px; font-weight: 800; text-transform: uppercase; }
 
         .search-container-header { width: 100%; max-width: 600px; padding: 2px 0; display: flex; gap: 5px; align-items: center; }
-        .search-input { flex: 1; background: #1e293b; border: 1.5px solid #0d9488; border-radius: 8px; padding: 5px 12px; color: #ffffff; font-size: 11px; text-align: center; outline: none; box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+        .search-input { flex: 1; background: #1e293b; border: 1.5px solid #22c55e; border-radius: 8px; padding: 5px 12px; color: #ffffff; font-size: 11px; text-align: center; outline: none; box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
         .search-input::placeholder { color: #94a3b8; }
         
         .admin-wipe-btn { display: none; background: #ef4444; color: white; border: 1.5px solid #b91c1c; border-radius: 8px; padding: 5px 10px; font-weight: bold; font-size: 9.5px; cursor: pointer; box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4); white-space: nowrap; }
@@ -79,7 +80,7 @@
         .card-vip-gold { border: 3px solid #eab308; box-shadow: 0 0 20px rgba(234, 179, 8, 0.6); }
         .card-vip-premium { border: 3px solid #a855f7; box-shadow: 0 0 20px rgba(168, 85, 247, 0.6); }
         .card-vip-bronze { border: 3px solid #b45309; box-shadow: 0 0 16px rgba(180, 83, 9, 0.5); }
-        .card-profil { border: 3px solid #0d9488; box-shadow: 0 0 16px rgba(13, 148, 136, 0.5); }
+        .card-profil { border: 3px solid #22c55e; box-shadow: 0 0 16px rgba(34, 197, 94, 0.5); }
 
         .media-container { width: 100%; border-radius: 8px; overflow: hidden; background: #000000; margin-bottom: 6px; aspect-ratio: 9 / 16; display: flex; align-items: center; justify-content: center; position: relative; cursor: pointer; }
         video.preview-video { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
@@ -97,11 +98,11 @@
         .badge-gold { background: linear-gradient(135deg, #eab308, #ca8a04); color: #ffffff; }
         .badge-premium { background: linear-gradient(135deg, #a855f7, #6366f1); color: #ffffff; }
         .badge-bronze { background: linear-gradient(135deg, #b45309, #78350f); color: #ffffff; }
-        .badge-profil { background: linear-gradient(135deg, #0d9488, #115e59); color: #ffffff; }
+        .badge-profil { background: linear-gradient(135deg, #22c55e, #16a34a); color: #ffffff; }
 
         .price-badge { background: linear-gradient(135deg, #ff6600, #ff8533); color: #ffffff; font-size: 12px; font-weight: bold; text-align: center; padding: 5px; border-radius: 6px; margin-bottom: 6px; }
         .info-id { font-size: 9.5px; color: #94a3b8; margin-bottom: 6px; text-align: center; background: #0f172a; padding: 3px; border-radius: 4px; border: 1px dashed #475569; }
-        .whatsapp-btn { display: flex; align-items: center; justify-content: center; gap: 4px; background: #0d9488; color: #ffffff; text-align: center; padding: 6px 4px; border-radius: 5px; text-decoration: none; font-weight: bold; font-size: 10px; margin-bottom: 6px; }
+        .whatsapp-btn { display: flex; align-items: center; justify-content: center; gap: 4px; background: #22c55e; color: #ffffff; text-align: center; padding: 6px 4px; border-radius: 5px; text-decoration: none; font-weight: bold; font-size: 10px; margin-bottom: 6px; }
         
         .share-profile-btn { display: flex; align-items: center; justify-content: center; gap: 6px; background: linear-gradient(135deg, #0ea5e9, #0284c7); color: #ffffff; text-align: center; padding: 9px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 11px; margin-bottom: 8px; width: 100%; border: none; cursor: pointer; box-shadow: 0 3px 10px rgba(14, 165, 233, 0.4); }
 
@@ -109,31 +110,31 @@
         .btn-call-phone { display: flex; align-items: center; justify-content: center; gap: 6px; background: linear-gradient(135deg, #f59e0b, #d97706); color: #ffffff; text-align: center; padding: 10px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 11.5px; width: 100%; border: none; cursor: pointer; box-shadow: 0 3px 10px rgba(245, 158, 11, 0.4); transition: transform 0.1s ease; }
         .btn-call-phone:active { transform: scale(0.98); }
 
-        .btn-wa-msg { display: flex; align-items: center; justify-content: center; gap: 6px; background: linear-gradient(135deg, #0d9488, #115e59); color: #ffffff; text-align: center; padding: 10px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 11.5px; width: 100%; border: none; cursor: pointer; box-shadow: 0 3px 10px rgba(13, 148, 136, 0.4); transition: transform 0.1s ease; }
+        .btn-wa-msg { display: flex; align-items: center; justify-content: center; gap: 6px; background: linear-gradient(135deg, #22c55e, #16a34a); color: #ffffff; text-align: center; padding: 10px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 11.5px; width: 100%; border: none; cursor: pointer; box-shadow: 0 3px 10px rgba(34, 197, 94, 0.4); transition: transform 0.1s ease; }
         .btn-wa-msg:active { transform: scale(0.98); }
 
-        input, select, textarea { width: 100%; background: #0f172a; border: 1.5px solid #0d9488; border-radius: 5px; padding: 5px; color: #ffffff; font-size: 11px; text-align: center; outline: none; }
+        input, select, textarea { width: 100%; background: #0f172a; border: 1.5px solid #22c55e; border-radius: 5px; padding: 5px; color: #ffffff; font-size: 11px; text-align: center; outline: none; }
         textarea { text-align: left; resize: none; height: 65px; }
-        button.verify-btn { width: 100%; background: #0d9488; color: #ffffff; border: none; padding: 6px; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 11px; }
+        button.verify-btn { width: 100%; background: #22c55e; color: #ffffff; border: none; padding: 6px; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 11px; }
         .message { margin-top: 4px; font-size: 10px; text-align: center; font-weight: bold; }
         .telegram-link { display: block; background: #0088cc; color: #ffffff; padding: 6px; border-radius: 5px; text-decoration: none; font-weight: bold; margin-top: 4px; font-size: 11px; text-align: center; }
         .admin-fab { position: fixed; bottom: 15px; right: 15px; background: #ef4444; color: white; border: none; border-radius: 50%; width: 45px; height: 45px; font-size: 20px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.5); z-index: 1000; display: flex; align-items: center; justify-content: center; }
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); z-index: 2000; justify-content: center; align-items: center; padding: 15px; }
-        .modal-content { background: #1e293b; border: 2px solid #0d9488; padding: 15px; border-radius: 12px; width: 100%; max-width: 650px; max-height: 90vh; overflow-y: auto; color: #f8fafc; }
-        .modal-content h2 { color: #0d9488; font-size: 15px; margin-bottom: 10px; text-align: center; }
-        .info-box-important { background: rgba(13, 148, 136, 0.15); border: 2px dashed #0d9488; padding: 10px; border-radius: 6px; margin-bottom: 12px; font-size: 10.5px; color: #99f6e4; line-height: 1.4; text-align: left; }
+        .modal-content { background: #1e293b; border: 2px solid #22c55e; padding: 15px; border-radius: 12px; width: 100%; max-width: 650px; max-height: 90vh; overflow-y: auto; color: #f8fafc; }
+        .modal-content h2 { color: #22c55e; font-size: 15px; margin-bottom: 10px; text-align: center; }
+        .info-box-important { background: rgba(34, 197, 94, 0.15); border: 2px dashed #22c55e; padding: 10px; border-radius: 6px; margin-bottom: 12px; font-size: 10.5px; color: #86efac; line-height: 1.4; text-align: left; }
         
         .tutorial-box { background: rgba(56, 189, 248, 0.1); border: 1.5px dashed #38bdf8; padding: 8px; border-radius: 6px; margin-bottom: 10px; font-size: 10px; color: #e2e8f0; line-height: 1.4; text-align: left; }
         .tutorial-box b { color: #38bdf8; }
 
         .modal-content label { font-size: 11px; font-weight: bold; color: #cbd5e1; display: block; margin-top: 8px; }
         .modal-buttons { display: flex; gap: 10px; margin-top: 15px; }
-        .btn-save { background: #0d9488; color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 11px; padding: 8px; flex: 1; }
+        .btn-save { background: #22c55e; color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 11px; padding: 8px; flex: 1; }
         .btn-close { background: #ef4444; color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 11px; padding: 8px; flex: 1; }
         
         .btn-magic { background: linear-gradient(135deg, #38bdf8, #0284c7); color: white; border: none; border-radius: 4px; padding: 4px 8px; font-size: 9px; font-weight: bold; cursor: pointer; margin-top: 4px; float: right; }
 
-        #profile-detail-view { display: none; width: 100%; max-width: 600px; background: #1e293b; border: 2.5px solid #0d9488; border-radius: 12px; padding: 15px; margin-top: 5px; box-shadow: 0 6px 20px rgba(0,0,0,0.6); position: relative; }
+        #profile-detail-view { display: none; width: 100%; max-width: 600px; background: #1e293b; border: 2.5px solid #22c55e; border-radius: 12px; padding: 15px; margin-top: 5px; box-shadow: 0 6px 20px rgba(0,0,0,0.6); position: relative; }
         .back-btn { background: #475569; color: white; border: none; padding: 6px 12px; border-radius: 5px; font-weight: bold; font-size: 10px; cursor: pointer; margin-bottom: 10px; }
         
         .horizontal-slider-container { width: 100%; display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; gap: 0; border-radius: 8px; background: #000; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
@@ -142,12 +143,12 @@
         .profile-slide-img { width: 100%; height: 100%; object-fit: cover; border-radius: 8px; }
         .slider-dots { display: flex; justify-content: center; gap: 6px; margin-top: 8px; margin-bottom: 10px; }
         .dot-btn { background: #475569; border: none; width: 28px; height: 6px; border-radius: 3px; cursor: pointer; transition: background 0.2s; }
-        .dot-btn.active { background: #0d9488; }
+        .dot-btn.active { background: #22c55e; }
         .profile-detail-name { font-size: 16px; color: #f8fafc; font-weight: bold; text-align: center; margin-bottom: 5px; }
         .profile-detail-desc { font-size: 12px; color: #cbd5e1; text-align: center; margin-bottom: 12px; line-height: 1.4; }
         
         .preview-thumbs-container { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px; }
-        .thumb-box { width: 60px; height: 60px; border-radius: 6px; overflow: hidden; position: relative; border: 1.5px solid #0d9488; background: #000; }
+        .thumb-box { width: 60px; height: 60px; border-radius: 6px; overflow: hidden; position: relative; border: 1.5px solid #22c55e; background: #000; }
         .thumb-box img { width: 100%; height: 100%; object-fit: cover; }
         .thumb-delete-btn { position: absolute; top: 2px; right: 2px; background: #ef4444; color: white; border: none; border-radius: 50%; width: 18px; height: 18px; font-size: 10px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.5); }
 
@@ -155,11 +156,11 @@
 
         .loading-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(8px); z-index: 3000; justify-content: center; align-items: center; flex-direction: column; text-align: center; color: white; padding: 20px; }
         
-        .progress-bar-container { width: 100%; max-width: 320px; background: #1e293b; border: 2px solid #0d9488; border-radius: 10px; height: 22px; overflow: hidden; margin-top: 15px; position: relative; box-shadow: 0 0 15px rgba(13, 148, 136, 0.3); }
-        .progress-bar-fill { width: 0%; height: 100%; background: linear-gradient(135deg, #0d9488, #115e59); transition: width 0.2s ease-in-out; }
+        .progress-bar-container { width: 100%; max-width: 320px; background: #1e293b; border: 2px solid #22c55e; border-radius: 10px; height: 22px; overflow: hidden; margin-top: 15px; position: relative; box-shadow: 0 0 15px rgba(34, 197, 94, 0.3); }
+        .progress-bar-fill { width: 0%; height: 100%; background: linear-gradient(135deg, #22c55e, #16a34a); transition: width 0.2s ease-in-out; }
         .progress-text { position: absolute; width: 100%; height: 100%; top: 0; left: 0; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold; color: #ffffff; text-shadow: 0 1px 3px rgba(0,0,0,0.8); }
 
-        .loading-title { font-size: 16px; font-weight: bold; color: #0d9488; margin-bottom: 5px; letter-spacing: 0.5px; }
+        .loading-title { font-size: 16px; font-weight: bold; color: #22c55e; margin-bottom: 5px; letter-spacing: 0.5px; }
         .loading-status-subtext { font-size: 11px; color: #cbd5e1; max-width: 300px; line-height: 1.4; margin-top: 8px; }
 
         /* --- BANNIÈRE D'INSTALLATION PWA CENTRÉE AU MILIEU DE L'ÉCRAN --- */
@@ -172,7 +173,7 @@
             width: 92%;
             max-width: 450px;
             background: #1e293b;
-            border: 2.5px solid #0d9488;
+            border: 2.5px solid #22c55e;
             border-radius: 16px;
             padding: 20px;
             z-index: 999999;
@@ -193,15 +194,15 @@
             height: 64px;
             border-radius: 14px;
             object-fit: cover;
-            border: 2px solid #0d9488;
+            border: 2px solid #22c55e;
             margin-bottom: 12px;
-            box-shadow: 0 4px 12px rgba(13, 148, 136, 0.3);
+            box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
         }
 
         .pwa-title {
             font-size: 16px;
             font-weight: bold;
-            color: #0d9488;
+            color: #22c55e;
             margin-bottom: 6px;
         }
 
@@ -220,7 +221,7 @@
 
         .pwa-btn-install {
             flex: 1;
-            background: linear-gradient(135deg, #0d9488, #115e59);
+            background: linear-gradient(135deg, #22c55e, #16a34a);
             color: white;
             border: none;
             padding: 10px;
@@ -228,7 +229,7 @@
             font-weight: bold;
             font-size: 12px;
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(13, 148, 136, 0.4);
+            box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4);
         }
 
         .pwa-btn-later {
@@ -261,13 +262,13 @@
 
         .age-gate-card {
             background: #1e293b;
-            border: 3px solid #0d9488;
+            border: 3px solid #22c55e;
             padding: 25px 20px;
             border-radius: 16px;
             width: 100%;
             max-width: 420px;
             text-align: center;
-            box-shadow: 0 10px 30px rgba(13, 148, 136, 0.3);
+            box-shadow: 0 10px 30px rgba(34, 197, 94, 0.3);
             animation: popIn 0.3s ease-out;
         }
 
@@ -279,7 +280,7 @@
         .age-gate-logo {
             font-size: 32px;
             font-weight: 900;
-            color: #0d9488;
+            color: #22c55e;
             margin-bottom: 10px;
             text-shadow: 0 3px 8px rgba(0,0,0,0.5);
         }
@@ -313,7 +314,7 @@
         .age-gate-checkbox-container input {
             width: 16px;
             height: 16px;
-            accent-color: #0d9488;
+            accent-color: #22c55e;
             cursor: pointer;
         }
 
@@ -324,7 +325,7 @@
 
         .btn-age-yes {
             flex: 1;
-            background: linear-gradient(135deg, #0d9488, #115e59);
+            background: linear-gradient(135deg, #22c55e, #16a34a);
             color: white;
             border: none;
             padding: 12px;
@@ -332,7 +333,7 @@
             font-weight: bold;
             font-size: 13px;
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(13, 148, 136, 0.4);
+            box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4);
             transition: transform 0.2s;
         }
         .btn-age-yes:hover { transform: translateY(-2px); }
@@ -359,7 +360,7 @@
             left: 0;
             right: 0;
             background-color: #0b0f19;
-            border-bottom: 2px solid #0d9488;
+            border-bottom: 2px solid #2ed573;
             color: #ffffff;
             padding: 8px 15px;
             font-size: 13px;
@@ -375,16 +376,16 @@
         .admin-live-badge .dot-live {
             height: 9px;
             width: 9px;
-            background-color: #0d9488;
+            background-color: #2ed573;
             border-radius: 50%;
             display: inline-block;
-            box-shadow: 0 0 8px #0d9488;
+            box-shadow: 0 0 8px #2ed573;
             animation: pulseLive 1.5s infinite;
         }
 
         @keyframes pulseLive {
             0% { transform: scale(0.95); opacity: 0.8; }
-            50% { transform: scale(1.3); opacity: 1; box-shadow: 0 0 12px #0d9488; }
+            50% { transform: scale(1.3); opacity: 1; box-shadow: 0 0 12px #2ed573; }
             100% { transform: scale(0.95); opacity: 0.8; }
         }
     </style>
@@ -427,7 +428,7 @@
         <div style="display: flex; align-items: center; gap: 10px;">
             <div style="display: flex; align-items: center; gap: 6px;">
                 <span class="dot-live"></span>
-                <span>En ligne : <strong id="admin-live-count" style="color: #0d9488;">0</strong></span>
+                <span>En ligne : <strong id="admin-live-count" style="color: #2ed573;">0</strong></span>
             </div>
             <span style="color: #475569;">|</span>
             <div>
@@ -510,7 +511,7 @@
                 </div>
 
                 <label>Catégorie Vidéo * :</label>
-                <select id="new-video-categorie" style="background: #1e293b; color: #0d9488; font-weight: bold; border: 1.5px solid #0d9488; margin-bottom: 6px;">
+                <select id="new-video-categorie" style="background: #1e293b; color: #22c55e; font-weight: bold; border: 1.5px solid #22c55e; margin-bottom: 6px;">
                     <option value="femme">Femme</option>
                     <option value="homme">Homme</option>
                     <option value="trans">Trans</option>
@@ -525,7 +526,7 @@
                 <input type="text" id="new-nom" placeholder="Ex: Bizi sensuelle à Abidjan 💎">
                 
                 <label>Lien direct de l'Aperçu (.mp4 Telegram / File to Link) * :</label>
-                <input type="text" id="new-preview-url" placeholder="https://.../video.mp4" style="border: 2px solid #0d9488; background: #0f172a; font-weight: bold; color: #0d9488;">
+                <input type="text" id="new-preview-url" placeholder="https://.../video.mp4" style="border: 2px solid #22c55e; background: #0f172a; font-weight: bold; color: #22c55e;">
 
                 <label style="margin-top: 8px;">Lien de la Vidéo Complète (Mega / Drive) * :</label>
                 <input type="text" id="new-telegram" placeholder="Collez le lien Mega ici..." style="border: 2px solid #38bdf8; background: #0f172a; font-weight: bold; color: #38bdf8;">
@@ -546,7 +547,7 @@
 
             <div id="form-profils-fields">
                 <label>Catégorie Bizi (Sélectionnable) * :</label>
-                <select id="profil-categorie" style="background: #1e293b; color: #0d9488; font-weight: bold; border: 1.5px solid #0d9488;" onchange="genererDescriptionAleatoire()">
+                <select id="profil-categorie" style="background: #1e293b; color: #22c55e; font-weight: bold; border: 1.5px solid #22c55e;" onchange="genererDescriptionAleatoire()">
                     <option value="femme">Femme</option>
                     <option value="homme">Homme</option>
                     <option value="trans">Trans</option>
@@ -558,7 +559,7 @@
                 <input type="text" id="profil-nom" placeholder="Ex: Vanessa Bizi 👑">
 
                 <label>Vos Photos HD (Max 5 photos) * :</label>
-                <input type="file" id="profil-fichiers-input" accept="image/*" multiple onchange="apercuMiniaturesPhotos(event)" style="background: #1e293b; border: 1.5px dashed #0d9488; padding: 6px; cursor: pointer;">
+                <input type="file" id="profil-fichiers-input" accept="image/*" multiple onchange="apercuMiniaturesPhotos(event)" style="background: #1e293b; border: 1.5px dashed #22c55e; padding: 6px; cursor: pointer;">
                 
                 <div class="preview-thumbs-container" id="preview-thumbs-box"></div>
 
@@ -584,7 +585,7 @@
             <input type="hidden" id="edit-v-real-id">
 
             <label>Catégorie Vidéo :</label>
-            <select id="edit-v-cat" style="background:#1e293b; color:#0d9488; border:1.5px solid #0d9488; padding:5px; border-radius:5px; margin-bottom:6px; font-weight:bold;">
+            <select id="edit-v-cat" style="background:#1e293b; color:#22c55e; border:1.5px solid #22c55e; padding:5px; border-radius:5px; margin-bottom:6px; font-weight:bold;">
                 <option value="femme">Femme</option>
                 <option value="homme">Homme</option>
                 <option value="trans">Trans</option>
@@ -596,7 +597,7 @@
             <input type="text" id="edit-v-nom">
 
             <label>Lien direct de l'Aperçu (.mp4) :</label>
-            <input type="text" id="edit-v-preview" style="border: 2px solid #0d9488; background: #0f172a; font-weight: bold; color: #0d9488;">
+            <input type="text" id="edit-v-preview" style="border: 2px solid #22c55e; background: #0f172a; font-weight: bold; color: #22c55e;">
 
             <label>Lien Mega / Drive :</label>
             <input type="text" id="edit-v-mega" style="border: 2px solid #38bdf8; background: #0f172a; font-weight: bold; color: #38bdf8;">
@@ -605,7 +606,7 @@
             <input type="number" id="edit-v-prix">
 
             <label>Qualité :</label>
-            <select id="edit-v-qualite" style="background:#1e293b; color:white; border:1.5px solid #0d9488; padding:5px; border-radius:5px;">
+            <select id="edit-v-qualite" style="background:#1e293b; color:white; border:1.5px solid #22c55e; padding:5px; border-radius:5px;">
                 <option value="premium">💎 Ultra / Premium (Diamant)</option>
                 <option value="moyen">🥇 Moyen / Standard (Or)</option>
                 <option value="basique">🥉 Basique (Bronze)</option>
@@ -627,6 +628,7 @@
         const API_VIDEOS_URL = 'https://midnightblue-manatee-329921.hostingersite.com/api_videos.php';
         const API_PRESENCE_URL = 'https://midnightblue-manatee-329921.hostingersite.com/presence.php';
 
+        // --- GESTION DE L'INSTALLATION PWA ---
         let deferredPrompt = null;
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
@@ -645,7 +647,7 @@
                     deferredPrompt = null;
                 });
             } else {
-                alert("Sur iPhone / iPad : Appuyez sur le bouton Partager de Safari (carré avec une flèche vers le haut), puis sélectionnez 'Sur l'écran d'accueil'. Sur Android : utilisez le menu du navigateur (3 points).");
+                alert("Pour installer l'application, utilise le menu de ton navigateur (les 3 points en haut à droite) et sélectionne 'Installer l'application' ou 'Ajouter à l'écran d'accueil'.");
             }
         }
 
@@ -654,6 +656,7 @@
             localStorage.setItem('bizi_pwa_dismissed', 'true');
         }
 
+        // --- VÉRIFICATION DE LA SAUVEGARDE DE L'ÂGE AU CHARGEMENT ---
         (function verifierAgeMemiseEnCache() {
             const ageVerifie = localStorage.getItem('bizi_age_verified');
             if (!ageVerifie) {
@@ -703,30 +706,267 @@
         envoyerPresenceAutomatique();
         setInterval(envoyerPresenceAutomatique, 15000);
 
+        // --- DESCRIPTIONS MAGIQUES ENRICHIES DANS LE PUR JARGON IVOIRIEN (NOUCHI & ULTRA SENSUEL) ---
         const descriptionsMagiques = {
             femme: [
                 "🔥 Waii mon boss de Cocody ! J'ai grandement écarté mon string, mon vagin est hyper trempé et disponible, viens taper dans mon utérus bien profond ! 💋💯",
                 "🇨🇮 À Marcory zone 4, gros calvaire ce soir ! Mon vagin est mouillé et disponible, viens taper dans mon utérus jusqu'à ce que je demande grâce. 🍑👑",
                 "✨ À Yopougon Side, bébé mon vagin est bien chaud et disponible, viens taper dans mon utérus secouer les fesses proprement ! 🔥🍾",
                 "💃 Mon patron de Treichville, j'ai déjà positionné mon string de côté, mon vagin est disponible, viens taper dans mon utérus toute la nuit ! 📱💎",
-                "💋 Salut mon vrai cœur à Abidjan, mon vagin est hyper disponible et juteux, viens taper dans mon utérus pour kiffer grave ! 🔥"
+                "💋 Salut mon vrai cœur à Abidjan, mon vagin est hyper disponible et juteux, viens taper dans mon utérus pour kiffer grave ! 🔥",
+                "🔥 Bébé viens à Marcory ! Mon vagin est dispo, viens taper dans mon utérus pour un max de sueur et de plaisir. 🥂💯",
+                "✨ Cocody Deux-Plateaux : J'ai écarté mon string, mon vagin est disponible, viens taper dans mon utérus mon boss de la haute ! 🚀",
+                "👑 La reine d'Abidjan : Bébé, mon vagin est prêt et disponible, viens taper dans mon utérus sans réfléchir. 🍑🔥",
+                "🥂 Salut le vieux père à Yopougon, j'ai écarté mon string, mon vagin est disponible, viens taper dans mon utérus ! ✨",
+                "🔥 Bébé à Adjamé, mon vagin est dispo, viens taper dans mon utérus pour une partie très sale et torride ! 💋",
+                "💎 Abidjan VIP : J'ai écarté mon string, mon vagin est disponible, viens taper dans mon utérus de champion ! 🔥",
+                "🔥 Mon chéri à Marcory, mon vagin est disponible, viens taper dans mon utérus en cachette dans le noir ! 💯💦",
+                "✨ Bébé, mon vagin est disponible et mouillé, viens taper dans mon utérus à Abidjan quartier chic ! 🚀",
+                "👑 Cocody Riviera : J'ai écarté mon string, mon vagin est disponible, viens taper dans mon utérus avec force ! 🔥",
+                "🔥 Bébé à Abidjan, mon vagin est dispo, viens taper dans mon utérus et me posséder sans pitié ! 💋",
+                "✨ Treichville Arrassat : J'ai écarté mon string, mon vagin est disponible, viens taper dans mon utérus ! 🍾",
+                "🔥 Salut mon roi, mon vagin est disponible, viens taper dans mon utérus et me faire crier fort ! 💎",
+                "🇨🇮 Marcory résidentiel : Bébé, mon vagin est hyper disponible, viens taper dans mon utérus pour kiffer ! 🔥",
+                "✨ Bébé à Abidjan, j'ai écarté mon string, mon vagin est dispo, viens taper dans mon utérus bien au chaud ! 🥂",
+                "🔥 Yopougon Side : Bébé, mon vagin est disponible, viens taper dans mon utérus et me secouer comme un piment ! 🍑💯",
+                "👑 Salut le boss, mon vagin est disponible, viens taper dans mon utérus pour suer ensemble ! ✨🔥",
+                "🔥 Bébé à Abidjan, mon vagin est disponible, viens taper dans mon utérus sur mon lit défait ! 💋",
+                "✨ Cocody Angré : Mon vagin est disponible, viens taper dans mon utérus, je t'attends de pied ferme ! 🍾🔥",
+                "🔥 Bébé, mon vagin est disponible, viens taper dans mon utérus et me dompter sévère ! 💪",
+                "💎 Marcory : J'ai grandement écarté mon string, mon vagin est disponible, viens taper dans mon utérus ! 🔥✨",
+                "🔥 Bébé à Abidjan, mon vagin est disponible, viens taper dans mon utérus tout cru sans capote ! 💋",
+                "✨ Yopougon : Bébé, mon vagin est disponible, viens taper dans mon utérus jusqu'à l'aube ! 🍑🔥",
+                "👑 Salut mon cœur, mon vagin est disponible, viens taper dans mon utérus en direct live ! 🥂",
+                "🔥 Bébé à Abidjan, mon vagin est disponible, viens taper dans mon utérus et me faire jouir en l'air ! 💯✨",
+                "✨ Prête sur Abidjan, mon vagin est disponible, viens taper dans mon utérus après ton dépôt WhatsApp ! 🔥🚀",
+                "🔥 Abidjan, mon vagin est trempé et disponible, viens taper dans mon utérus mon vieux père ! 💋",
+                "✨ Marcory, j'ai écarté mon string, mon vagin est disponible, viens taper dans mon utérus ! 🔥",
+                "👑 Yopougon, mon vagin est dispo, viens taper dans mon utérus pour un gros kiff ! 🍑",
+                "🔥 Cocody, mon vagin est ouvert et disponible, viens taper dans mon utérus ! 💎",
+                "✨ Treichville, mon vagin est disponible, viens taper dans mon utérus sans stress ! 🥂",
+                "🔥 Abidjan, mon vagin est dispo, viens taper dans mon utérus toute la nuit ! 💯",
+                "✨ Marcory, j'ai écarté mon string, mon vagin est disponible, viens taper dans mon utérus ! 🔥",
+                "👑 Yopougon, mon vagin est chaud et disponible, viens taper dans mon utérus ! 🚀",
+                "🔥 Cocody, mon vagin est disponible, viens taper dans mon utérus mon boss ! 💋",
+                "✨ Abidjan, mon vagin est dispo, viens taper dans mon utérus pour du lourd ! 💎",
+                "🔥 Marcory, mon vagin est disponible, viens taper dans mon utérus ! 🔥",
+                "✨ Yopougon, mon vagin est dispo, viens taper dans mon utérus ! 🍑",
+                "👑 Cocody, mon vagin est disponible, viens taper dans mon utérus ! ✨",
+                "🔥 Abidjan, mon vagin est chaud, viens taper dans mon utérus ! 💯",
+                "✨ Treichville, mon vagin est dispo, viens taper dans mon utérus ! 🥂",
+                "🔥 Marcory, mon vagin est disponible, viens taper dans mon utérus ! 🔥",
+                "✨ Yopougon, mon vagin est ouvert, viens taper dans mon utérus ! 🚀",
+                "👑 Cocody, mon vagin est dispo, viens taper dans mon utérus ! 💎",
+                "🔥 Abidjan, mon vagin est disponible, viens taper dans mon utérus ! 💋",
+                "✨ Marcory, mon vagin est chaud et dispo, viens taper dans mon utérus ! 🔥"
             ],
             homme: [
                 "💪 Mâle LGBT, mon cul est disponible et bien serré, viens me sodomiser et taper dans mon rectum à Abidjan ! 🔥💯",
                 "😎 Bébé LGBT, mon cul est disponible, viens me sodomiser et viens taper dans mon rectum sans aucun tabou ! 🚀👑",
-                "🔥 BG propre, mon cul est disponible, viens me sodomiser et taper dans mon rectum toute la nuit ! 💎✨"
+                "🔥 BG propre, mon cul est disponible, viens me sodomiser et taper dans mon rectum toute la nuit ! 💎✨",
+                "💪 Salut mon chéri, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum à Abidjan ! 🔥💦",
+                "🔥 Mâle LGBT d'Abidjan, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 👑💯",
+                "💪 Bébé, mon cul est disponible, viens me sodomiser et viens taper dans mon rectum à Marcory ! 🔥🚀",
+                "😎 Cocody LGBT : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 💎✨",
+                "🔥 Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum pour un max de kiff ! 🔥💪",
+                "💪 Abidjan LGBT : Mon cul est disponible, viens me sodomiser et viens taper dans mon rectum ! 👑",
+                "🔥 Bébé, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum en privé ! 🚀🔥",
+                "💪 Marcory : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum de force ! 💯",
+                "🔥 Abidjan LGBT : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 💎✨",
+                "💪 Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum sans hésiter ! 🔥",
+                "🔥 Yopougon LGBT : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 👑🚀",
+                "💪 Bébé, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🔥💯",
+                "🔥 Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum jusqu'à l'épuisement ! 💎",
+                "💪 Abidjan VIP LGBT : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🔥",
+                "🔥 Bébé, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🚀✨",
+                "💪 Treichville LGBT : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🔥💪",
+                "🔥 Bébé, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum à Abidjan ! 👑💎",
+                "💪 Mâle LGBT, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🔥",
+                "🔥 Cocody : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🚀💯",
+                "💪 Bébé, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🔥✨",
+                "🔥 Marcory LGBT : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 💎👑",
+                "💪 Bébé, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🔥",
+                "🔥 Abidjan : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🚀",
+                "💪 Bébé, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🔥💯",
+                "🔥 Cocody / Deux Plateaux : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 💎",
+                "💪 Mâle LGBT, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🔥✨",
+                "🔥 Abidjan : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum sur WhatsApp ! 🚀🔥",
+                "💪 Mâle LGBT, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! 🔥",
+                "😎 Abidjan, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 👑",
+                "🔥 Marcory, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! 💎",
+                "💪 Yopougon, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 🚀",
+                "🔥 Cocody, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! 💯",
+                "💪 Treichville, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! ✨",
+                "🔥 Abidjan, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! 🔥",
+                "💪 Marcory, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 🍑",
+                "🔥 Yopougon, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! 💎",
+                "💪 Cocody, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 🚀",
+                "🔥 Abidjan, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! 🔥",
+                "💪 Marcory, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 💯",
+                "🔥 Yopougon, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! ✨",
+                "💪 Cocody, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 👑",
+                "🔥 Abidjan, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! 🚀",
+                "💪 Marcory, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 🔥",
+                "🔥 Yopougon, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! 💎",
+                "💪 Cocody, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 💯",
+                "🔥 Abidjan, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! ✨",
+                "💪 Marcory, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 🔥"
             ],
             trans: [
                 "🦋 Bébé trans à Abidjan, mon cul est disponible et chaud, viens me sodomiser, viens taper dans mon rectum ! ✨🔥",
-                "👑 Sensuelle et VIP, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum sans tabou ! 💫💋"
+                "👑 Sensuelle et VIP, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum sans tabou ! 💫💋",
+                "🔥 Reine de la nuit d'Abidjan, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🍾",
+                "🦋 Abidjan : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! ✨🔥",
+                "👑 Bébé, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 💋",
+                "🔥 Chic et coquine, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 💫🥂",
+                "🦋 Abidjan : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🔥✨",
+                "👑 Beauté fatale, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🍾💋",
+                "🔥 Abidjan : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 💫🔥",
+                "🦋 Douceur trans, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! ✨💎",
+                "🦋 Trans Abidjan, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! 🔥",
+                "👑 Marcory, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! ✨",
+                "🔥 Yopougon, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! 💫",
+                "🦋 Cocody, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 💎",
+                "👑 Abidjan, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! 🔥",
+                "🔥 Treichville, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 🍾",
+                "🦋 Marcory, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! ✨",
+                "👑 Yopougon, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 💋",
+                "🔥 Cocody, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! 💫",
+                "🦋 Abidjan, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 🔥",
+                "🦋 Trans Abidjan, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! 🔥",
+                "👑 Marcory, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! ✨",
+                "🔥 Yopougon, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! 💫",
+                "🦋 Cocody, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 💎",
+                "👑 Abidjan, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! 🔥",
+                "🔥 Treichville, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 🍾",
+                "🦋 Marcory, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! ✨",
+                "👑 Yopougon, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 💋",
+                "🔥 Cocody, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! 💫",
+                "🦋 Abidjan, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 🔥",
+                "🦋 Trans Abidjan, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! 🔥",
+                "👑 Marcory, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! ✨",
+                "🔥 Yopougon, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! 💫",
+                "🦋 Cocody, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 💎",
+                "👑 Abidjan, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! 🔥",
+                "🔥 Treichville, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 🍾",
+                "🦋 Marcory, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! ✨",
+                "👑 Yopougon, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 💋",
+                "🔥 Cocody, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! 💫",
+                "🦋 Abidjan, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 🔥",
+                "🦋 Trans Abidjan, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! 🔥",
+                "👑 Marcory, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! ✨",
+                "🔥 Yopougon, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! 💫",
+                "🦋 Cocody, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 💎",
+                "👑 Abidjan, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! 🔥",
+                "🔥 Treichville, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 🍾",
+                "🦋 Marcory, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! ✨",
+                "👑 Yopougon, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 💋",
+                "🔥 Cocody, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! 💫",
+                "🦋 Abidjan, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 🔥"
             ],
             lesbi: [
                 "👭 Bébé lesbienne à Abidjan, viens lécher mon clitoris, fusion féminine torride et mouillée garantie ! 🔥✨",
-                "✨ Entre filles à Marcory, viens lécher mon clitoris, câlins sensuels et volupté pure ! 🍑🔥"
+                "✨ Entre filles à Marcory, viens lécher mon clitoris, câlins sensuels et volupté pure ! 🍑🔥",
+                "🔥 Connexion entre filles, viens lécher mon clitoris, plaisir intense rien que pour toi mon cœur ! 💎💖",
+                "👭 Abidjan : Viens lécher mon clitoris, complicité féminine et frissons garantis toute la nuit ! 🔥✨",
+                "✨ Douceur et baisers à Cocody, viens lécher mon clitoris, notre univers lesbien t'attend ! 🍑🥂",
+                "🔥 Plaisir pur entre filles, viens lécher mon clitoris, viens kiffer avec nous en privé ! 💎💖",
+                "👭 Abidjan : Viens lécher mon clitoris, fusion totale et câlins bien chauds ! 🔥✨",
+                "✨ Entre filles sans tabou, viens lécher mon clitoris, viens vibrer grave ! 🍑💖",
+                "🔥 Volupté féminine, viens lécher mon clitoris, rejoins notre univers à Yopougon ! 💎✨",
+                "👭 Le paradis lesbien, viens lécher mon clitoris, douceur torride garantie ! 🔥💖",
+                "👭 Lesbienne Abidjan, viens lécher mon clitoris ! 🔥",
+                "✨ Marcory, viens lécher mon clitoris ! 💖",
+                "🔥 Yopougon, viens lécher mon clitoris ! 🍑",
+                "👭 Cocody, viens lécher mon clitoris ! ✨",
+                "✨ Abidjan, viens lécher mon clitoris ! 🔥",
+                "🔥 Treichville, viens lécher mon clitoris ! 💖",
+                "👭 Marcory, viens lécher mon clitoris ! ✨",
+                "✨ Yopougon, viens lécher mon clitoris ! 🍑",
+                "🔥 Cocody, viens lécher mon clitoris ! 🔥",
+                "👭 Abidjan, viens lécher mon clitoris ! 💖",
+                "👭 Lesbienne Abidjan, viens lécher mon clitoris ! 🔥",
+                "✨ Marcory, viens lécher mon clitoris ! 💖",
+                "🔥 Yopougon, viens lécher mon clitoris ! 🍑",
+                "👭 Cocody, viens lécher mon clitoris ! ✨",
+                "✨ Abidjan, viens lécher mon clitoris ! 🔥",
+                "🔥 Treichville, viens lécher mon clitoris ! 💖",
+                "👭 Marcory, viens lécher mon clitoris ! ✨",
+                "✨ Yopougon, viens lécher mon clitoris ! 🍑",
+                "🔥 Cocody, viens lécher mon clitoris ! 🔥",
+                "👭 Abidjan, viens lécher mon clitoris ! 💖",
+                "👭 Lesbienne Abidjan, viens lécher mon clitoris ! 🔥",
+                "✨ Marcory, viens lécher mon clitoris ! 💖",
+                "🔥 Yopougon, viens lécher mon clitoris ! 🍑",
+                "👭 Cocody, viens lécher mon clitoris ! ✨",
+                "✨ Abidjan, viens lécher mon clitoris ! 🔥",
+                "🔥 Treichville, viens lécher mon clitoris ! 💖",
+                "👭 Marcory, viens lécher mon clitoris ! ✨",
+                "✨ Yopougon, viens lécher mon clitoris ! 🍑",
+                "🔥 Cocody, viens lécher mon clitoris ! 🔥",
+                "👭 Abidjan, viens lécher mon clitoris ! 💖",
+                "👭 Lesbienne Abidjan, viens lécher mon clitoris ! 🔥",
+                "✨ Marcory, viens lécher mon clitoris ! 💖",
+                "🔥 Yopougon, viens lécher mon clitoris ! 🍑",
+                "👭 Cocody, viens lécher mon clitoris ! ✨",
+                "✨ Abidjan, viens lécher mon clitoris ! 🔥",
+                "🔥 Treichville, viens lécher mon clitoris ! 💖",
+                "👭 Marcory, viens lécher mon clitoris ! ✨",
+                "✨ Yopougon, viens lécher mon clitoris ! 🍑",
+                "🔥 Cocody, viens lécher mon clitoris ! 🔥",
+                "👭 Abidjan, viens lécher mon clitoris ! 💖"
             ],
             blanche: [
                 "🌟 Européenne à Abidjan, bébé, charme exotique et dispo VIP rien que pour toi 🥂🔥",
-                "💎 Charme européen, sensuelle et raffinée, viens découvrir mes vidéos privées haut de gamme ! ✨🍾"
+                "💎 Charme européen, sensuelle et raffinée, viens découvrir mes vidéos privées haut de gamme ! ✨🍾",
+                "✨ Élégance européenne, pour les connaisseurs cherchant du standing à Abidjan ! 👑🔥",
+                "🌟 Douceur d'Europe, viens passer un moment inoubliable avec moi 🥂✨",
+                "💎 Européenne propre et coquine, viens goûter au luxe haut de gamme ! 🍾🔥",
+                "✨ Sensualité européenne, mes dispos VIP vont te faire chavirer ! 👑🥂",
+                "🌟 Beauté lumineuse, viens vivre une expérience unique à Abidjan ! 🔥✨",
+                "💎 Charme et discrétion européenne, mes secrets les plus chauds ! 🍾👑",
+                "✨ Douce et irrésistible, viens t'évader avec moi dès ce soir ! 🥂🔥",
+                "🌟 L'élégance VIP européenne en toute discrétion à Abidjan ! 💎✨",
+                "🌟 Européenne Abidjan, dispo VIP ! 🥂",
+                "💎 Marcory, charme européen et luxe ! ✨",
+                "✨ Cocody, douceur d'Europe ! 🍾",
+                "🌟 Abidjan, élégance VIP ! 🔥",
+                "💎 Yopougon, charme européen ! 🥂",
+                "✨ Treichville, dispo VIP ! 👑",
+                "🌟 Marcory, douceur d'Europe ! 🔥",
+                "💎 Cocody, charme européen ! ✨",
+                "✨ Abidjan, élégance VIP ! 🍾",
+                "🌟 Yopougon, dispo VIP ! 🥂",
+                "🌟 Européenne Abidjan, dispo VIP ! 🥂",
+                "💎 Marcory, charme européen et luxe ! ✨",
+                "✨ Cocody, douceur d'Europe ! 🍾",
+                "🌟 Abidjan, élégance VIP ! 🔥",
+                "💎 Yopougon, charme européen ! 🥂",
+                "✨ Treichville, dispo VIP ! 👑",
+                "🌟 Marcory, douceur d'Europe ! 🔥",
+                "💎 Cocody, charme européen ! ✨",
+                "✨ Abidjan, élégance VIP ! 🍾",
+                "🌟 Yopougon, dispo VIP ! 🥂",
+                "🌟 Européenne Abidjan, dispo VIP ! 🥂",
+                "💎 Marcory, charme européen et luxe ! ✨",
+                "✨ Cocody, douceur d'Europe ! 🍾",
+                "🌟 Abidjan, élégance VIP ! 🔥",
+                "💎 Yopougon, charme européen ! 🥂",
+                "✨ Treichville, dispo VIP ! 👑",
+                "🌟 Marcory, douceur d'Europe ! 🔥",
+                "💎 Cocody, charme européen ! ✨",
+                "✨ Abidjan, élégance VIP ! 🍾",
+                "🌟 Yopougon, dispo VIP ! 🥂",
+                "🌟 Européenne Abidjan, dispo VIP ! 🥂",
+                "💎 Marcory, charme européen et luxe ! ✨",
+                "✨ Cocody, douceur d'Europe ! 🍾",
+                "🌟 Abidjan, élégance VIP ! 🔥",
+                "💎 Yopougon, charme européen ! 🥂",
+                "✨ Treichville, dispo VIP ! 👑",
+                "🌟 Marcory, douceur d'Europe ! 🔥",
+                "💎 Cocody, charme européen ! ✨",
+                "✨ Abidjan, élégance VIP ! 🍾",
+                "🌟 Yopougon, dispo VIP ! 🥂"
             ]
         };
 
@@ -1324,6 +1564,7 @@
                     document.getElementById("admin-active-banner").style.display = "none";
                     document.getElementById("admin-wipe-category-btn").style.display = "none";
                     
+                    // Masquer les compteurs aux visiteurs
                     document.querySelectorAll('.admin-counter').forEach(el => el.style.display = 'none');
 
                     renderGrid();
@@ -1347,6 +1588,7 @@
                 document.getElementById("admin-active-banner").style.display = "block";
                 document.getElementById("admin-wipe-category-btn").style.display = "inline-block";
                 
+                // Afficher les compteurs pour l'admin
                 document.querySelectorAll('.admin-counter').forEach(el => el.style.display = 'inline');
 
                 chargerStatistiquesAdminSecurit();
@@ -1448,7 +1690,7 @@
                     <h3 style="color:#ef4444; margin-bottom:8px; text-align:center;">🛠️ ÉDITION DU PROFIL ADMIN</h3>
                     
                     <label>Catégorie Bizi :</label>
-                    <select id="adm-p-cat" style="background:#1e293b; color:#0d9488; border:1.5px solid #0d9488; padding:5px; border-radius:5px; margin-bottom:6px; font-weight:bold;">
+                    <select id="adm-p-cat" style="background:#1e293b; color:#22c55e; border:1.5px solid #22c55e; padding:5px; border-radius:5px; margin-bottom:6px; font-weight:bold;">
                         <option value="femme" ${profil.cat==='femme'?'selected':''}>Femme</option>
                         <option value="homme" ${profil.cat==='homme'?'selected':''}>Homme</option>
                         <option value="trans" ${profil.cat==='trans'?'selected':''}>Trans</option>
@@ -1466,7 +1708,7 @@
                     <textarea id="adm-p-desc" style="margin-bottom:6px;">${profil.desc}</textarea>
 
                     <label>Niveau VIP :</label>
-                    <select id="adm-p-vip" style="background:#1e293b; color:white; border:1.5px solid #0d9488; padding:5px; border-radius:5px; margin-bottom:6px;">
+                    <select id="adm-p-vip" style="background:#1e293b; color:white; border:1.5px solid #22c55e; padding:5px; border-radius:5px; margin-bottom:6px;">
                         <option value="standard" ${profil.vip==='standard'?'selected':''}>Standard (Vert)</option>
                         <option value="gold" ${profil.vip==='gold'?'selected':''}>Or / Gold (✨)</option>
                         <option value="premium" ${profil.vip==='premium'?'selected':''}>Ultra Premium (💎)</option>
@@ -1477,7 +1719,7 @@
                     <div class="preview-thumbs-container" id="adm-thumbs-container" style="margin-bottom:6px;">${thumbsHtml}</div>
 
                     <label>Ajouter de nouvelles photos HD :</label>
-                    <input type="file" accept="image/*" multiple onchange="ajouterPhotosProfilAdmin(event)" style="background:#1e293b; border:1.5px dashed #0d9488; padding:5px; cursor:pointer; margin-bottom:10px;">
+                    <input type="file" accept="image/*" multiple onchange="ajouterPhotosProfilAdmin(event)" style="background:#1e293b; border:1.5px dashed #22c55e; padding:5px; cursor:pointer; margin-bottom:10px;">
 
                     <div style="display:flex; gap:8px;">
                         <button class="btn-save" onclick="sauvegarderProfilAdminModifie()">💾 Enregistrer</button>
@@ -1774,6 +2016,7 @@
                     canvas.height = img.height;
                     const ctx = canvas.getContext("2d");
 
+                    // --- AJOUT D'UN FOND BLANC DE SÉCURITÉ POUR ÉVITER LE NOIR ---
                     ctx.fillStyle = "#FFFFFF";
                     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -1945,6 +2188,7 @@
             const wipeBtn = document.getElementById("admin-wipe-category-btn");
             if (wipeBtn) { wipeBtn.style.display = "inline-block"; }
             
+            // Afficher directement les compteurs si on charge la page en mode admin
             document.querySelectorAll('.admin-counter').forEach(el => el.style.display = 'inline');
 
             chargerStatistiquesAdminSecurit();
