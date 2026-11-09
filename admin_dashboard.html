@@ -2,2177 +2,299 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>💖 Bizi 💖</title>
-
-    <!-- --- CONFIGURATION PWA (INSTALLATION APPLICATION) --- -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Bizi">
-    <meta name="theme-color" content="#0f172a">
-
-    <!-- --- BALISES OPEN GRAPH POUR APERÇU SUR LES RÉSEAUX SOCIAUX --- -->
-    <meta property="og:title" content="💖 Bizi - Découvre ce profil exclusif 💖" />
-    <meta property="og:description" content="Viens voir les photos et le profil complet en direct sur Bizi." />
-    <meta property="og:image" content="" />
-    <meta property="og:url" content="" id="metaOpenGraphUrl" />
-    <meta property="og:type" content="website" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Centre de Contrôle Bizi</title>
     <style>
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        html, body { width: 100%; overflow-x: hidden; background-color: #0f172a !important; color: #f8fafc; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-        body { padding: 0 10px 15px 10px; display: flex; flex-direction: column; align-items: center; }
-        
-        header { position: fixed; top: 0; left: 0; width: 100%; z-index: 999; text-align: center; padding: 10px; border-bottom: 3px solid #22c55e; background: rgba(15, 23, 42, 0.98); backdrop-filter: blur(8px); box-shadow: 0 4px 20px rgba(0,0,0,0.6); display: flex; flex-direction: column; align-items: center; gap: 6px; }
-        
-        .header-title { text-align: center; }
-        h1 { color: #22c55e; font-size: 20px; font-weight: 900; margin-bottom: 2px; letter-spacing: 1px; word-break: break-word; text-shadow: 0 3px 6px rgba(0,0,0,0.5); }
-        .subtitle { font-size: 9.5px; color: #38bdf8; font-weight: bold; letter-spacing: 0.5px; text-transform: uppercase; }
-        
-        .tabs-container { display: flex; gap: 6px; width: 100%; max-width: 600px; justify-content: center; padding: 2px 0; }
-        .tab-btn { flex: 1; background: #1e293b; color: #94a3b8; border: 1.5px solid #475569; padding: 6px 4px; border-radius: 6px; font-weight: bold; font-size: 11px; cursor: pointer; text-align: center; transition: all 0.2s ease; }
-        .tab-btn.active { background: linear-gradient(135deg, #22c55e, #16a34a); color: white; border-color: #22c55e; box-shadow: 0 2px 8px rgba(34, 197, 94, 0.4); }
-        
-        .subtabs-container { display: flex; gap: 3px; width: 100%; max-width: 600px; justify-content: center; padding: 2px 0; }
-        .subtab-btn { flex: 1; background: #0f172a; color: #cbd5e1; border: 1px solid #22c55e; padding: 4px 1px; border-radius: 5px; font-weight: bold; font-size: 8.5px; cursor: pointer; text-align: center; transition: all 0.2s ease; white-space: nowrap; }
-        .subtab-btn.active { background: #22c55e; color: white; box-shadow: 0 2px 6px rgba(34, 197, 94, 0.4); }
-        
-        /* Les compteurs sont masqués par défaut pour les visiteurs normaux */
-        .subtab-count { display: none; background: rgba(0, 0, 0, 0.4); padding: 1px 4px; border-radius: 3px; font-size: 7.5px; color: #f8fafc; font-weight: 900; margin-left: 2px; }
-        /* Affiché uniquement si la classe admin-active est présente sur le body */
-        body.admin-active .subtab-count { display: inline; }
-
-        .btn-vendor-header { background: linear-gradient(135deg, #22c55e, #16a34a); color: white; border: 2px solid #15803d; padding: 5px 10px; border-radius: 6px; font-weight: bold; font-size: 10px; cursor: pointer; box-shadow: 0 3px 8px rgba(34, 197, 94, 0.4); width: 100%; max-width: 280px; }
-        
-        .nav-btn-jeux {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            background: linear-gradient(135deg, #ff4757, #ff6b81);
-            color: white;
-            padding: 5px 12px;
-            border-radius: 6px;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 10px;
-            box-shadow: 0 3px 8px rgba(255, 71, 87, 0.4);
-            border: 2px solid #e84118;
-            width: 100%;
-            max-width: 280px;
-            transition: transform 0.2s ease;
-        }
-        .nav-btn-jeux:hover { transform: translateY(-1px); }
-        .badge-vip-nav { background: #2ed573; color: #0f172a; font-size: 9px; padding: 1px 5px; border-radius: 4px; font-weight: 800; text-transform: uppercase; }
-
-        .search-container-header { width: 100%; max-width: 600px; padding: 2px 0; display: flex; gap: 5px; align-items: center; }
-        .search-input { flex: 1; background: #1e293b; border: 1.5px solid #22c55e; border-radius: 8px; padding: 5px 12px; color: #ffffff; font-size: 11px; text-align: center; outline: none; box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
-        .search-input::placeholder { color: #94a3b8; }
-        
-        .admin-wipe-btn { display: none; background: #ef4444; color: white; border: 1.5px solid #b91c1c; border-radius: 8px; padding: 5px 10px; font-weight: bold; font-size: 9.5px; cursor: pointer; box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4); white-space: nowrap; }
-
-        .header-space { width: 100%; height: 235px; }
-        .container { width: 100%; max-width: 600px; margin: 0 auto; }
-        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; width: 100%; margin-top: 5px; }
-        
-        .card { background: #1e293b; border-radius: 12px; padding: 9px; box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4); display: flex; flex-direction: column; justify-content: space-between; width: 100%; min-width: 0; text-align: center; position: relative; }
-        .card-vip-gold { border: 3px solid #eab308; box-shadow: 0 0 20px rgba(234, 179, 8, 0.6); }
-        .card-vip-premium { border: 3px solid #a855f7; box-shadow: 0 0 20px rgba(168, 85, 247, 0.6); }
-        .card-vip-bronze { border: 3px solid #b45309; box-shadow: 0 0 16px rgba(180, 83, 9, 0.5); }
-        .card-profil { border: 3px solid #22c55e; box-shadow: 0 0 16px rgba(34, 197, 94, 0.5); }
-
-        .media-container { width: 100%; border-radius: 8px; overflow: hidden; background: #000000; margin-bottom: 6px; aspect-ratio: 9 / 16; display: flex; align-items: center; justify-content: center; position: relative; cursor: pointer; }
-        video.preview-video { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
-        
-        .profil-img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out; }
-        .slide-out-left { transform: translateX(-100%); opacity: 0; }
-        .slide-in-right { transform: translateX(100%); opacity: 0; }
-        
-        .card h3 { margin: 0 0 3px 0; color: #f1f5f9; font-size: 11.5px; text-align: center; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .profil-desc { font-size: 10px; color: #cbd5e1; text-align: center; margin-bottom: 6px; min-height: 28px; max-height: 40px; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; line-height: 1.3; }
-        
-        .badge-expire-bottomright { position: absolute; bottom: 6px; right: 6px; background: rgba(15, 23, 42, 0.85); border: 1px solid #38bdf8; color: #38bdf8; font-size: 8px; font-weight: bold; padding: 2px 5px; border-radius: 4px; pointer-events: none; z-index: 12; }
-        
-        .quality-badge { font-size: 9px; font-weight: bold; text-align: center; padding: 3px 6px; border-radius: 4px; margin-bottom: 6px; display: inline-block; width: 100%; }
-        .badge-gold { background: linear-gradient(135deg, #eab308, #ca8a04); color: #ffffff; }
-        .badge-premium { background: linear-gradient(135deg, #a855f7, #6366f1); color: #ffffff; }
-        .badge-bronze { background: linear-gradient(135deg, #b45309, #78350f); color: #ffffff; }
-        .badge-profil { background: linear-gradient(135deg, #22c55e, #16a34a); color: #ffffff; }
-
-        .price-badge { background: linear-gradient(135deg, #ff6600, #ff8533); color: #ffffff; font-size: 12px; font-weight: bold; text-align: center; padding: 5px; border-radius: 6px; margin-bottom: 6px; }
-        .info-id { font-size: 9.5px; color: #94a3b8; margin-bottom: 6px; text-align: center; background: #0f172a; padding: 3px; border-radius: 4px; border: 1px dashed #475569; }
-        .whatsapp-btn { display: flex; align-items: center; justify-content: center; gap: 4px; background: #22c55e; color: #ffffff; text-align: center; padding: 6px 4px; border-radius: 5px; text-decoration: none; font-weight: bold; font-size: 10px; margin-bottom: 6px; }
-        
-        .share-profile-btn { display: flex; align-items: center; justify-content: center; gap: 6px; background: linear-gradient(135deg, #0ea5e9, #0284c7); color: #ffffff; text-align: center; padding: 9px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 11px; margin-bottom: 8px; width: 100%; border: none; cursor: pointer; box-shadow: 0 3px 10px rgba(14, 165, 233, 0.4); }
-
-        .contact-action-box { display: flex; flex-direction: column; gap: 6px; margin-bottom: 8px; width: 100%; }
-        .btn-call-phone { display: flex; align-items: center; justify-content: center; gap: 6px; background: linear-gradient(135deg, #f59e0b, #d97706); color: #ffffff; text-align: center; padding: 10px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 11.5px; width: 100%; border: none; cursor: pointer; box-shadow: 0 3px 10px rgba(245, 158, 11, 0.4); transition: transform 0.1s ease; }
-        .btn-call-phone:active { transform: scale(0.98); }
-
-        .btn-wa-msg { display: flex; align-items: center; justify-content: center; gap: 6px; background: linear-gradient(135deg, #22c55e, #16a34a); color: #ffffff; text-align: center; padding: 10px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 11.5px; width: 100%; border: none; cursor: pointer; box-shadow: 0 3px 10px rgba(34, 197, 94, 0.4); transition: transform 0.1s ease; }
-        .btn-wa-msg:active { transform: scale(0.98); }
-
-        input, select, textarea { width: 100%; background: #0f172a; border: 1.5px solid #22c55e; border-radius: 5px; padding: 5px; color: #ffffff; font-size: 11px; text-align: center; outline: none; }
-        textarea { text-align: left; resize: none; height: 65px; }
-        button.verify-btn { width: 100%; background: #22c55e; color: #ffffff; border: none; padding: 6px; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 11px; }
-        .message { margin-top: 4px; font-size: 10px; text-align: center; font-weight: bold; }
-        .telegram-link { display: block; background: #0088cc; color: #ffffff; padding: 6px; border-radius: 5px; text-decoration: none; font-weight: bold; margin-top: 4px; font-size: 11px; text-align: center; }
-        .admin-fab { position: fixed; bottom: 15px; right: 15px; background: #ef4444; color: white; border: none; border-radius: 50%; width: 45px; height: 45px; font-size: 20px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.5); z-index: 1000; display: flex; align-items: center; justify-content: center; }
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); z-index: 2000; justify-content: center; align-items: center; padding: 15px; }
-        .modal-content { background: #1e293b; border: 2px solid #22c55e; padding: 15px; border-radius: 12px; width: 100%; max-width: 650px; max-height: 90vh; overflow-y: auto; color: #f8fafc; }
-        .modal-content h2 { color: #22c55e; font-size: 15px; margin-bottom: 10px; text-align: center; }
-        .info-box-important { background: rgba(34, 197, 94, 0.15); border: 2px dashed #22c55e; padding: 10px; border-radius: 6px; margin-bottom: 12px; font-size: 10.5px; color: #86efac; line-height: 1.4; text-align: left; }
-        
-        .tutorial-box { background: rgba(56, 189, 248, 0.1); border: 1.5px dashed #38bdf8; padding: 8px; border-radius: 6px; margin-bottom: 10px; font-size: 10px; color: #e2e8f0; line-height: 1.4; text-align: left; }
-        .tutorial-box b { color: #38bdf8; }
-
-        .modal-content label { font-size: 11px; font-weight: bold; color: #cbd5e1; display: block; margin-top: 8px; }
-        .modal-buttons { display: flex; gap: 10px; margin-top: 15px; }
-        .btn-save { background: #22c55e; color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 11px; padding: 8px; flex: 1; }
-        .btn-close { background: #ef4444; color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 11px; padding: 8px; flex: 1; }
-        
-        .btn-magic { background: linear-gradient(135deg, #38bdf8, #0284c7); color: white; border: none; border-radius: 4px; padding: 4px 8px; font-size: 9px; font-weight: bold; cursor: pointer; margin-top: 4px; float: right; }
-
-        #profile-detail-view { display: none; width: 100%; max-width: 600px; background: #1e293b; border: 2.5px solid #22c55e; border-radius: 12px; padding: 15px; margin-top: 5px; box-shadow: 0 6px 20px rgba(0,0,0,0.6); position: relative; }
-        .back-btn { background: #475569; color: white; border: none; padding: 6px 12px; border-radius: 5px; font-weight: bold; font-size: 10px; cursor: pointer; margin-bottom: 10px; }
-        
-        .horizontal-slider-container { width: 100%; display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; gap: 0; border-radius: 8px; background: #000; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
-        .horizontal-slider-container::-webkit-scrollbar { display: none; }
-        .profile-slide-img-wrapper { flex: 0 0 100%; width: 100%; position: relative; display: flex; align-items: center; justify-content: center; background: #000; scroll-snap-align: start; scroll-snap-stop: always; border-radius: 8px; aspect-ratio: 9 / 14; }
-        .profile-slide-img { width: 100%; height: 100%; object-fit: cover; border-radius: 8px; }
-        .slider-dots { display: flex; justify-content: center; gap: 6px; margin-top: 8px; margin-bottom: 10px; }
-        .dot-btn { background: #475569; border: none; width: 28px; height: 6px; border-radius: 3px; cursor: pointer; transition: background 0.2s; }
-        .dot-btn.active { background: #22c55e; }
-        .profile-detail-name { font-size: 16px; color: #f8fafc; font-weight: bold; text-align: center; margin-bottom: 5px; }
-        .profile-detail-desc { font-size: 12px; color: #cbd5e1; text-align: center; margin-bottom: 12px; line-height: 1.4; }
-        
-        .preview-thumbs-container { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px; }
-        .thumb-box { width: 60px; height: 60px; border-radius: 6px; overflow: hidden; position: relative; border: 1.5px solid #22c55e; background: #000; }
-        .thumb-box img { width: 100%; height: 100%; object-fit: cover; }
-        .thumb-delete-btn { position: absolute; top: 2px; right: 2px; background: #ef4444; color: white; border: none; border-radius: 50%; width: 18px; height: 18px; font-size: 10px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.5); }
-
-        .admin-banner-bar { background: #ef4444; color: white; text-align: center; font-size: 11px; font-weight: bold; padding: 6px; border-radius: 6px; margin-bottom: 10px; display: none; }
-
-        .loading-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(8px); z-index: 3000; justify-content: center; align-items: center; flex-direction: column; text-align: center; color: white; padding: 20px; }
-        
-        .progress-bar-container { width: 100%; max-width: 320px; background: #1e293b; border: 2px solid #22c55e; border-radius: 10px; height: 22px; overflow: hidden; margin-top: 15px; position: relative; box-shadow: 0 0 15px rgba(34, 197, 94, 0.3); }
-        .progress-bar-fill { width: 0%; height: 100%; background: linear-gradient(135deg, #22c55e, #16a34a); transition: width 0.2s ease-in-out; }
-        .progress-text { position: absolute; width: 100%; height: 100%; top: 0; left: 0; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold; color: #ffffff; text-shadow: 0 1px 3px rgba(0,0,0,0.8); }
-
-        .loading-title { font-size: 16px; font-weight: bold; color: #22c55e; margin-bottom: 5px; letter-spacing: 0.5px; }
-        .loading-status-subtext { font-size: 11px; color: #cbd5e1; max-width: 300px; line-height: 1.4; margin-top: 8px; }
-
-        /* --- STYLES POP-UP D'INSTALLATION APPLICATION (PWA) TRÈS ÉLÉGANT --- */
-        #pwa-install-banner {
-            display: none;
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 92%;
-            max-width: 420px;
-            background: linear-gradient(145deg, #1e293b, #0f172a);
-            border: 2.5px solid #22c55e;
-            border-radius: 16px;
-            padding: 18px;
-            z-index: 999999;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.85), 0 0 20px rgba(34, 197, 94, 0.3);
-            animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            text-align: center;
-        }
-
-        @keyframes slideUp {
-            0% { transform: translate(-50%, 60px); opacity: 0; }
-            100% { transform: translate(-50%, 0); opacity: 1; }
-        }
-
-        .pwa-logo { font-size: 28px; font-weight: 900; color: #22c55e; margin-bottom: 4px; text-shadow: 0 2px 8px rgba(34,197,94,0.4); }
-        .pwa-title { font-size: 16px; font-weight: bold; color: #f8fafc; margin-bottom: 6px; }
-        .pwa-text { font-size: 12px; color: #cbd5e1; line-height: 1.4; margin-bottom: 14px; }
-        
-        .pwa-buttons { display: flex; gap: 10px; }
-        .btn-pwa-install { flex: 1; background: linear-gradient(135deg, #22c55e, #16a34a); color: white; border: none; padding: 11px; border-radius: 8px; font-weight: bold; font-size: 12px; cursor: pointer; box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4); transition: transform 0.2s; }
-        .btn-pwa-install:hover { transform: translateY(-2px); }
-        .btn-pwa-close { background: #334155; color: #94a3b8; border: none; padding: 11px 14px; border-radius: 8px; font-weight: bold; font-size: 12px; cursor: pointer; transition: color 0.2s; }
-        .btn-pwa-close:hover { color: white; }
-
-        /* --- STYLE DE LA FENÊTRE DE VÉRIFICATION D'ÂGE --- */
-        #age-gate-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(11, 15, 25, 0.97);
-            backdrop-filter: blur(12px);
-            z-index: 999999;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        body {
+            background-color: #0d1117;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            margin: 0;
             padding: 20px;
         }
-
-        .age-gate-card {
-            background: #1e293b;
-            border: 3px solid #22c55e;
-            padding: 25px 20px;
-            border-radius: 16px;
-            width: 100%;
-            max-width: 420px;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(34, 197, 94, 0.3);
-            animation: popIn 0.3s ease-out;
+        .top-nav {
+            max-width: 1200px;
+            margin: 0 auto 15px auto;
         }
-
-        @keyframes popIn {
-            0% { transform: scale(0.85); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        .age-gate-logo {
-            font-size: 32px;
-            font-weight: 900;
-            color: #22c55e;
-            margin-bottom: 10px;
-            text-shadow: 0 3px 8px rgba(0,0,0,0.5);
-        }
-
-        .age-gate-title {
-            font-size: 18px;
+        .btn-retour {
+            background-color: #21262d;
+            color: #58a6ff;
+            border: 1px solid #30363d;
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-size: 0.85rem;
             font-weight: bold;
-            color: #f8fafc;
-            margin-bottom: 12px;
-        }
-
-        .age-gate-text {
-            font-size: 12.5px;
-            color: #cbd5e1;
-            line-height: 1.5;
-            margin-bottom: 15px;
-        }
-
-        .age-gate-checkbox-container {
-            display: flex;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
             align-items: center;
-            justify-content: center;
-            gap: 8px;
-            margin-bottom: 20px;
-            font-size: 12px;
-            color: #38bdf8;
-            cursor: pointer;
-            font-weight: bold;
+            gap: 6px;
+            transition: background 0.2s;
         }
-
-        .age-gate-checkbox-container input {
-            width: 16px;
-            height: 16px;
-            accent-color: #22c55e;
-            cursor: pointer;
+        .btn-retour:hover {
+            background-color: #30363d;
+            color: #79c0ff;
         }
-
-        .age-gate-buttons {
+        h1 {
+            text-align: center;
+            color: #2ea043;
+            font-size: 1.6rem;
+            margin-bottom: 5px;
+        }
+        p.subtitle {
+            text-align: center;
+            color: #8b949e;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 30px;
+        }
+        .stats-container {
             display: flex;
-            gap: 12px;
+            justify-content: space-around;
+            margin-bottom: 30px;
+            gap: 20px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
         }
-
-        .btn-age-yes {
-            flex: 1;
-            background: linear-gradient(135deg, #22c55e, #16a34a);
-            color: white;
-            border: none;
-            padding: 12px;
+        .stat-box {
+            background: #161b22;
+            border: 2px solid #30363d;
             border-radius: 8px;
-            font-weight: bold;
-            font-size: 13px;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4);
-            transition: transform 0.2s;
-        }
-        .btn-age-yes:hover { transform: translateY(-2px); }
-
-        .btn-age-no {
+            padding: 20px;
             flex: 1;
-            background: #ef4444;
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 8px;
-            font-weight: bold;
-            font-size: 13px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
-            transition: transform 0.2s;
+            transition: all 0.2s ease;
         }
-        .btn-age-no:hover { transform: translateY(-2px); }
-
-        .admin-live-badge {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background-color: #0b0f19;
-            border-bottom: 2px solid #2ed573;
-            color: #ffffff;
-            padding: 8px 15px;
-            font-size: 13px;
-            font-weight: 600;
+        .stat-box:hover {
+            border-color: #2ea043;
+            transform: translateY(-2px);
+        }
+        .stat-box.active-filter {
+            border-color: #2ea043;
+            background: rgba(46, 160, 67, 0.1);
+        }
+        .stat-box h3 {
+            font-size: 0.8rem;
+            color: #8b949e;
+            margin: 0 0 10px 0;
+            letter-spacing: 0.5px;
+        }
+        .stat-box .number {
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: #2ea043;
+        }
+        .table-container {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 20px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            overflow-x: auto;
+        }
+        h2 {
+            font-size: 0.95rem;
+            color: #c9d1d9;
+            margin-top: 0;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid #30363d;
+            padding-bottom: 10px;
+            display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 15px;
-            z-index: 99999;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.7);
-            flex-wrap: wrap;
         }
-
-        .admin-live-badge .dot-live {
-            height: 9px;
-            width: 9px;
-            background-color: #2ed573;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            white-space: nowrap;
+        }
+        th, td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #30363d;
+            font-size: 0.85rem;
+        }
+        th {
+            color: #8b949e;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.5px;
+        }
+        tr:hover {
+            background-color: rgba(255, 255, 255, 0.02);
+        }
+        
+        /* Point vert clignotant */
+        .badge-online {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background-color: rgba(35, 134, 54, 0.2);
+            color: #4ade80;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            border: 1px solid #238636;
+        }
+        .dot-pulse {
+            width: 8px;
+            height: 8px;
+            background-color: #22c55e;
             border-radius: 50%;
-            display: inline-block;
-            box-shadow: 0 0 8px #2ed573;
-            animation: pulseLive 1.5s infinite;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
         }
 
-        @keyframes pulseLive {
-            0% { transform: scale(0.95); opacity: 0.8; }
-            50% { transform: scale(1.3); opacity: 1; box-shadow: 0 0 12px #2ed573; }
-            100% { transform: scale(0.95); opacity: 0.8; }
+        .badge-offline {
+            background-color: #6e7681;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+        .filter-info {
+            font-size: 0.75rem;
+            color: #38bdf8;
+            font-weight: normal;
+            text-transform: none;
         }
     </style>
 </head>
 <body>
 
-    <!-- --- BANNIÈRE POP-UP D'INSTALLATION DE L'APPLICATION --- -->
-    <div id="pwa-install-banner">
-        <div class="pwa-logo">💖 Bizi 💖</div>
-        <div class="pwa-title">Installer l'application Bizi</div>
-        <div class="pwa-text" id="pwa-banner-text">
-            Installe l'application sur ton téléphone pour accéder à tous les profils en un seul clic sans taper de lien !
+    <div class="top-nav">
+        <a href="index.html?admin=1" class="btn-retour">← Retour au site Bizi (Mode Admin)</a>
+    </div>
+
+    <h1>Centre de Contrôle Bizi</h1>
+    <p class="subtitle">Historique global et géolocalisation des visiteurs</p>
+
+    <!-- Boutons cliquables pour filtrer les vues -->
+    <div class="stats-container">
+        <div class="stat-box active-filter" id="box-online" onclick="filtrerVue('online')">
+            <h3>🟢 EN LIGNE (TEMPS RÉEL)</h3>
+            <div class="number" id="enLigneCount">0</div>
         </div>
-        <div class="pwa-buttons">
-            <button class="btn-pwa-install" id="pwa-install-btn" onclick="declencherInstallationPWA()">Installer maintenant</button>
-            <button class="btn-pwa-close" onclick="fermerPwaBanner()">Plus tard</button>
+        <div class="stat-box" id="box-all" onclick="filtrerVue('all')">
+            <h3>👥 TOTAL VISITEURS (30 JOURS)</h3>
+            <div class="number" id="totalCount">0</div>
         </div>
     </div>
 
-    <!-- --- FENÊTRE DE CONTRÔLE D'ÂGE AVEC OPTION DE SAUVEGARDE --- -->
-    <div id="age-gate-overlay" style="display: none;">
-        <div class="age-gate-card">
-            <div class="age-gate-logo">💖 Bizi 💖</div>
-            <div class="age-gate-title">🔞 Restriction d'accès</div>
-            <div class="age-gate-text">
-                Ce site contient des contenus réservés à un public averti et majeur. Certifiez-vous avoir au moins 18 ans pour accéder à la plateforme ?
-            </div>
-            
-            <label class="age-gate-checkbox-container">
-                <input type="checkbox" id="remember-age-checkbox" checked>
-                <span>Se souvenir de mon choix (Ne plus me demander)</span>
-            </label>
-
-            <div class="age-gate-buttons">
-                <button class="btn-age-no" onclick="refuserAge()">Non, j'ai moins de 18 ans</button>
-                <button class="btn-age-yes" onclick="validerAge()">Oui, j'ai 18 ans ou plus</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="admin-bar" class="admin-live-badge">
-        <div style="display: flex; align-items: center; gap: 10px;">
-            <div style="display: flex; align-items: center; gap: 6px;">
-                <span class="dot-live"></span>
-                <span>En ligne : <strong id="admin-live-count" style="color: #2ed573;">0</strong></span>
-            </div>
-            <span style="color: #475569;">|</span>
-            <div>
-                👥 Visiteurs (24h) : <strong id="admin-24h-count" style="color: #38bdf8;">0</strong>
-            </div>
-        </div>
-        <div>
-            <button onclick="window.open('admin_dashboard.html', '_blank')" style="background: #38bdf8; color: #0f172a; border: none; padding: 4px 10px; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 11px;">📊 Tableau de Bord</button>
-        </div>
-    </div>
-
-    <header>
-        <div class="header-title">
-            <h1>💖 Bizi 💖</h1>
-            <div class="subtitle">Paiement sécurisé et chiffré de bout en bout</div>
-        </div>
-        
-        <div class="tabs-container">
-            <button id="tab-profils" class="tab-btn active" onclick="changerOnglet('profils')">Bizi</button>
-            <button id="tab-videos" class="tab-btn" onclick="changerOnglet('videos')">Vidéo</button>
-        </div>
-
-        <div class="subtabs-container" id="subtabs-container">
-            <button id="subtab-femme" class="subtab-btn active" onclick="changerSousOnglet('femme')">Femme <span id="count-femme" class="subtab-count">(0)</span></button>
-            <button id="subtab-homme" class="subtab-btn" onclick="changerSousOnglet('homme')">Homme <span id="count-homme" class="subtab-count">(0)</span></button>
-            <button id="subtab-trans" class="subtab-btn" onclick="changerSousOnglet('trans')">Trans <span id="count-trans" class="subtab-count">(0)</span></button>
-            <button id="subtab-lesbi" class="subtab-btn" onclick="changerSousOnglet('lesbi')">Lesbi <span id="count-lesbi" class="subtab-count">(0)</span></button>
-            <button id="subtab-blanche" class="subtab-btn" onclick="changerSousOnglet('blanche')">Blanche <span id="count-blanche" class="subtab-count">(0)</span></button>
-        </div>
-
-        <button class="btn-vendor-header" id="btn-modal-action" onclick="ouvrirVendeurModal()">Cliquez ici pour ajouter un Bizi</button>
-        
-        <a href="jeux.html" class="nav-btn-jeux">
-            🎮 Espace Jeux & Réductions <span class="badge-vip-nav">VIP</span>
-        </a>
-        
-        <div class="search-container-header">
-            <input type="text" id="search-bar" class="search-input" placeholder="🔍 Rechercher..." oninput="renderGrid()">
-            <button id="admin-wipe-category-btn" class="admin-wipe-btn" onclick="supprimerToutDansCategorieCourante()">🗑️ Vider ce sous-onglet</button>
-        </div>
-    </header>
-
-    <div class="header-space"></div>
-
-    <div class="container">
-        <div class="admin-banner-bar" id="admin-active-banner">🛡️ MODE ADMINISTRATEUR ACTIF</div>
-        <div class="grid" id="video-grid"></div>
-
-        <div id="profile-detail-view">
-            <button class="back-btn" onclick="retourGrille()">← Retour</button>
-            <div id="profile-detail-content"></div>
-        </div>
-    </div>
-
-    <button class="admin-fab" onclick="gererBoutonAdmin()" title="Mode Admin">⚙️</button>
-
-    <div id="loading-modal" class="loading-overlay">
-        <div class="loading-title" id="loading-status-title">🔒 Traitement en cours...</div>
-        <div class="progress-bar-container">
-            <div class="progress-bar-fill" id="progress-fill"></div>
-            <div class="progress-text" id="progress-text">0%</div>
-        </div>
-        <div class="loading-status-subtext" id="loading-status-subtext">Préparation de l'envoi sécurisé...</div>
-    </div>
-
-    <div id="vendor-modal" class="modal-overlay">
-        <div class="modal-content" style="max-width: 450px;">
-            <h2 id="modal-title">🔥 Inscription Buzi Disponible 📸</h2>
-            <div class="info-box-important" id="modal-info-box">
-                <b>🔒 SÉCURITÉ MAXIMALE :</b><br>Toutes vos données textuelles et téléphoniques sont chiffrées avant d'être envoyées.
-            </div>
-
-            <div id="form-videos-fields" style="display: none;">
-                <div class="tutorial-box">
-                    <b>📖 Guide pour poster une vidéo :</b><br>
-                    1. Envoie l'extrait (5s) sur Telegram.<br>
-                    2. Utilise le bot ou <b>File to Link</b> pour transformer ta vidéo en lien direct <b>.mp4</b>.<br>
-                    3. Colle ce lien <b>.mp4</b> dans le champ "Lien Aperçu" ci-dessous.<br>
-                    4. Héberge la vidéo intégrale sur <b>Mega</b> et colle son lien dans le champ "Vidéo Complète".
-                </div>
-
-                <label>Catégorie Vidéo * :</label>
-                <select id="new-video-categorie" style="background: #1e293b; color: #22c55e; font-weight: bold; border: 1.5px solid #22c55e; margin-bottom: 6px;">
-                    <option value="femme">Femme</option>
-                    <option value="homme">Homme</option>
-                    <option value="trans">Trans</option>
-                    <option value="lesbi">Lesbi</option>
-                    <option value="blanche">Blanche</option>
-                </select>
-
-                <label>Nom du Partenaire / Vendeur * :</label>
-                <input type="text" id="new-partenaire" placeholder="Ex: Jean Kouassi">
-                
-                <label>Titre de la vidéo * :</label>
-                <input type="text" id="new-nom" placeholder="Ex: Bizi sensuelle à Abidjan 💎">
-                
-                <label>Lien direct de l'Aperçu (.mp4 Telegram / File to Link) * :</label>
-                <input type="text" id="new-preview-url" placeholder="https://.../video.mp4" style="border: 2px solid #22c55e; background: #0f172a; font-weight: bold; color: #22c55e;">
-
-                <label style="margin-top: 8px;">Lien de la Vidéo Complète (Mega / Drive) * :</label>
-                <input type="text" id="new-telegram" placeholder="Collez le lien Mega ici..." style="border: 2px solid #38bdf8; background: #0f172a; font-weight: bold; color: #38bdf8;">
-
-                <label>Prix (en Fr) * :</label>
-                <input type="number" id="new-prix" placeholder="1500" step="100">
-                
-                <label>Qualité / Niveau de la vidéo :</label>
-                <select id="new-qualite">
-                    <option value="premium">💎 Ultra / Premium (Diamant)</option>
-                    <option value="moyen">🥇 Moyen / Standard (Or)</option>
-                    <option value="basique">🥉 Basique (Bronze)</option>
-                </select>
-
-                <label>Votre Numéro WhatsApp * :</label>
-                <input type="text" id="new-whatsapp" class="input-placeholder-rdm" placeholder="2250700000000">
-            </div>
-
-            <div id="form-profils-fields">
-                <label>Catégorie Bizi (Sélectionnable) * :</label>
-                <select id="profil-categorie" style="background: #1e293b; color: #22c55e; font-weight: bold; border: 1.5px solid #22c55e;" onchange="genererDescriptionAleatoire()">
-                    <option value="femme">Femme</option>
-                    <option value="homme">Homme</option>
-                    <option value="trans">Trans</option>
-                    <option value="lesbi">Lesbi</option>
-                    <option value="blanche">Blanche</option>
-                </select>
-
-                <label>Votre Nom / Pseudo * :</label>
-                <input type="text" id="profil-nom" placeholder="Ex: Vanessa Bizi 👑">
-
-                <label>Vos Photos HD (Max 5 photos) * :</label>
-                <input type="file" id="profil-fichiers-input" accept="image/*" multiple onchange="apercuMiniaturesPhotos(event)" style="background: #1e293b; border: 1.5px dashed #22c55e; padding: 6px; cursor: pointer;">
-                
-                <div class="preview-thumbs-container" id="preview-thumbs-box"></div>
-
-                <label style="margin-top: 10px;">Description sensuelle & professionnelle (Modifiable) * :</label>
-                <textarea id="profil-desc" placeholder="Génération automatique avec emojis..."></textarea>
-                <button type="button" class="btn-magic" onclick="genererDescriptionAleatoire()">🎲 Générer une autre description</button>
-                <div style="clear:both;"></div>
-
-                <label>Votre Numéro de Téléphone * :</label>
-                <input type="text" id="profil-whatsapp" class="input-placeholder-rdm" placeholder="2250500000000">
-            </div>
-
-            <div class="modal-buttons" id="modal-buttons-container">
-                <button class="btn-save" onclick="compresserEtPublierProfil()">Publier mon profil</button>
-                <button class="btn-close" onclick="fermerVendeurModal()">Fermer</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="admin-edit-video-modal" class="modal-overlay" style="z-index: 2500;">
-        <div class="modal-content" style="max-width: 450px;">
-            <h2>✏️ Modifier la Vidéo (Admin)</h2>
-            <input type="hidden" id="edit-v-real-id">
-
-            <label>Catégorie Vidéo :</label>
-            <select id="edit-v-cat" style="background:#1e293b; color:#22c55e; border:1.5px solid #22c55e; padding:5px; border-radius:5px; margin-bottom:6px; font-weight:bold;">
-                <option value="femme">Femme</option>
-                <option value="homme">Homme</option>
-                <option value="trans">Trans</option>
-                <option value="lesbi">Lesbi</option>
-                <option value="blanche">Blanche</option>
-            </select>
-            
-            <label>Titre de la vidéo :</label>
-            <input type="text" id="edit-v-nom">
-
-            <label>Lien direct de l'Aperçu (.mp4) :</label>
-            <input type="text" id="edit-v-preview" style="border: 2px solid #22c55e; background: #0f172a; font-weight: bold; color: #22c55e;">
-
-            <label>Lien Mega / Drive :</label>
-            <input type="text" id="edit-v-mega" style="border: 2px solid #38bdf8; background: #0f172a; font-weight: bold; color: #38bdf8;">
-
-            <label>Prix (en Fr) :</label>
-            <input type="number" id="edit-v-prix">
-
-            <label>Qualité :</label>
-            <select id="edit-v-qualite" style="background:#1e293b; color:white; border:1.5px solid #22c55e; padding:5px; border-radius:5px;">
-                <option value="premium">💎 Ultra / Premium (Diamant)</option>
-                <option value="moyen">🥇 Moyen / Standard (Or)</option>
-                <option value="basique">🥉 Basique (Bronze)</option>
-            </select>
-
-            <label>Numéro WhatsApp :</label>
-            <input type="text" id="edit-v-wa">
-
-            <div class="modal-buttons" style="margin-top: 15px;">
-                <button class="btn-save" onclick="sauvegarderEditionVideoAdmin()">💾 Enregistrer</button>
-                <button class="btn-close" style="background:#ef4444;" onclick="supprimerVideoAdminActive()">🗑️ Supprimer</button>
-                <button class="btn-close" onclick="fermerModalEditVideo()">Fermer</button>
-            </div>
-        </div>
+    <div class="table-container">
+        <h2>
+            <span id="table-title">Visiteurs en Ligne en Temps Réel</span>
+            <span class="filter-info" id="filter-indicator">Affichage : En ligne uniquement</span>
+        </h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Statut</th>
+                    <th>Adresse IP</th>
+                    <th>Pays</th>
+                    <th>Appareil</th>
+                    <th>Navigateur</th>
+                    <th>Langue</th>
+                    <th>Temps Passé</th>
+                    <th>Dernière Visite</th>
+                </tr>
+            </thead>
+            <tbody id="visiteursTableBody">
+                <!-- Injection dynamique -->
+            </tbody>
+        </table>
     </div>
 
     <script>
-        const API_URL = 'https://midnightblue-manatee-329921.hostingersite.com/api.php';
-        const API_VIDEOS_URL = 'https://midnightblue-manatee-329921.hostingersite.com/api_videos.php';
-        const API_PRESENCE_URL = 'https://midnightblue-manatee-329921.hostingersite.com/presence.php';
+        const API_URL = 'https://midnightblue-manatee-329921.hostingersite.com/presence.php';
+        let donneesGlobales = [];
+        let filtreActif = 'online';
 
-        // --- GESTION DE L'INSTALLATION APPLICATION (PWA) ---
-        let deferredPrompt = null;
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            // Afficher automatiquement la bannière sur Android
-            setTimeout(() => {
-                document.getElementById('pwa-install-banner').style.display = 'block';
-            }, 1000);
-        });
+        function filtrerVue(type) {
+            filtreActif = type;
+            document.getElementById('box-online').classList.remove('active-filter');
+            document.getElementById('box-all').classList.remove('active-filter');
 
-        // Détection iPhone / Safari pour afficher la consigne d'installation manuelle
-        function verifierModeIOS() {
-            const isIos = /iphone|ipad|ipod/.test(window.navigator.userAgent.toLowerCase());
-            const isInStandaloneMode = ('standalone' in window.navigator) && (window.navigator.standalone);
-            if (isIos && !isInStandaloneMode) {
-                const bannerText = document.getElementById('pwa-banner-text');
-                if (bannerText) {
-                    bannerText.innerHTML = `Pour installer l'application sur ton iPhone :<br>Appuie sur le bouton de partage <b><svg style="display:inline;vertical-align:middle;" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13"/></svg></b> puis sur <b>"Sur l'écran d'accueil"</b>.`;
-                }
-                document.getElementById('pwa-install-btn').style.display = 'none';
-                setTimeout(() => {
-                    document.getElementById('pwa-install-banner').style.display = 'block';
-                }, 1000);
-            }
-        }
-        window.addEventListener('load', verifierModeIOS);
-
-        // Affichage de secours sur Android si l'événement avant l'installation tarde ou est déjà passé
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                const isIos = /iphone|ipad|ipod/.test(window.navigator.userAgent.toLowerCase());
-                const isInStandaloneMode = ('standalone' in window.navigator) && (window.navigator.standalone);
-                if (!isIos && !isInStandaloneMode && !window.matchMedia('(display-mode: standalone)').matches) {
-                    document.getElementById('pwa-install-banner').style.display = 'block';
-                }
-            }, 1500);
-        });
-
-        function declencherInstallationPWA() {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                deferredPrompt.userChoice.then((choiceResult) => {
-                    if (choiceResult.outcome === 'accepted') {
-                        console.log('Utilisateur a accepté l\'installation PWA');
-                    }
-                    deferredPrompt = null;
-                    document.getElementById('pwa-install-banner').style.display = 'none';
-                });
+            if (type === 'online') {
+                document.getElementById('box-online').classList.add('active-filter');
+                document.getElementById('table-title').innerText = "Visiteurs en Ligne en Temps Réel";
+                document.getElementById('filter-indicator').innerText = "Affichage : En ligne uniquement";
             } else {
-                alert("Pour installer l'application, utilise le menu de ton navigateur (les 3 points en haut à droite) et sélectionne 'Installer l'application' ou 'Ajouter à l'écran d'accueil'.");
+                document.getElementById('box-all').classList.add('active-filter');
+                document.getElementById('table-title').innerText = "Historique Total (30 Jours)";
+                document.getElementById('filter-indicator').innerText = "Affichage : Tous les visiteurs";
             }
+            afficherTableau();
         }
 
-        function fermerPwaBanner() {
-            document.getElementById('pwa-install-banner').style.display = 'none';
-        }
-
-        // --- VÉRIFICATION DE LA SAUVEGARDE DE L'ÂGE AU CHARGEMENT ---
-        (function verifierAgeMemiseEnCache() {
-            const ageVerifie = localStorage.getItem('bizi_age_verified');
-            if (!ageVerifie) {
-                document.getElementById('age-gate-overlay').style.display = 'flex';
-            }
-        })();
-
-        function validerAge() {
-            const rememberCheckbox = document.getElementById('remember-age-checkbox');
-            if (rememberCheckbox && rememberCheckbox.checked) {
-                localStorage.setItem('bizi_age_verified', 'true');
-            }
-            document.getElementById('age-gate-overlay').style.display = 'none';
-        }
-
-        function refuserAge() {
-            document.body.innerHTML = `
-                <div style="height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; background: #0b0f19; color: #f8fafc; text-align: center; padding: 20px;">
-                    <h1 style="color: #ef4444; font-size: 24px; margin-bottom: 15px;">⛔ Accès Refusé</h1>
-                    <p style="color: #cbd5e1; max-width: 400px; line-height: 1.5; font-size: 14px;">
-                        Vous devez avoir 18 ans ou plus pour accéder au site Bizi. Votre accès a été bloqué.
-                    </p>
-                </div>
-            `;
-        }
-
-        function getDeviceToken() {
-            let token = localStorage.getItem('bizi_device_token');
-            if (!token) {
-                token = 'dev_' + Math.random().toString(36).substring(2) + Date.now().toString(36);
-                localStorage.setItem('bizi_device_token', token);
-            }
-            return token;
-        }
-
-        function envoyerPresenceAutomatique() {
-            const token = getDeviceToken();
-            fetch(API_PRESENCE_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ device_token: token })
-            })
-            .then(res => res.json())
-            .catch(err => console.error("Erreur de présence:", err));
-        }
-
-        envoyerPresenceAutomatique();
-        setInterval(envoyerPresenceAutomatique, 15000);
-
-        // --- DESCRIPTIONS MAGIQUES ENRICHIES DANS LE PUR JARGON IVOIRIEN (NOUCHI & ULTRA SENSUEL) ---
-        const descriptionsMagiques = {
-            femme: [
-                "🔥 Waii mon boss de Cocody ! J'ai grandement écarté mon string, mon vagin est hyper trempé et disponible, viens taper dans mon utérus bien profond ! 💋💯",
-                "🇨🇮 À Marcory zone 4, gros calvaire ce soir ! Mon vagin est mouillé et disponible, viens taper dans mon utérus jusqu'à ce que je demande grâce. 🍑👑",
-                "✨ À Yopougon Side, bébé mon vagin est bien chaud et disponible, viens taper dans mon utérus secouer les fesses proprement ! 🔥🍾",
-                "💃 Mon patron de Treichville, j'ai déjà positionné mon string de côté, mon vagin est disponible, viens taper dans mon utérus toute la nuit ! 📱💎",
-                "💋 Salut mon vrai cœur à Abidjan, mon vagin est hyper disponible et juteux, viens taper dans mon utérus pour kiffer grave ! 🔥",
-                "🔥 Bébé viens à Marcory ! Mon vagin est dispo, viens taper dans mon utérus pour un max de sueur et de plaisir. 🥂💯",
-                "✨ Cocody Deux-Plateaux : J'ai écarté mon string, mon vagin est disponible, viens taper dans mon utérus mon boss de la haute ! 🚀",
-                "👑 La reine d'Abidjan : Bébé, mon vagin est prêt et disponible, viens taper dans mon utérus sans réfléchir. 🍑🔥",
-                "🥂 Salut le vieux père à Yopougon, j'ai écarté mon string, mon vagin est disponible, viens taper dans mon utérus ! ✨",
-                "🔥 Bébé à Adjamé, mon vagin est dispo, viens taper dans mon utérus pour une partie très sale et torride ! 💋",
-                "💎 Abidjan VIP : J'ai écarté mon string, mon vagin est disponible, viens taper dans mon utérus de champion ! 🔥",
-                "🔥 Mon chéri à Marcory, mon vagin est disponible, viens taper dans mon utérus en cachette dans le noir ! 💯💦",
-                "✨ Bébé, mon vagin est disponible et mouillé, viens taper dans mon utérus à Abidjan quartier chic ! 🚀",
-                "👑 Cocody Riviera : J'ai écarté mon string, mon vagin est disponible, viens taper dans mon utérus avec force ! 🔥",
-                "🔥 Bébé à Abidjan, mon vagin est dispo, viens taper dans mon utérus et me posséder sans pitié ! 💋",
-                "✨ Treichville Arrassat : J'ai écarté mon string, mon vagin est disponible, viens taper dans mon utérus ! 🍾",
-                "🔥 Salut mon roi, mon vagin est disponible, viens taper dans mon utérus et me faire crier fort ! 💎",
-                "🇨🇮 Marcory résidentiel : Bébé, mon vagin est hyper disponible, viens taper dans mon utérus pour kiffer ! 🔥",
-                "✨ Bébé à Abidjan, j'ai écarté mon string, mon vagin est dispo, viens taper dans mon utérus bien au chaud ! 🥂",
-                "🔥 Yopougon Side : Bébé, mon vagin est disponible, viens taper dans mon utérus et me secouer comme un piment ! 🍑💯",
-                "👑 Salut le boss, mon vagin est disponible, viens taper dans mon utérus pour suer ensemble ! ✨🔥",
-                "🔥 Bébé à Abidjan, mon vagin est disponible, viens taper dans mon utérus sur mon lit défait ! 💋",
-                "✨ Cocody Angré : Mon vagin est disponible, viens taper dans mon utérus, je t'attends de pied ferme ! 🍾🔥",
-                "🔥 Bébé, mon vagin est disponible, viens taper dans mon utérus et me dompter sévère ! 💪",
-                "💎 Marcory : J'ai grandement écarté mon string, mon vagin est disponible, viens taper dans mon utérus ! 🔥✨",
-                "🔥 Bébé à Abidjan, mon vagin est disponible, viens taper dans mon utérus tout cru sans capote ! 💋",
-                "✨ Yopougon : Bébé, mon vagin est disponible, viens taper dans mon utérus jusqu'à l'aube ! 🍑🔥",
-                "👑 Salut mon cœur, mon vagin est disponible, viens taper dans mon utérus en direct live ! 🥂",
-                "🔥 Bébé à Abidjan, mon vagin est disponible, viens taper dans mon utérus et me faire jouir en l'air ! 💯✨",
-                "✨ Prête sur Abidjan, mon vagin est disponible, viens taper dans mon utérus après ton dépôt WhatsApp ! 🔥🚀",
-                "🔥 Abidjan, mon vagin est trempé et disponible, viens taper dans mon utérus mon vieux père ! 💋",
-                "✨ Marcory, j'ai écarté mon string, mon vagin est disponible, viens taper dans mon utérus ! 🔥",
-                "👑 Yopougon, mon vagin est dispo, viens taper dans mon utérus pour un gros kiff ! 🍑",
-                "🔥 Cocody, mon vagin est ouvert et disponible, viens taper dans mon utérus ! 💎",
-                "✨ Treichville, mon vagin est disponible, viens taper dans mon utérus sans stress ! 🥂",
-                "🔥 Abidjan, mon vagin est dispo, viens taper dans mon utérus toute la nuit ! 💯",
-                "✨ Marcory, j'ai écarté mon string, mon vagin est disponible, viens taper dans mon utérus ! 🔥",
-                "👑 Yopougon, mon vagin est chaud et disponible, viens taper dans mon utérus ! 🚀",
-                "🔥 Cocody, mon vagin est disponible, viens taper dans mon utérus mon boss ! 💋",
-                "✨ Abidjan, mon vagin est dispo, viens taper dans mon utérus pour du lourd ! 💎",
-                "🔥 Marcory, mon vagin est disponible, viens taper dans mon utérus ! 🔥",
-                "✨ Yopougon, mon vagin est dispo, viens taper dans mon utérus ! 🍑",
-                "👑 Cocody, mon vagin est disponible, viens taper dans mon utérus ! ✨",
-                "🔥 Abidjan, mon vagin est chaud, viens taper dans mon utérus ! 💯",
-                "✨ Treichville, mon vagin est dispo, viens taper dans mon utérus ! 🥂",
-                "🔥 Marcory, mon vagin est disponible, viens taper dans mon utérus ! 🔥",
-                "✨ Yopougon, mon vagin est ouvert, viens taper dans mon utérus ! 🚀",
-                "👑 Cocody, mon vagin est dispo, viens taper dans mon utérus ! 💎",
-                "🔥 Abidjan, mon vagin est disponible, viens taper dans mon utérus ! 💋",
-                "✨ Marcory, mon vagin est chaud et dispo, viens taper dans mon utérus ! 🔥"
-            ],
-            homme: [
-                "💪 Mâle LGBT, mon cul est disponible et bien serré, viens me sodomiser et taper dans mon rectum à Abidjan ! 🔥💯",
-                "😎 Bébé LGBT, mon cul est disponible, viens me sodomiser et viens taper dans mon rectum sans aucun tabou ! 🚀👑",
-                "🔥 BG propre, mon cul est disponible, viens me sodomiser et taper dans mon rectum toute la nuit ! 💎✨",
-                "💪 Salut mon chéri, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum à Abidjan ! 🔥💦",
-                "🔥 Mâle LGBT d'Abidjan, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 👑💯",
-                "💪 Bébé, mon cul est disponible, viens me sodomiser et viens taper dans mon rectum à Marcory ! 🔥🚀",
-                "😎 Cocody LGBT : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 💎✨",
-                "🔥 Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum pour un max de kiff ! 🔥💪",
-                "💪 Abidjan LGBT : Mon cul est disponible, viens me sodomiser et viens taper dans mon rectum ! 👑",
-                "🔥 Bébé, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum en privé ! 🚀🔥",
-                "💪 Marcory : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum de force ! 💯",
-                "🔥 Abidjan LGBT : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 💎✨",
-                "💪 Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum sans hésiter ! 🔥",
-                "🔥 Yopougon LGBT : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 👑🚀",
-                "💪 Bébé, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🔥💯",
-                "🔥 Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum jusqu'à l'épuisement ! 💎",
-                "💪 Abidjan VIP LGBT : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🔥",
-                "🔥 Bébé, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🚀✨",
-                "💪 Treichville LGBT : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🔥💪",
-                "🔥 Bébé, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum à Abidjan ! 👑💎",
-                "💪 Mâle LGBT, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🔥",
-                "🔥 Cocody : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🚀💯",
-                "💪 Bébé, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🔥✨",
-                "🔥 Marcory LGBT : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 💎👑",
-                "💪 Bébé, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🔥",
-                "🔥 Abidjan : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🚀",
-                "💪 Bébé, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🔥💯",
-                "🔥 Cocody / Deux Plateaux : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 💎",
-                "💪 Mâle LGBT, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🔥✨",
-                "🔥 Abidjan : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum sur WhatsApp ! 🚀🔥",
-                "💪 Mâle LGBT, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! 🔥",
-                "😎 Abidjan, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 👑",
-                "🔥 Marcory, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! 💎",
-                "💪 Yopougon, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 🚀",
-                "🔥 Cocody, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! 💯",
-                "💪 Treichville, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! ✨",
-                "🔥 Abidjan, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! 🔥",
-                "💪 Marcory, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 🍑",
-                "🔥 Yopougon, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! 💎",
-                "💪 Cocody, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 🚀",
-                "🔥 Abidjan, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! 🔥",
-                "💪 Marcory, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 💯",
-                "🔥 Yopougon, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! ✨",
-                "💪 Cocody, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 👑",
-                "🔥 Abidjan, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! 🚀",
-                "💪 Marcory, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 🔥",
-                "🔥 Yopougon, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! 💎",
-                "💪 Cocody, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 💯",
-                "🔥 Abidjan, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! ✨",
-                "💪 Marcory, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 🔥"
-            ],
-            trans: [
-                "🦋 Bébé trans à Abidjan, mon cul est disponible et chaud, viens me sodomiser, viens taper dans mon rectum ! ✨🔥",
-                "👑 Sensuelle et VIP, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum sans tabou ! 💫💋",
-                "🔥 Reine de la nuit d'Abidjan, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🍾",
-                "🦋 Abidjan : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! ✨🔥",
-                "👑 Bébé, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 💋",
-                "🔥 Chic et coquine, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 💫🥂",
-                "🦋 Abidjan : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🔥✨",
-                "👑 Beauté fatale, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🍾💋",
-                "🔥 Abidjan : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 💫🔥",
-                "🦋 Douceur trans, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! ✨💎",
-                "🦋 Trans Abidjan, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! 🔥",
-                "👑 Marcory, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! ✨",
-                "🔥 Yopougon, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! 💫",
-                "🦋 Cocody, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 💎",
-                "👑 Abidjan, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! 🔥",
-                "🔥 Treichville, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 🍾",
-                "🦋 Marcory, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! ✨",
-                "👑 Yopougon, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 💋",
-                "🔥 Cocody, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! 💫",
-                "🦋 Abidjan, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 🔥",
-                "🦋 Trans Abidjan, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! 🔥",
-                "👑 Marcory, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! ✨",
-                "🔥 Yopougon, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! 💫",
-                "🦋 Cocody, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 💎",
-                "👑 Abidjan, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! 🔥",
-                "🔥 Treichville, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 🍾",
-                "🦋 Marcory, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! ✨",
-                "👑 Yopougon, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 💋",
-                "🔥 Cocody, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! 💫",
-                "🦋 Abidjan, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 🔥",
-                "🦋 Trans Abidjan, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! 🔥",
-                "👑 Marcory, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! ✨",
-                "🔥 Yopougon, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! 💫",
-                "🦋 Cocody, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 💎",
-                "👑 Abidjan, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! 🔥",
-                "🔥 Treichville, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 🍾",
-                "🦋 Marcory, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! ✨",
-                "👑 Yopougon, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 💋",
-                "🔥 Cocody, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! 💫",
-                "🦋 Abidjan, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 🔥",
-                "🦋 Trans Abidjan, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! 🔥",
-                "👑 Marcory, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! ✨",
-                "🔥 Yopougon, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! 💫",
-                "🦋 Cocody, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 💎",
-                "👑 Abidjan, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! 🔥",
-                "🔥 Treichville, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 🍾",
-                "🦋 Marcory, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! ✨",
-                "👑 Yopougon, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 💋",
-                "🔥 Cocody, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! 💫",
-                "🦋 Abidjan, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 🔥"
-            ],
-            lesbi: [
-                "👭 Bébé lesbienne à Abidjan, viens lécher mon clitoris, fusion féminine torride et mouillée garantie ! 🔥✨",
-                "✨ Entre filles à Marcory, viens lécher mon clitoris, câlins sensuels et volupté pure ! 🍑🔥",
-                "🔥 Connexion entre filles, viens lécher mon clitoris, plaisir intense rien que pour toi mon cœur ! 💎💖",
-                "👭 Abidjan : Viens lécher mon clitoris, complicité féminine et frissons garantis toute la nuit ! 🔥✨",
-                "✨ Douceur et baisers à Cocody, viens lécher mon clitoris, notre univers lesbien t'attend ! 🍑🥂",
-                "🔥 Plaisir pur entre filles, viens lécher mon clitoris, viens kiffer avec nous en privé ! 💎💖",
-                "👭 Abidjan : Viens lécher mon clitoris, fusion totale et câlins bien chauds ! 🔥✨",
-                "✨ Entre filles sans tabou, viens lécher mon clitoris, viens vibrer grave ! 🍑💖",
-                "🔥 Volupté féminine, viens lécher mon clitoris, rejoins notre univers à Yopougon ! 💎✨",
-                "👭 Le paradis lesbien, viens lécher mon clitoris, douceur torride garantie ! 🔥💖",
-                "👭 Lesbienne Abidjan, viens lécher mon clitoris ! 🔥",
-                "✨ Marcory, viens lécher mon clitoris ! 💖",
-                "🔥 Yopougon, viens lécher mon clitoris ! 🍑",
-                "👭 Cocody, viens lécher mon clitoris ! ✨",
-                "✨ Abidjan, viens lécher mon clitoris ! 🔥",
-                "🔥 Treichville, viens lécher mon clitoris ! 💖",
-                "👭 Marcory, viens lécher mon clitoris ! ✨",
-                "✨ Yopougon, viens lécher mon clitoris ! 🍑",
-                "🔥 Cocody, viens lécher mon clitoris ! 🔥",
-                "👭 Abidjan, viens lécher mon clitoris ! 💖",
-                "👭 Lesbienne Abidjan, viens lécher mon clitoris ! 🔥",
-                "✨ Marcory, viens lécher mon clitoris ! 💖",
-                "🔥 Yopougon, viens lécher mon clitoris ! 🍑",
-                "👭 Cocody, viens lécher mon clitoris ! ✨",
-                "✨ Abidjan, viens lécher mon clitoris ! 🔥",
-                "🔥 Treichville, viens lécher mon clitoris ! 💖",
-                "👭 Marcory, viens lécher mon clitoris ! ✨",
-                "✨ Yopougon, viens lécher mon clitoris ! 🍑",
-                "🔥 Cocody, viens lécher mon clitoris ! 🔥",
-                "👭 Abidjan, viens lécher mon clitoris ! 💖",
-                "👭 Lesbienne Abidjan, viens lécher mon clitoris ! 🔥",
-                "✨ Marcory, viens lécher mon clitoris ! 💖",
-                "🔥 Yopougon, viens lécher mon clitoris ! 🍑",
-                "👭 Cocody, viens lécher mon clitoris ! ✨",
-                "✨ Abidjan, viens lécher mon clitoris ! 🔥",
-                "🔥 Treichville, viens lécher mon clitoris ! 💖",
-                "👭 Marcory, viens lécher mon clitoris ! ✨",
-                "✨ Yopougon, viens lécher mon clitoris ! 🍑",
-                "🔥 Cocody, viens lécher mon clitoris ! 🔥",
-                "👭 Abidjan, viens lécher mon clitoris ! 💖",
-                "👭 Lesbienne Abidjan, viens lécher mon clitoris ! 🔥",
-                "✨ Marcory, viens lécher mon clitoris ! 💖",
-                "🔥 Yopougon, viens lécher mon clitoris ! 🍑",
-                "👭 Cocody, viens lécher mon clitoris ! ✨",
-                "✨ Abidjan, viens lécher mon clitoris ! 🔥",
-                "🔥 Treichville, viens lécher mon clitoris ! 💖",
-                "👭 Marcory, viens lécher mon clitoris ! ✨",
-                "✨ Yopougon, viens lécher mon clitoris ! 🍑",
-                "🔥 Cocody, viens lécher mon clitoris ! 🔥",
-                "👭 Abidjan, viens lécher mon clitoris ! 💖"
-            ],
-            blanche: [
-                "🌟 Européenne à Abidjan, bébé, charme exotique et dispo VIP rien que pour toi 🥂🔥",
-                "💎 Charme européen, sensuelle et raffinée, viens découvrir mes vidéos privées haut de gamme ! ✨🍾",
-                "✨ Élégance européenne, pour les connaisseurs cherchant du standing à Abidjan ! 👑🔥",
-                "🌟 Douceur d'Europe, viens passer un moment inoubliable avec moi 🥂✨",
-                "💎 Européenne propre et coquine, viens goûter au luxe haut de gamme ! 🍾🔥",
-                "✨ Sensualité européenne, mes dispos VIP vont te faire chavirer ! 👑🥂",
-                "🌟 Beauté lumineuse, viens vivre une expérience unique à Abidjan ! 🔥✨",
-                "💎 Charme et discrétion européenne, mes secrets les plus chauds ! 🍾👑",
-                "✨ Douce et irrésistible, viens t'évader avec moi dès ce soir ! 🥂🔥",
-                "🌟 L'élégance VIP européenne en toute discrétion à Abidjan ! 💎✨",
-                "🌟 Européenne Abidjan, dispo VIP ! 🥂",
-                "💎 Marcory, charme européen et luxe ! ✨",
-                "✨ Cocody, douceur d'Europe ! 🍾",
-                "🌟 Abidjan, élégance VIP ! 🔥",
-                "💎 Yopougon, charme européen ! 🥂",
-                "✨ Treichville, dispo VIP ! 👑",
-                "🌟 Marcory, douceur d'Europe ! 🔥",
-                "💎 Cocody, charme européen ! ✨",
-                "✨ Abidjan, élégance VIP ! 🍾",
-                "🌟 Yopougon, dispo VIP ! 🥂",
-                "🌟 Européenne Abidjan, dispo VIP ! 🥂",
-                "💎 Marcory, charme européen et luxe ! ✨",
-                "✨ Cocody, douceur d'Europe ! 🍾",
-                "🌟 Abidjan, élégance VIP ! 🔥",
-                "💎 Yopougon, charme européen ! 🥂",
-                "✨ Treichville, dispo VIP ! 👑",
-                "🌟 Marcory, douceur d'Europe ! 🔥",
-                "💎 Cocody, charme européen ! ✨",
-                "✨ Abidjan, élégance VIP ! 🍾",
-                "🌟 Yopougon, dispo VIP ! 🥂",
-                "🌟 Européenne Abidjan, dispo VIP ! 🥂",
-                "💎 Marcory, charme européen et luxe ! ✨",
-                "✨ Cocody, douceur d'Europe ! 🍾",
-                "🌟 Abidjan, élégance VIP ! 🔥",
-                "💎 Yopougon, charme européen ! 🥂",
-                "✨ Treichville, dispo VIP ! 👑",
-                "🌟 Marcory, douceur d'Europe ! 🔥",
-                "💎 Cocody, charme européen ! ✨",
-                "✨ Abidjan, élégance VIP ! 🍾",
-                "🌟 Yopougon, dispo VIP ! 🥂",
-                "🌟 Européenne Abidjan, dispo VIP ! 🥂",
-                "💎 Marcory, charme européen et luxe ! ✨",
-                "✨ Cocody, douceur d'Europe ! 🍾",
-                "🌟 Abidjan, élégance VIP ! 🔥",
-                "💎 Yopougon, charme européen ! 🥂",
-                "✨ Treichville, dispo VIP ! 👑",
-                "🌟 Marcory, douceur d'Europe ! 🔥",
-                "💎 Cocody, charme européen ! ✨",
-                "✨ Abidjan, élégance VIP ! 🍾",
-                "🌟 Yopougon, dispo VIP ! 🥂"
-            ]
-        };
-
-        function genererDescriptionAleatoire() {
-            let selectEl = document.getElementById('profil-categorie');
-            let cat = selectEl ? selectEl.value : 'femme';
-            let liste = descriptionsMagiques[cat] || descriptionsMagiques['femme'];
-            let choixAleatoire = liste[Math.floor(Math.random() * liste.length)];
-            let descBox = document.getElementById('profil-desc');
-            if (descBox) { descBox.value = choixAleatoire; }
-        }
-
-        function chiffrer(texte) {
-            if (!texte) return "";
-            try { return "BIZI_ENC:" + btoa(encodeURIComponent(texte)); } catch (e) { return texte; }
-        }
-
-        function dechiffrer(texteEnc) {
-            if (!texteEnc) return "";
-            if (typeof texteEnc === 'string' && !texteEnc.startsWith("BIZI_ENC:")) { return texteEnc; }
+        async function chargerDonnees() {
             try {
-                let cleanBase64 = texteEnc.replace("BIZI_ENC:", "");
-                return decodeURIComponent(atob(cleanBase64));
-            } catch (e) { return texteEnc; }
-        }
+                const response = await fetch(API_URL);
+                const data = await response.json();
 
-        (function nettoyerTracesPerimees() {
-            const now = Date.now();
-            const oneHour = 60 * 60 * 1000;
-            for (let i = 0; i < localStorage.length; i++) {
-                let key = localStorage.key(i);
-                if (key && key.startsWith("bizi_unlock_time_")) {
-                    let unlockTime = parseInt(localStorage.getItem(key), 10);
-                    if (now - unlockTime > oneHour) {
-                        let realId = key.replace("bizi_unlock_time_", "");
-                        localStorage.removeItem(`bizi_unlocked_${realId}`);
-                        localStorage.removeItem(key);
-                    }
+                if (data.status === 'success') {
+                    document.getElementById('enLigneCount').innerText = data.en_ligne;
+                    document.getElementById('totalCount').innerText = data.total_30j;
+                    donneesGlobales = data.visiteurs;
+                    afficherTableau();
                 }
-            }
-        })();
-
-        function formaterNumeroWhatsApp(num) {
-            let clean = String(num || '').replace(/\D/g, '');
-            if (!clean.startsWith('225')) { clean = '225' + clean; }
-            return clean;
-        }
-
-        function genererNumeroAleatoire() {
-            const prefixes = ["22507", "22505", "22501", "22556", "22549", "22503"];
-            const prefixeChoisi = prefixes[Math.floor(Math.random() * prefixes.length)];
-            const suiteChiffres = Math.floor(10000000 + Math.random() * 90000000);
-            return prefixeChoisi + String(suiteChiffres).substring(0, 8);
-        }
-
-        function mettreAJourPlaceholdersAleatoires() {
-            const numeroAleatoire = genererNumeroAleatoire();
-            document.querySelectorAll(".input-placeholder-rdm").forEach(input => {
-                input.placeholder = numeroAleatoire;
-            });
-        }
-
-        let ongletActif = "profils";
-        let sousOngletActif = "femme";
-        let vueDetailleeActive = false;
-        let adminModeConnecte = false;
-        let carouselIntervals = {};
-        let countdownInterval = null;
-
-        const ADMIN_PASS_1_ENCODED = "MDcwOTE1MjdhZG1pbg=="; 
-        const ADMIN_CODE_2_ENCODED = "Qm9saQ==";             
-
-        function verifierSecurite(saisi, encodeAttendu) {
-            if (!saisi) return false;
-            const cleanSaisi = saisi.trim();
-            try { return btoa(cleanSaisi) === encodeAttendu; } catch (e) { return false; }
-        }
-
-        const trenteJoursMs = 30 * 24 * 60 * 60 * 1000;
-        let profilsData = [];
-        let scenesData = [];
-        let adminPhotosTemp = [];
-
-        function chargerDonneesDepuisAPI() {
-            fetch(API_URL)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.status === 'success' && Array.isArray(data.data)) {
-                        profilsData = data.data.map(p => {
-                            let parsedPhotos = [];
-                            try {
-                                if (typeof p.photos === 'string') {
-                                    let cleaned = p.photos.trim();
-                                    if (cleaned.startsWith('[')) { parsedPhotos = JSON.parse(cleaned); } 
-                                    else { parsedPhotos = [cleaned]; }
-                                } else if (Array.isArray(p.photos)) {
-                                    parsedPhotos = p.photos;
-                                }
-                            } catch(e) { parsedPhotos = [p.photos]; }
-
-                            parsedPhotos = parsedPhotos.map(img => {
-                                if (img && typeof img === 'string') {
-                                    let cleanImg = img.trim();
-                                    if (cleanImg.startsWith('"') && cleanImg.endsWith('"')) { cleanImg = cleanImg.slice(1, -1); }
-                                    if (!cleanImg.startsWith("data:image")) { cleanImg = "data:image/jpeg;base64," + cleanImg; }
-                                    return cleanImg;
-                                }
-                                return null;
-                            }).filter(img => img !== null && img.length > 50);
-
-                            return {
-                                id: parseInt(p.id, 10),
-                                cat: p.cat ? p.cat.trim().toLowerCase() : 'femme',
-                                vip: p.vip || 'standard',
-                                nom: dechiffrer(p.nom),
-                                photos: parsedPhotos,
-                                desc: dechiffrer(p.desc),
-                                wa: formaterNumeroWhatsApp(dechiffrer(p.telephone)),
-                                expireAt: new Date(p.created_at).getTime() + trenteJoursMs
-                            };
-                        });
-                    }
-                    mettreAJourCompteursOnglets();
-                    renderGrid();
-                    verifierLienPartageDirect();
-                })
-                .catch(err => console.error("Erreur chargement profils:", err));
-
-            fetch(API_VIDEOS_URL)
-                .then(response => response.json())
-                .then(data => {
-                    let rawVideos = [];
-                    if (data.status === 'success' && Array.isArray(data.data)) { rawVideos = data.data; }
-
-                    scenesData = rawVideos.map((v, index) => {
-                        const realId = parseInt(v.id || Math.floor(Math.random() * 100000), 10);
-                        const storageKey = `bizi_video_display_id_${realId}_${index}`;
-                        const unlockKey = `bizi_unlocked_${realId}`;
-                        const unlockTimeKey = `bizi_unlock_time_${realId}`;
-
-                        let isUnlocked = false;
-                        const unlockTime = localStorage.getItem(unlockTimeKey);
-                        if (unlockTime) {
-                            const now = Date.now();
-                            const oneHour = 60 * 60 * 1000;
-                            if (now - parseInt(unlockTime, 10) < oneHour) { isUnlocked = true; } 
-                            else {
-                                localStorage.removeItem(unlockKey);
-                                localStorage.removeItem(unlockTimeKey);
-                            }
-                        }
-                        
-                        let displayId = localStorage.getItem(storageKey);
-                        if (!displayId) {
-                            displayId = Math.floor(100 + Math.random() * 900);
-                            localStorage.setItem(storageKey, displayId);
-                        } else { displayId = parseInt(displayId, 10); }
-
-                        return {
-                            realId: realId,
-                            displayId: displayId,
-                            cat: v.cat ? v.cat.trim().toLowerCase() : 'femme',
-                            partenaire: dechiffrer(v.partenaire) || "Admin",
-                            nom: dechiffrer(v.nom),
-                            preview: v.preview,
-                            mega: v.mega,
-                            prix: parseInt(v.prix, 10),
-                            qualite: v.qualite || 'bronze',
-                            wa: formaterNumeroWhatsApp(dechiffrer(v.telephone || v.wa)),
-                            deverrouille: isUnlocked,
-                            unlockTime: unlockTime ? parseInt(unlockTime, 10) : null
-                        };
-                    });
-                    mettreAJourCompteursOnglets();
-                    renderGrid();
-                })
-                .catch(err => {
-                    scenesData = [];
-                    mettreAJourCompteursOnglets();
-                    renderGrid();
-                });
-        }
-
-        function mettreAJourCompteursOnglets() {
-            let compteurs = { femme: 0, homme: 0, trans: 0, lesbi: 0, blanche: 0 };
-            
-            if (ongletActif === 'profils') {
-                profilsData.forEach(p => {
-                    if (compteurs[p.cat] !== undefined) { compteurs[p.cat]++; }
-                });
-            } else {
-                scenesData.forEach(s => {
-                    if (compteurs[s.cat] !== undefined) { compteurs[s.cat]++; }
-                });
-            }
-
-            ['femme', 'homme', 'trans', 'lesbi', 'blanche'].forEach(cat => {
-                const span = document.getElementById(`count-${cat}`);
-                if (span) { span.innerText = `(${compteurs[cat]})`; }
-            });
-        }
-
-        function verifierLienPartageDirect() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const profilIdUrl = urlParams.get('profil');
-            if (profilIdUrl) {
-                const idNum = parseInt(profilIdUrl, 10);
-                const profilTrouve = profilsData.find(p => p.id === idNum);
-                if (profilTrouve) {
-                    sousOngletActif = profilTrouve.cat;
-                    ['femme', 'homme', 'trans', 'lesbi', 'blanche'].forEach(c => {
-                        const btn = document.getElementById(`subtab-${c}`);
-                        if (btn) btn.className = c === sousOngletActif ? "subtab-btn active" : "subtab-btn";
-                    });
-                    afficherProfilDetail(idNum);
-                }
+            } catch (error) {
+                console.error('Erreur lors du chargement des données:', error);
             }
         }
 
-        function getJoursRestantsHtml(expireAt) {
-            const diff = expireAt - Date.now();
-            if (diff <= 0) return `<div class="badge-expire-bottomright" style="color:#ef4444; border-color:#ef4444;">Expiré</div>`;
-            const jours = Math.ceil(diff / (1000 * 60 * 60 * 24));
-            return `<div class="badge-expire-bottomright">${jours}j restant</div>`;
-        }
+        function afficherTableau() {
+            const tbody = document.getElementById('visiteursTableBody');
+            tbody.innerHTML = '';
 
-        function changerOnglet(nomOnglet) {
-            nettoyerCarrousels();
-            ongletActif = nomOnglet;
-            vueDetailleeActive = false;
-            document.getElementById("tab-profils").className = nomOnglet === "profils" ? "tab-btn active" : "tab-btn";
-            document.getElementById("tab-videos").className = nomOnglet === "videos" ? "tab-btn active" : "tab-btn";
-            
-            const btnModalAction = document.getElementById("btn-modal-action");
-            if (nomOnglet === "profils") {
-                btnModalAction.innerText = "Cliquez ici pour ajouter un Bizi";
-            } else {
-                btnModalAction.innerText = "Cliquez ici pour vendre une vidéo";
-            }
-            mettreAJourCompteursOnglets();
-            renderGrid();
-        }
-
-        function changerSousOnglet(cat) {
-            nettoyerCarrousels();
-            sousOngletActif = cat;
-            vueDetailleeActive = false;
-            ['femme', 'homme', 'trans', 'lesbi', 'blanche'].forEach(c => {
-                document.getElementById(`subtab-${c}`).className = c === cat ? "subtab-btn active" : "subtab-btn";
-            });
-            renderGrid();
-        }
-
-        function getQualityBadgeHtml(qualite) {
-            if (qualite === 'premium') return `<div class="quality-badge badge-premium">💎 ULTRA PREMIUM</div>`;
-            if (qualite === 'moyen') return `<div class="quality-badge badge-gold">👑 STANDARD (OR)</div>`;
-            return `<div class="quality-badge badge-bronze">🥉 BASIQUE</div>`;
-        }
-
-        function verifier(index, cleAttendue, realId) {
-            if (adminModeConnecte) {
-                ouvrirModalEditVideo(realId);
-                return;
-            }
-            const inputVal = document.getElementById(`input-${index}`).value.trim();
-            const msgBox = document.getElementById(`msg-${index}`);
-            if (parseInt(inputVal, 10) === cleAttendue) {
-                const now = Date.now();
-                scenesData[index].deverrouille = true;
-                scenesData[index].unlockTime = now;
-                
-                localStorage.setItem(`bizi_unlocked_${realId}`, "true");
-                localStorage.setItem(`bizi_unlock_time_${realId}`, now.toString());
-
-                msgBox.style.color = "#4ade80";
-                msgBox.innerHTML = "✅ Clé valide !";
-                setTimeout(() => renderGrid(), 500);
-            } else {
-                msgBox.style.color = "#ef4444";
-                msgBox.innerText = "❌ Code incorrect";
-            }
-        }
-
-        function declencherActionProfil(id) {
-            if (adminModeConnecte) {
-                ouvrirModalEditProfilAdmin(id);
-            } else {
-                afficherProfilDetail(id);
-            }
-        }
-
-        async function partagerProfilActuel(id, nomProfil) {
-            const urlPartage = `${window.location.origin}${window.location.pathname}?profil=${id}`;
-            const shareData = {
-                title: `💖 Profil Bizi de ${nomProfil} 💖`,
-                text: `Viens découvrir le profil de ${nomProfil} sur Bizi !`,
-                url: urlPartage
-            };
-
-            try {
-                if (navigator.share) {
-                    await navigator.share(shareData);
-                } else {
-                    await navigator.clipboard.writeText(urlPartage);
-                    alert("🔗 Lien du profil copié ! Vous pouvez le coller où vous souhaitez.");
-                }
-            } catch (err) {
-                console.log("Partage annulé", err);
-            }
-        }
-
-        function afficherProfilDetail(id) {
-            nettoyerCarrousels();
-            vueDetailleeActive = true;
-            document.getElementById("video-grid").style.display = "none";
-            const detailView = document.getElementById("profile-detail-view");
-            detailView.style.display = "block";
-
-            const profil = profilsData.find(p => p.id === id);
-            if (!profil) return;
-
-            const currentShareUrl = `${window.location.origin}${window.location.pathname}?profil=${profil.id}`;
-            const metaTagUrl = document.getElementById("metaOpenGraphUrl");
-            if (metaTagUrl) metaTagUrl.setAttribute("content", currentShareUrl);
-
-            const photosList = profil.photos;
-            let galerieHtml = '';
-            let dotsHtml = '';
-
-            photosList.forEach((cleanUrl, idx) => {
-                galerieHtml += `
-                    <div class="profile-slide-img-wrapper" id="slide-${id}-${idx}">
-                        <img class="profile-slide-img" src="${cleanUrl}" alt="${profil.nom}">
-                    </div>`;
-                dotsHtml += `<button class="dot-btn ${idx === 0 ? 'active' : ''}" onclick="scrollerVersSlide(${id}, ${idx})"></button>`;
-            });
-
-            const detailContent = document.getElementById("profile-detail-content");
-            detailContent.innerHTML = `
-                <div class="horizontal-slider-container" id="slider-${id}" onscroll="suivreScroll(${id})">${galerieHtml}</div>
-                <div class="slider-dots" id="dots-${id}">${dotsHtml}</div>
-                <div class="profile-detail-name">${profil.nom}</div>
-                <div class="quality-badge badge-profil" style="margin-bottom: 8px;">🔥 BIZI DISPONIBLE (${photosList.length} photo${photosList.length > 1 ? 's' : ''})</div>
-                <div class="profile-detail-desc">${profil.desc || 'Aucune description disponible.'}</div>
-                
-                <div class="contact-action-box">
-                    <button class="btn-call-phone" onclick="window.location.href='tel:+${profil.wa}'">
-                        📞 Appel Téléphonique Direct
-                    </button>
-                    <button class="btn-wa-msg" onclick="window.open('https://wa.me/${profil.wa}?text=Salut,%20je%20te%20contacte%20depuis%20ton%20profil%20sur%20le%20site.', '_blank')">
-                        💬 Contacter ${profil.nom.replace(/'/g, "\\'")} sur WhatsApp
-                    </button>
-                </div>
-
-                <button class="share-profile-btn" onclick="partagerProfilActuel(${profil.id}, '${profil.nom.replace(/'/g, "\\'")}')">
-                    📤 Partager ce profil
-                </button>
-                ${getJoursRestantsHtml(profil.expireAt)}
-            `;
-        }
-
-        function scrollerVersSlide(profileId, index) {
-            const slider = document.getElementById(`slider-${profileId}`);
-            const slide = document.getElementById(`slide-${profileId}-${index}`);
-            if (slider && slide) { slider.scrollTo({ left: slide.offsetLeft, behavior: 'smooth' }); }
-        }
-
-        function suivreScroll(profileId) {
-            const slider = document.getElementById(`slider-${profileId}`);
-            if (!slider) return;
-            const index = Math.round(slider.scrollLeft / slider.clientWidth);
-            const dots = document.querySelectorAll(`#dots-${profileId} .dot-btn`);
-            dots.forEach((dot, idx) => {
-                if (idx === index) { dot.classList.add("active"); } else { dot.classList.remove("active"); }
-            });
-        }
-
-        function retourGrille() {
-            vueDetailleeActive = false;
-            document.getElementById("profile-detail-view").style.display = "none";
-            document.getElementById("video-grid").style.display = "grid";
-            
-            window.history.replaceState({}, document.title, window.location.pathname);
-            renderGrid();
-        }
-
-        function nettoyerCarrousels() {
-            Object.keys(carouselIntervals).forEach(key => { clearInterval(carouselIntervals[key]); });
-            carouselIntervals = {};
-            if (countdownInterval) {
-                clearInterval(countdownInterval);
-                countdownInterval = null;
-            }
-        }
-
-        function renderGrid() {
-            nettoyerCarrousels();
-            const grid = document.getElementById("video-grid");
-            const detailView = document.getElementById("profile-detail-view");
-            
-            if (vueDetailleeActive) {
-                grid.style.display = "none";
-                detailView.style.display = "block";
-                return;
-            } else {
-                detailView.style.display = "none";
-                grid.style.display = "grid";
+            let listeFiltree = donneesGlobales;
+            if (filtreActif === 'online') {
+                listeFiltree = donneesGlobales.filter(v => v.en_ligne);
             }
 
-            grid.innerHTML = "";
-            const query = document.getElementById("search-bar").value.toLowerCase().trim();
-
-            if (ongletActif === "profils") {
-                profilsData.forEach((profil) => {
-                    if (profil.cat !== sousOngletActif) return;
-                    if (query && !profil.nom.toLowerCase().includes(query) && !profil.desc.toLowerCase().includes(query)) return;
-
-                    const card = document.createElement("div");
-                    let cardClass = "card card-profil";
-                    let badgeVipHtml = `<div class="quality-badge badge-profil">🔥 BIZI DISPONIBLE</div>`;
-
-                    if (profil.vip === 'gold') {
-                        cardClass = "card card-vip-gold";
-                        badgeVipHtml = `<div class="quality-badge badge-gold">👑 VIP OR (GOLD) ✨</div>`;
-                    } else if (profil.vip === 'premium') {
-                        cardClass = "card card-vip-premium";
-                        badgeVipHtml = `<div class="quality-badge badge-premium">💎 ULTRA PREMIUM 🚀</div>`;
-                    } else if (profil.vip === 'bronze') {
-                        cardClass = "card card-vip-bronze";
-                        badgeVipHtml = `<div class="quality-badge badge-bronze">🥉 VIP BRONZE</div>`;
-                    }
-
-                    card.className = cardClass;
-                    const photos = profil.photos || [];
-                    const firstPhoto = photos.length > 0 ? photos[0] : '';
-                    
-                    let btnActionHtml = `<button class="whatsapp-btn" style="border:none; width:100%; cursor:pointer;" onclick="declencherActionProfil(${profil.id})">💬 Contacter</button>`;
-                    if (adminModeConnecte) {
-                        btnActionHtml = `<button class="whatsapp-btn" style="border:none; width:100%; cursor:pointer; background:#ef4444;" onclick="declencherActionProfil(${profil.id})">✏️ Éditer ce Profil</button>`;
-                    }
-
-                    card.innerHTML = `
-                        <div class="media-container" onclick="declencherActionProfil(${profil.id})" title="Voir le profil">
-                            <img id="card-img-${profil.id}" class="profil-img" src="${firstPhoto}" alt="${profil.nom}">
-                        </div>
-                        <h3>${profil.nom}</h3>
-                        ${badgeVipHtml}
-                        <div class="profil-desc">${profil.desc || 'Pas de description'}</div>
-                        ${btnActionHtml}
-                        ${getJoursRestantsHtml(profil.expireAt)}
-                    `;
-                    grid.appendChild(card);
-
-                    if (photos.length > 1) {
-                        let currentIdx = 0;
-                        carouselIntervals[profil.id] = setInterval(() => {
-                            const imgEl = document.getElementById(`card-img-${profil.id}`);
-                            if (!imgEl) return;
-
-                            imgEl.classList.add('slide-out-left');
-
-                            setTimeout(() => {
-                                currentIdx = (currentIdx + 1) % photos.length;
-                                imgEl.src = photos[currentIdx];
-                                
-                                imgEl.style.transition = 'none';
-                                imgEl.classList.remove('slide-out-left');
-                                imgEl.classList.add('slide-in-right');
-
-                                setTimeout(() => {
-                                    imgEl.style.transition = 'transform 0.5s ease-in-out, opacity 0.5s ease-in-out';
-                                    imgEl.classList.remove('slide-in-right');
-                                }, 50);
-
-                            }, 500);
-
-                        }, 3500);
-                    }
-                });
-            } else {
-                scenesData.forEach((scene, index) => {
-                    if (scene.cat !== sousOngletActif) return;
-                    if (query && !scene.nom.toLowerCase().includes(query)) return;
-
-                    const cleAttendue = Math.floor((scene.displayId * 1996) / 20);
-                    const card = document.createElement("div");
-                    
-                    let cardClass = 'card card-vip-bronze';
-                    if (scene.qualite === 'premium') cardClass = 'card card-vip-premium';
-                    else if (scene.qualite === 'moyen') cardClass = 'card card-vip-gold';
-                    
-                    card.className = cardClass;
-
-                    const mediaHtml = `
-                        <div class="media-container" onclick="${adminModeConnecte ? `ouvrirModalEditVideo(${scene.realId})` : ''}">
-                            <video class="preview-video" muted loop playsinline webkit-playsinline preload="metadata" ontimeupdate="if(this.currentTime>=5){this.currentTime=0;}">
-                                <source src="${scene.preview}" type="video/mp4">
-                            </video>
-                        </div>`;
-
-                    const badgeHtml = getQualityBadgeHtml(scene.qualite);
-                    const vendorName = scene.partenaire || "Admin Principal";
-
-                    if (adminModeConnecte) {
-                        card.innerHTML = `
-                            ${mediaHtml}
-                            <h3>${scene.nom}</h3>
-                            <div style="font-size:9.5px; color:#94a3b8; margin-bottom:4px;">👤 ${vendorName}</div>
-                            ${badgeHtml}
-                            <div class="price-badge">💎 ${scene.prix} Fr</div>
-                            <div class="info-id">ID : <b>${scene.displayId}</b> (Réal: ${scene.realId})</div>
-                            <a class="telegram-link" href="${scene.mega}" target="_blank" style="background:#38bdf8; margin-bottom:4px;">📂 Lien Vidéo Complet</a>
-                            <button class="whatsapp-btn" style="border:none; width:100%; cursor:pointer; background:#ef4444;" onclick="ouvrirModalEditVideo(${scene.realId})">✏️ Éditer cette Vidéo</button>
-                        `;
-                    } else {
-                        if (scene.deverrouille) {
-                            card.innerHTML = `
-                                ${mediaHtml}
-                                <h3>${scene.nom}</h3>
-                                <div style="font-size:9.5px; color:#94a3b8; margin-bottom:4px;">👤 ${vendorName}</div>
-                                ${badgeHtml}
-                                <div class="price-badge">💎 ${scene.prix} Fr</div>
-                                <div class="info-id">ID : <b>${scene.displayId}</b></div>
-                                <div class="message" style="color: #4ade80;" id="countdown-${scene.realId}">⏳ Calcul du temps...</div>
-                                <a class="telegram-link" href="${scene.mega}" target="_blank">📥 Regarder sur le lien</a>
-                            `;
-                        } else {
-                            card.innerHTML = `
-                                ${mediaHtml}
-                                <h3>${scene.nom}</h3>
-                                <div style="font-size:9.5px; color:#94a3b8; margin-bottom:4px;">👤 ${vendorName}</div>
-                                ${badgeHtml}
-                                <div class="price-badge">💎 ${scene.prix} Fr</div>
-                                <div class="info-id">ID : <b>${scene.displayId}</b></div>
-                                <a class="whatsapp-btn" href="https://wa.me/${scene.wa}?text=Bonjour,%20je%20veux%20acheter%20la%20clé%20pour%20la%20scène:%20${encodeURIComponent(scene.nom)}%20(ID:%20${scene.displayId})%20au%20prix%20de%20${scene.prix}Fr" target="_blank">💬 Commander (${scene.prix} Fr)</a>
-                                <div style="margin-top:4px;">
-                                    <input type="number" id="input-${index}" placeholder="Code clé...">
-                                    <button class="verify-btn" style="margin-top:4px;" onclick="verifier(${index}, ${cleAttendue}, ${scene.realId})">Valider</button>
-                                </div>
-                                <div class="message" id="msg-${index}"></div>
-                            `;
-                        }
-                    }
-                    grid.appendChild(card);
-                });
-
-                misesAJourCompteursTemps();
-                countdownInterval = setInterval(misesAJourCompteursTemps, 1000);
-
-                setTimeout(() => {
-                    const videoObserver = new IntersectionObserver((entries, observer) => {
-                        entries.forEach(entry => {
-                            const vid = entry.target;
-                            if (entry.isIntersecting) { vid.play().catch(e => {}); } 
-                            else { vid.pause(); }
-                        });
-                    }, { threshold: 0.2 });
-
-                    document.querySelectorAll('.preview-video').forEach(video => { videoObserver.observe(video); });
-                }, 100);
-            }
-        }
-
-        function misesAJourCompteursTemps() {
-            const now = Date.now();
-            const oneHour = 60 * 60 * 1000;
-
-            scenesData.forEach(scene => {
-                if (scene.deverrouille && scene.unlockTime) {
-                    const elapsed = now - scene.unlockTime;
-                    const timeLeft = oneHour - elapsed;
-
-                    const el = document.getElementById(`countdown-${scene.realId}`);
-                    if (el) {
-                        if (timeLeft <= 0) {
-                            scene.deverrouille = false;
-                            localStorage.removeItem(`bizi_unlocked_${scene.realId}`);
-                            localStorage.removeItem(`bizi_unlock_time_${scene.realId}`);
-                            renderGrid();
-                        } else {
-                            const totalMinutes = Math.ceil(timeLeft / (60 * 1000));
-                            el.innerHTML = `✅ Déverrouillé (${totalMinutes} min restantes)`;
-                        }
-                    }
-                }
-            });
-        }
-
-        function gererBoutonAdmin() {
-            if (adminModeConnecte) {
-                if (confirm("Voulez-vous quitter le mode administrateur ?")) {
-                    adminModeConnecte = false;
-                    localStorage.removeItem('bizi_admin_active');
-                    window.history.replaceState({}, document.title, window.location.pathname);
-                    
-                    document.body.classList.remove('admin-active');
-                    document.getElementById("admin-bar").style.display = "none";
-                    document.getElementById("admin-active-banner").style.display = "none";
-                    document.getElementById("admin-wipe-category-btn").style.display = "none";
-                    renderGrid();
-                    alert("🔒 Mode administrateur désactivé.");
-                }
-            } else {
-                const mdpSaisi = prompt("🔒 Entrez le mot de passe admin :");
-                if (mdpSaisi === null) return;
-                if (!verifierSecurite(mdpSaisi, ADMIN_PASS_1_ENCODED)) { alert("❌ Mot de passe incorrect."); return; }
-                
-                const code2Saisi = prompt("🔐 Entrez le code secret à double facteur :");
-                if (code2Saisi === null) return;
-                if (!verifierSecurite(code2Saisi, ADMIN_CODE_2_ENCODED)) { alert("❌ Code secret incorrect."); return; }
-
-                adminModeConnecte = true;
-                localStorage.setItem('bizi_admin_active', 'true');
-                
-                window.history.replaceState({}, document.title, window.location.pathname + '?admin=1');
-
-                document.body.classList.add('admin-active');
-                document.getElementById("admin-bar").style.display = "flex";
-                document.getElementById("admin-active-banner").style.display = "block";
-                document.getElementById("admin-wipe-category-btn").style.display = "inline-block";
-                
-                chargerStatistiquesAdminSecurit();
-                renderGrid();
-                alert("✅ Mode Admin activé avec succès !");
-            }
-        }
-
-        function supprimerToutDansCategorieCourante() {
-            if (!confirm(`⚠️ ATTENTION : Supprimer TOUS les éléments de la catégorie "${sousOngletActif.toUpperCase()}" ?`)) {
+            if (listeFiltree.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; color:#8b949e; padding: 20px;">Aucun visiteur dans cette catégorie pour le moment.</td></tr>`;
                 return;
             }
 
-            document.getElementById("loading-status-title").innerText = "🗑️ Suppression en masse...";
-            document.getElementById("progress-fill").style.width = "100%";
-            document.getElementById("progress-text").innerText = "100%";
-            document.getElementById("loading-status-subtext").innerText = `Suppression des éléments de la catégorie ${sousOngletActif}...`;
-            document.getElementById("loading-modal").style.display = "flex";
-
-            if (ongletActif === 'profils') {
-                const elementsASupprimer = profilsData.filter(p => p.cat === sousOngletActif);
-                let count = 0;
-                if (elementsASupprimer.length === 0) {
-                    document.getElementById("loading-modal").style.display = "none";
-                    alert("Aucun profil à supprimer dans cette catégorie.");
-                    return;
-                }
-                elementsASupprimer.forEach(p => {
-                    fetch(`${API_URL}?id=${p.id}`, { method: 'DELETE' })
-                        .then(res => res.json())
-                        .then(() => {
-                            count++;
-                            if (count === elementsASupprimer.length) {
-                                document.getElementById("loading-modal").style.display = "none";
-                                alert("✅ Catégorie vidée avec succès !");
-                                chargerDonneesDepuisAPI();
-                            }
-                        })
-                        .catch(() => document.getElementById("loading-modal").style.display = "none");
-                });
-            } else {
-                const elementsASupprimer = scenesData.filter(s => s.cat === sousOngletActif);
-                let count = 0;
-                if (elementsASupprimer.length === 0) {
-                    document.getElementById("loading-modal").style.display = "none";
-                    alert("Aucune vidéo à supprimer dans cette catégorie.");
-                    return;
-                }
-                elementsASupprimer.forEach(s => {
-                    fetch(`${API_VIDEOS_URL}?id=${s.realId}`, { method: 'DELETE' })
-                        .then(res => res.json())
-                        .then(() => {
-                            count++;
-                            if (count === elementsASupprimer.length) {
-                                document.getElementById("loading-modal").style.display = "none";
-                                alert("✅ Catégorie vidée avec succès !");
-                                chargerDonneesDepuisAPI();
-                            }
-                        })
-                        .catch(() => document.getElementById("loading-modal").style.display = "none");
-                });
-            }
-        }
-
-        let profilAdminEnCoursId = null;
-
-        function ouvrirModalEditProfilAdmin(id) {
-            profilAdminEnCoursId = id;
-            const profil = profilsData.find(p => p.id === id);
-            if (!profil) return;
-
-            adminPhotosTemp = [...(profil.photos || [])];
-
-            vueDetailleeActive = true;
-            document.getElementById("video-grid").style.display = "none";
-            const detailView = document.getElementById("profile-detail-view");
-            detailView.style.display = "block";
-
-            let galerieHtml = '';
-            adminPhotosTemp.forEach((cleanUrl, idx) => {
-                galerieHtml += `
-                    <div class="profile-slide-img-wrapper" id="slide-${id}-${idx}">
-                        <img class="profile-slide-img" src="${cleanUrl}" alt="${profil.nom}">
-                    </div>`;
-            });
-
-            let thumbsHtml = '';
-            adminPhotosTemp.forEach((photo, idx) => {
-                thumbsHtml += `
-                    <div class="thumb-box">
-                        <img src="${photo}" alt="Photo">
-                        <button class="thumb-delete-btn" type="button" onclick="supprimerPhotoProfilAdmin(${idx})">✕</button>
-                    </div>`;
-            });
-
-            const detailContent = document.getElementById("profile-detail-content");
-            detailContent.innerHTML = `
-                <div style="background:#0f172a; border:2px solid #ef4444; padding:12px; border-radius:10px; margin-bottom:12px;">
-                    <h3 style="color:#ef4444; margin-bottom:8px; text-align:center;">🛠️ ÉDITION DU PROFIL ADMIN</h3>
-                    
-                    <label>Catégorie Bizi :</label>
-                    <select id="adm-p-cat" style="background:#1e293b; color:#22c55e; border:1.5px solid #22c55e; padding:5px; border-radius:5px; margin-bottom:6px; font-weight:bold;">
-                        <option value="femme" ${profil.cat==='femme'?'selected':''}>Femme</option>
-                        <option value="homme" ${profil.cat==='homme'?'selected':''}>Homme</option>
-                        <option value="trans" ${profil.cat==='trans'?'selected':''}>Trans</option>
-                        <option value="lesbi" ${profil.cat==='lesbi'?'selected':''}>Lesbi</option>
-                        <option value="blanche" ${profil.cat==='blanche'?'selected':''}>Blanche</option>
-                    </select>
-
-                    <label>Nom / Pseudo :</label>
-                    <input type="text" id="adm-p-nom" value="${profil.nom}" style="margin-bottom:6px;">
-
-                    <label>Téléphone :</label>
-                    <input type="text" id="adm-p-wa" value="${profil.wa}" style="margin-bottom:6px;">
-
-                    <label>Description :</label>
-                    <textarea id="adm-p-desc" style="margin-bottom:6px;">${profil.desc}</textarea>
-
-                    <label>Niveau VIP :</label>
-                    <select id="adm-p-vip" style="background:#1e293b; color:white; border:1.5px solid #22c55e; padding:5px; border-radius:5px; margin-bottom:6px;">
-                        <option value="standard" ${profil.vip==='standard'?'selected':''}>Standard (Vert)</option>
-                        <option value="gold" ${profil.vip==='gold'?'selected':''}>Or / Gold (✨)</option>
-                        <option value="premium" ${profil.vip==='premium'?'selected':''}>Ultra Premium (💎)</option>
-                        <option value="bronze" ${profil.vip==='bronze'?'selected':''}>Bronze (🥉)</option>
-                    </select>
-
-                    <label>Photos actuelles (Max 5) :</label>
-                    <div class="preview-thumbs-container" id="adm-thumbs-container" style="margin-bottom:6px;">${thumbsHtml}</div>
-
-                    <label>Ajouter de nouvelles photos HD :</label>
-                    <input type="file" accept="image/*" multiple onchange="ajouterPhotosProfilAdmin(event)" style="background:#1e293b; border:1.5px dashed #22c55e; padding:5px; cursor:pointer; margin-bottom:10px;">
-
-                    <div style="display:flex; gap:8px;">
-                        <button class="btn-save" onclick="sauvegarderProfilAdminModifie()">💾 Enregistrer</button>
-                        <button class="btn-close" onclick="supprimerProfilAdminActif()">🗑️ Supprimer</button>
-                    </div>
-                </div>
-
-                <div class="horizontal-slider-container" id="slider-${id}">${galerieHtml}</div>
-                ${getJoursRestantsHtml(profil.expireAt)}
-            `;
-        }
-
-        function supprimerPhotoProfilAdmin(index) {
-            adminPhotosTemp.splice(index, 1);
-            rafraichirAdminThumbs();
-        }
-
-        function ajouterPhotosProfilAdmin(event) {
-            const files = event.target.files;
-            if (!files || files.length === 0) return;
-            if (adminPhotosTemp.length + files.length > 5) { alert("Maximum 5 photos autorisées !"); return; }
-            const limit = Math.min(files.length, 5 - adminPhotosTemp.length);
-            for (let i = 0; i < limit; i++) {
-                inclusterFiligraneCanvas(files[i], (imgObj) => {
-                    adminPhotosTemp.push(imgObj.data);
-                    rafraichirAdminThumbs();
-                });
-            }
-        }
-
-        function rafraichirAdminThumbs() {
-            const box = document.getElementById("adm-thumbs-container");
-            if (!box) return;
-            box.innerHTML = "";
-            adminPhotosTemp.forEach((photo, idx) => {
-                box.innerHTML += `
-                    <div class="thumb-box">
-                        <img src="${photo}" alt="Photo">
-                        <button class="thumb-delete-btn" type="button" onclick="supprimerPhotoProfilAdmin(${idx})">✕</button>
-                    </div>`;
-            });
-        }
-
-        function sauvegarderProfilAdminModifie() {
-            const cat = document.getElementById("adm-p-cat").value;
-            const nom = document.getElementById("adm-p-nom").value.trim();
-            const wa = document.getElementById("adm-p-wa").value.trim();
-            const desc = document.getElementById("adm-p-desc").value.trim();
-            const vip = document.getElementById("adm-p-vip").value;
-
-            if (!nom || !wa || !desc) { alert("Tous les champs sont obligatoires !"); return; }
-
-            document.getElementById("loading-status-title").innerText = "🔒 Chiffrement & Envoi...";
-            document.getElementById("progress-fill").style.width = "100%";
-            document.getElementById("progress-text").innerText = "100%";
-            document.getElementById("loading-status-subtext").innerText = "Mise à jour sécurisée du profil...";
-            document.getElementById("loading-modal").style.display = "flex";
-
-            const payload = {
-                id: profilAdminEnCoursId,
-                cat: cat,
-                nom: chiffrer(nom),
-                telephone: chiffrer(wa),
-                desc: chiffrer(desc),
-                vip: vip,
-                photos: adminPhotosTemp
-            };
-
-            fetch(API_URL, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            })
-            .then(res => res.json())
-            .then(() => {
-                document.getElementById("loading-modal").style.display = "none";
-                alert("✅ Profil modifié et chiffré !");
-                retourGrille();
-                chargerDonneesDepuisAPI();
-            })
-            .catch(() => document.getElementById("loading-modal").style.display = "none");
-        }
-
-        function supprimerProfilAdminActif() {
-            if (confirm("Voulez-vous vraiment supprimer ce profil ?")) {
-                fetch(`${API_URL}?id=${profilAdminEnCoursId}`, { method: 'DELETE' })
-                    .then(res => res.json())
-                    .then(() => {
-                        alert("🗑️ Profil supprimé !");
-                        retourGrille();
-                        chargerDonneesDepuisAPI();
-                    });
-            }
-        }
-
-        function ouvrirModalEditVideo(realId) {
-            const scene = scenesData.find(s => s.realId === realId);
-            if (!scene) return;
-
-            document.getElementById("edit-v-real-id").value = scene.realId;
-            document.getElementById("edit-v-cat").value = scene.cat || "femme";
-            document.getElementById("edit-v-nom").value = scene.nom;
-            document.getElementById("edit-v-preview").value = scene.preview;
-            document.getElementById("edit-v-mega").value = scene.mega;
-            document.getElementById("edit-v-prix").value = scene.prix;
-            document.getElementById("edit-v-qualite").value = scene.qualite;
-            document.getElementById("edit-v-wa").value = scene.wa || "";
-
-            document.getElementById("admin-edit-video-modal").style.display = "flex";
-        }
-
-        function fermerModalEditVideo() { document.getElementById("admin-edit-video-modal").style.display = "none"; }
-
-        function sauvegarderEditionVideoAdmin() {
-            let realId = document.getElementById("edit-v-real-id").value;
-            const cat = document.getElementById("edit-v-cat").value;
-
-            const payload = {
-                id: realId,
-                cat: cat,
-                nom: chiffrer(document.getElementById("edit-v-nom").value.trim()),
-                preview: document.getElementById("edit-v-preview").value.trim(),
-                mega: document.getElementById("edit-v-mega").value.trim(),
-                prix: parseInt(document.getElementById("edit-v-prix").value.trim(), 10),
-                qualite: document.getElementById("edit-v-qualite").value,
-                telephone: chiffrer(document.getElementById("edit-v-wa").value.trim())
-            };
-
-            document.getElementById("loading-status-title").innerText = "🔒 Enregistrement en cours...";
-            document.getElementById("progress-fill").style.width = "100%";
-            document.getElementById("progress-text").innerText = "100%";
-            document.getElementById("loading-status-subtext").innerText = "Mise à jour de la vidéo...";
-            document.getElementById("loading-modal").style.display = "flex";
-
-            fetch(API_VIDEOS_URL, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            })
-            .then(res => res.json())
-            .then(() => {
-                document.getElementById("loading-modal").style.display = "none";
-                fermerModalEditVideo();
-                chargerDonneesDepuisAPI();
-                alert("✅ Vidéo modifiée et chiffrée avec succès !");
-            })
-            .catch(() => document.getElementById("loading-modal").style.display = "none");
-        }
-
-        function supprimerVideoAdminActive() {
-            let realId = document.getElementById("edit-v-real-id").value;
-            if (confirm("Supprimer cette vidéo ?")) {
-                fetch(`${API_VIDEOS_URL}?id=${realId}`, { method: 'DELETE' })
-                    .then(res => res.json())
-                    .then(() => {
-                        fermerModalEditVideo();
-                        chargerDonneesDepuisAPI();
-                        alert("🗑️ Vidéo supprimée !");
-                    });
-            }
-        }
-
-        function ouvrirVendeurModal() {
-            mettreAJourPlaceholdersAleatoires();
-            const modalTitle = document.getElementById("modal-title");
-            const infoBox = document.getElementById("modal-info-box");
-            const formVideos = document.getElementById("form-videos-fields");
-            const formProfils = document.getElementById("form-profils-fields");
-            const buttonsContainer = document.getElementById("modal-buttons-container");
-
-            if (ongletActif === "profils") {
-                modalTitle.innerText = `🔥 Inscription Buzi Disponible 📸`;
-                infoBox.innerHTML = `<b>🔒 DONNÉES CHIFFRÉES :</b><br>Vos informations personnelles sont brouillées avant stockage.`;
-                formVideos.style.display = "none";
-                formProfils.style.display = "block";
+            listeFiltree.forEach(v => {
+                const tr = document.createElement('tr');
                 
-                const catSelect = document.getElementById("profil-categorie");
-                catSelect.disabled = false;
-                catSelect.value = sousOngletActif;
+                const statutBadge = v.en_ligne 
+                    ? `<span class="badge-online"><span class="dot-pulse"></span> EN LIGNE</span>` 
+                    : `<span class="badge-offline">HORS LIGNE</span>`;
 
-                document.getElementById("profil-fichiers-input").value = "";
-                document.getElementById("preview-thumbs-box").innerHTML = "";
-                imagesSelectionnees64 = [];
-                
-                genererDescriptionAleatoire();
-
-                buttonsContainer.innerHTML = `<button class="btn-save" onclick="compresserEtPublierProfil()">Publier mon profil</button><button class="btn-close" onclick="fermerVendeurModal()">Fermer</button>`;
-            } else {
-                modalTitle.innerText = "🎬 Proposer une vidéo 🎥";
-                infoBox.innerHTML = `<b>🔒 SÉCURITÉ ACTIVE :</b><br>Chiffrement des métadonnées du vendeur à l'envoi.`;
-                formVideos.style.display = "block";
-                formProfils.style.display = "none";
-                
-                const videoCatSelect = document.getElementById("new-video-categorie");
-                videoCatSelect.value = sousOngletActif;
-
-                document.getElementById("new-preview-url").value = "";
-                document.getElementById("new-telegram").value = "";
-                buttonsContainer.innerHTML = `<button class="btn-save" onclick="soumettreVideoAdmin()">Ajouter la vidéo</button><button class="btn-close" onclick="fermerVendeurModal()">Fermer</button>`;
-            }
-            document.getElementById("vendor-modal").style.display = "flex";
-        }
-
-        function soumettreVideoAdmin() {
-            const cat = document.getElementById("new-video-categorie").value;
-            const partenaire = document.getElementById("new-partenaire").value.trim() || "Admin Principal";
-            const nom = document.getElementById("new-nom").value.trim();
-            const previewUrl = document.getElementById("new-preview-url").value.trim();
-            const mega = document.getElementById("new-telegram").value.trim();
-            const prix = parseInt(document.getElementById("new-prix").value.trim(), 10);
-            const qualite = document.getElementById("new-qualite").value;
-            const wa = document.getElementById("new-whatsapp").value.trim();
-
-            if (!nom) { alert("⚠️ Veuillez entrer un titre pour la vidéo !"); return; }
-            if (!previewUrl) { alert("⚠️ Veuillez entrer le lien direct .mp4 de l'aperçu !"); return; }
-            if (!mega) { alert("⚠️ Veuillez ajouter le lien Mega de la vidéo complète !"); return; }
-            if (isNaN(prix) || prix <= 0) { alert("⚠️ Veuillez entrer un prix valide en FCFA !"); return; }
-            if (!wa) { alert("⚠️ Veuillez renseigner votre numéro WhatsApp !"); return; }
-
-            const loadingModal = document.getElementById("loading-modal");
-            const progressFill = document.getElementById("progress-fill");
-            const progressText = document.getElementById("progress-text");
-            
-            document.getElementById("loading-status-title").innerText = "🔒 Chiffrement & Envoi en cours...";
-            document.getElementById("loading-status-subtext").innerText = "Préparation et sécurisation des données...";
-            progressFill.style.width = "0%";
-            progressText.innerText = "0%";
-            loadingModal.style.display = "flex";
-
-            let currentProgress = 0;
-            const progressInterval = setInterval(() => {
-                if (currentProgress < 90) {
-                    currentProgress += Math.floor(Math.random() * 8) + 3;
-                    if (currentProgress > 90) currentProgress = 90;
-                    progressFill.style.width = currentProgress + "%";
-                    progressText.innerText = currentProgress + "%";
-                }
-            }, 150);
-
-            const payload = {
-                cat: cat,
-                partenaire: chiffrer(partenaire),
-                nom: chiffrer(nom),
-                preview: previewUrl,
-                mega: mega,
-                prix: prix,
-                qualite: qualite,
-                telephone: chiffrer(wa)
-            };
-
-            fetch(API_VIDEOS_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            })
-            .then(res => res.json())
-            .then(result => {
-                clearInterval(progressInterval);
-                progressFill.style.width = "100%";
-                progressText.innerText = "100%";
-                document.getElementById("loading-status-title").innerText = "✅ Terminé avec succès !";
-                document.getElementById("loading-status-subtext").innerText = "Vidéo enregistrée et publiée.";
-
-                setTimeout(() => {
-                    loadingModal.style.display = "none";
-                    if (result.status === 'success') {
-                        alert("✅ Vidéo publiée et chiffrée avec succès !");
-                        fermerVendeurModal();
-                        if (sousOngletActif !== cat) { changerSousOnglet(cat); } else { chargerDonneesDepuisAPI(); }
-                    } else {
-                        alert("Erreur lors de l'enregistrement.");
-                    }
-                }, 400);
-            })
-            .catch(() => {
-                clearInterval(progressInterval);
-                loadingModal.style.display = "none";
-                alert("❌ Une erreur réseau est survenue lors de l'envoi.");
+                tr.innerHTML = `
+                    <td>${statutBadge}</td>
+                    <td><code>${v.ip}</code></td>
+                    <td>${v.pays}</td>
+                    <td><strong>${v.appareil}</strong></td>
+                    <td>${v.navigateur}</td>
+                    <td>${v.langue}</td>
+                    <td><strong style="color: ${v.en_ligne ? '#4ade80' : '#cbd5e1'}">${v.temps_passe}</strong></td>
+                    <td>${v.derniere_activite}</td>
+                `;
+                tbody.appendChild(tr);
             });
         }
 
-        function fermerVendeurModal() { document.getElementById("vendor-modal").style.display = "none"; }
-
-        let imagesSelectionnees64 = [];
-
-        function inclusterFiligraneCanvas(file, callback) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const img = new Image();
-                img.src = e.target.result;
-                img.onload = function() {
-                    const canvas = document.createElement("canvas");
-                    canvas.width = img.width;
-                    canvas.height = img.height;
-                    const ctx = canvas.getContext("2d");
-
-                    ctx.fillStyle = "#FFFFFF";
-                    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-                    ctx.drawImage(img, 0, 0, img.width, img.height);
-                    ctx.save();
-                    ctx.translate(canvas.width / 2, canvas.height / 2);
-                    ctx.rotate(-20 * Math.PI / 180);
-                    
-                    const fontSize = Math.max(35, Math.floor(canvas.width / 8));
-                    ctx.font = `900 ${fontSize}px sans-serif`;
-                    ctx.fillStyle = "rgba(255, 255, 255, 0.45)";
-                    ctx.textAlign = "center";
-                    ctx.textBaseline = "middle";
-                    ctx.shadowColor = "rgba(0, 0, 0, 0.8)";
-                    ctx.shadowBlur = 10;
-                    ctx.fillText("💖 Bizi 💖", 0, 0);
-                    ctx.restore();
-
-                    const base64HD = canvas.toDataURL("image/jpeg", 0.95);
-                    callback({ data: base64HD, width: img.width, height: img.height });
-                };
-            };
-            reader.readAsDataURL(file);
-        }
-
-        function apercuMiniaturesPhotos(event) {
-            const files = event.target.files;
-            if (!files || files.length === 0) return;
-            if (imagesSelectionnees64.length + files.length > 5) { alert("Maximum 5 photos autorisées !"); }
-            const limit = Math.min(files.length, 5 - imagesSelectionnees64.length);
-            for (let i = 0; i < limit; i++) {
-                inclusterFiligraneCanvas(files[i], (imgObj) => {
-                    imagesSelectionnees64.push(imgObj);
-                    afficherMiniaturesClient();
-                });
-            }
-        }
-
-        function afficherMiniaturesClient() {
-            const thumbsBox = document.getElementById("preview-thumbs-box");
-            thumbsBox.innerHTML = "";
-            imagesSelectionnees64.forEach((imgObj, index) => {
-                thumbsBox.innerHTML += `
-                    <div class="thumb-box">
-                        <img src="${imgObj.data}" alt="Aperçu HD">
-                        <button class="thumb-delete-btn" type="button" onclick="supprimerPhotoClient(${index})">✕</button>
-                    </div>`;
-            });
-        }
-
-        function supprimerPhotoClient(index) {
-            imagesSelectionnees64.splice(index, 1);
-            afficherMiniaturesClient();
-        }
-
-        function compresserEtPublierProfil() {
-            const catChoice = document.getElementById("profil-categorie").value;
-            const nom = document.getElementById("profil-nom").value.trim();
-            const desc = document.getElementById("profil-desc").value.trim();
-            const wa = document.getElementById("profil-whatsapp").value.trim();
-
-            if (!nom || !desc || !wa) { alert("⚠️ TOUS LES CHAMPS SONT OBLIGATOIRES !"); return; }
-            if (imagesSelectionnees64.length === 0) { alert("⚠️ Veuillez sélectionner au moins une photo HD !"); return; }
-
-            let maxResolution = 0;
-            imagesSelectionnees64.forEach(img => {
-                const res = img.width * img.height;
-                if (res > maxResolution) maxResolution = res;
-            });
-
-            let detectedVip = 'standard';
-            if (maxResolution > 1200 * 1200) detectedVip = 'premium';
-            else if (maxResolution > 800 * 800) detectedVip = 'gold';
-            else detectedVip = 'bronze';
-
-            const loadingModal = document.getElementById("loading-modal");
-            const progressFill = document.getElementById("progress-fill");
-            const progressText = document.getElementById("progress-text");
-
-            document.getElementById("loading-status-title").innerText = "🔒 Chiffrement & Publication...";
-            document.getElementById("loading-status-subtext").innerText = "Traitement des images et envoi sécurisé...";
-            progressFill.style.width = "0%";
-            progressText.innerText = "0%";
-            loadingModal.style.display = "flex";
-
-            let currentProgress = 0;
-            const progressInterval = setInterval(() => {
-                if (currentProgress < 90) {
-                    currentProgress += Math.floor(Math.random() * 10) + 5;
-                    if (currentProgress > 90) currentProgress = 90;
-                    progressFill.style.width = currentProgress + "%";
-                    progressText.innerText = currentProgress + "%";
-                }
-            }, 120);
-
-            const purePhotosArray = imagesSelectionnees64.map(img => img.data);
-
-            const payload = {
-                cat: catChoice,
-                nom: chiffrer(nom),
-                telephone: chiffrer(wa),
-                photos: purePhotosArray,
-                desc: chiffrer(desc),
-                vip: detectedVip
-            };
-
-            fetch(API_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            })
-            .then(res => res.json())
-            .then(result => {
-                clearInterval(progressInterval);
-                progressFill.style.width = "100%";
-                progressText.innerText = "100%";
-                document.getElementById("loading-status-title").innerText = "✅ Publication réussie !";
-                document.getElementById("loading-status-subtext").innerText = "Votre profil est en ligne.";
-
-                setTimeout(() => {
-                    loadingModal.style.display = "none";
-                    if (result.status === 'success') {
-                        alert("✅ Profil publié et chiffré avec succès !");
-                        fermerVendeurModal();
-                        if (sousOngletActif !== catChoice) { changerSousOnglet(catChoice); } else { chargerDonneesDepuisAPI(); }
-                    } else {
-                        alert("Erreur lors de l'enregistrement.");
-                    }
-                }, 400);
-            })
-            .catch(() => {
-                clearInterval(progressInterval);
-                loadingModal.style.display = "none";
-                alert("❌ Une erreur est survenue lors de la publication.");
-            });
-        }
-
-        chargerDonneesDepuisAPI();
-
-        async function chargerStatistiquesAdminSecurit() {
-            try {
-                const res = await fetch(API_PRESENCE_URL + '?action=dashboard');
-                const data = await res.json();
-                if (data.status === "success") {
-                    document.getElementById("admin-live-count").innerText = data.en_ligne !== undefined ? data.en_ligne : 0;
-                    document.getElementById("admin-24h-count").innerText = data["24h"] !== undefined ? data["24h"] : 0;
-                } else {
-                    document.getElementById("admin-live-count").innerText = "0";
-                    document.getElementById("admin-24h-count").innerText = "0";
-                }
-            } catch (e) {
-                console.error("Erreur stats admin", e);
-                document.getElementById("admin-live-count").innerText = "0";
-                document.getElementById("admin-24h-count").innerText = "0";
-            }
-        }
-
-        const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.get('admin') === '1' || localStorage.getItem('bizi_admin_active') === 'true') {
-            adminModeConnecte = true;
-            localStorage.setItem('bizi_admin_active', 'true');
-            
-            document.body.classList.add('admin-active');
-
-            const adminBar = document.getElementById("admin-bar");
-            if (adminBar) { adminBar.style.display = "flex"; }
-            
-            const adminBanner = document.getElementById("admin-active-banner");
-            if (adminBanner) { adminBanner.style.display = "block"; }
-
-            const wipeBtn = document.getElementById("admin-wipe-category-btn");
-            if (wipeBtn) { wipeBtn.style.display = "inline-block"; }
-            
-            chargerStatistiquesAdminSecurit();
-            setInterval(chargerStatistiquesAdminSecurit, 10000);
-        }
+        chargerDonnees();
+        setInterval(chargerDonnees, 5000);
     </script>
 </body>
 </html>
