@@ -37,12 +37,22 @@
         }
         .stat-box {
             background: #161b22;
-            border: 1px solid #30363d;
+            border: 2px solid #30363d;
             border-radius: 8px;
             padding: 20px;
             flex: 1;
             text-align: center;
             box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .stat-box:hover {
+            border-color: #2ea043;
+            transform: translateY(-2px);
+        }
+        .stat-box.active-filter {
+            border-color: #2ea043;
+            background: rgba(46, 160, 67, 0.1);
         }
         .stat-box h3 {
             font-size: 0.8rem;
@@ -74,6 +84,9 @@
             letter-spacing: 0.5px;
             border-bottom: 1px solid #30363d;
             padding-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
         table {
             width: 100%;
@@ -96,22 +109,46 @@
         tr:hover {
             background-color: rgba(255, 255, 255, 0.02);
         }
+        
+        /* Point vert clignotant */
         .badge-online {
-            background-color: #238636;
-            color: white;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background-color: rgba(35, 134, 54, 0.2);
+            color: #4ade80;
             padding: 5px 10px;
             border-radius: 4px;
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             font-weight: bold;
-            letter-spacing: 0.5px;
+            border: 1px solid #238636;
         }
+        .dot-pulse {
+            width: 8px;
+            height: 8px;
+            background-color: #22c55e;
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+        }
+
         .badge-offline {
             background-color: #6e7681;
             color: white;
             padding: 5px 10px;
             border-radius: 4px;
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             font-weight: bold;
+        }
+        .filter-info {
+            font-size: 0.75rem;
+            color: #38bdf8;
+            font-weight: normal;
+            text-transform: none;
         }
     </style>
 </head>
@@ -120,19 +157,23 @@
     <h1>Centre de Contrôle Bizi</h1>
     <p class="subtitle">Historique global et géolocalisation des visiteurs</p>
 
+    <!-- Boutons cliquables pour filtrer les vues -->
     <div class="stats-container">
-        <div class="stat-box">
-            <h3>EN LIGNE (TEMPS RÉEL)</h3>
+        <div class="stat-box active-filter" id="box-online" onclick="filtrerVue('online')">
+            <h3>🟢 EN LIGNE (TEMPS RÉEL)</h3>
             <div class="number" id="enLigneCount">0</div>
         </div>
-        <div class="stat-box">
-            <h3>TOTAL VISITEURS (30 JOURS)</h3>
+        <div class="stat-box" id="box-all" onclick="filtrerVue('all')">
+            <h3>👥 TOTAL VISITEURS (30 JOURS)</h3>
             <div class="number" id="totalCount">0</div>
         </div>
     </div>
 
     <div class="table-container">
-        <h2>Liste complète des Visiteurs</h2>
+        <h2>
+            <span id="table-title">Visiteurs en Ligne en Temps Réel</span>
+            <span class="filter-info" id="filter-indicator">Affichage : En ligne uniquement</span>
+        </h2>
         <table>
             <thead>
                 <tr>
@@ -142,17 +183,37 @@
                     <th>Appareil</th>
                     <th>Navigateur</th>
                     <th>Langue</th>
+                    <th>Temps Passé</th>
                     <th>Dernière Visite</th>
                 </tr>
             </thead>
             <tbody id="visiteursTableBody">
-                <!-- Les données seront injectées ici dynamiquement -->
+                <!-- Injection dynamique -->
             </tbody>
         </table>
     </div>
 
     <script>
         const API_URL = 'https://midnightblue-manatee-329921.hostingersite.com/presence.php';
+        let donneesGlobales = [];
+        let filtreActif = 'online';
+
+        function filtrerVue(type) {
+            filtreActif = type;
+            document.getElementById('box-online').classList.remove('active-filter');
+            document.getElementById('box-all').classList.remove('active-filter');
+
+            if (type === 'online') {
+                document.getElementById('box-online').classList.add('active-filter');
+                document.getElementById('table-title').innerText = "Visiteurs en Ligne en Temps Réel";
+                document.getElementById('filter-indicator').innerText = "Affichage : En ligne uniquement";
+            } else {
+                document.getElementById('box-all').classList.add('active-filter');
+                document.getElementById('table-title').innerText = "Historique Total (30 Jours)";
+                document.getElementById('filter-indicator').innerText = "Affichage : Tous les visiteurs";
+            }
+            afficherTableau();
+        }
 
         async function chargerDonnees() {
             try {
@@ -160,39 +221,51 @@
                 const data = await response.json();
 
                 if (data.status === 'success') {
-                    // Mise à jour des compteurs
                     document.getElementById('enLigneCount').innerText = data.en_ligne;
                     document.getElementById('totalCount').innerText = data.total_30j;
-
-                    const tbody = document.getElementById('visiteursTableBody');
-                    tbody.innerHTML = '';
-
-                    // Remplissage du tableau avec les colonnes distinctes
-                    data.visiteurs.forEach(v => {
-                        const tr = document.createElement('tr');
-                        
-                        const statutBadge = v.en_ligne 
-                            ? '<span class="badge-online">EN LIGNE</span>' 
-                            : '<span class="badge-offline">HORS LIGNE</span>';
-
-                        tr.innerHTML = `
-                            <td>${statutBadge}</td>
-                            <td><code>${v.ip}</code></td>
-                            <td>${v.pays}</td>
-                            <td><strong>${v.appareil}</strong></td>
-                            <td>${v.navigateur}</td>
-                            <td>${v.langue}</td>
-                            <td>${v.derniere_activite}</td>
-                        `;
-                        tbody.appendChild(tr);
-                    });
+                    donneesGlobales = data.visiteurs;
+                    afficherTableau();
                 }
             } catch (error) {
                 console.error('Erreur lors du chargement des données:', error);
             }
         }
 
-        // Charger immédiatement au chargement de la page, puis toutes les 5 secondes
+        function afficherTableau() {
+            const tbody = document.getElementById('visiteursTableBody');
+            tbody.innerHTML = '';
+
+            let listeFiltree = donneesGlobales;
+            if (filtreActif === 'online') {
+                listeFiltree = donneesGlobales.filter(v => v.en_ligne);
+            }
+
+            if (listeFiltree.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; color:#8b949e; padding: 20px;">Aucun visiteur dans cette catégorie pour le moment.</td></tr>`;
+                return;
+            }
+
+            listeFiltree.forEach(v => {
+                const tr = document.createElement('tr');
+                
+                const statutBadge = v.en_ligne 
+                    ? `<span class="badge-online"><span class="dot-pulse"></span> EN LIGNE</span>` 
+                    : `<span class="badge-offline">HORS LIGNE</span>`;
+
+                tr.innerHTML = `
+                    <td>${statutBadge}</td>
+                    <td><code>${v.ip}</code></td>
+                    <td>${v.pays}</td>
+                    <td><strong>${v.appareil}</strong></td>
+                    <td>${v.navigateur}</td>
+                    <td>${v.langue}</td>
+                    <td><strong style="color: ${v.en_ligne ? '#4ade80' : '#cbd5e1'}">${v.temps_passe}</strong></td>
+                    <td>${v.derniere_activite}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
         chargerDonnees();
         setInterval(chargerDonnees, 5000);
     </script>
