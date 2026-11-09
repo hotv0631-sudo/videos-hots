@@ -8,7 +8,7 @@
     <!-- --- BALISES OPEN GRAPH POUR APERÇU SUR LES RÉSEAUX SOCIAUX --- -->
     <meta property="og:title" content="💖 Bizi - Découvre ce profil exclusif 💖" />
     <meta property="og:description" content="Viens voir les photos et le profil complet en direct sur Bizi." />
-    <meta property="og:image" content="https://voltigestudio.online/logo.jpg" />
+    <meta property="og:image" content="" />
     <meta property="og:url" content="" id="metaOpenGraphUrl" />
     <meta property="og:type" content="website" />
 
@@ -197,7 +197,26 @@
             font-size: 12.5px;
             color: #cbd5e1;
             line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+        .age-gate-checkbox-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
             margin-bottom: 20px;
+            font-size: 12px;
+            color: #38bdf8;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .age-gate-checkbox-container input {
+            width: 16px;
+            height: 16px;
+            accent-color: #22c55e;
+            cursor: pointer;
         }
 
         .age-gate-buttons {
@@ -274,14 +293,20 @@
 </head>
 <body>
 
-    <!-- --- FENÊTRE DE CONTRÔLE D'ÂGE (S'affiche obligatoirement à chaque visite) --- -->
-    <div id="age-gate-overlay">
+    <!-- --- FENÊTRE DE CONTRÔLE D'ÂGE AVEC OPTION DE SAUVEGARDE --- -->
+    <div id="age-gate-overlay" style="display: none;">
         <div class="age-gate-card">
             <div class="age-gate-logo">💖 Bizi 💖</div>
             <div class="age-gate-title">🔞 Restriction d'accès</div>
             <div class="age-gate-text">
                 Ce site contient des contenus réservés à un public averti et majeur. Certifiez-vous avoir au moins 18 ans pour accéder à la plateforme ?
             </div>
+            
+            <label class="age-gate-checkbox-container">
+                <input type="checkbox" id="remember-age-checkbox" checked>
+                <span>Se souvenir de mon choix (Ne plus me demander)</span>
+            </label>
+
             <div class="age-gate-buttons">
                 <button class="btn-age-no" onclick="refuserAge()">Non, j'ai moins de 18 ans</button>
                 <button class="btn-age-yes" onclick="validerAge()">Oui, j'ai 18 ans ou plus</button>
@@ -493,8 +518,19 @@
         const API_VIDEOS_URL = 'https://midnightblue-manatee-329921.hostingersite.com/api_videos.php';
         const API_PRESENCE_URL = 'https://midnightblue-manatee-329921.hostingersite.com/presence.php';
 
-        // --- GESTION DU CONTRÔLE D'ÂGE OBLIGATOIRE À CHAQUE VISITE ---
+        // --- VÉRIFICATION DE LA SAUVEGARDE DE L'ÂGE AU CHARGEMENT ---
+        (function verifierAgeMemiseEnCache() {
+            const ageVerifie = localStorage.getItem('bizi_age_verified');
+            if (!ageVerifie) {
+                document.getElementById('age-gate-overlay').style.display = 'flex';
+            }
+        })();
+
         function validerAge() {
+            const rememberCheckbox = document.getElementById('remember-age-checkbox');
+            if (rememberCheckbox && rememberCheckbox.checked) {
+                localStorage.setItem('bizi_age_verified', 'true');
+            }
             document.getElementById('age-gate-overlay').style.display = 'none';
         }
 
