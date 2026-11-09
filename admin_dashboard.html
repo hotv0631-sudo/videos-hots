@@ -12,6 +12,29 @@
             margin: 0;
             padding: 20px;
         }
+        .top-nav {
+            max-width: 1200px;
+            margin: 0 auto 15px auto;
+        }
+        .btn-retour {
+            background-color: #21262d;
+            color: #58a6ff;
+            border: 1px solid #30363d;
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: background 0.2s;
+        }
+        .btn-retour:hover {
+            background-color: #30363d;
+            color: #79c0ff;
+        }
         h1 {
             text-align: center;
             color: #2ea043;
@@ -153,6 +176,10 @@
     </style>
 </head>
 <body>
+
+    <div class="top-nav">
+        <a href="index.html?admin=1" class="btn-retour">← Retour au site Bizi (Mode Admin)</a>
+    </div>
 
     <h1>Centre de Contrôle Bizi</h1>
     <p class="subtitle">Historique global et géolocalisation des visiteurs</p>
