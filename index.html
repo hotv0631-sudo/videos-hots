@@ -94,6 +94,14 @@
         
         .share-profile-btn { display: flex; align-items: center; justify-content: center; gap: 6px; background: linear-gradient(135deg, #0ea5e9, #0284c7); color: #ffffff; text-align: center; padding: 9px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 11px; margin-bottom: 8px; width: 100%; border: none; cursor: pointer; box-shadow: 0 3px 10px rgba(14, 165, 233, 0.4); }
 
+        /* Styles pour les options de contact unifiées */
+        .contact-action-box { display: flex; flex-direction: column; gap: 6px; margin-bottom: 8px; width: 100%; }
+        .btn-call-phone { display: flex; align-items: center; justify-content: center; gap: 6px; background: linear-gradient(135deg, #f59e0b, #d97706); color: #ffffff; text-align: center; padding: 10px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 11.5px; width: 100%; border: none; cursor: pointer; box-shadow: 0 3px 10px rgba(245, 158, 11, 0.4); transition: transform 0.1s ease; }
+        .btn-call-phone:active { transform: scale(0.98); }
+
+        .btn-wa-msg { display: flex; align-items: center; justify-content: center; gap: 6px; background: linear-gradient(135deg, #22c55e, #16a34a); color: #ffffff; text-align: center; padding: 10px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 11.5px; width: 100%; border: none; cursor: pointer; box-shadow: 0 3px 10px rgba(34, 197, 94, 0.4); transition: transform 0.1s ease; }
+        .btn-wa-msg:active { transform: scale(0.98); }
+
         input, select, textarea { width: 100%; background: #0f172a; border: 1.5px solid #22c55e; border-radius: 5px; padding: 5px; color: #ffffff; font-size: 11px; text-align: center; outline: none; }
         textarea { text-align: left; resize: none; height: 65px; }
         button.verify-btn { width: 100%; background: #22c55e; color: #ffffff; border: none; padding: 6px; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 11px; }
@@ -127,7 +135,6 @@
         .dot-btn.active { background: #22c55e; }
         .profile-detail-name { font-size: 16px; color: #f8fafc; font-weight: bold; text-align: center; margin-bottom: 5px; }
         .profile-detail-desc { font-size: 12px; color: #cbd5e1; text-align: center; margin-bottom: 12px; line-height: 1.4; }
-        .profile-detail-phone { font-size: 12px; color: #38bdf8; text-align: center; font-weight: bold; margin-bottom: 12px; background: #0f172a; padding: 6px; border-radius: 5px; border: 1px dashed #38bdf8; }
         
         .preview-thumbs-container { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px; }
         .thumb-box { width: 60px; height: 60px; border-radius: 6px; overflow: hidden; position: relative; border: 1.5px solid #22c55e; background: #000; }
@@ -1150,13 +1157,19 @@
                 <div class="profile-detail-name">${profil.nom}</div>
                 <div class="quality-badge badge-profil" style="margin-bottom: 8px;">🔥 BIZI DISPONIBLE (${photosList.length} photo${photosList.length > 1 ? 's' : ''})</div>
                 <div class="profile-detail-desc">${profil.desc || 'Aucune description disponible.'}</div>
-                <div class="profile-detail-phone">📞 Téléphone : <b>${profil.wa}</b></div>
                 
+                <div class="contact-action-box">
+                    <button class="btn-call-phone" onclick="window.location.href='tel:+${profil.wa}'">
+                        📞 Appel Téléphonique Direct
+                    </button>
+                    <button class="btn-wa-msg" onclick="window.open('https://wa.me/${profil.wa}?text=Salut,%20je%20te%20contacte%20depuis%20ton%20profil%20sur%20le%20site.', '_blank')">
+                        💬 Contacter ${profil.nom.replace(/'/g, "\\'")} sur WhatsApp
+                    </button>
+                </div>
+
                 <button class="share-profile-btn" onclick="partagerProfilActuel(${profil.id}, '${profil.nom.replace(/'/g, "\\'")}')">
                     📤 Partager ce profil
                 </button>
-
-                <button class="whatsapp-btn" style="border:none; width:100%; cursor:pointer; padding:9px; font-size:11px;" onclick="window.open('https://wa.me/${profil.wa}?text=Salut,%20je%20te%20contacte%20depuis%20ton%20profil%20sur%20le%20site.', '_blank')">💬 Contacter sur WhatsApp</button>
                 ${getJoursRestantsHtml(profil.expireAt)}
             `;
         }
