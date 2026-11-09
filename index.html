@@ -628,19 +628,54 @@
         const API_VIDEOS_URL = 'https://midnightblue-manatee-329921.hostingersite.com/api_videos.php';
         const API_PRESENCE_URL = 'https://midnightblue-manatee-329921.hostingersite.com/presence.php';
 
-        // --- GESTION DE L'INSTALLATION PWA ---
+        // --- GESTION DE L'INSTALLATION PWA (1 MINUTE + ACTUALISATION + ANTI-RÉAPPARITION SI DÉJÀ INSTALLÉ) ---
         let deferredPrompt = null;
+
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-            const dismissed = localStorage.getItem('bizi_pwa_dismissed');
-            if (!dismissed) {
-                document.getElementById('pwa-install-banner').style.display = 'flex';
+
+            // Bloquer définitivement si l'application est déjà installée
+            if (window.matchMedia('(display-mode: standalone)').matches || localStorage.getItem('bizi_installed') === 'true') {
+                return;
+            }
+
+            // Enregistrer le premier horodatage de visite de la session s'il n'existe pas encore
+            if (!sessionStorage.getItem('bizi_visit_time')) {
+                sessionStorage.setItem('bizi_visit_time', Date.now().toString());
+            }
+        });
+
+        // Vérification lors du chargement (actualisation de page)
+        window.addEventListener('load', () => {
+            // Si l'application tourne déjà en mode standalone, enregistrer l'état installé
+            if (window.matchMedia('(display-mode: standalone)').matches) {
+                localStorage.setItem('bizi_installed', 'true');
+                return;
+            }
+
+            const isInstalled = localStorage.getItem('bizi_installed');
+            const visitTime = sessionStorage.getItem('bizi_visit_time');
+
+            // Si l'application n'est pas encore installée et qu'un horodatage de visite existe
+            if (!isInstalled && visitTime) {
+                const tempsEcoule = Date.now() - parseInt(visitTime, 10);
+                const uneMinuteEnMs = 60 * 1000; // 1 minute = 60000 ms
+
+                // Si au moins 1 minute s'est écoulée depuis le premier accès et que l'utilisateur a actualisé
+                if (tempsEcoule >= uneMinuteEnMs) {
+                    const banner = document.getElementById('pwa-install-banner');
+                    if (banner) {
+                        banner.style.display = 'flex';
+                    }
+                }
             }
         });
 
         function installerApplicationPWA() {
             document.getElementById('pwa-install-banner').style.display = 'none';
+            localStorage.setItem('bizi_installed', 'true'); // Bloque l'affichage à jamais après clic d'installation
+
             if (deferredPrompt) {
                 deferredPrompt.prompt();
                 deferredPrompt.userChoice.then((choiceResult) => {
@@ -653,6 +688,7 @@
 
         function fermerPwaBanner() {
             document.getElementById('pwa-install-banner').style.display = 'none';
+            // Optionnel : enregistre l'ignoration temporaire de la session
             localStorage.setItem('bizi_pwa_dismissed', 'true');
         }
 
