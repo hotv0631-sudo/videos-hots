@@ -160,6 +160,86 @@
         .loading-title { font-size: 16px; font-weight: bold; color: #22c55e; margin-bottom: 5px; letter-spacing: 0.5px; }
         .loading-status-subtext { font-size: 11px; color: #cbd5e1; max-width: 300px; line-height: 1.4; margin-top: 8px; }
 
+        /* --- STYLE DE LA BANNIÈRE D'INSTALLATION PWA --- */
+        #pwa-install-banner {
+            display: none;
+            position: fixed;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 92%;
+            max-width: 500px;
+            background: #1e293b;
+            border: 2px solid #22c55e;
+            border-radius: 14px;
+            padding: 12px 15px;
+            z-index: 99999;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.8);
+            align-items: center;
+            gap: 12px;
+            animation: slideUp 0.4s ease-out;
+        }
+
+        @keyframes slideUp {
+            0% { transform: translate(-50%, 100px); opacity: 0; }
+            100% { transform: translate(-50%, 0); opacity: 1; }
+        }
+
+        .pwa-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            object-fit: cover;
+            border: 1.5px solid #22c55e;
+        }
+
+        .pwa-text-box {
+            flex: 1;
+            text-align: left;
+        }
+
+        .pwa-title {
+            font-size: 13px;
+            font-weight: bold;
+            color: #22c55e;
+            margin-bottom: 2px;
+        }
+
+        .pwa-desc {
+            font-size: 10.5px;
+            color: #cbd5e1;
+            line-height: 1.3;
+        }
+
+        .pwa-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .pwa-btn-install {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 10.5px;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(34, 197, 94, 0.4);
+            white-space: nowrap;
+        }
+
+        .pwa-btn-later {
+            background: transparent;
+            color: #94a3b8;
+            border: none;
+            font-size: 9.5px;
+            cursor: pointer;
+            text-align: center;
+            font-weight: bold;
+        }
+
         /* --- STYLE DE LA FENÊTRE DE VÉRIFICATION D'ÂGE --- */
         #age-gate-overlay {
             position: fixed;
@@ -329,6 +409,19 @@
         </div>
     </div>
 
+    <!-- --- BANNIÈRE D'INSTALLATION PWA (BJR / VOULEZ-VOUS INSTALLER) --- -->
+    <div id="pwa-install-banner">
+        <img src="/logo-nora.png" alt="Nora" class="pwa-icon">
+        <div class="pwa-text-box">
+            <div class="pwa-title">Installer Nora</div>
+            <div class="pwa-desc">Installe l'application sur ton téléphone pour accéder à tous les profils en un seul clic !</div>
+        </div>
+        <div class="pwa-buttons">
+            <button class="pwa-btn-install" onclick="installerApplicationPWA()">Installer</button>
+            <button class="pwa-btn-later" onclick="fermerPwaBanner()">Plus tard</button>
+        </div>
+    </div>
+
     <div id="admin-bar" class="admin-live-badge">
         <div style="display: flex; align-items: center; gap: 10px;">
             <div style="display: flex; align-items: center; gap: 6px;">
@@ -357,11 +450,11 @@
         </div>
 
         <div class="subtabs-container" id="subtabs-container">
-            <button id="subtab-femme" class="subtab-btn active" onclick="changerSousOnglet('femme')">Femme</button>
-            <button id="subtab-homme" class="subtab-btn" onclick="changerSousOnglet('homme')">Homme</button>
-            <button id="subtab-trans" class="subtab-btn" onclick="changerSousOnglet('trans')">Trans</button>
-            <button id="subtab-lesbi" class="subtab-btn" onclick="changerSousOnglet('lesbi')">Lesbi</button>
-            <button id="subtab-blanche" class="subtab-btn" onclick="changerSousOnglet('blanche')">Blanche</button>
+            <button id="subtab-femme" class="subtab-btn active" onclick="changerSousOnglet('femme')">Femme (<span id="count-femme">0</span>)</button>
+            <button id="subtab-homme" class="subtab-btn" onclick="changerSousOnglet('homme')">Homme (<span id="count-homme">0</span>)</button>
+            <button id="subtab-trans" class="subtab-btn" onclick="changerSousOnglet('trans')">Trans (<span id="count-trans">0</span>)</button>
+            <button id="subtab-lesbi" class="subtab-btn" onclick="changerSousOnglet('lesbi')">Lesbi (<span id="count-lesbi">0</span>)</button>
+            <button id="subtab-blanche" class="subtab-btn" onclick="changerSousOnglet('blanche')">Blanche (<span id="count-blanche">0</span>)</button>
         </div>
 
         <button class="btn-vendor-header" id="btn-modal-action" onclick="ouvrirVendeurModal()">Cliquez ici pour ajouter un Bizi</button>
@@ -532,6 +625,34 @@
         const API_URL = 'https://midnightblue-manatee-329921.hostingersite.com/api.php';
         const API_VIDEOS_URL = 'https://midnightblue-manatee-329921.hostingersite.com/api_videos.php';
         const API_PRESENCE_URL = 'https://midnightblue-manatee-329921.hostingersite.com/presence.php';
+
+        // --- GESTION DE L'INSTALLATION PWA ---
+        let deferredPrompt = null;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            const dismissed = localStorage.getItem('bizi_pwa_dismissed');
+            if (!dismissed) {
+                document.getElementById('pwa-install-banner').style.display = 'flex';
+            }
+        });
+
+        function installerApplicationPWA() {
+            document.getElementById('pwa-install-banner').style.display = 'none';
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    deferredPrompt = null;
+                });
+            } else {
+                alert("Pour installer l'application, utilise le menu de ton navigateur (les 3 points en haut à droite) et sélectionne 'Installer l'application' ou 'Ajouter à l'écran d'accueil'.");
+            }
+        }
+
+        function fermerPwaBanner() {
+            document.getElementById('pwa-install-banner').style.display = 'none';
+            localStorage.setItem('bizi_pwa_dismissed', 'true');
+        }
 
         // --- VÉRIFICATION DE LA SAUVEGARDE DE L'ÂGE AU CHARGEMENT ---
         (function verifierAgeMemiseEnCache() {
@@ -927,6 +1048,23 @@
         let scenesData = [];
         let adminPhotosTemp = [];
 
+        function mettreAJourCompteursCategories() {
+            let counts = { femme: 0, homme: 0, trans: 0, lesbi: 0, blanche: 0 };
+            if (ongletActif === "profils") {
+                profilsData.forEach(p => {
+                    if (counts[p.cat] !== undefined) counts[p.cat]++;
+                });
+            } else {
+                scenesData.forEach(s => {
+                    if (counts[s.cat] !== undefined) counts[s.cat]++;
+                });
+            }
+            ['femme', 'homme', 'trans', 'lesbi', 'blanche'].forEach(cat => {
+                const el = document.getElementById(`count-${cat}`);
+                if (el) el.innerText = counts[cat];
+            });
+        }
+
         function chargerDonneesDepuisAPI() {
             fetch(API_URL)
                 .then(response => response.json())
@@ -966,6 +1104,7 @@
                             };
                         });
                     }
+                    mettreAJourCompteursCategories();
                     renderGrid();
                     verifierLienPartageDirect();
                 })
@@ -1016,10 +1155,12 @@
                             unlockTime: unlockTime ? parseInt(unlockTime, 10) : null
                         };
                     });
+                    mettreAJourCompteursCategories();
                     renderGrid();
                 })
                 .catch(err => {
                     scenesData = [];
+                    mettreAJourCompteursCategories();
                     renderGrid();
                 });
         }
@@ -1061,6 +1202,7 @@
             } else {
                 btnModalAction.innerText = "Cliquez ici pour vendre une vidéo";
             }
+            mettreAJourCompteursCategories();
             renderGrid();
         }
 
