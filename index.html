@@ -1209,10 +1209,10 @@
                     
                     card.className = cardClass;
 
-                    // RESTAURATION FIDÈLE DU CODE ORIGINAL DE LA BALISE VIDÉO
+                    // MISE À JOUR : Balise vidéo optimisée avec classe pour l'intersection observer (sans autoplay direct)
                     const mediaHtml = `
                         <div class="media-container" onclick="${adminModeConnecte ? `ouvrirModalEditVideo(${scene.realId})` : ''}">
-                            <video class="preview-video" src="${scene.preview}" autoplay muted loop playsinline webkit-playsinline preload="auto" ontimeupdate="if(this.currentTime>=5){this.currentTime=0;}">
+                            <video class="preview-video lazy-video" src="${scene.preview}" muted loop playsinline webkit-playsinline preload="none" ontimeupdate="if(this.currentTime>=5){this.currentTime=0;}">
                             </video>
                         </div>`;
 
@@ -1264,7 +1264,28 @@
 
                 misesAJourCompteursTemps();
                 countdownInterval = setInterval(misesAJourCompteursTemps, 1000);
+                
+                // Active la lecture intelligente uniquement pour les vidéos visibles à l'écran
+                activerObservationVideos();
             }
+        }
+
+        // --- SCRIPTS D'OPTIMISATION DE LECTURE VIDÉO AU DÉFILEMENT ---
+        function activerObservationVideos() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const video = entry.target;
+                    if (entry.isIntersecting) {
+                        video.play().catch(() => {});
+                    } else {
+                        video.pause();
+                    }
+                });
+            }, { threshold: 0.3 });
+
+            document.querySelectorAll('.lazy-video').forEach(video => {
+                observer.observe(video);
+            });
         }
 
         function misesAJourCompteursTemps() {
