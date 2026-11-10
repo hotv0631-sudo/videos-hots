@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/bizi/:match*",
+      "destination": "https://midnightblue-manatee-329921.hostingersite.com/:match*"
+    }
+  ]
+}
