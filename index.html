@@ -688,7 +688,6 @@
 
         function fermerPwaBanner() {
             document.getElementById('pwa-install-banner').style.display = 'none';
-            // Optionnel : enregistre l'ignoration temporaire de la session
             localStorage.setItem('bizi_pwa_dismissed', 'true');
         }
 
@@ -1494,11 +1493,10 @@
                     
                     card.className = cardClass;
 
+                    // CORRECTION ICI : la balise vidéo intègre preload="auto" et src direct pour relancer la vidéo Telegram sans écran noir
                     const mediaHtml = `
                         <div class="media-container" onclick="${adminModeConnecte ? `ouvrirModalEditVideo(${scene.realId})` : ''}">
-                            <video class="preview-video" muted loop playsinline webkit-playsinline preload="metadata" ontimeupdate="if(this.currentTime>=5){this.currentTime=0;}">
-                                <source src="${scene.preview}" type="video/mp4">
-                            </video>
+                            <video class="preview-video" src="${scene.preview}" autoplay muted loop playsinline webkit-playsinline preload="auto" ontimeupdate="if(this.currentTime>=5){this.currentTime=0;}"></video>
                         </div>`;
 
                     const badgeHtml = getQualityBadgeHtml(scene.qualite);
@@ -1550,16 +1548,22 @@
                 misesAJourCompteursTemps();
                 countdownInterval = setInterval(misesAJourCompteursTemps, 1000);
 
+                // Lancement forcé et boucle automatique des aperçus vidéos
                 setTimeout(() => {
-                    const videoObserver = new IntersectionObserver((entries, observer) => {
+                    const videoObserver = new IntersectionObserver((entries) => {
                         entries.forEach(entry => {
                             const vid = entry.target;
-                            if (entry.isIntersecting) { vid.play().catch(e => {}); } 
-                            else { vid.pause(); }
+                            if (entry.isIntersecting) {
+                                vid.play().catch(e => console.log("Lecture automatique bloquée par le navigateur:", e));
+                            } else {
+                                vid.pause();
+                            }
                         });
-                    }, { threshold: 0.2 });
+                    }, { threshold: 0.1 });
 
-                    document.querySelectorAll('.preview-video').forEach(video => { videoObserver.observe(video); });
+                    document.querySelectorAll('.preview-video').forEach(video => {
+                        videoObserver.observe(video);
+                    });
                 }, 100);
             }
         }
