@@ -81,14 +81,10 @@
         .card-vip-bronze { border: 3px solid #b45309; box-shadow: 0 0 16px rgba(180, 83, 9, 0.5); }
         .card-profil { border: 3px solid #22c55e; box-shadow: 0 0 16px rgba(34, 197, 94, 0.5); }
 
-        .media-container { width: 100%; border-radius: 8px; overflow: hidden; background: #0f172a; margin-bottom: 6px; aspect-ratio: 9 / 16; display: flex; align-items: center; justify-content: center; position: relative; cursor: pointer; }
+        .media-container { width: 100%; border-radius: 8px; overflow: hidden; background: #000000; margin-bottom: 6px; aspect-ratio: 9 / 16; display: flex; align-items: center; justify-content: center; position: relative; cursor: pointer; }
         
-        /* CORRECTION STRICTE DE L'AFFICHAGE VIDÉO */
-        video.preview-video { width: 100%; height: 100%; object-fit: cover; display: block; background: #0f172a; }
-        
-        .video-fallback-box { display: none; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%; background: linear-gradient(135deg, #1e293b, #0f172a); color: #38bdf8; padding: 10px; text-align: center; }
-        .video-fallback-box span { font-size: 28px; margin-bottom: 5px; }
-        .video-fallback-box p { font-size: 10px; color: #94a3b8; font-weight: bold; }
+        /* RESTAURATION DE LA BALISE VIDÉO CLASSIQUE DE TON INDEX DE RÉFÉRENCE */
+        video.preview-video { width: 100%; height: 100%; object-fit: cover; display: block; }
 
         .profil-img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out; }
         .slide-out-left { transform: translateX(-100%); opacity: 0; }
@@ -1121,15 +1117,6 @@
             }
         }
 
-        // --- GESTION ERREUR LECTURE VIDÉO ---
-        function gererErreurVideo(vidEl, realId) {
-            vidEl.style.display = "none";
-            const fallbackBox = document.getElementById(`fallback-${realId}`);
-            if (fallbackBox) {
-                fallbackBox.style.display = "flex";
-            }
-        }
-
         function renderGrid() {
             nettoyerCarrousels();
             const grid = document.getElementById("video-grid");
@@ -1222,24 +1209,12 @@
                     
                     card.className = cardClass;
 
-                    // RESTAURATION ET SÉCURISATION TOTALE DE LA LECTURE DE LA VIDÉO
+                    // RESTAURATION EXACTE DE LA BALISE VIDÉO DE TON INDEX DE RÉFÉRENCE (AVEC AUTOPLAY & LOOP FORCÉS)
                     const mediaHtml = `
                         <div class="media-container" onclick="${adminModeConnecte ? `ouvrirModalEditVideo(${scene.realId})` : ''}">
-                            <video class="preview-video" 
-                                   src="${scene.preview}" 
-                                   autoplay 
-                                   muted 
-                                   loop 
-                                   playsinline 
-                                   webkit-playsinline 
-                                   preload="auto"
-                                   onerror="gererErreurVideo(this, ${scene.realId})"
-                                   ontimeupdate="if(this.currentTime>=5){this.currentTime=0;}">
+                            <video class="preview-video" autoplay muted loop playsinline webkit-playsinline preload="metadata" ontimeupdate="if(this.currentTime>=5){this.currentTime=0;}">
+                                <source src="${scene.preview}" type="video/mp4">
                             </video>
-                            <div class="video-fallback-box" id="fallback-${scene.realId}">
-                                <span>🎬</span>
-                                <p>Extrait Vidéo</p>
-                            </div>
                         </div>`;
 
                     const badgeHtml = getQualityBadgeHtml(scene.qualite);
@@ -1291,19 +1266,15 @@
                 misesAJourCompteursTemps();
                 countdownInterval = setInterval(misesAJourCompteursTemps, 1000);
 
-                // Lancement forcé de la lecture au moment de l'affichage
+                // RELANCEMENT AUTOMATIQUE DE TOUTES LES VIDÉOS APRÈS LE RENDU DE LA GRILLE
                 setTimeout(() => {
-                    document.querySelectorAll('.preview-video').forEach(vid => {
-                        let playPromise = vid.play();
-                        if (playPromise !== undefined) {
-                            playPromise.catch(() => {
-                                // En cas de blocage d'autostart du navigateur
-                                vid.muted = true;
-                                vid.play().catch(e => console.log("Play bloqué", e));
-                            });
-                        }
+                    document.querySelectorAll('.preview-video').forEach(video => {
+                        video.play().catch(e => {
+                            video.muted = true;
+                            video.play().catch(err => console.log("Lecture auto bloquée par le navigateur", err));
+                        });
                     });
-                }, 150);
+                }, 100);
             }
         }
 
