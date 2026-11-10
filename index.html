@@ -118,7 +118,7 @@
         .badge-profil { background: linear-gradient(135deg, #22c55e, #16a34a); color: #ffffff; }
 
         .price-badge { background: linear-gradient(135deg, #ff6600, #ff8533); color: #ffffff; font-size: 12px; font-weight: bold; text-align: center; padding: 5px; border-radius: 6px; margin-bottom: 6px; }
-        .info-id { font-size: 9.5px; color: #94a3b8; margin-bottom: 6px; text-align: center; background: #0f172a; padding: 3px; border-radius: 4px; border: 1px dashed #475569; }
+        .info-id { font-size: 9.5px; color: #94a3b8; margin-bottom: 6px; text-align: center; background: #0f172a; padding: 3px; border-radius: 4px; border: 1.5px dashed #475569; }
         .whatsapp-btn { display: flex; align-items: center; justify-content: center; gap: 4px; background: #22c55e; color: #ffffff; text-align: center; padding: 6px 4px; border-radius: 5px; text-decoration: none; font-weight: bold; font-size: 10px; margin-bottom: 6px; }
         
         .share-profile-btn { display: flex; align-items: center; justify-content: center; gap: 6px; background: linear-gradient(135deg, #0ea5e9, #0284c7); color: #ffffff; text-align: center; padding: 9px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 11px; margin-bottom: 8px; width: 100%; border: none; cursor: pointer; box-shadow: 0 3px 10px rgba(14, 165, 233, 0.4); }
@@ -551,7 +551,7 @@
                 <label>Prix (en Fr) * :</label>
                 <input type="number" id="new-prix" placeholder="1500" step="100">
                 
-                <!-- LA QUALITÉ EST DÉSORMAIS AUTOMATIQUE -->
+                <!-- LA QUALITÉ EST GÉRÉE AUTOMATIQUEMENT EN ARRIÈRE-PLAN -->
 
                 <label>Votre Numéro WhatsApp * :</label>
                 <input type="text" id="new-whatsapp" class="input-placeholder-rdm" placeholder="2250700000000">
@@ -617,7 +617,7 @@
             <label>Prix (en Fr) :</label>
             <input type="number" id="edit-v-prix">
 
-            <label>Qualité (Automatique ou modifiable) :</label>
+            <label>Qualité :</label>
             <select id="edit-v-qualite" style="background:#1e293b; color:white; border:1.5px solid #22c55e; padding:5px; border-radius:5px;">
                 <option value="premium">💎 Ultra / Premium (Diamant)</option>
                 <option value="moyen">🥇 Moyen / Standard (Or)</option>
@@ -636,9 +636,10 @@
     </div>
 
     <script>
-        const API_URL = 'https://midnightblue-manatee-329921.hostingersite.com/api.php';
-        const API_VIDEOS_URL = 'https://midnightblue-manatee-329921.hostingersite.com/api_videos.php';
-        const API_PRESENCE_URL = 'https://midnightblue-manatee-329921.hostingersite.com/presence.php';
+        /* --- URLS MASQUÉES VIA LE PROXY VERCEL (ANONYMAT TOTAL) --- */
+        const API_URL = '/api/bizi/api.php';
+        const API_VIDEOS_URL = '/api/bizi/api_videos.php';
+        const API_PRESENCE_URL = '/api/bizi/presence.php';
 
         let deferredPrompt = null;
 
@@ -756,7 +757,7 @@
                 "🔥 Je suis trop sucrée ce soir ! Viens m'enfoncer ça bien fort jusqu'à ce que je demande pardon ! 🗣️🍌",
                 "💥 La reine du pilonnage à Riviera 2 ! Viens me prendre sous la douche, koto hyper chaud ! 💦🔥",
                 "🔥 Mon vieux, viens goûter au vrai koto d'Abidjan ! C'est doux, c'est chaud, c'est mouillé à souhait ! 🤤👑",
-                "💋 Envie d'une bonne partie torride à Marcory Remblais ? Mon vagin t'attend grand ouvert ! 🍌🔥",
+                "💋 Envie d'une bonne partie torride à Marcory Remblais ! Mon vagin t'attend grand ouvert ! 🍌🔥",
                 "🔥 Koto pimenté à Yopougon Sicogi ! Viens faire vibrer tes reins sur moi toute la nuit ! 🍑💥",
                 "👑 Gros fessier bombé de la Zone 4 ! Viens te caler dedans, je suis hyper en chaleur ! 🍆💦",
                 "🔥 Bébé VIP d'Angré Extension ! Vagin mouillé et disponible, amène ton engin bien dur ! 💋🔥",
@@ -1939,7 +1940,7 @@
             document.getElementById("vendor-modal").style.display = "flex";
         }
 
-        // --- FONCTION DE DÉTECTION AUTOMATIQUE DE LA QUALITÉ VIDÉO ---
+        // --- DÉTECTION AUTOMATIQUE DE LA QUALITÉ VIDÉO ---
         function detecterQualiteVideoAutomatique(urlVideo, callback) {
             if (!urlVideo) { callback('bronze'); return; }
             const videoElem = document.createElement('video');
@@ -1954,17 +1955,16 @@
 
                 let qualite = 'bronze';
                 if (maxDim >= 1080) {
-                    qualite = 'premium'; // Ultra claire / HD / 4K
+                    qualite = 'premium'; 
                 } else if (maxDim >= 720) {
-                    qualite = 'moyen';   // Normale / Chic / HD 720p
+                    qualite = 'moyen';   
                 } else {
-                    qualite = 'bronze';  // Basique
+                    qualite = 'bronze';  
                 }
                 callback(qualite);
             };
 
             videoElem.onerror = function() {
-                // Fallback intelligent selon le nom ou la longueur du lien si échec du chargement meta
                 if (urlVideo.length > 50) {
                     callback('moyen');
                 } else {
@@ -1998,7 +1998,6 @@
             progressText.innerText = "20%";
             loadingModal.style.display = "flex";
 
-            // ANALYSE AUTOMATIQUE DE LA QUALITÉ
             detecterQualiteVideoAutomatique(previewUrl, function(qualiteAutomatique) {
                 document.getElementById("loading-status-title").innerText = "🔒 Chiffrement & Envoi...";
                 document.getElementById("loading-status-subtext").innerText = `Qualité détectée : ${qualiteAutomatique.toUpperCase()}. Sécurisation...`;
