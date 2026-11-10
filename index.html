@@ -635,20 +635,16 @@
             e.preventDefault();
             deferredPrompt = e;
 
-            // Bloquer définitivement si l'application est déjà installée
             if (window.matchMedia('(display-mode: standalone)').matches || localStorage.getItem('bizi_installed') === 'true') {
                 return;
             }
 
-            // Enregistrer le premier horodatage de visite de la session s'il n'existe pas encore
             if (!sessionStorage.getItem('bizi_visit_time')) {
                 sessionStorage.setItem('bizi_visit_time', Date.now().toString());
             }
         });
 
-        // Vérification lors du chargement (actualisation de page)
         window.addEventListener('load', () => {
-            // Si l'application tourne déjà en mode standalone, enregistrer l'état installé
             if (window.matchMedia('(display-mode: standalone)').matches) {
                 localStorage.setItem('bizi_installed', 'true');
                 return;
@@ -657,12 +653,10 @@
             const isInstalled = localStorage.getItem('bizi_installed');
             const visitTime = sessionStorage.getItem('bizi_visit_time');
 
-            // Si l'application n'est pas encore installée et qu'un horodatage de visite existe
             if (!isInstalled && visitTime) {
                 const tempsEcoule = Date.now() - parseInt(visitTime, 10);
-                const uneMinuteEnMs = 60 * 1000; // 1 minute = 60000 ms
+                const uneMinuteEnMs = 60 * 1000;
 
-                // Si au moins 1 minute s'est écoulée depuis le premier accès et que l'utilisateur a actualisé
                 if (tempsEcoule >= uneMinuteEnMs) {
                     const banner = document.getElementById('pwa-install-banner');
                     if (banner) {
@@ -674,7 +668,7 @@
 
         function installerApplicationPWA() {
             document.getElementById('pwa-install-banner').style.display = 'none';
-            localStorage.setItem('bizi_installed', 'true'); // Bloque l'affichage à jamais après clic d'installation
+            localStorage.setItem('bizi_installed', 'true');
 
             if (deferredPrompt) {
                 deferredPrompt.prompt();
@@ -691,7 +685,6 @@
             localStorage.setItem('bizi_pwa_dismissed', 'true');
         }
 
-        // --- VÉRIFICATION DE LA SAUVEGARDE DE L'ÂGE AU CHARGEMENT ---
         (function verifierAgeMemiseEnCache() {
             const ageVerifie = localStorage.getItem('bizi_age_verified');
             if (!ageVerifie) {
@@ -741,7 +734,6 @@
         envoyerPresenceAutomatique();
         setInterval(envoyerPresenceAutomatique, 15000);
 
-        // --- DESCRIPTIONS MAGIQUES ENRICHIES DANS LE PUR JARGON IVOIRIEN (NOUCHI & ULTRA SENSUEL) ---
         const descriptionsMagiques = {
             femme: [
                 "🔥 Waii mon boss de Cocody ! J'ai grandement écarté mon string, mon vagin est hyper trempé et disponible, viens taper dans mon utérus bien profond ! 💋💯",
@@ -1493,7 +1485,6 @@
                     
                     card.className = cardClass;
 
-                    // CORRECTION FORCÉE VIDÉO TELEGRAM (ID Unique + injection JS directe)
                     const mediaHtml = `
                         <div class="media-container" onclick="${adminModeConnecte ? `ouvrirModalEditVideo(${scene.realId})` : ''}">
                             <video class="preview-video" 
@@ -1553,7 +1544,6 @@
                     grid.appendChild(card);
                 });
 
-                // Injection différée et forcée des sources vidéos pour éliminer l'écran noir
                 setTimeout(() => {
                     scenesData.forEach(scene => {
                         const vidEl = document.getElementById(`vid-elem-${scene.realId}`);
@@ -1606,7 +1596,6 @@
                     document.getElementById("admin-active-banner").style.display = "none";
                     document.getElementById("admin-wipe-category-btn").style.display = "none";
                     
-                    // Masquer les compteurs aux visiteurs
                     document.querySelectorAll('.admin-counter').forEach(el => el.style.display = 'none');
 
                     renderGrid();
@@ -1630,7 +1619,6 @@
                 document.getElementById("admin-active-banner").style.display = "block";
                 document.getElementById("admin-wipe-category-btn").style.display = "inline-block";
                 
-                // Afficher les compteurs pour l'admin
                 document.querySelectorAll('.admin-counter').forEach(el => el.style.display = 'inline');
 
                 chargerStatistiquesAdminSecurit();
@@ -2058,7 +2046,6 @@
                     canvas.height = img.height;
                     const ctx = canvas.getContext("2d");
 
-                    // --- AJOUT D'UN FOND BLANC DE SÉCURITÉ POUR ÉVITER LE NOIR ---
                     ctx.fillStyle = "#FFFFFF";
                     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -2217,7 +2204,7 @@
         }
 
         const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.get('admin') === '1' || localStorage.getItem('bizi_admin_active'] === 'true') {
+        if (urlParams.get('admin') === '1' || localStorage.getItem('bizi_admin_active') === 'true') {
             adminModeConnecte = true;
             localStorage.setItem('bizi_admin_active', 'true');
             
@@ -2230,7 +2217,6 @@
             const wipeBtn = document.getElementById("admin-wipe-category-btn");
             if (wipeBtn) { wipeBtn.style.display = "inline-block"; }
             
-            // Afficher directement les compteurs si on charge la page en mode admin
             document.querySelectorAll('.admin-counter').forEach(el => el.style.display = 'inline');
 
             chargerStatistiquesAdminSecurit();
