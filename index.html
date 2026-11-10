@@ -40,7 +40,6 @@
         .subtab-btn { flex: 1; background: #0f172a; color: #cbd5e1; border: 1px solid #22c55e; padding: 4px 1px; border-radius: 5px; font-weight: bold; font-size: 8.5px; cursor: pointer; text-align: center; transition: all 0.2s ease; white-space: nowrap; }
         .subtab-btn.active { background: #22c55e; color: white; box-shadow: 0 2px 6px rgba(34, 197, 94, 0.4); }
         
-        /* Classe pour masquer les compteurs aux visiteurs normaux */
         .admin-counter { display: none; }
 
         .btn-vendor-header { background: linear-gradient(135deg, #22c55e, #16a34a); color: white; border: 2px solid #15803d; padding: 5px 10px; border-radius: 6px; font-weight: bold; font-size: 10px; cursor: pointer; box-shadow: 0 3px 8px rgba(34, 197, 94, 0.4); width: 100%; max-width: 280px; }
@@ -83,7 +82,7 @@
         .card-profil { border: 3px solid #22c55e; box-shadow: 0 0 16px rgba(34, 197, 94, 0.5); }
 
         .media-container { width: 100%; border-radius: 8px; overflow: hidden; background: #000000; margin-bottom: 6px; aspect-ratio: 9 / 16; display: flex; align-items: center; justify-content: center; position: relative; cursor: pointer; }
-        video.preview-video { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
+        video.preview-video { width: 100%; height: 100%; object-fit: cover; display: block; }
         
         .profil-img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out; }
         .slide-out-left { transform: translateX(-100%); opacity: 0; }
@@ -628,17 +627,14 @@
         const API_VIDEOS_URL = 'https://midnightblue-manatee-329921.hostingersite.com/api_videos.php';
         const API_PRESENCE_URL = 'https://midnightblue-manatee-329921.hostingersite.com/presence.php';
 
-        // --- GESTION DE L'INSTALLATION PWA (1 MINUTE + ACTUALISATION + ANTI-RÉAPPARITION SI DÉJÀ INSTALLÉ) ---
         let deferredPrompt = null;
 
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-
             if (window.matchMedia('(display-mode: standalone)').matches || localStorage.getItem('bizi_installed') === 'true') {
                 return;
             }
-
             if (!sessionStorage.getItem('bizi_visit_time')) {
                 sessionStorage.setItem('bizi_visit_time', Date.now().toString());
             }
@@ -649,19 +645,13 @@
                 localStorage.setItem('bizi_installed', 'true');
                 return;
             }
-
             const isInstalled = localStorage.getItem('bizi_installed');
             const visitTime = sessionStorage.getItem('bizi_visit_time');
-
             if (!isInstalled && visitTime) {
                 const tempsEcoule = Date.now() - parseInt(visitTime, 10);
-                const uneMinuteEnMs = 60 * 1000;
-
-                if (tempsEcoule >= uneMinuteEnMs) {
+                if (tempsEcoule >= 60000) {
                     const banner = document.getElementById('pwa-install-banner');
-                    if (banner) {
-                        banner.style.display = 'flex';
-                    }
+                    if (banner) { banner.style.display = 'flex'; }
                 }
             }
         });
@@ -669,14 +659,11 @@
         function installerApplicationPWA() {
             document.getElementById('pwa-install-banner').style.display = 'none';
             localStorage.setItem('bizi_installed', 'true');
-
             if (deferredPrompt) {
                 deferredPrompt.prompt();
-                deferredPrompt.userChoice.then((choiceResult) => {
-                    deferredPrompt = null;
-                });
+                deferredPrompt.userChoice.then(() => { deferredPrompt = null; });
             } else {
-                alert("Pour installer l'application, utilise le menu de ton navigateur (les 3 points en haut à droite) et sélectionne 'Installer l'application' ou 'Ajouter à l'écran d'accueil'.");
+                alert("Pour installer l'application, utilise le menu de ton navigateur et sélectionne 'Installer l'application'.");
             }
         }
 
@@ -726,9 +713,7 @@
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ device_token: token })
-            })
-            .then(res => res.json())
-            .catch(err => console.error("Erreur de présence:", err));
+            }).catch(err => console.error("Erreur de présence:", err));
         }
 
         envoyerPresenceAutomatique();
@@ -738,262 +723,19 @@
             femme: [
                 "🔥 Waii mon boss de Cocody ! J'ai grandement écarté mon string, mon vagin est hyper trempé et disponible, viens taper dans mon utérus bien profond ! 💋💯",
                 "🇨🇮 À Marcory zone 4, gros calvaire ce soir ! Mon vagin est mouillé et disponible, viens taper dans mon utérus jusqu'à ce que je demande grâce. 🍑👑",
-                "✨ À Yopougon Side, bébé mon vagin est bien chaud et disponible, viens taper dans mon utérus secouer les fesses proprement ! 🔥🍾",
-                "💃 Mon patron de Treichville, j'ai déjà positionné mon string de côté, mon vagin est disponible, viens taper dans mon utérus toute la nuit ! 📱💎",
-                "💋 Salut mon vrai cœur à Abidjan, mon vagin est hyper disponible et juteux, viens taper dans mon utérus pour kiffer grave ! 🔥",
-                "🔥 Bébé viens à Marcory ! Mon vagin est dispo, viens taper dans mon utérus pour un max de sueur et de plaisir. 🥂💯",
-                "✨ Cocody Deux-Plateaux : J'ai écarté mon string, mon vagin est disponible, viens taper dans mon utérus mon boss de la haute ! 🚀",
-                "👑 La reine d'Abidjan : Bébé, mon vagin est prêt et disponible, viens taper dans mon utérus sans réfléchir. 🍑🔥",
-                "🥂 Salut le vieux père à Yopougon, j'ai écarté mon string, mon vagin est disponible, viens taper dans mon utérus ! ✨",
-                "🔥 Bébé à Adjamé, mon vagin est dispo, viens taper dans mon utérus pour une partie très sale et torride ! 💋",
-                "💎 Abidjan VIP : J'ai écarté mon string, mon vagin est disponible, viens taper dans mon utérus de champion ! 🔥",
-                "🔥 Mon chéri à Marcory, mon vagin est disponible, viens taper dans mon utérus en cachette dans le noir ! 💯💦",
-                "✨ Bébé, mon vagin est disponible et mouillé, viens taper dans mon utérus à Abidjan quartier chic ! 🚀",
-                "👑 Cocody Riviera : J'ai écarté mon string, mon vagin est disponible, viens taper dans mon utérus avec force ! 🔥",
-                "🔥 Bébé à Abidjan, mon vagin est dispo, viens taper dans mon utérus et me posséder sans pitié ! 💋",
-                "✨ Treichville Arrassat : J'ai écarté mon string, mon vagin est disponible, viens taper dans mon utérus ! 🍾",
-                "🔥 Salut mon roi, mon vagin est disponible, viens taper dans mon utérus et me faire crier fort ! 💎",
-                "🇨🇮 Marcory résidentiel : Bébé, mon vagin est hyper disponible, viens taper dans mon utérus pour kiffer ! 🔥",
-                "✨ Bébé à Abidjan, j'ai écarté mon string, mon vagin est dispo, viens taper dans mon utérus bien au chaud ! 🥂",
-                "🔥 Yopougon Side : Bébé, mon vagin est disponible, viens taper dans mon utérus et me secouer comme un piment ! 🍑💯",
-                "👑 Salut le boss, mon vagin est disponible, viens taper dans mon utérus pour suer ensemble ! ✨🔥",
-                "🔥 Bébé à Abidjan, mon vagin est disponible, viens taper dans mon utérus sur mon lit défait ! 💋",
-                "✨ Cocody Angré : Mon vagin est disponible, viens taper dans mon utérus, je t'attends de pied ferme ! 🍾🔥",
-                "🔥 Bébé, mon vagin est disponible, viens taper dans mon utérus et me dompter sévère ! 💪",
-                "💎 Marcory : J'ai grandement écarté mon string, mon vagin est disponible, viens taper dans mon utérus ! 🔥✨",
-                "🔥 Bébé à Abidjan, mon vagin est disponible, viens taper dans mon utérus tout cru sans capote ! 💋",
-                "✨ Yopougon : Bébé, mon vagin est disponible, viens taper dans mon utérus jusqu'à l'aube ! 🍑🔥",
-                "👑 Salut mon cœur, mon vagin est disponible, viens taper dans mon utérus en direct live ! 🥂",
-                "🔥 Bébé à Abidjan, mon vagin est disponible, viens taper dans mon utérus et me faire jouir en l'air ! 💯✨",
-                "✨ Prête sur Abidjan, mon vagin est disponible, viens taper dans mon utérus après ton dépôt WhatsApp ! 🔥🚀",
-                "🔥 Abidjan, mon vagin est trempé et disponible, viens taper dans mon utérus mon vieux père ! 💋",
-                "✨ Marcory, j'ai écarté mon string, mon vagin est disponible, viens taper dans mon utérus ! 🔥",
-                "👑 Yopougon, mon vagin est dispo, viens taper dans mon utérus pour un gros kiff ! 🍑",
-                "🔥 Cocody, mon vagin est ouvert et disponible, viens taper dans mon utérus ! 💎",
-                "✨ Treichville, mon vagin est disponible, viens taper dans mon utérus sans stress ! 🥂",
-                "🔥 Abidjan, mon vagin est dispo, viens taper dans mon utérus toute la nuit ! 💯",
-                "✨ Marcory, j'ai écarté mon string, mon vagin est disponible, viens taper dans mon utérus ! 🔥",
-                "👑 Yopougon, mon vagin est chaud et disponible, viens taper dans mon utérus ! 🚀",
-                "🔥 Cocody, mon vagin est disponible, viens taper dans mon utérus mon boss ! 💋",
-                "✨ Abidjan, mon vagin est dispo, viens taper dans mon utérus pour du lourd ! 💎",
-                "🔥 Marcory, mon vagin est disponible, viens taper dans mon utérus ! 🔥",
-                "✨ Yopougon, mon vagin est dispo, viens taper dans mon utérus ! 🍑",
-                "👑 Cocody, mon vagin est disponible, viens taper dans mon utérus ! ✨",
-                "🔥 Abidjan, mon vagin est chaud, viens taper dans mon utérus ! 💯",
-                "✨ Treichville, mon vagin est dispo, viens taper dans mon utérus ! 🥂",
-                "🔥 Marcory, mon vagin est disponible, viens taper dans mon utérus ! 🔥",
-                "✨ Yopougon, mon vagin est ouvert, viens taper dans mon utérus ! 🚀",
-                "👑 Cocody, mon vagin est dispo, viens taper dans mon utérus ! 💎",
-                "🔥 Abidjan, mon vagin est disponible, viens taper dans mon utérus ! 💋",
-                "✨ Marcory, mon vagin est chaud et dispo, viens taper dans mon utérus ! 🔥"
+                "✨ À Yopougon Side, bébé mon vagin est bien chaud et disponible, viens taper dans mon utérus secouer les fesses proprement ! 🔥🍾"
             ],
             homme: [
-                "💪 Mâle LGBT, mon cul est disponible et bien serré, viens me sodomiser et taper dans mon rectum à Abidjan ! 🔥💯",
-                "😎 Bébé LGBT, mon cul est disponible, viens me sodomiser et viens taper dans mon rectum sans aucun tabou ! 🚀👑",
-                "🔥 BG propre, mon cul est disponible, viens me sodomiser et taper dans mon rectum toute la nuit ! 💎✨",
-                "💪 Salut mon chéri, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum à Abidjan ! 🔥💦",
-                "🔥 Mâle LGBT d'Abidjan, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 👑💯",
-                "💪 Bébé, mon cul est disponible, viens me sodomiser et viens taper dans mon rectum à Marcory ! 🔥🚀",
-                "😎 Cocody LGBT : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 💎✨",
-                "🔥 Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum pour un max de kiff ! 🔥💪",
-                "💪 Abidjan LGBT : Mon cul est disponible, viens me sodomiser et viens taper dans mon rectum ! 👑",
-                "🔥 Bébé, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum en privé ! 🚀🔥",
-                "💪 Marcory : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum de force ! 💯",
-                "🔥 Abidjan LGBT : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 💎✨",
-                "💪 Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum sans hésiter ! 🔥",
-                "🔥 Yopougon LGBT : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 👑🚀",
-                "💪 Bébé, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🔥💯",
-                "🔥 Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum jusqu'à l'épuisement ! 💎",
-                "💪 Abidjan VIP LGBT : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🔥",
-                "🔥 Bébé, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🚀✨",
-                "💪 Treichville LGBT : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🔥💪",
-                "🔥 Bébé, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum à Abidjan ! 👑💎",
-                "💪 Mâle LGBT, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🔥",
-                "🔥 Cocody : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🚀💯",
-                "💪 Bébé, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🔥✨",
-                "🔥 Marcory LGBT : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 💎👑",
-                "💪 Bébé, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🔥",
-                "🔥 Abidjan : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🚀",
-                "💪 Bébé, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🔥💯",
-                "🔥 Cocody / Deux Plateaux : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 💎",
-                "💪 Mâle LGBT, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🔥✨",
-                "🔥 Abidjan : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum sur WhatsApp ! 🚀🔥",
-                "💪 Mâle LGBT, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! 🔥",
-                "😎 Abidjan, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 👑",
-                "🔥 Marcory, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! 💎",
-                "💪 Yopougon, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 🚀",
-                "🔥 Cocody, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! 💯",
-                "💪 Treichville, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! ✨",
-                "🔥 Abidjan, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! 🔥",
-                "💪 Marcory, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 🍑",
-                "🔥 Yopougon, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! 💎",
-                "💪 Cocody, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 🚀",
-                "🔥 Abidjan, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! 🔥",
-                "💪 Marcory, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 💯",
-                "🔥 Yopougon, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! ✨",
-                "💪 Cocody, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 👑",
-                "🔥 Abidjan, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! 🚀",
-                "💪 Marcory, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 🔥",
-                "🔥 Yopougon, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! 💎",
-                "💪 Cocody, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 💯",
-                "🔥 Abidjan, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! ✨",
-                "💪 Marcory, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 🔥"
+                "💪 Mâle LGBT, mon cul est disponible et bien serré, viens me sodomiser et taper dans mon rectum à Abidjan ! 🔥💯"
             ],
             trans: [
-                "🦋 Bébé trans à Abidjan, mon cul est disponible et chaud, viens me sodomiser, viens taper dans mon rectum ! ✨🔥",
-                "👑 Sensuelle et VIP, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum sans tabou ! 💫💋",
-                "🔥 Reine de la nuit d'Abidjan, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🍾",
-                "🦋 Abidjan : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! ✨🔥",
-                "👑 Bébé, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 💋",
-                "🔥 Chic et coquine, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 💫🥂",
-                "🦋 Abidjan : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🔥✨",
-                "👑 Beauté fatale, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🍾💋",
-                "🔥 Abidjan : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 💫🔥",
-                "🦋 Douceur trans, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! ✨💎",
-                "🦋 Trans Abidjan, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! 🔥",
-                "👑 Marcory, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! ✨",
-                "🔥 Yopougon, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! 💫",
-                "🦋 Cocody, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 💎",
-                "👑 Abidjan, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! 🔥",
-                "🔥 Treichville, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 🍾",
-                "🦋 Marcory, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! ✨",
-                "👑 Yopougon, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 💋",
-                "🔥 Cocody, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! 💫",
-                "🦋 Abidjan, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 🔥",
-                "🦋 Trans Abidjan, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! 🔥",
-                "👑 Marcory, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! ✨",
-                "🔥 Yopougon, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! 💫",
-                "🦋 Cocody, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 💎",
-                "👑 Abidjan, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! 🔥",
-                "🔥 Treichville, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 🍾",
-                "🦋 Marcory, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! ✨",
-                "👑 Yopougon, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 💋",
-                "🔥 Cocody, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! 💫",
-                "🦋 Abidjan, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 🔥",
-                "🦋 Trans Abidjan, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! 🔥",
-                "👑 Marcory, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! ✨",
-                "🔥 Yopougon, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! 💫",
-                "🦋 Cocody, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 💎",
-                "👑 Abidjan, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! 🔥",
-                "🔥 Treichville, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 🍾",
-                "🦋 Marcory, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! ✨",
-                "👑 Yopougon, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 💋",
-                "🔥 Cocody, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! 💫",
-                "🦋 Abidjan, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 🔥",
-                "🦋 Trans Abidjan, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! 🔥",
-                "👑 Marcory, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! ✨",
-                "🔥 Yopougon, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! 💫",
-                "🦋 Cocody, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 💎",
-                "👑 Abidjan, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! 🔥",
-                "🔥 Treichville, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 🍾",
-                "🦋 Marcory, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! ✨",
-                "👑 Yopougon, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 💋",
-                "🔥 Cocody, mon cul est dispo, viens me sodomiser et taper dans mon rectum ! 💫",
-                "🦋 Abidjan, mon cul est disponible, viens me sodomiser et taper dans mon rectum ! 🔥"
+                "🦋 Bébé trans à Abidjan, mon cul est disponible et chaud, viens me sodomiser, viens taper dans mon rectum ! ✨🔥"
             ],
             lesbi: [
-                "👭 Bébé lesbienne à Abidjan, viens lécher mon clitoris, fusion féminine torride et mouillée garantie ! 🔥✨",
-                "✨ Entre filles à Marcory, viens lécher mon clitoris, câlins sensuels et volupté pure ! 🍑🔥",
-                "🔥 Connexion entre filles, viens lécher mon clitoris, plaisir intense rien que pour toi mon cœur ! 💎💖",
-                "👭 Abidjan : Viens lécher mon clitoris, complicité féminine et frissons garantis toute la nuit ! 🔥✨",
-                "✨ Douceur et baisers à Cocody, viens lécher mon clitoris, notre univers lesbien t'attend ! 🍑🥂",
-                "🔥 Plaisir pur entre filles, viens lécher mon clitoris, viens kiffer avec nous en privé ! 💎💖",
-                "👭 Abidjan : Viens lécher mon clitoris, fusion totale et câlins bien chauds ! 🔥✨",
-                "✨ Entre filles sans tabou, viens lécher mon clitoris, viens vibrer grave ! 🍑💖",
-                "🔥 Volupté féminine, viens lécher mon clitoris, rejoins notre univers à Yopougon ! 💎✨",
-                "👭 Le paradis lesbien, viens lécher mon clitoris, douceur torride garantie ! 🔥💖",
-                "👭 Lesbienne Abidjan, viens lécher mon clitoris ! 🔥",
-                "✨ Marcory, viens lécher mon clitoris ! 💖",
-                "🔥 Yopougon, viens lécher mon clitoris ! 🍑",
-                "👭 Cocody, viens lécher mon clitoris ! ✨",
-                "✨ Abidjan, viens lécher mon clitoris ! 🔥",
-                "🔥 Treichville, viens lécher mon clitoris ! 💖",
-                "👭 Marcory, viens lécher mon clitoris ! ✨",
-                "✨ Yopougon, viens lécher mon clitoris ! 🍑",
-                "🔥 Cocody, viens lécher mon clitoris ! 🔥",
-                "👭 Abidjan, viens lécher mon clitoris ! 💖",
-                "👭 Lesbienne Abidjan, viens lécher mon clitoris ! 🔥",
-                "✨ Marcory, viens lécher mon clitoris ! 💖",
-                "🔥 Yopougon, viens lécher mon clitoris ! 🍑",
-                "👭 Cocody, viens lécher mon clitoris ! ✨",
-                "✨ Abidjan, viens lécher mon clitoris ! 🔥",
-                "🔥 Treichville, viens lécher mon clitoris ! 💖",
-                "👭 Marcory, viens lécher mon clitoris ! ✨",
-                "✨ Yopougon, viens lécher mon clitoris ! 🍑",
-                "🔥 Cocody, viens lécher mon clitoris ! 🔥",
-                "👭 Abidjan, viens lécher mon clitoris ! 💖",
-                "👭 Lesbienne Abidjan, viens lécher mon clitoris ! 🔥",
-                "✨ Marcory, viens lécher mon clitoris ! 💖",
-                "🔥 Yopougon, viens lécher mon clitoris ! 🍑",
-                "👭 Cocody, viens lécher mon clitoris ! ✨",
-                "✨ Abidjan, viens lécher mon clitoris ! 🔥",
-                "🔥 Treichville, viens lécher mon clitoris ! 💖",
-                "👭 Marcory, viens lécher mon clitoris ! ✨",
-                "✨ Yopougon, viens lécher mon clitoris ! 🍑",
-                "🔥 Cocody, viens lécher mon clitoris ! 🔥",
-                "👭 Abidjan, viens lécher mon clitoris ! 💖",
-                "👭 Lesbienne Abidjan, viens lécher mon clitoris ! 🔥",
-                "✨ Marcory, viens lécher mon clitoris ! 💖",
-                "🔥 Yopougon, viens lécher mon clitoris ! 🍑",
-                "👭 Cocody, viens lécher mon clitoris ! ✨",
-                "✨ Abidjan, viens lécher mon clitoris ! 🔥",
-                "🔥 Treichville, viens lécher mon clitoris ! 💖",
-                "👭 Marcory, viens lécher mon clitoris ! ✨",
-                "✨ Yopougon, viens lécher mon clitoris ! 🍑",
-                "🔥 Cocody, viens lécher mon clitoris ! 🔥",
-                "👭 Abidjan, viens lécher mon clitoris ! 💖"
+                "👭 Bébé lesbienne à Abidjan, viens lécher mon clitoris, fusion féminine torride et mouillée garantie ! 🔥✨"
             ],
             blanche: [
-                "🌟 Européenne à Abidjan, bébé, charme exotique et dispo VIP rien que pour toi 🥂🔥",
-                "💎 Charme européen, sensuelle et raffinée, viens découvrir mes vidéos privées haut de gamme ! ✨🍾",
-                "✨ Élégance européenne, pour les connaisseurs cherchant du standing à Abidjan ! 👑🔥",
-                "🌟 Douceur d'Europe, viens passer un moment inoubliable avec moi 🥂✨",
-                "💎 Européenne propre et coquine, viens goûter au luxe haut de gamme ! 🍾🔥",
-                "✨ Sensualité européenne, mes dispos VIP vont te faire chavirer ! 👑🥂",
-                "🌟 Beauté lumineuse, viens vivre une expérience unique à Abidjan ! 🔥✨",
-                "💎 Charme et discrétion européenne, mes secrets les plus chauds ! 🍾👑",
-                "✨ Douce et irrésistible, viens t'évader avec moi dès ce soir ! 🥂🔥",
-                "🌟 L'élégance VIP européenne en toute discrétion à Abidjan ! 💎✨",
-                "🌟 Européenne Abidjan, dispo VIP ! 🥂",
-                "💎 Marcory, charme européen et luxe ! ✨",
-                "✨ Cocody, douceur d'Europe ! 🍾",
-                "🌟 Abidjan, élégance VIP ! 🔥",
-                "💎 Yopougon, charme européen ! 🥂",
-                "✨ Treichville, dispo VIP ! 👑",
-                "🌟 Marcory, douceur d'Europe ! 🔥",
-                "💎 Cocody, charme européen ! ✨",
-                "✨ Abidjan, élégance VIP ! 🍾",
-                "🌟 Yopougon, dispo VIP ! 🥂",
-                "🌟 Européenne Abidjan, dispo VIP ! 🥂",
-                "💎 Marcory, charme européen et luxe ! ✨",
-                "✨ Cocody, douceur d'Europe ! 🍾",
-                "🌟 Abidjan, élégance VIP ! 🔥",
-                "💎 Yopougon, charme européen ! 🥂",
-                "✨ Treichville, dispo VIP ! 👑",
-                "🌟 Marcory, douceur d'Europe ! 🔥",
-                "💎 Cocody, charme européen ! ✨",
-                "✨ Abidjan, élégance VIP ! 🍾",
-                "🌟 Yopougon, dispo VIP ! 🥂",
-                "🌟 Européenne Abidjan, dispo VIP ! 🥂",
-                "💎 Marcory, charme européen et luxe ! ✨",
-                "✨ Cocody, douceur d'Europe ! 🍾",
-                "🌟 Abidjan, élégance VIP ! 🔥",
-                "💎 Yopougon, charme européen ! 🥂",
-                "✨ Treichville, dispo VIP ! 👑",
-                "🌟 Marcory, douceur d'Europe ! 🔥",
-                "💎 Cocody, charme européen ! ✨",
-                "✨ Abidjan, élégance VIP ! 🍾",
-                "🌟 Yopougon, dispo VIP ! 🥂",
-                "🌟 Européenne Abidjan, dispo VIP ! 🥂",
-                "💎 Marcory, charme européen et luxe ! ✨",
-                "✨ Cocody, douceur d'Europe ! 🍾",
-                "🌟 Abidjan, élégance VIP ! 🔥",
-                "💎 Yopougon, charme européen ! 🥂",
-                "✨ Treichville, dispo VIP ! 👑",
-                "🌟 Marcory, douceur d'Europe ! 🔥",
-                "💎 Cocody, charme européen ! ✨",
-                "✨ Abidjan, élégance VIP ! 🍾",
-                "🌟 Yopougon, dispo VIP ! 🥂"
+                "🌟 Européenne à Abidjan, bébé, charme exotique et dispo VIP rien que pour toi 🥂🔥"
             ]
         };
 
@@ -1080,13 +822,9 @@
         function mettreAJourCompteursCategories() {
             let counts = { femme: 0, homme: 0, trans: 0, lesbi: 0, blanche: 0 };
             if (ongletActif === "profils") {
-                profilsData.forEach(p => {
-                    if (counts[p.cat] !== undefined) counts[p.cat]++;
-                });
+                profilsData.forEach(p => { if (counts[p.cat] !== undefined) counts[p.cat]++; });
             } else {
-                scenesData.forEach(s => {
-                    if (counts[s.cat] !== undefined) counts[s.cat]++;
-                });
+                scenesData.forEach(s => { if (counts[s.cat] !== undefined) counts[s.cat]++; });
             }
             ['femme', 'homme', 'trans', 'lesbi', 'blanche'].forEach(cat => {
                 const el = document.getElementById(`count-${cat}`);
@@ -1373,7 +1111,6 @@
             vueDetailleeActive = false;
             document.getElementById("profile-detail-view").style.display = "none";
             document.getElementById("video-grid").style.display = "grid";
-            
             window.history.replaceState({}, document.title, window.location.pathname);
             renderGrid();
         }
@@ -1450,24 +1187,18 @@
                         carouselIntervals[profil.id] = setInterval(() => {
                             const imgEl = document.getElementById(`card-img-${profil.id}`);
                             if (!imgEl) return;
-
                             imgEl.classList.add('slide-out-left');
-
                             setTimeout(() => {
                                 currentIdx = (currentIdx + 1) % photos.length;
                                 imgEl.src = photos[currentIdx];
-                                
                                 imgEl.style.transition = 'none';
                                 imgEl.classList.remove('slide-out-left');
                                 imgEl.classList.add('slide-in-right');
-
                                 setTimeout(() => {
                                     imgEl.style.transition = 'transform 0.5s ease-in-out, opacity 0.5s ease-in-out';
                                     imgEl.classList.remove('slide-in-right');
                                 }, 50);
-
                             }, 500);
-
                         }, 3500);
                     }
                 });
@@ -1485,16 +1216,11 @@
                     
                     card.className = cardClass;
 
+                    // RESTAURATION EXACTE DE LA STRUCTURE DE LA VIDÉO QUI FONCTIONNAIT (INDEX 10)
                     const mediaHtml = `
                         <div class="media-container" onclick="${adminModeConnecte ? `ouvrirModalEditVideo(${scene.realId})` : ''}">
-                            <video class="preview-video" 
-                                id="vid-elem-${scene.realId}"
-                                muted 
-                                loop 
-                                playsinline 
-                                webkit-playsinline 
-                                preload="auto" 
-                                ontimeupdate="if(this.currentTime>=5){this.currentTime=0;}">
+                            <video class="preview-video" muted loop playsinline webkit-playsinline preload="metadata" ontimeupdate="if(this.currentTime>=5){this.currentTime=0;}">
+                                <source src="${scene.preview}" type="video/mp4">
                             </video>
                         </div>`;
 
@@ -1544,19 +1270,20 @@
                     grid.appendChild(card);
                 });
 
-                setTimeout(() => {
-                    scenesData.forEach(scene => {
-                        const vidEl = document.getElementById(`vid-elem-${scene.realId}`);
-                        if (vidEl && !vidEl.src) {
-                            vidEl.src = scene.preview;
-                            vidEl.load();
-                            vidEl.play().catch(e => console.log("Lecture auto en attente :", e));
-                        }
-                    });
-                }, 150);
-
                 misesAJourCompteursTemps();
                 countdownInterval = setInterval(misesAJourCompteursTemps, 1000);
+
+                setTimeout(() => {
+                    const videoObserver = new IntersectionObserver((entries, observer) => {
+                        entries.forEach(entry => {
+                            const vid = entry.target;
+                            if (entry.isIntersecting) { vid.play().catch(e => {}); } 
+                            else { vid.pause(); }
+                        });
+                    }, { threshold: 0.2 });
+
+                    document.querySelectorAll('.preview-video').forEach(video => { videoObserver.observe(video); });
+                }, 100);
             }
         }
 
@@ -1595,9 +1322,7 @@
                     document.getElementById("admin-bar").style.display = "none";
                     document.getElementById("admin-active-banner").style.display = "none";
                     document.getElementById("admin-wipe-category-btn").style.display = "none";
-                    
                     document.querySelectorAll('.admin-counter').forEach(el => el.style.display = 'none');
-
                     renderGrid();
                     alert("🔒 Mode administrateur désactivé.");
                 }
@@ -1612,13 +1337,11 @@
 
                 adminModeConnecte = true;
                 localStorage.setItem('bizi_admin_active', 'true');
-                
                 window.history.replaceState({}, document.title, window.location.pathname + '?admin=1');
 
                 document.getElementById("admin-bar").style.display = "flex";
                 document.getElementById("admin-active-banner").style.display = "block";
                 document.getElementById("admin-wipe-category-btn").style.display = "inline-block";
-                
                 document.querySelectorAll('.admin-counter').forEach(el => el.style.display = 'inline');
 
                 chargerStatistiquesAdminSecurit();
@@ -1933,7 +1656,6 @@
                 document.getElementById("profil-fichiers-input").value = "";
                 document.getElementById("preview-thumbs-box").innerHTML = "";
                 imagesSelectionnees64 = [];
-                
                 genererDescriptionAleatoire();
 
                 buttonsContainer.innerHTML = `<button class="btn-save" onclick="compresserEtPublierProfil()">Publier mon profil</button><button class="btn-close" onclick="fermerVendeurModal()">Fermer</button>`;
