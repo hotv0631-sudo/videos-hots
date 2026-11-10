@@ -83,12 +83,9 @@
 
         .media-container { width: 100%; border-radius: 8px; overflow: hidden; background: #000; margin-bottom: 6px; aspect-ratio: 9 / 16; display: flex; align-items: center; justify-content: center; position: relative; cursor: pointer; }
         
-        /* RESTAURATION EXACTE DE LA BALISE VIDÉO ORIGINALE */
         video.preview-video { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-        .profil-img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out; }
-        .slide-out-left { transform: translateX(-100%); opacity: 0; }
-        .slide-in-right { transform: translateX(100%); opacity: 0; }
+        .profil-img { width: 100%; height: 100%; object-fit: cover; display: block; }
         
         .card h3 { margin: 0 0 3px 0; color: #f1f5f9; font-size: 11.5px; text-align: center; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .profil-desc { font-size: 10px; color: #cbd5e1; text-align: center; margin-bottom: 6px; min-height: 28px; max-height: 40px; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; line-height: 1.3; }
@@ -503,12 +500,13 @@
             </div>
 
             <div id="form-videos-fields" style="display: none;">
+                <!-- MISE À JOUR DU GUIDE SANS TELEGRAM -->
                 <div class="tutorial-box">
-                    <b>📖 Guide pour poster une vidéo :</b><br>
-                    1. Envoie l'extrait (5s) sur Telegram.<br>
-                    2. Utilise le bot ou <b>File to Link</b> pour transformer ta vidéo en lien direct <b>.mp4</b>.<br>
-                    3. Colle ce lien <b>.mp4</b> dans le champ "Lien Aperçu" ci-dessous.<br>
-                    4. Héberge la vidéo intégrale sur <b>Mega</b> et colle son lien dans le champ "Vidéo Complète".
+                    <b>📖 Guide rapide pour publier ta vidéo d'aperçu :</b><br>
+                    1. Choisis ta petite vidéo d'extrait (environ 800 Ko / 5s).<br>
+                    2. Va sur <b>Catbox.moe</b> (ou ouvre l'application Catbox sur ton téléphone) et téléverse ta vidéo.<br>
+                    3. Copie le lien direct en <b>.mp4</b> généré par Catbox et colle-le dans le champ "Lien Aperçu (.mp4)" ci-dessous.<br>
+                    4. Héberge la vidéo intégrale sur <b>Mega</b> et colle son lien dans le champ "Lien Mega".
                 </div>
 
                 <label>Catégorie Vidéo * :</label>
@@ -526,8 +524,8 @@
                 <label>Titre de la vidéo * :</label>
                 <input type="text" id="new-nom" placeholder="Ex: Bizi sensuelle à Abidjan 💎">
                 
-                <label>Lien direct de l'Aperçu (.mp4 Telegram / File to Link) * :</label>
-                <input type="text" id="new-preview-url" placeholder="https://.../video.mp4" style="border: 2px solid #22c55e; background: #0f172a; font-weight: bold; color: #22c55e;">
+                <label>Lien direct de l'Aperçu (.mp4 Catbox.moe) * :</label>
+                <input type="text" id="new-preview-url" placeholder="https://files.catbox.moe/xxxxxx.mp4" style="border: 2px solid #22c55e; background: #0f172a; font-weight: bold; color: #22c55e;">
 
                 <label style="margin-top: 8px;">Lien de la Vidéo Complète (Mega / Drive) * :</label>
                 <input type="text" id="new-telegram" placeholder="Collez le lien Mega ici..." style="border: 2px solid #38bdf8; background: #0f172a; font-weight: bold; color: #38bdf8;">
@@ -721,15 +719,268 @@
         envoyerPresenceAutomatique();
         setInterval(envoyerPresenceAutomatique, 15000);
 
+        // --- 50 DESCRIPTIONS MAGIQUES PAR CATÉGORIE EN REGISTRE FAMILIER / NOUCHI IVOIRIEN ---
         const descriptionsMagiques = {
             femme: [
-                "🔥 Waii mon boss de Cocody ! J'ai grandement écarté mon string, mon vagin est hyper trempé et disponible, viens taper dans mon utérus bien profond ! 💋💯",
-                "🇨🇮 À Marcory zone 4, gros calvaire ce soir ! Mon vagin est mouillé et disponible, viens taper dans mon utérus jusqu'à ce que je demande grâce. 🍑👑"
+                "🔥 Waii mon boss de Cocody ! J'ai grandement écarté mon string, mon vagin est hyper trempé, viens me pilonner sauvagement ! 💋💯",
+                "🇨🇮 À Marcory zone 4, gros calvaire ce soir ! Mon koto est mouillé grave, viens me cogner bien profond jusqu'au matin ! 🍑👑",
+                "💋 Eh Dieu ! Bébé de Yopougon dispo ! Vagin chaud chaud, viens bien m'enfoncer ça sans pitié ! 🍌🔥",
+                "🔥 Mon vieux père, je suis trop en chaleur à Angré ! Mon vagin coule déjà, viens satisfaire ma faim ce soir ! 🤤💦",
+                "👑 La frappe de Riviera 3 ! String retiré, koto gonflé et bien trempé, viens kiffer la bonne chair ivoirienne ! 💥🍆",
+                "🔥 Viens taper fort dedans à Koumassi ! Mon vagin est tout chaud, viens me faire crier toute la nuit boss ! 🗣️🔥",
+                "💥 Bébé très osée sur Cocody Angré ! Viens me pilonner sans modération, koto hyper serré et mouillé ! 🍑💋",
+                "🍌 Je suis sans caleçon actuellement à Biétry ! Viens transpirer sur moi, vagin doux et sucré rien que pour toi ! 💦🔥",
+                "🔥 Eh yaa ! Gros fessier ivoirien prêt à vibrer sur ton engin à Zone 4 ! Viens me prendre par derrière ! 🍑👑",
+                "💋 Koto bien chaud chaud de Treichville ! Viens mettre la pression dedans jusqu'à la fin de tes forces ! 🍌🔥",
+                "🔥 Bébé chic de Bingerville ! J'ai trop envie de me faire pilonner à fond, viens faire trembler mon lit ! 💥💦",
+                "👑 Viens me mélanger le vagin à Vallon ! Je suis hyper trempée, amène ton gros engin prêt à travailler ! 🍆🔥",
+                "🔥 Je suis en feu à Palmeraie ! Mon koto pleure de l'eau, viens calmer mon ardeur ce soir mon boss ! 🤤💋",
+                "💥 Gros pilonnage garanti à Yopougon Selmer ! Je veux sentir ton engin toucher mon fond ! 🍌🍑",
+                "🔥 Fessier lourd et koto juteux sur Marcory Residentiel ! Viens prendre ton plaisir sans retenue ! 💦👑",
+                "💋 Je suis sans soutien et sans string à la maison ! Viens me déshabiller et taper dedans sauvagement ! 🔥🍌",
+                "🔥 Boss de Cocody, mon koto est hyper doux et prêt ! Viens me donner la bonne dose ce soir ! 🍆💥",
+                "👑 Petite go très chaude d'Abatta ! Vagin mouillé qui n'attend que toi, viens me démonter ! 🍑💦",
+                "🔥 Je suis trop sucrée ce soir ! Viens m'enfoncer ça bien fort jusqu'à ce que je demande pardon ! 🗣️🍌",
+                "💥 La reine du pilonnage à Riviera 2 ! Viens me prendre sous la douche, koto hyper chaud ! 💦🔥",
+                "🔥 Mon vieux, viens goûter au vrai koto d'Abidjan ! C'est doux, c'est chaud, c'est mouillé à souhait ! 🤤👑",
+                "💋 Envie d'une bonne partie torride à Marcory Remblais ? Mon vagin t'attend grand ouvert ! 🍌🔥",
+                "🔥 Koto pimenté à Yopougon Sicogi ! Viens faire vibrer tes reins sur moi toute la nuit ! 🍑💥",
+                "👑 Gros fessier bombé de la Zone 4 ! Viens te caler dedans, je suis hyper en chaleur ! 🍆💦",
+                "🔥 Bébé VIP d'Angré Extension ! Vagin mouillé et disponible, amène ton engin bien dur ! 💋🔥",
+                "💥 Trop envie qu'on me pilonne à mort ce soir ! Viens me prendre dans toutes les positions ! 🍌🍑",
+                "🔥 Koto royal de Cocody Cité des Arts ! Viens déguster la douceur sucrée d'Abidjan ! 💦👑",
+                "💋 Viens me faire l'amour sauvagement à Koumassi Remblais ! Vagin hyper trempé et prêt ! 🗣️🔥",
+                "🔥 Petite reine du lit à Riviera Golf ! Mon koto t'appelle, viens m'écarter ça proprement ! 🍆💥",
+                "👑 Viens me faire crier de bonheur à Yopougon Bel Air ! Vagin trop chaud et hyper serré ! 🍑💦",
+                "🔥 Grosse frappe de Marcory Boulevard de Marseille ! Viens m'enfoncer ton engin jusqu'au bout ! 🍌💋",
+                "💥 Je suis toute mouillée à Bingerville Fehi Kessé ! Viens m'épuiser sur le matelas ! 🔥👑",
+                "🔥 Koto juteux et bien propre à Cocody Deux Plateaux ! Viens prendre ta part de bonheur ! 💦🍆",
+                "💋 Viens pilonner la petite go d'Abobo Baoulé ! C'est trop chaud et hyper disponible ! 🗣️🔥",
+                "🔥 Koto doux comme du miel à Riviera 4 ! Amène ton gros engin venir transpirer sur moi ! 🍑💥",
+                "👑 Grosse ambiance torride à Zone 4 Cité Cadres ! Mon vagin réclame ton coup de pilon ! 🍌💦",
+                "🔥 Petite beauté d'Angré Chateau ! String enlevé, koto prêt à recevoir tout ton engin ! 💋🔥",
+                "💥 Viens me faire la totale à Yopougon Maroc ! Koto gonflé et mouillé, viens taper dedans ! 🍆👑",
+                "🔥 Bébé de Treichville Arras ! Mon vagin coule, viens éteindre mon feu ce soir boss ! 💦🍑",
+                "💋 Koto trop sucré à Marcory Champroux ! Viens m'enfoncer ça sans pitié jusqu'au matin ! 🗣️🍌",
+                "🔥 Gros fessier de Cocody Attoban ! Viens me prendre fort par derrière, koto très trempé ! 💥🔥",
+                "👑 Viens déguster la chair d'Abidjan à Riviera Palmeraie ! C'est chaud, c'est doux, c'est sucré ! 💦🍆",
+                "🔥 Petite go sensuelle de Yopougon Toits Rouges ! Viens pilonner mon vagin tout chaud ! 💋🍑",
+                "💥 Gros koto mouillé à Koumassi Prodomo ! Viens me défoncer le fond comme il se doit ! 🍌👑",
+                "🔥 Ambiance très osée à Marcory Anoumabo ! Vagin trempé, viens me faire vibrer ce soir ! 💦🔥",
+                "💋 Petite princesse d'Angré 8ème Tranche ! Viens m'écarter les cuisses et taper dedans ! 🍆💥",
+                "🔥 Koto chaud bouillant à Cocody Mermoz ! Amène ton engin dur, viens me faire plaisir ! 🍑💦",
+                "👑 Viens me soulever à Yopougon Niangon ! Vagin hyper serré et trempé d'eau ! 🗣️🍌",
+                "🔥 Grosse fesse d'Abidjan à Riviera III ! Viens m'enfoncer ça bien profond sans hésiter ! 💋💥",
+                "💥 La patronne du lit à Biétry ! Koto ultra chaud et prêt, viens prendre ton pied ce soir ! 💦👑"
             ],
-            homme: [ "💪 Mâle LGBT, mon cul est disponible et bien serré, viens me sodomiser et taper dans mon rectum à Abidjan ! 🔥💯" ],
-            trans: [ "🦋 Bébé trans à Abidjan, mon cul est disponible et chaud, viens me sodomiser, viens taper dans mon rectum ! ✨🔥" ],
-            lesbi: [ "👭 Bébé lesbienne à Abidjan, viens lécher mon clitoris, fusion féminine torride et mouillée garantie ! 🔥✨" ],
-            blanche: [ "🌟 Européenne à Abidjan, bébé, charme exotique et dispo VIP rien que pour toi 🥂🔥" ]
+            homme: [
+                "💪 Mâle LGBT chaud d'Abidjan ! Mon rectum est ouvert et prêt, viens me sodomiser fort ! 🔥💯",
+                "🔥 Beau mec de Cocody ! Mon cul est bien serré, viens me démonter sauvagement ce soir ! 🍆💥",
+                "💪 Gros engin dur de Yopougon ! Viens te faire défoncer le rectum sans pitié par un vrai mâle ! 🍑💦",
+                "🔥 Mec LGBT très osé de Marcory ! Cul hyper chaud, viens m'enfoncer ton gros bâton dedans ! 🍌👑",
+                "💪 Viens me pilonner le cul à Riviera ! Rectum mouillé et prêt à recevoir ton engin dur ! 🗣️🔥",
+                "🔥 BG d'Angré disponible ! Cul très sucré, viens me prendre par derrière jusqu'au matin ! 💥💦",
+                "💪 Mâle chaud de Zone 4 ! Viens me démonter le rectum, je suis prêt pour le gros calvaire ! 🍆🍑",
+                "🔥 Mec dom de Koumassi ! Viens te faire sodomiser proprement avec un gros engin bien dur ! 🍌🔥",
+                "💪 Cul hyper serré de Bingerville ! Viens m'écarter les fesses et enfoncer ça jusqu'au fond ! 💦👑",
+                "🔥 Actif/Passif de Treichville ! Viens prendre ton plaisir torride sur moi ce soir ! 💋💥",
+                "💪 Beau gosse LGBT de Cocody Deux Plateaux ! Mon rectum t'attend, viens taper fort dedans ! 🍆🗣️",
+                "🔥 Mâle puissant de Yopougon Selmer ! Viens te faire défoncer le cul sans modération ! 🍑💦",
+                "💪 Cul très chaud de Palmeraie ! Viens m'enfoncer ton engin jusqu'à ce que je demande grâce ! 🍌🔥",
+                "🔥 Mec passionné de Riviera 3 ! Rectum disponible et propre, viens faire vibrer mes reins ! 💥👑",
+                "💪 Petit mec hyper osé d'Abatta ! Viens me prendre sauvagement sur le lit ce soir ! 💦🍆",
+                "🔥 Mâle dominant d'Angré Chateau ! Viens te faire sodomiser par une grosse barre d'Abidjan ! 🗣️🍑",
+                "💪 Cul doux et serré de Marcory Remblais ! Viens taper au fond de mon rectum ce soir ! 🍌🔥",
+                "🔥 Mec LGBT de Koumassi Prodomo ! Envie d'un pilonnage anal intense et torride ! 💥💦",
+                "💪 Beau mâle de Riviera Golf ! Mon cul pleure ton engin, viens éteindre mon feu ! 🍆👑",
+                "🔥 Gros actif de Yopougon Niangon ! Viens défoncer du bon cul bien chaud et mouillé ! 💋🍑",
+                "💪 Mec d'Abidjan prêt pour la sodomie ! Rectum hyper chaud, viens me prendre à fond ! 🗣️🍌",
+                "🔥 Passif très osé de Cocody Angré ! Viens m'écarter le cul et taper bien profond ! 💦💥",
+                "💪 Mâle de Biétry disponible ! Viens te faire soulever et démonter le rectum ce soir ! 🍆👑",
+                "🔥 BG de Riviera Palmeraie ! Cul serré et propre, viens m'enfoncer ta grosse barre ! 🍑🔥",
+                "💪 Petit mec sucré de Yopougon Maroc ! Viens me sodomiser jusqu'au petit matin ! 🍌💦",
+                "🔥 Mâle chaud de Marcory Boulevard de Marseille ! Rectum prêt pour le gros pilonnage ! 💥🗣️",
+                "💪 Mec LGBT de Cocody Mermoz ! Viens me prendre par derrière sans aucune retenue ! 🍆💋",
+                "🔥 Gros engin de Koumassi Remblais ! Viens défoncer mon cul serré avec puissance ! 🍑💦",
+                "💪 Mâle d'Abobote ! Rectum très chaud, viens m'enfoncer ton bâton jusqu'au bout ! 🍌👑",
+                "🔥 Beau gosse de Riviera 2 ! Viens me sodomiser sauvagement sur le matelas ce soir ! 💥🔥",
+                "💪 Cul prêt à recevoir la grosse dose à Yopougon Sicogi ! Amène ton engin bien dur ! 💦🍆",
+                "🔥 Mec LGBT d'Angré Extension ! Viens me faire vibrer le rectum toute la nuit ! 🗣️🍑",
+                "💪 Mâle puissant de Cocody Attoban ! Viens sodomiser un cul d'Abidjan bien sucré ! 🍌💥",
+                "🔥 Passif torride de Marcory Zone 4 ! Mon cul n'attend que ta grosse barre dure ! 👑💦",
+                "💪 Mec de Bingerville Fehi Kessé ! Viens m'enfoncer ça profond dans le rectum ! 🍆💋",
+                "🔥 Beau mâle de Treichville Arras ! Cul hyper chaud, viens me démonter proprement ! 🍑🔥",
+                "💪 Gros actif de Yopougon Toits Rouges ! Viens prendre ton pied dans un cul bien serré ! 🍌💥",
+                "🔥 Mec LGBT de Riviera III ! Viens me prendre par derrière et transpirer sur moi ! 💦🗣️",
+                "💪 Cul doux de Cocody Cité des Arts ! Viens goûter à la bonne sodomie d'Abidjan ! 🍆👑",
+                "🔥 Mâle chaud de Koumassi Camp Commando ! Rectum disponible pour gros pilonnage ! 🍑💋",
+                "💪 Mec osé de Marcory Champroux ! Viens m'écarter les fesses et frapper dedans ! 🍌💥",
+                "🔥 BG d'Angré 8ème Tranche ! Viens sodomiser un mec très chaud et disponible ! 💦🔥",
+                "💪 Mâle de Yopougon Bel Air ! Mon cul est prêt, viens enfoncer ton engin dur ! 🍆🗣️",
+                "🔥 Passif passionné de Cocody Riviera 4 ! Viens me faire crier sous le pilonnage anal ! 🍑👑",
+                "💪 Mec LGBT de Biétry Cité Cadres ! Cul serré, viens m'enfoncer ça sans pitié ! 🍌💥",
+                "🔥 Beau mâle d'Abidjan Marcory ! Viens me prendre fort par derrière ce soir ! 💦💋",
+                "💪 Mâle dominant de Yopougon Selmer ! Viens défoncer du cul chaud et réceptif ! 🍆🔥",
+                "🔥 Mec osé de Riviera Palmeraie ! Rectum hyper chaud, viens frapper dedans fort ! 🍑🗣️",
+                "💪 Cul sucré de Cocody Deux Plateaux ! Viens me sodomiser jusqu'au petit matin ! 🍌👑",
+                "🔥 Mâle LGBT chaud de Koumassi ! Viens prendre ton plaisir anal sans retenue ! 💥💦"
+            ],
+            trans: [
+                "🦋 Bébé trans d'Abidjan ! Mon cul est disponible et chaud, viens me sodomiser fort ! ✨🔥",
+                "✨ Trans sublime de Cocody ! Rectum hyper serré et chaud, viens m'enfoncer ta barre ! 🍆💥",
+                "🦋 Beauté trans de Yopougon ! Viens me prendre sauvagement par derrière ce soir ! 🍑💦",
+                "✨ Trans très osée de Zone 4 ! Cul mouillé et disponible, viens me faire crier ! 🍌👑",
+                "🦋 Déesse trans de Marcory ! Viens taper dans mon rectum jusqu'à la fin de tes forces ! 🗣️🔥",
+                "✨ Trans chic d'Angré ! Mon cul est trop sucré, viens éteindre mon feu ce soir ! 💥💦",
+                "🦋 Bébé trans de Riviera 3 ! Viens m'écarter les fesses et m'enfoncer ça à fond ! 🍆🍑",
+                "✨ Trans torride de Koumassi ! Cul chaud chaud, viens te faire plaisir avec moi ! 🍌🔥",
+                "🦋 Beauté trans de Bingerville ! Viens sodomiser une vraie déesse d'Abidjan ! 💦👑",
+                "✨ Trans sexy de Treichville ! Mon rectum réclame ton engin dur, viens me démonter ! 💋💥",
+                "🦋 Bébé trans de Cocody Deux Plateaux ! Viens taper au fond de mon cul serré ! 🍆🗣️",
+                "✨ Trans osée de Yopougon Selmer ! Viens me prendre par derrière sans aucune pitié ! 🍑💦",
+                "🦋 Déesse trans de Palmeraie ! Rectum hyper chaud et prêt pour le gros pilonnage ! 🍌🔥",
+                "✨ Trans sublime de Riviera Golf ! Viens m'enfoncer ta barre jusqu me faire demander grâce ! 💥👑",
+                "🦋 Bébé trans d'Abatta ! Cul très doux et sucré, viens me faire vibrer ce soir ! 💦🍆",
+                "✨ Trans très chaude d'Angré Chateau ! Viens me sodomiser sauvagement sur le lit ! 🗣️🍑",
+                "🦋 Beauté trans de Marcory Remblais ! Mon cul t'attend grand ouvert ce soir boss ! 🍌🔥",
+                "✨ Trans chic de Koumassi Prodomo ! Rectum hyper serré, viens taper dedans fort ! 💥💦",
+                "🦋 Déesse trans de Riviera Palmeraie ! Viens me prendre sous la douche ce soir ! 🍆👑",
+                "✨ Trans sexy de Yopougon Niangon ! Viens défoncer mon cul chaud et mouillé ! 💋🍑",
+                "🦋 Bébé trans de Biétry ! Cul prêt pour recevoir toute ta grosse barre dure ! 🗣️🍌",
+                "✨ Trans osée de Cocody Angré ! Viens m'écarter les cuisses et me sodomiser ! 💦💥",
+                "🦋 Beauté trans d'Abidjan Zone 4 ! Rectum très sucré, viens prendre ton pied ! 🍆👑",
+                "✨ Trans sublime de Yopougon Maroc ! Viens m'enfoncer ça bien profond ce soir ! 🍑🔥",
+                "🦋 Déesse trans de Bingerville Fehi Kessé ! Cul hyper chaud, viens me faire la totale ! 🍌💦",
+                "✨ Trans sexy de Marcory Boulevard de Marseille ! Viens frapper au fond de mon cul ! 💥🗣️",
+                "🦋 Bébé trans de Cocody Mermoz ! Rectum serré et propre, viens me démonter ! 🍆💋",
+                "✨ Trans très osée de Koumassi Remblais ! Viens me prendre sauvagement par derrière ! 🍑💦",
+                "🦋 Beauté trans de Riviera 2 ! Mon cul pleure de chaleur, viens l'éteindre ! 🍌👑",
+                "✨ Trans chic de Yopougon Sicogi ! Viens me sodomiser jusqu'au petit matin ! 💥🔥",
+                "🦋 Déesse trans d'Angré Extension ! Cul hyper sucré, amène ton gros engin dur ! 💦🍆",
+                "✨ Trans sexy de Cocody Attoban ! Viens me faire crier de bonheur sous tes coups ! 🗣️🍑",
+                "🦋 Bébé trans de Marcory Zone 4 ! Rectum disponible, viens prendre ta part de plaisir ! 🍌💥",
+                "✨ Trans osée de Riviera Golf ! Viens m'enfoncer ton bâton bien profondément ! 👑💦",
+                "🦋 Beauté trans de Yopougon Bel Air ! Cul chaud bouillant, viens frapper dedans ! 🍆💋",
+                "✨ Trans sublime de Treichville Arras ! Viens me sodomiser et transpirer sur moi ! 🍑🔥",
+                "🦋 Déesse trans de Riviera III ! Mon cul t'attend, viens me prendre sans modération ! 🍌💥",
+                "✨ Trans sexy de Cocody Cité des Arts ! Viens goûter au rectum le plus doux d'Abidjan ! 💦🗣️",
+                "🦋 Bébé trans de Koumassi Camp Commando ! Cul très serré, viens tout défoncer ! 🍆👑",
+                "✨ Trans osée de Marcory Champroux ! Viens m'écarter le cul et me pilonner fort ! 🍑💋",
+                "🦋 Beauté trans d'Angré 8ème Tranche ! Viens me faire la bonne sodomie torride ! 🍌💥",
+                "✨ Trans chic de Yopougon Toits Rouges ! Rectum chaud, viens m'enfoncer ça à fond ! 💦🔥",
+                "🦋 Déesse trans de Biétry Cité Cadres ! Viens me soulever et frapper dans mon cul ! 🍆🗣️",
+                "✨ Trans sexy de Cocody Riviera 4 ! Mon cul est prêt, viens me prendre sauvagement ! 🍑👑",
+                "🦋 Bébé trans d'Abidjan Marcory ! Viens goûter à ma chair douce et sensuelle ! 🍌💥",
+                "✨ Trans osée de Yopougon Selmer ! Cul hyper chaud, viens enfoncer ta grosse barre ! 💦💋",
+                "🦋 Beauté trans de Riviera Palmeraie ! Rectum disponible pour soirée très chaude ! 🍆🔥",
+                "✨ Trans sublime de Cocody Deux Plateaux ! Viens me sodomiser jusqu'à l'aube ! 🍑🗣️",
+                "🦋 Déesse trans de Koumassi Prodomo ! Viens m'écarter les fesses et taper fort ! 🍌👑",
+                "✨ Trans sexy d'Abidjan Cocody ! Cul ultra chaud et sucré, viens me démonter ! 💥💦"
+            ],
+            lesbi: [
+                "👭 Bébé lesbienne d'Abidjan ! Viens lécher mon clitoris, fusion torride garantie ! 🔥✨",
+                "✨ Go lesbienne de Cocody ! Mon vagin coule d'eau, viens me manger le koto à fond ! 💋💥",
+                "👭 Duo lesbien de Yopougon ! Viens tremper ta langue dans mon vagin chaud chaud ! 🍑💦",
+                "✨ Fille lesbienne de Zone 4 ! Koto hyper sucré, viens me le lécher sauvagement ! 🍌👑",
+                "👭 Go lesbi osée de Marcory ! Viens me brouter le koto jusqu'à ce que je jouisse ! 🗣️🔥",
+                "✨ Bébé lesbienne d'Angré ! Mon clitoris est gonflé, viens me donner du plaisir ! 💥💦",
+                "👭 Go torride de Riviera 3 ! Vagin mouillé qui n'attend que ta langue experte ! 🍆🍑",
+                "✨ Lesbienne sexy de Koumassi ! Viens me frotter le koto et me faire vibrer ce soir ! 🍌🔥",
+                "👭 Go lesbi de Bingerville ! Viens goûter à mon vagin doux comme du miel ! 💦👑",
+                "✨ Petite go de Treichville ! Mon clito réclame tes doigts et ta bouche ce soir ! 💋💥",
+                "👭 Lesbienne chic de Cocody Deux Plateaux ! Viens me manger le koto sans t'arrêter ! 🍆🗣️",
+                "✨ Go osée de Yopougon Selmer ! Vagin hyper mouillé, viens me soulever la nuit ! 🍑💦",
+                "👭 Duo lesbi de Palmeraie ! Viens me frotter les cuisses et me lécher le fond ! 🍌🔥",
+                "✨ Lesbienne sexy de Riviera Golf ! Mon clito est tout chaud, viens me faire jouir ! 💥👑",
+                "👭 Go lesbi d'Abatta ! Vagin trempé d'eau, viens me donner des coups de langue ! 💦🍆",
+                "✨ Bébé lesbienne d'Angré Chateau ! Viens me prendre entre tes cuisses torrides ! 🗣️🍑",
+                "👭 Go lesbi de Marcory Remblais ! Koto hyper doux, viens le dévorer toute la nuit ! 🍌🔥",
+                "✨ Lesbienne passionnée de Koumassi Prodomo ! Viens me frotter le clito avec fougue ! 💥💦",
+                "👭 Go chic de Riviera Palmeraie ! Vagin sucré et mouillé, viens me faire crier ! 🍆👑",
+                "✨ Bébé lesbienne de Yopougon Niangon ! Viens frotter ton koto contre le mien ! 💋🍑",
+                "👭 Go lesbi de Biétry ! Mon clitoris pleure de plaisir, viens le brouter fort ! 🗣️🍌",
+                "✨ Lesbienne osée de Cocody Angré ! Viens m'écarter le vagin et le lécher à fond ! 💦💥",
+                "👭 Go torride d'Abidjan Zone 4 ! Koto très mouillé, viens prendre ton pied avec moi ! 🍆👑",
+                "✨ Fille lesbienne de Yopougon Maroc ! Viens me faire jouir avec tes doigts de fée ! 🍑🔥",
+                "👭 Go lesbi de Bingerville Fehi Kessé ! Vagin hyper chaud, viens le dévorer ce soir ! 🍌💦",
+                "✨ Lesbienne sexy de Marcory Boulevard de Marseille ! Viens me donner la totale anal/vagin ! 💥🗣️",
+                "👭 Go lesbi de Cocody Mermoz ! Koto propre et sucré, viens y mettre ta langue ! 🍆💋",
+                "✨ Bébé lesbienne de Koumassi Remblais ! Viens me frotter fort jusqu'à ce que je crie ! 🍑💦",
+                "👭 Go lesbi de Riviera 2 ! Mon clitoris est gonflé à bloc, viens me soulager ! 🍌👑",
+                "✨ Lesbienne osée de Yopougon Sicogi ! Vagin trop mouillé, viens le brouter ce soir ! 💥🔥",
+                "👭 Go chic d'Angré Extension ! Viens fusionner avec moi dans un lit très chaud ! 💦🍆",
+                "✨ Bébé lesbienne de Cocody Attoban ! Viens me lécher le koto et me faire vibrer ! 🗣️🍑",
+                "👭 Go lesbi de Marcory Zone 4 ! Koto disponible pour longue séance de léchage ! 🍌💥",
+                "✨ Lesbienne sexy de Riviera Golf ! Viens me frotter le koto avec passion ! 👑💦",
+                "👭 Go torride de Yopougon Bel Air ! Vagin hyper chaud, viens y mettre tes doigts ! 🍆💋",
+                "✨ Fille lesbienne de Treichville Arras ! Viens me manger le clito jusqu'au matin ! 🍑🔥",
+                "👭 Go lesbi de Riviera III ! Mon vagin t'attend, viens le dévorer sans retenue ! 🍌💥",
+                "✨ Lesbienne osée de Cocody Cité des Arts ! Viens goûter au koto le plus sucré d'Abidjan ! 💦🗣️",
+                "👭 Bébé lesbienne de Koumassi Camp Commando ! Koto très chaud, viens tout frotter ! 🍆👑",
+                "✨ Go chic de Marcory Champroux ! Viens m'écarter les lèvres et lécher mon clito ! 🍑💋",
+                "👭 Lesbienne passionnée d'Angré 8ème Tranche ! Viens me faire jouir plusieurs fois ! 🍌💥",
+                "✨ Go osée de Yopougon Toits Rouges ! Vagin mouillé d'eau, viens le brouter fort ! 💦🔥",
+                "👭 Go lesbi de Biétry Cité Cadres ! Viens me soulever et me lécher le vagin ! 🍆🗣️",
+                "✨ Lesbienne sexy de Cocody Riviera 4 ! Mon clito est prêt, viens me dévorer ! 🍑👑",
+                "👭 Bébé lesbienne d'Abidjan Marcory ! Viens goûter à la douceur de mon koto ! 🍌💥",
+                "✨ Go osée de Yopougon Selmer ! Koto hyper chaud, viens mettre tes doigts dedans ! 💦💋",
+                "👭 Lesbienne chic de Riviera Palmeraie ! Vagin disponible pour rencontre torride ! 🍆🔥",
+                "✨ Go lesbi de Cocody Deux Plateaux ! Viens me lécher le vagin jusqu'à l'aube ! 🍑🗣️",
+                "👭 Bébé lesbienne de Koumassi Prodomo ! Viens m'écarter le koto et le brouter ! 🍌👑",
+                "✨ Lesbienne sexy d'Abidjan Cocody ! Koto ultra chaud et mouillé, viens me faire jouir ! 💥💦"
+            ],
+            blanche: [
+                "🌟 Européenne à Abidjan ! Charme exotique, vagin très mouillé, viens me pilonner ! 🥂🔥",
+                "✨ Blanche VIP de Cocody ! Mon koto est chaud et serré, viens m'enfoncer ton engin ! 🍆💥",
+                "🌟 Européenne sensuelle de Zone 4 ! Viens me prendre sauvagement sur mon grand lit ! 🍑💦",
+                "✨ Blanche torride de Marcory ! Vagin hyper mouillé, viens me faire crier toute la nuit ! 🍌👑",
+                "🌟 Beauté blanche de Riviera 3 ! Amène ton gros engin d'Abidjan, viens me démonter ! 🗣️🔥",
+                "✨ Européenne osée d'Angré ! Mon koto est tout doux, viens taper dedans sans pitié ! 💥💦",
+                "🌟 Blanche VIP de Biétry ! Viens m'écarter les cuisses et m'enfoncer ta grosse barre ! 🍆🍑",
+                "✨ Beauté blanche de Yopougon ! Viens goûter au koto d'une vraie toubabou chaude ! 🍌🔥",
+                "🌟 Européenne chic de Bingerville ! Mon vagin pleure d'eau, viens calmer mes ardeurs ! 💦👑",
+                "✨ Blanche sexy de Treichville ! Viens me prendre par derrière, koto très serré ! 💋💥",
+                "🌟 Européenne de Cocody Deux Plateaux ! Viens me pilonner sauvagement ce soir boss ! 🍆🗣️",
+                "✨ Blanche osée de Palmeraie ! Koto mouillé et prêt, viens m'enfoncer ton engin ! 🍑💦",
+                "🌟 Toubabou très chaude de Riviera Golf ! Viens me faire l'amour à l'ivoirienne ! 🍌🔥",
+                "✨ Européenne sexy de Koumassi ! Mon clito est gonflé, viens me donner du plaisir ! 💥👑",
+                "🌟 Blanche VIP d'Abatta ! Vagin ultra chaud, viens me faire crier de bonheur ! 💦🍆",
+                "✨ Beauté blanche d'Angré Chateau ! Viens m'enfoncer ça profondément ce soir ! 🗣️🍑",
+                "🌟 Européenne de Marcory Remblais ! Koto hyper doux et sucré, viens le déguster ! 🍌🔥",
+                "✨ Blanche torride de Riviera Palmeraie ! Viens me prendre sous la douche avec fougue ! 💥💦",
+                "🌟 Toubabou VIP de Cocody Mermoz ! Vagin mouillé d'eau, viens éteindre mon feu ! 🍆👑",
+                "✨ Européenne osée de Yopougon Niangon ! Viens me défoncer le koto proprement ! 💋🍑",
+                "🌟 Blanche sexy de Biétry Cité Cadres ! Mon koto t'attend, viens me démonter ! 🗣️🍌",
+                "✨ Beauté blanche de Cocody Angré ! Viens m'écarter les fesses et frapper fort ! 💦💥",
+                "🌟 Européenne d'Abidjan Zone 4 ! Koto très chaud, viens prendre ton pied avec moi ! 🍆👑",
+                "✨ Blanche chic de Yopougon Maroc ! Viens m'enfoncer ton engin jusqu me faire crier ! 🍑🔥",
+                "🌟 Toubabou osée de Bingerville Fehi Kessé ! Vagin hyper mouillé, viens me soulever ! 🍌💦",
+                "✨ Européenne sexy de Marcory Boulevard de Marseille ! Viens me faire la totale ce soir ! 💥🗣️",
+                "🌟 Blanche VIP de Cocody Attoban ! Koto propre et chaud, viens y mettre ta barre ! 🍆💋",
+                "✨ Beauté blanche de Koumassi Remblais ! Viens me pilonner fort jusqu'au matin ! 🍑💦",
+                "🌟 Européenne torride de Riviera 2 ! Mon koto est prêt, viens me prendre sauvagement ! 🍌👑",
+                "✨ Blanche osée de Yopougon Sicogi ! Vagin trop mouillé, viens me faire jouir ! 💥🔥",
+                "🌟 Toubabou chic d'Angré Extension ! Viens me faire l'amour avec puissance ! 💦🍆",
+                "✨ Européenne sexy de Cocody Cité des Arts ! Viens me frotter le koto avec passion ! 🗣️🍑",
+                "🌟 Blanche VIP de Marcory Zone 4 ! Koto disponible pour soirée très torride ! 🍌💥",
+                "✨ Beauté blanche de Riviera Golf ! Viens m'enfoncer ton engin bien profondément ! 👑💦",
+                "🌟 Européenne osée de Yopougon Bel Air ! Koto chaud bouillant, viens frapper dedans ! 🍆💋",
+                "✨ Blanche torride de Treichville Arras ! Viens me sodomiser/pilonner et transpirer ! 🍑🔥",
+                "🌟 Toubabou VIP de Riviera III ! Mon vagin t'appelle, viens me prendre sans modération ! 🍌💥",
+                "✨ Européenne sexy de Cocody Riviera 4 ! Viens goûter au koto toubabou le plus sucré ! 💦🗣️",
+                "🌟 Blanche chic de Koumassi Camp Commando ! Koto très serré, viens tout défoncer ! 🍆👑",
+                "✨ Beauté blanche de Marcory Champroux ! Viens m'écarter les cuisses et me pilonner ! 🍑💋",
+                "🌟 Européenne passionnée d'Angré 8ème Tranche ! Viens me faire jouir plusieurs fois ! 🍌💥",
+                "✨ Blanche osée de Yopougon Toits Rouges ! Vagin mouillé d'eau, viens taper dedans ! 💦🔥",
+                "🌟 Toubabou VIP de Biétry Cité Cadres ! Viens me soulever et frapper dans mon koto ! 🍆🗣️",
+                "✨ Européenne sexy de Cocody Deux Plateaux ! Mon koto est prêt, viens me dévorer ! 🍑👑",
+                "🌟 Blanche chic d'Abidjan Marcory ! Viens goûter à ma chair douce et sensuelle ! 🍌💥",
+                "✨ Beauté blanche de Yopougon Selmer ! Koto hyper chaud, viens enfoncer ta barre ! 💦💋",
+                "🌟 Européenne osée de Riviera Palmeraie ! Vagin disponible pour rencontre VIP ! 🍆🔥",
+                "✨ Blanche sublime de Cocody Angré ! Viens me pilonner le vagin jusqu'à l'aube ! 🍑🗣️",
+                "🌟 Toubabou sexy de Koumassi Prodomo ! Viens m'écarter le koto et frapper fort ! 🍌👑",
+                "✨ Européenne VIP d'Abidjan Cocody ! Koto ultra chaud et mouillé, viens me démonter ! 💥💦"
+            ]
         };
 
         function genererDescriptionAleatoire() {
@@ -1175,23 +1426,14 @@
                     `;
                     grid.appendChild(card);
 
+                    // TRANSITION CHANGER/SWITCH DIRECT SANS GLISSEMENT
                     if (photos.length > 1) {
                         let currentIdx = 0;
                         carouselIntervals[profil.id] = setInterval(() => {
                             const imgEl = document.getElementById(`card-img-${profil.id}`);
                             if (!imgEl) return;
-                            imgEl.classList.add('slide-out-left');
-                            setTimeout(() => {
-                                currentIdx = (currentIdx + 1) % photos.length;
-                                imgEl.src = photos[currentIdx];
-                                imgEl.style.transition = 'none';
-                                imgEl.classList.remove('slide-out-left');
-                                imgEl.classList.add('slide-in-right');
-                                setTimeout(() => {
-                                    imgEl.style.transition = 'transform 0.5s ease-in-out, opacity 0.5s ease-in-out';
-                                    imgEl.classList.remove('slide-in-right');
-                                }, 50);
-                            }, 500);
+                            currentIdx = (currentIdx + 1) % photos.length;
+                            imgEl.src = photos[currentIdx];
                         }, 3500);
                     }
                 });
@@ -1209,7 +1451,6 @@
                     
                     card.className = cardClass;
 
-                    // MISE À JOUR : Balise vidéo optimisée avec classe pour l'intersection observer (sans autoplay direct)
                     const mediaHtml = `
                         <div class="media-container" onclick="${adminModeConnecte ? `ouvrirModalEditVideo(${scene.realId})` : ''}">
                             <video class="preview-video lazy-video" src="${scene.preview}" muted loop playsinline webkit-playsinline preload="none" ontimeupdate="if(this.currentTime>=5){this.currentTime=0;}">
@@ -1265,7 +1506,6 @@
                 misesAJourCompteursTemps();
                 countdownInterval = setInterval(misesAJourCompteursTemps, 1000);
                 
-                // Active la lecture intelligente uniquement pour les vidéos visibles à l'écran
                 activerObservationVideos();
             }
         }
