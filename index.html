@@ -85,7 +85,26 @@
         
         video.preview-video { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-        .profil-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        /* --- EFFET DE FONDU (FADE) POUR LES IMAGES --- */
+        .profil-img-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            background: #000;
+        }
+        .profil-img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+        .profil-img.active-fade {
+            opacity: 1;
+        }
         
         .card h3 { margin: 0 0 3px 0; color: #f1f5f9; font-size: 11.5px; text-align: center; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .profil-desc { font-size: 10px; color: #cbd5e1; text-align: center; margin-bottom: 6px; min-height: 28px; max-height: 40px; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; line-height: 1.3; }
@@ -500,7 +519,6 @@
             </div>
 
             <div id="form-videos-fields" style="display: none;">
-                <!-- MISE À JOUR DU GUIDE SANS TELEGRAM -->
                 <div class="tutorial-box">
                     <b>📖 Guide rapide pour publier ta vidéo d'aperçu :</b><br>
                     1. Choisis ta petite vidéo d'extrait (environ 800 Ko / 5s).<br>
@@ -533,12 +551,7 @@
                 <label>Prix (en Fr) * :</label>
                 <input type="number" id="new-prix" placeholder="1500" step="100">
                 
-                <label>Qualité / Niveau de la vidéo :</label>
-                <select id="new-qualite">
-                    <option value="premium">💎 Ultra / Premium (Diamant)</option>
-                    <option value="moyen">🥇 Moyen / Standard (Or)</option>
-                    <option value="basique">🥉 Basique (Bronze)</option>
-                </select>
+                <!-- LA QUALITÉ EST DÉSORMAIS AUTOMATIQUE -->
 
                 <label>Votre Numéro WhatsApp * :</label>
                 <input type="text" id="new-whatsapp" class="input-placeholder-rdm" placeholder="2250700000000">
@@ -604,11 +617,11 @@
             <label>Prix (en Fr) :</label>
             <input type="number" id="edit-v-prix">
 
-            <label>Qualité :</label>
+            <label>Qualité (Automatique ou modifiable) :</label>
             <select id="edit-v-qualite" style="background:#1e293b; color:white; border:1.5px solid #22c55e; padding:5px; border-radius:5px;">
                 <option value="premium">💎 Ultra / Premium (Diamant)</option>
                 <option value="moyen">🥇 Moyen / Standard (Or)</option>
-                <option value="basique">🥉 Basique (Bronze)</option>
+                <option value="bronze">🥉 Basique (Bronze)</option>
             </select>
 
             <label>Numéro WhatsApp :</label>
@@ -1407,16 +1420,23 @@
 
                     card.className = cardClass;
                     const photos = profil.photos || [];
-                    const firstPhoto = photos.length > 0 ? photos[0] : '';
                     
                     let btnActionHtml = `<button class="whatsapp-btn" style="border:none; width:100%; cursor:pointer;" onclick="declencherActionProfil(${profil.id})">💬 Contacter</button>`;
                     if (adminModeConnecte) {
                         btnActionHtml = `<button class="whatsapp-btn" style="border:none; width:100%; cursor:pointer; background:#ef4444;" onclick="declencherActionProfil(${profil.id})">✏️ Éditer ce Profil</button>`;
                     }
 
+                    // CONSTRUCTION DES IMAGES EN FONDU (FADE)
+                    let imgsHtml = '';
+                    photos.forEach((pUrl, pIdx) => {
+                        imgsHtml += `<img class="profil-img ${pIdx === 0 ? 'active-fade' : ''}" src="${pUrl}" alt="${profil.nom}" data-index="${pIdx}">`;
+                    });
+
                     card.innerHTML = `
                         <div class="media-container" onclick="declencherActionProfil(${profil.id})" title="Voir le profil">
-                            <img id="card-img-${profil.id}" class="profil-img" src="${firstPhoto}" alt="${profil.nom}">
+                            <div class="profil-img-container" id="container-img-${profil.id}">
+                                ${imgsHtml}
+                            </div>
                         </div>
                         <h3>${profil.nom}</h3>
                         ${badgeVipHtml}
@@ -1426,15 +1446,19 @@
                     `;
                     grid.appendChild(card);
 
-                    // TRANSITION CHANGER/SWITCH DIRECT SANS GLISSEMENT
+                    // LOGIQUE DU FONDU ENCHAÎNÉ (FADE)
                     if (photos.length > 1) {
                         let currentIdx = 0;
                         carouselIntervals[profil.id] = setInterval(() => {
-                            const imgEl = document.getElementById(`card-img-${profil.id}`);
-                            if (!imgEl) return;
-                            currentIdx = (currentIdx + 1) % photos.length;
-                            imgEl.src = photos[currentIdx];
-                        }, 3500);
+                            const container = document.getElementById(`container-img-${profil.id}`);
+                            if (!container) return;
+                            const imgElements = container.querySelectorAll('.profil-img');
+                            if (imgElements.length <= 1) return;
+
+                            imgElements[currentIdx].classList.remove('active-fade');
+                            currentIdx = (currentIdx + 1) % imgElements.length;
+                            imgElements[currentIdx].classList.add('active-fade');
+                        }, 4000);
                     }
                 });
             } else {
@@ -1510,7 +1534,6 @@
             }
         }
 
-        // --- SCRIPTS D'OPTIMISATION DE LECTURE VIDÉO AU DÉFILEMENT ---
         function activerObservationVideos() {
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
@@ -1902,7 +1925,7 @@
                 buttonsContainer.innerHTML = `<button class="btn-save" onclick="compresserEtPublierProfil()">Publier mon profil</button><button class="btn-close" onclick="fermerVendeurModal()">Fermer</button>`;
             } else {
                 modalTitle.innerText = "🎬 Proposer une vidéo 🎥";
-                infoBox.innerHTML = `<b>🔒 SÉCURITÉ ACTIVE :</b><br>Chiffrement des métadonnées du vendeur à l'envoi.`;
+                infoBox.innerHTML = `<b>🔒 SÉCURITÉ ACTIVE :</b><br>Chiffrement des métadonnées du vendeur à l'envoi. Qualité détectée automatiquement.`;
                 formVideos.style.display = "block";
                 formProfils.style.display = "none";
                 
@@ -1916,6 +1939,40 @@
             document.getElementById("vendor-modal").style.display = "flex";
         }
 
+        // --- FONCTION DE DÉTECTION AUTOMATIQUE DE LA QUALITÉ VIDÉO ---
+        function detecterQualiteVideoAutomatique(urlVideo, callback) {
+            if (!urlVideo) { callback('bronze'); return; }
+            const videoElem = document.createElement('video');
+            videoElem.src = urlVideo;
+            videoElem.crossOrigin = "anonymous";
+            videoElem.preload = "metadata";
+
+            videoElem.onloadedmetadata = function() {
+                const width = videoElem.videoWidth;
+                const height = videoElem.videoHeight;
+                const maxDim = Math.max(width, height);
+
+                let qualite = 'bronze';
+                if (maxDim >= 1080) {
+                    qualite = 'premium'; // Ultra claire / HD / 4K
+                } else if (maxDim >= 720) {
+                    qualite = 'moyen';   // Normale / Chic / HD 720p
+                } else {
+                    qualite = 'bronze';  // Basique
+                }
+                callback(qualite);
+            };
+
+            videoElem.onerror = function() {
+                // Fallback intelligent selon le nom ou la longueur du lien si échec du chargement meta
+                if (urlVideo.length > 50) {
+                    callback('moyen');
+                } else {
+                    callback('bronze');
+                }
+            };
+        }
+
         function soumettreVideoAdmin() {
             const cat = document.getElementById("new-video-categorie").value;
             const partenaire = document.getElementById("new-partenaire").value.trim() || "Admin Principal";
@@ -1923,7 +1980,6 @@
             const previewUrl = document.getElementById("new-preview-url").value.trim();
             const mega = document.getElementById("new-telegram").value.trim();
             const prix = parseInt(document.getElementById("new-prix").value.trim(), 10);
-            const qualite = document.getElementById("new-qualite").value;
             const wa = document.getElementById("new-whatsapp").value.trim();
 
             if (!nom) { alert("⚠️ Veuillez entrer un titre pour la vidéo !"); return; }
@@ -1936,61 +1992,57 @@
             const progressFill = document.getElementById("progress-fill");
             const progressText = document.getElementById("progress-text");
             
-            document.getElementById("loading-status-title").innerText = "🔒 Chiffrement & Envoi en cours...";
-            document.getElementById("loading-status-subtext").innerText = "Préparation et sécurisation des données...";
-            progressFill.style.width = "0%";
-            progressText.innerText = "0%";
+            document.getElementById("loading-status-title").innerText = "🔍 Analyse auto de la vidéo...";
+            document.getElementById("loading-status-subtext").innerText = "Vérification de la clarté et de la résolution...";
+            progressFill.style.width = "20%";
+            progressText.innerText = "20%";
             loadingModal.style.display = "flex";
 
-            let currentProgress = 0;
-            const progressInterval = setInterval(() => {
-                if (currentProgress < 90) {
-                    currentProgress += Math.floor(Math.random() * 8) + 3;
-                    if (currentProgress > 90) currentProgress = 90;
-                    progressFill.style.width = currentProgress + "%";
-                    progressText.innerText = currentProgress + "%";
-                }
-            }, 150);
+            // ANALYSE AUTOMATIQUE DE LA QUALITÉ
+            detecterQualiteVideoAutomatique(previewUrl, function(qualiteAutomatique) {
+                document.getElementById("loading-status-title").innerText = "🔒 Chiffrement & Envoi...";
+                document.getElementById("loading-status-subtext").innerText = `Qualité détectée : ${qualiteAutomatique.toUpperCase()}. Sécurisation...`;
+                progressFill.style.width = "50%";
+                progressText.innerText = "50%";
 
-            const payload = {
-                cat: cat,
-                partenaire: chiffrer(partenaire),
-                nom: chiffrer(nom),
-                preview: previewUrl,
-                mega: mega,
-                prix: prix,
-                qualite: qualite,
-                telephone: chiffrer(wa)
-            };
+                const payload = {
+                    cat: cat,
+                    partenaire: chiffrer(partenaire),
+                    nom: chiffrer(nom),
+                    preview: previewUrl,
+                    mega: mega,
+                    prix: prix,
+                    qualite: qualiteAutomatique,
+                    telephone: chiffrer(wa)
+                };
 
-            fetch(API_VIDEOS_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            })
-            .then(res => res.json())
-            .then(result => {
-                clearInterval(progressInterval);
-                progressFill.style.width = "100%";
-                progressText.innerText = "100%";
-                document.getElementById("loading-status-title").innerText = "✅ Terminé avec succès !";
-                document.getElementById("loading-status-subtext").innerText = "Vidéo enregistrée et publiée.";
+                fetch(API_VIDEOS_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                })
+                .then(res => res.json())
+                .then(result => {
+                    progressFill.style.width = "100%";
+                    progressText.innerText = "100%";
+                    document.getElementById("loading-status-title").innerText = "✅ Terminé avec succès !";
+                    document.getElementById("loading-status-subtext").innerText = "Vidéo enregistrée et qualifiée automatiquement.";
 
-                setTimeout(() => {
+                    setTimeout(() => {
+                        loadingModal.style.display = "none";
+                        if (result.status === 'success') {
+                            alert(`✅ Vidéo publiée avec succès ! Qualité assignée : ${qualiteAutomatique.toUpperCase()}`);
+                            fermerVendeurModal();
+                            if (sousOngletActif !== cat) { changerSousOnglet(cat); } else { chargerDonneesDepuisAPI(); }
+                        } else {
+                            alert("Erreur lors de l'enregistrement.");
+                        }
+                    }, 400);
+                })
+                .catch(() => {
                     loadingModal.style.display = "none";
-                    if (result.status === 'success') {
-                        alert("✅ Vidéo publiée et chiffrée avec succès !");
-                        fermerVendeurModal();
-                        if (sousOngletActif !== cat) { changerSousOnglet(cat); } else { chargerDonneesDepuisAPI(); }
-                    } else {
-                        alert("Erreur lors de l'enregistrement.");
-                    }
-                }, 400);
-            })
-            .catch(() => {
-                clearInterval(progressInterval);
-                loadingModal.style.display = "none";
-                alert("❌ Une erreur réseau est survenue lors de l'envoi.");
+                    alert("❌ Une erreur réseau est survenue lors de l'envoi.");
+                });
             });
         }
 
