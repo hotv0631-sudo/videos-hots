@@ -4,23 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>💖 Bizi 💖</title>
-
-    <!-- --- CONFIGURATION PWA NORA (ICÔNE ET MANIFESTE) --- -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Nora">
-    <meta name="theme-color" content="#0f172a">
-    <link rel="manifest" href="/manifest.json">
-    <link rel="apple-touch-icon" href="/logo-nora.png">
-    <link rel="icon" type="image/png" href="/logo-nora.png">
-
-    <!-- --- BALISES OPEN GRAPH POUR APERÇU SUR LES RÉSEAUX SOCIAUX --- -->
-    <meta property="og:title" content="💖 Bizi - Découvre ce profil exclusif 💖" />
-    <meta property="og:description" content="Viens voir les photos et le profil complet en direct sur Bizi." />
-    <meta property="og:image" content="" />
-    <meta property="og:url" content="" id="metaOpenGraphUrl" />
-    <meta property="og:type" content="website" />
-
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         html, body { width: 100%; overflow-x: hidden; background-color: #0f172a !important; color: #f8fafc; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
@@ -40,8 +23,6 @@
         .subtab-btn { flex: 1; background: #0f172a; color: #cbd5e1; border: 1px solid #22c55e; padding: 4px 1px; border-radius: 5px; font-weight: bold; font-size: 8.5px; cursor: pointer; text-align: center; transition: all 0.2s ease; white-space: nowrap; }
         .subtab-btn.active { background: #22c55e; color: white; box-shadow: 0 2px 6px rgba(34, 197, 94, 0.4); }
         
-        .admin-counter { display: none; }
-
         .btn-vendor-header { background: linear-gradient(135deg, #22c55e, #16a34a); color: white; border: 2px solid #15803d; padding: 5px 10px; border-radius: 6px; font-weight: bold; font-size: 10px; cursor: pointer; box-shadow: 0 3px 8px rgba(34, 197, 94, 0.4); width: 100%; max-width: 280px; }
         
         .nav-btn-jeux {
@@ -81,11 +62,9 @@
         .card-vip-bronze { border: 3px solid #b45309; box-shadow: 0 0 16px rgba(180, 83, 9, 0.5); }
         .card-profil { border: 3px solid #22c55e; box-shadow: 0 0 16px rgba(34, 197, 94, 0.5); }
 
-        .media-container { width: 100%; border-radius: 8px; overflow: hidden; background: #000; margin-bottom: 6px; aspect-ratio: 9 / 16; display: flex; align-items: center; justify-content: center; position: relative; cursor: pointer; }
+        .media-container { width: 100%; border-radius: 8px; overflow: hidden; background: #000000; margin-bottom: 6px; aspect-ratio: 9 / 16; display: flex; align-items: center; justify-content: center; position: relative; cursor: pointer; }
+        video.preview-video { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
         
-        /* RESTAURATION EXACTE DE LA BALISE VIDÉO ORIGINALE */
-        video.preview-video { width: 100%; height: 100%; object-fit: cover; display: block; }
-
         .profil-img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out; }
         .slide-out-left { transform: translateX(-100%); opacity: 0; }
         .slide-in-right { transform: translateX(100%); opacity: 0; }
@@ -104,16 +83,6 @@
         .price-badge { background: linear-gradient(135deg, #ff6600, #ff8533); color: #ffffff; font-size: 12px; font-weight: bold; text-align: center; padding: 5px; border-radius: 6px; margin-bottom: 6px; }
         .info-id { font-size: 9.5px; color: #94a3b8; margin-bottom: 6px; text-align: center; background: #0f172a; padding: 3px; border-radius: 4px; border: 1px dashed #475569; }
         .whatsapp-btn { display: flex; align-items: center; justify-content: center; gap: 4px; background: #22c55e; color: #ffffff; text-align: center; padding: 6px 4px; border-radius: 5px; text-decoration: none; font-weight: bold; font-size: 10px; margin-bottom: 6px; }
-        
-        .share-profile-btn { display: flex; align-items: center; justify-content: center; gap: 6px; background: linear-gradient(135deg, #0ea5e9, #0284c7); color: #ffffff; text-align: center; padding: 9px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 11px; margin-bottom: 8px; width: 100%; border: none; cursor: pointer; box-shadow: 0 3px 10px rgba(14, 165, 233, 0.4); }
-
-        .contact-action-box { display: flex; flex-direction: column; gap: 6px; margin-bottom: 8px; width: 100%; }
-        .btn-call-phone { display: flex; align-items: center; justify-content: center; gap: 6px; background: linear-gradient(135deg, #f59e0b, #d97706); color: #ffffff; text-align: center; padding: 10px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 11.5px; width: 100%; border: none; cursor: pointer; box-shadow: 0 3px 10px rgba(245, 158, 11, 0.4); transition: transform 0.1s ease; }
-        .btn-call-phone:active { transform: scale(0.98); }
-
-        .btn-wa-msg { display: flex; align-items: center; justify-content: center; gap: 6px; background: linear-gradient(135deg, #22c55e, #16a34a); color: #ffffff; text-align: center; padding: 10px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 11.5px; width: 100%; border: none; cursor: pointer; box-shadow: 0 3px 10px rgba(34, 197, 94, 0.4); transition: transform 0.1s ease; }
-        .btn-wa-msg:active { transform: scale(0.98); }
-
         input, select, textarea { width: 100%; background: #0f172a; border: 1.5px solid #22c55e; border-radius: 5px; padding: 5px; color: #ffffff; font-size: 11px; text-align: center; outline: none; }
         textarea { text-align: left; resize: none; height: 65px; }
         button.verify-btn { width: 100%; background: #22c55e; color: #ffffff; border: none; padding: 6px; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 11px; }
@@ -147,6 +116,7 @@
         .dot-btn.active { background: #22c55e; }
         .profile-detail-name { font-size: 16px; color: #f8fafc; font-weight: bold; text-align: center; margin-bottom: 5px; }
         .profile-detail-desc { font-size: 12px; color: #cbd5e1; text-align: center; margin-bottom: 12px; line-height: 1.4; }
+        .profile-detail-phone { font-size: 12px; color: #38bdf8; text-align: center; font-weight: bold; margin-bottom: 12px; background: #0f172a; padding: 6px; border-radius: 5px; border: 1px dashed #38bdf8; }
         
         .preview-thumbs-container { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px; }
         .thumb-box { width: 60px; height: 60px; border-radius: 6px; overflow: hidden; position: relative; border: 1.5px solid #22c55e; background: #000; }
@@ -164,196 +134,7 @@
         .loading-title { font-size: 16px; font-weight: bold; color: #22c55e; margin-bottom: 5px; letter-spacing: 0.5px; }
         .loading-status-subtext { font-size: 11px; color: #cbd5e1; max-width: 300px; line-height: 1.4; margin-top: 8px; }
 
-        /* --- BANNIÈRE D'INSTALLATION PWA CENTRÉE AU MILIEU DE L'ÉCRAN --- */
-        #pwa-install-banner {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 92%;
-            max-width: 450px;
-            background: #1e293b;
-            border: 2.5px solid #22c55e;
-            border-radius: 16px;
-            padding: 20px;
-            z-index: 999999;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.85);
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            animation: popInCenter 0.3s ease-out;
-        }
-
-        @keyframes popInCenter {
-            0% { transform: translate(-50%, -50%) scale(0.85); opacity: 0; }
-            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-        }
-
-        .pwa-icon {
-            width: 64px;
-            height: 64px;
-            border-radius: 14px;
-            object-fit: cover;
-            border: 2px solid #22c55e;
-            margin-bottom: 12px;
-            box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
-        }
-
-        .pwa-title {
-            font-size: 16px;
-            font-weight: bold;
-            color: #22c55e;
-            margin-bottom: 6px;
-        }
-
-        .pwa-desc {
-            font-size: 12px;
-            color: #cbd5e1;
-            line-height: 1.4;
-            margin-bottom: 18px;
-        }
-
-        .pwa-buttons {
-            display: flex;
-            gap: 10px;
-            width: 100%;
-        }
-
-        .pwa-btn-install {
-            flex: 1;
-            background: linear-gradient(135deg, #22c55e, #16a34a);
-            color: white;
-            border: none;
-            padding: 10px;
-            border-radius: 8px;
-            font-weight: bold;
-            font-size: 12px;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4);
-        }
-
-        .pwa-btn-later {
-            flex: 1;
-            background: #475569;
-            color: white;
-            border: none;
-            padding: 10px;
-            border-radius: 8px;
-            font-weight: bold;
-            font-size: 12px;
-            cursor: pointer;
-        }
-
-        /* --- STYLE DE LA FENÊTRE DE VÉRIFICATION D'ÂGE --- */
-        #age-gate-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(11, 15, 25, 0.97);
-            backdrop-filter: blur(12px);
-            z-index: 999999;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-
-        .age-gate-card {
-            background: #1e293b;
-            border: 3px solid #22c55e;
-            padding: 25px 20px;
-            border-radius: 16px;
-            width: 100%;
-            max-width: 420px;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(34, 197, 94, 0.3);
-            animation: popIn 0.3s ease-out;
-        }
-
-        @keyframes popIn {
-            0% { transform: scale(0.85); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        .age-gate-logo {
-            font-size: 32px;
-            font-weight: 900;
-            color: #22c55e;
-            margin-bottom: 10px;
-            text-shadow: 0 3px 8px rgba(0,0,0,0.5);
-        }
-
-        .age-gate-title {
-            font-size: 18px;
-            font-weight: bold;
-            color: #f8fafc;
-            margin-bottom: 12px;
-        }
-
-        .age-gate-text {
-            font-size: 12.5px;
-            color: #cbd5e1;
-            line-height: 1.5;
-            margin-bottom: 15px;
-        }
-
-        .age-gate-checkbox-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            margin-bottom: 20px;
-            font-size: 12px;
-            color: #38bdf8;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .age-gate-checkbox-container input {
-            width: 16px;
-            height: 16px;
-            accent-color: #22c55e;
-            cursor: pointer;
-        }
-
-        .age-gate-buttons {
-            display: flex;
-            gap: 12px;
-        }
-
-        .btn-age-yes {
-            flex: 1;
-            background: linear-gradient(135deg, #22c55e, #16a34a);
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 8px;
-            font-weight: bold;
-            font-size: 13px;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4);
-            transition: transform 0.2s;
-        }
-        .btn-age-yes:hover { transform: translateY(-2px); }
-
-        .btn-age-no {
-            flex: 1;
-            background: #ef4444;
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 8px;
-            font-weight: bold;
-            font-size: 13px;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
-            transition: transform 0.2s;
-        }
-        .btn-age-no:hover { transform: translateY(-2px); }
-
+        /* --- BANDEAU ADMIN CACHÉ PAR DÉFAUT POUR LES VISITEURS --- */
         .admin-live-badge {
             display: none;
             position: fixed;
@@ -393,38 +174,7 @@
 </head>
 <body>
 
-    <!-- --- FENÊTRE DE CONTRÔLE D'ÂGE AVEC OPTION DE SAUVEGARDE --- -->
-    <div id="age-gate-overlay" style="display: none;">
-        <div class="age-gate-card">
-            <div class="age-gate-logo">💖 Bizi 💖</div>
-            <div class="age-gate-title">🔞 Restriction d'accès</div>
-            <div class="age-gate-text">
-                Ce site contient des contenus réservés à un public averti et majeur. Certifiez-vous avoir au moins 18 ans pour accéder à la plateforme ?
-            </div>
-            
-            <label class="age-gate-checkbox-container">
-                <input type="checkbox" id="remember-age-checkbox" checked>
-                <span>Se souvenir de mon choix (Ne plus me demander)</span>
-            </label>
-
-            <div class="age-gate-buttons">
-                <button class="btn-age-no" onclick="refuserAge()">Non, j'ai moins de 18 ans</button>
-                <button class="btn-age-yes" onclick="validerAge()">Oui, j'ai 18 ans ou plus</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- --- POPUP D'INSTALLATION PWA CENTRÉ --- -->
-    <div id="pwa-install-banner">
-        <img src="/logo-nora.png" alt="Nora" class="pwa-icon">
-        <div class="pwa-title">Installer Nora</div>
-        <div class="pwa-desc">Voulez-vous installer cette application sur votre appareil pour un accès rapide et direct en un clic ?</div>
-        <div class="pwa-buttons">
-            <button class="pwa-btn-install" onclick="installerApplicationPWA()">Installer</button>
-            <button class="pwa-btn-later" onclick="fermerPwaBanner()">Ignorer</button>
-        </div>
-    </div>
-
+    <!-- --- BANDEAU ADMIN STRICTEMENT RÉSERVÉ À L'ADMINISTRATEUR --- -->
     <div id="admin-bar" class="admin-live-badge">
         <div style="display: flex; align-items: center; gap: 10px;">
             <div style="display: flex; align-items: center; gap: 6px;">
@@ -453,11 +203,11 @@
         </div>
 
         <div class="subtabs-container" id="subtabs-container">
-            <button id="subtab-femme" class="subtab-btn active" onclick="changerSousOnglet('femme')">Femme <span class="admin-counter">(<span id="count-femme">0</span>)</span></button>
-            <button id="subtab-homme" class="subtab-btn" onclick="changerSousOnglet('homme')">Homme <span class="admin-counter">(<span id="count-homme">0</span>)</span></button>
-            <button id="subtab-trans" class="subtab-btn" onclick="changerSousOnglet('trans')">Trans <span class="admin-counter">(<span id="count-trans">0</span>)</span></button>
-            <button id="subtab-lesbi" class="subtab-btn" onclick="changerSousOnglet('lesbi')">Lesbi <span class="admin-counter">(<span id="count-lesbi">0</span>)</span></button>
-            <button id="subtab-blanche" class="subtab-btn" onclick="changerSousOnglet('blanche')">Blanche <span class="admin-counter">(<span id="count-blanche">0</span>)</span></button>
+            <button id="subtab-femme" class="subtab-btn active" onclick="changerSousOnglet('femme')">Femme</button>
+            <button id="subtab-homme" class="subtab-btn" onclick="changerSousOnglet('homme')">Homme</button>
+            <button id="subtab-trans" class="subtab-btn" onclick="changerSousOnglet('trans')">Trans</button>
+            <button id="subtab-lesbi" class="subtab-btn" onclick="changerSousOnglet('lesbi')">Lesbi</button>
+            <button id="subtab-blanche" class="subtab-btn" onclick="changerSousOnglet('blanche')">Blanche</button>
         </div>
 
         <button class="btn-vendor-header" id="btn-modal-action" onclick="ouvrirVendeurModal()">Cliquez ici pour ajouter un Bizi</button>
@@ -629,77 +379,7 @@
         const API_VIDEOS_URL = 'https://midnightblue-manatee-329921.hostingersite.com/api_videos.php';
         const API_PRESENCE_URL = 'https://midnightblue-manatee-329921.hostingersite.com/presence.php';
 
-        let deferredPrompt = null;
-
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            if (window.matchMedia('(display-mode: standalone)').matches || localStorage.getItem('bizi_installed') === 'true') {
-                return;
-            }
-            if (!sessionStorage.getItem('bizi_visit_time')) {
-                sessionStorage.setItem('bizi_visit_time', Date.now().toString());
-            }
-        });
-
-        window.addEventListener('load', () => {
-            if (window.matchMedia('(display-mode: standalone)').matches) {
-                localStorage.setItem('bizi_installed', 'true');
-                return;
-            }
-            const isInstalled = localStorage.getItem('bizi_installed');
-            const visitTime = sessionStorage.getItem('bizi_visit_time');
-            if (!isInstalled && visitTime) {
-                const tempsEcoule = Date.now() - parseInt(visitTime, 10);
-                if (tempsEcoule >= 60000) {
-                    const banner = document.getElementById('pwa-install-banner');
-                    if (banner) { banner.style.display = 'flex'; }
-                }
-            }
-        });
-
-        function installerApplicationPWA() {
-            document.getElementById('pwa-install-banner').style.display = 'none';
-            localStorage.setItem('bizi_installed', 'true');
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                deferredPrompt.userChoice.then(() => { deferredPrompt = null; });
-            } else {
-                alert("Pour installer l'application, utilise le menu de ton navigateur et sélectionne 'Installer l'application'.");
-            }
-        }
-
-        function fermerPwaBanner() {
-            document.getElementById('pwa-install-banner').style.display = 'none';
-            localStorage.setItem('bizi_pwa_dismissed', 'true');
-        }
-
-        (function verifierAgeMemiseEnCache() {
-            const ageVerifie = localStorage.getItem('bizi_age_verified');
-            if (!ageVerifie) {
-                document.getElementById('age-gate-overlay').style.display = 'flex';
-            }
-        })();
-
-        function validerAge() {
-            const rememberCheckbox = document.getElementById('remember-age-checkbox');
-            if (rememberCheckbox && rememberCheckbox.checked) {
-                localStorage.setItem('bizi_age_verified', 'true');
-            }
-            document.getElementById('age-gate-overlay').style.display = 'none';
-        }
-
-        function refuserAge() {
-            document.body.innerHTML = `
-                <div style="height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; background: #0b0f19; color: #f8fafc; text-align: center; padding: 20px;">
-                    <h1 style="color: #ef4444; font-size: 24px; margin-bottom: 15px;">⛔ Accès Refusé</h1>
-                    <p style="color: #cbd5e1; max-width: 400px; line-height: 1.5; font-size: 14px;">
-                        Vous devez avoir 18 ans ou plus pour accéder au site Bizi. Votre accès a été bloqué.
-                    </p>
-                </div>
-            `;
-        }
-
+        // --- GESTION DU JETON UNIQUE PAR APPAREIL ---
         function getDeviceToken() {
             let token = localStorage.getItem('bizi_device_token');
             if (!token) {
@@ -715,21 +395,116 @@
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ device_token: token })
-            }).catch(err => console.error("Erreur de présence:", err));
+            })
+            .then(res => res.json())
+            .catch(err => console.error("Erreur de présence:", err));
         }
 
+        // Lancement immédiat et en continu (toutes les 15s)
         envoyerPresenceAutomatique();
         setInterval(envoyerPresenceAutomatique, 15000);
 
         const descriptionsMagiques = {
             femme: [
-                "🔥 Waii mon boss de Cocody ! J'ai grandement écarté mon string, mon vagin est hyper trempé et disponible, viens taper dans mon utérus bien profond ! 💋💯",
-                "🇨🇮 À Marcory zone 4, gros calvaire ce soir ! Mon vagin est mouillé et disponible, viens taper dans mon utérus jusqu'à ce que je demande grâce. 🍑👑"
+                "🔥 Coucou bébé ! J'ai écarté mon string exprès sur Cocody, mon vagin est disponible et humide, viens taper dans mon utérus ! 💋💯",
+                "🇨🇮 À Marcory, bébé, viens taper dans mon utérus ! J'ai écarté mon string, mon vagin est disponible pour un kiff total. 🍑👑",
+                "✨ À Yopougon, bébé, mon vagin est disponible et bien chaud. Viens taper dans mon utérus dès maintenant ! 🔥🍾",
+                "Waii mon boss de Treichville 💃 J'ai écarté mon string, mon vagin est disponible, viens taper dans mon utérus toute la nuit ! 📱💎",
+                "💋 Salut mon cœur à Abidjan, j'ai écarté mon string, mon vagin est disponible, viens taper dans mon utérus ! 🔥",
+                "🔥 Bébé viens à Marcory ! Mon vagin est disponible, viens taper dans mon utérus pour un max de plaisir. 🥂💯",
+                "✨ Cocody : J'ai écarté mon string, mon vagin est disponible, viens taper dans mon utérus mon boss ! 🚀",
+                "👑 La reine d'Abidjan : Bébé, mon vagin est disponible, viens taper dans mon utérus sans hésiter. 🍑🔥",
+                "🥂 Salut bg à Yopougon, j'ai écarté mon string, mon vagin est disponible, viens taper dans mon utérus ! ✨",
+                "🔥 Bébé à Adjamé, mon vagin est disponible, viens taper dans mon utérus pour une partie torride ! 💋",
+                "💎 Abidjan VIP : J'ai écarté mon string, mon vagin est disponible, viens taper dans mon utérus ! 🔥",
+                "🔥 Mon chéri à Marcory, mon vagin est disponible, viens taper dans mon utérus en privé ! 💯💦",
+                "✨ Bébé, mon vagin est disponible et prêt, viens taper dans mon utérus sur Abidjan ! 🚀",
+                "👑 Cocody / Deux Plateaux : J'ai écarté mon string, mon vagin est disponible, viens taper dans mon utérus ! 🔥",
+                "🔥 Bébé à Abidjan, mon vagin est disponible, viens taper dans mon utérus et me posséder ! 💋",
+                "✨ Treichville : J'ai écarté mon string, mon vagin est disponible, viens taper dans mon utérus ! 🍾",
+                "🔥 Salut mon roi, mon vagin est disponible, viens taper dans mon utérus et me faire crier ! 💎",
+                "🇨🇮 Marcory résidentiel : Bébé, mon vagin est disponible, viens taper dans mon utérus ! 🔥",
+                "✨ Bébé à Abidjan, j'ai écarté mon string, mon vagin est disponible, viens taper dans mon utérus ! 🥂",
+                "🔥 Yopougon : Bébé, mon vagin est disponible, viens taper dans mon utérus et me secouer ! 🍑💯",
+                "👑 Salut bg, mon vagin est disponible, viens taper dans mon utérus pour kiffer grave ! ✨🔥",
+                "🔥 Bébé à Abidjan, mon vagin est disponible, viens taper dans mon utérus sur mon lit ! 💋",
+                "✨ Cocody : Mon vagin est disponible, viens taper dans mon utérus, je t'attends ! 🍾🔥",
+                "🔥 Bébé, mon vagin est disponible, viens taper dans mon utérus et me dompter ! 💪",
+                "💎 Marcory : J'ai écarté mon string, mon vagin est disponible, viens taper dans mon utérus ! 🔥✨",
+                "🔥 Bébé à Abidjan, mon vagin est disponible, viens taper dans mon utérus toute crue ! 💋",
+                "✨ Yopougon : Bébé, mon vagin est disponible, viens taper dans mon utérus ! 🍑🔥",
+                "👑 Salut mon cœur, mon vagin est disponible, viens taper dans mon utérus en direct ! 🥂",
+                "🔥 Bébé à Abidjan, mon vagin est disponible, viens taper dans mon utérus et me faire jouir ! 💯✨",
+                "✨ Prête sur Abidjan, mon vagin est disponible, viens taper dans mon utérus sur WhatsApp ! 🔥🚀"
             ],
-            homme: [ "💪 Mâle LGBT, mon cul est disponible et bien serré, viens me sodomiser et taper dans mon rectum à Abidjan ! 🔥💯" ],
-            trans: [ "🦋 Bébé trans à Abidjan, mon cul est disponible et chaud, viens me sodomiser, viens taper dans mon rectum ! ✨🔥" ],
-            lesbi: [ "👭 Bébé lesbienne à Abidjan, viens lécher mon clitoris, fusion féminine torride et mouillée garantie ! 🔥✨" ],
-            blanche: [ "🌟 Européenne à Abidjan, bébé, charme exotique et dispo VIP rien que pour toi 🥂🔥" ]
+            homme: [
+                "💪 Mâle LGBT, mon cul est disponible, viens me sodomiser et viens taper dans mon rectum à Abidjan ! 🔥💯",
+                "😎 Bébé LGBT, mon cul est disponible, viens me sodomiser et viens taper dans mon rectum sans tabou ! 🚀👑",
+                "🔥 BG propre, mon cul est disponible, viens me sodomiser et viens taper dans mon rectum toute la nuit ! 💎✨",
+                "💪 Salut mon chéri, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum à Abidjan ! 🔥💦",
+                "🔥 Mâle LGBT d'Abidjan, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 👑💯",
+                "💪 Bébé, mon cul est disponible, viens me sodomiser et viens taper dans mon rectum à Marcory ! 🔥🚀",
+                "😎 Cocody LGBT : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 💎✨",
+                "🔥 Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum pour un max de kiff ! 🔥💪",
+                "💪 Abidjan LGBT : Mon cul est disponible, viens me sodomiser et viens taper dans mon rectum ! 👑",
+                "🔥 Bébé, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum en privé ! 🚀🔥",
+                "💪 Marcory : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum de force ! 💯",
+                "🔥 Abidjan LGBT : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 💎✨",
+                "💪 Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum sans hésiter ! 🔥",
+                "🔥 Yopougon LGBT : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 👑🚀",
+                "💪 Bébé, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🔥💯",
+                "🔥 Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum jusqu'à l'épuisement ! 💎",
+                "💪 Abidjan VIP LGBT : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🔥",
+                "🔥 Bébé, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🚀✨",
+                "💪 Treichville LGBT : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🔥💪",
+                "🔥 Bébé, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum à Abidjan ! 👑💎",
+                "💪 Mâle LGBT, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🔥",
+                "🔥 Cocody : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🚀💯",
+                "💪 Bébé, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🔥✨",
+                "🔥 Marcory LGBT : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 💎👑",
+                "💪 Bébé, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🔥",
+                "🔥 Abidjan : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🚀",
+                "💪 Bébé, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🔥💯",
+                "🔥 Cocody / Deux Plateaux : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 💎",
+                "💪 Mâle LGBT, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🔥✨",
+                "🔥 Abidjan : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum sur WhatsApp ! 🚀🔥"
+            ],
+            trans: [
+                "🦋 Bébé trans à Abidjan, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! ✨🔥",
+                "👑 Sensuelle et VIP, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum sans tabou ! 💫💋",
+                "🔥 Reine de la nuit, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🍾",
+                "🦋 Abidjan : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! ✨🔥",
+                "👑 Bébé, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 💋",
+                "🔥 Chic et coquine, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 💫🥂",
+                "🦋 Abidjan : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🔥✨",
+                "👑 Beauté fatale, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 🍾💋",
+                "🔥 Abidjan : Mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! 💫🔥",
+                "🦋 Douceur trans, mon cul est disponible, viens me sodomiser, viens taper dans mon rectum ! ✨💎"
+            ],
+            lesbi: [
+                "👭 Bébé lesbienne à Abidjan, viens lécher mon clitoris, fusion féminine torride garantie ! 🔥✨",
+                "✨ Entre filles, viens lécher mon clitoris, câlins sensuels et volupté à Abidjan ! 🍑🔥",
+                "🔥 Connexion entre filles, viens lécher mon clitoris, plaisir intense rien que pour toi ! 💎💖",
+                "👭 Abidjan : Viens lécher mon clitoris, complicité féminine et frissons garantis ! 🔥✨",
+                "✨ Douceur et baisers, viens lécher mon clitoris, notre univers lesbien t'attend ! 🍑🥂",
+                "🔥 Plaisir pur entre filles, viens lécher mon clitoris, viens kiffer avec nous ! 💎💖",
+                "👭 Abidjan : Viens lécher mon clitoris, fusion totale et câlins chauds ! 🔥✨",
+                "✨ Entre filles sans tabou, viens lécher mon clitoris, viens vibrer ! 🍑💖",
+                "🔥 Volupté féminine, viens lécher mon clitoris, rejoins notre univers ! 💎✨",
+                "👭 Le paradis lesbien, viens lécher mon clitoris, douceur torride garantie ! 🔥💖"
+            ],
+            blanche: [
+                "🌟 Européenne à Abidjan, bébé, charme exotique et dispo VIP rien que pour toi 🥂🔥",
+                "💎 Charme européen, sensuelle et raffinée, viens découvrir mes vidéos privées haut de gamme ! ✨🍾",
+                "✨ Élégance européenne, pour les connaisseurs cherchant du standing à Abidjan ! 👑🔥",
+                "🌟 Douceur d'Europe, viens passer un moment inoubliable avec moi 🥂✨",
+                "💎 Européenne propre et coquine, viens goûter au luxe haut de gamme ! 🍾🔥",
+                "✨ Sensualité européenne, mes dispos VIP vont te faire chavirer ! 👑🥂",
+                "🌟 Beauté lumineuse, viens vivre une expérience unique à Abidjan ! 🔥✨",
+                "💎 Charme et discrétion européenne, mes secrets les plus chauds ! 🍾👑",
+                "✨ Douce et irrésistible, viens t'évader avec moi dès ce soir ! 🥂🔥",
+                "🌟 L'élégance VIP européenne en toute discrétion à Abidjan ! 💎✨"
+            ]
         };
 
         function genererDescriptionAleatoire() {
@@ -812,19 +587,6 @@
         let scenesData = [];
         let adminPhotosTemp = [];
 
-        function mettreAJourCompteursCategories() {
-            let counts = { femme: 0, homme: 0, trans: 0, lesbi: 0, blanche: 0 };
-            if (ongletActif === "profils") {
-                profilsData.forEach(p => { if (counts[p.cat] !== undefined) counts[p.cat]++; });
-            } else {
-                scenesData.forEach(s => { if (counts[s.cat] !== undefined) counts[s.cat]++; });
-            }
-            ['femme', 'homme', 'trans', 'lesbi', 'blanche'].forEach(cat => {
-                const el = document.getElementById(`count-${cat}`);
-                if (el) el.innerText = counts[cat];
-            });
-        }
-
         function chargerDonneesDepuisAPI() {
             fetch(API_URL)
                 .then(response => response.json())
@@ -864,9 +626,7 @@
                             };
                         });
                     }
-                    mettreAJourCompteursCategories();
                     renderGrid();
-                    verifierLienPartageDirect();
                 })
                 .catch(err => console.error("Erreur chargement profils:", err));
 
@@ -915,31 +675,12 @@
                             unlockTime: unlockTime ? parseInt(unlockTime, 10) : null
                         };
                     });
-                    mettreAJourCompteursCategories();
                     renderGrid();
                 })
                 .catch(err => {
                     scenesData = [];
-                    mettreAJourCompteursCategories();
                     renderGrid();
                 });
-        }
-
-        function verifierLienPartageDirect() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const profilIdUrl = urlParams.get('profil');
-            if (profilIdUrl) {
-                const idNum = parseInt(profilIdUrl, 10);
-                const profilTrouve = profilsData.find(p => p.id === idNum);
-                if (profilTrouve) {
-                    sousOngletActif = profilTrouve.cat;
-                    ['femme', 'homme', 'trans', 'lesbi', 'blanche'].forEach(c => {
-                        const btn = document.getElementById(`subtab-${c}`);
-                        if (btn) btn.className = c === sousOngletActif ? "subtab-btn active" : "subtab-btn";
-                    });
-                    afficherProfilDetail(idNum);
-                }
-            }
         }
 
         function getJoursRestantsHtml(expireAt) {
@@ -962,7 +703,6 @@
             } else {
                 btnModalAction.innerText = "Cliquez ici pour vendre une vidéo";
             }
-            mettreAJourCompteursCategories();
             renderGrid();
         }
 
@@ -1014,26 +754,6 @@
             }
         }
 
-        async function partagerProfilActuel(id, nomProfil) {
-            const urlPartage = `${window.location.origin}${window.location.pathname}?profil=${id}`;
-            const shareData = {
-                title: `💖 Profil Bizi de ${nomProfil} 💖`,
-                text: `Viens découvrir le profil de ${nomProfil} sur Bizi !`,
-                url: urlPartage
-            };
-
-            try {
-                if (navigator.share) {
-                    await navigator.share(shareData);
-                } else {
-                    await navigator.clipboard.writeText(urlPartage);
-                    alert("🔗 Lien du profil copié ! Vous pouvez le coller où vous souhaitez.");
-                }
-            } catch (err) {
-                console.log("Partage annulé", err);
-            }
-        }
-
         function afficherProfilDetail(id) {
             nettoyerCarrousels();
             vueDetailleeActive = true;
@@ -1043,10 +763,6 @@
 
             const profil = profilsData.find(p => p.id === id);
             if (!profil) return;
-
-            const currentShareUrl = `${window.location.origin}${window.location.pathname}?profil=${profil.id}`;
-            const metaTagUrl = document.getElementById("metaOpenGraphUrl");
-            if (metaTagUrl) metaTagUrl.setAttribute("content", currentShareUrl);
 
             const photosList = profil.photos;
             let galerieHtml = '';
@@ -1067,19 +783,8 @@
                 <div class="profile-detail-name">${profil.nom}</div>
                 <div class="quality-badge badge-profil" style="margin-bottom: 8px;">🔥 BIZI DISPONIBLE (${photosList.length} photo${photosList.length > 1 ? 's' : ''})</div>
                 <div class="profile-detail-desc">${profil.desc || 'Aucune description disponible.'}</div>
-                
-                <div class="contact-action-box">
-                    <button class="btn-call-phone" onclick="window.location.href='tel:+${profil.wa}'">
-                        📞 Appel Téléphonique Direct
-                    </button>
-                    <button class="btn-wa-msg" onclick="window.open('https://wa.me/${profil.wa}?text=Salut,%20je%20te%20contacte%20depuis%20ton%20profil%20sur%20le%20site.', '_blank')">
-                        💬 Contacter ${profil.nom.replace(/'/g, "\\'")} sur WhatsApp
-                    </button>
-                </div>
-
-                <button class="share-profile-btn" onclick="partagerProfilActuel(${profil.id}, '${profil.nom.replace(/'/g, "\\'")}')">
-                    📤 Partager ce profil
-                </button>
+                <div class="profile-detail-phone">📞 Téléphone : <b>${profil.wa}</b></div>
+                <button class="whatsapp-btn" style="border:none; width:100%; cursor:pointer; padding:9px; font-size:11px;" onclick="window.open('https://wa.me/${profil.wa}?text=Salut,%20je%20te%20contacte%20depuis%20ton%20profil%20sur%20le%20site.', '_blank')">💬 Contacter sur WhatsApp</button>
                 ${getJoursRestantsHtml(profil.expireAt)}
             `;
         }
@@ -1104,7 +809,6 @@
             vueDetailleeActive = false;
             document.getElementById("profile-detail-view").style.display = "none";
             document.getElementById("video-grid").style.display = "grid";
-            window.history.replaceState({}, document.title, window.location.pathname);
             renderGrid();
         }
 
@@ -1180,18 +884,24 @@
                         carouselIntervals[profil.id] = setInterval(() => {
                             const imgEl = document.getElementById(`card-img-${profil.id}`);
                             if (!imgEl) return;
+
                             imgEl.classList.add('slide-out-left');
+
                             setTimeout(() => {
                                 currentIdx = (currentIdx + 1) % photos.length;
                                 imgEl.src = photos[currentIdx];
+                                
                                 imgEl.style.transition = 'none';
                                 imgEl.classList.remove('slide-out-left');
                                 imgEl.classList.add('slide-in-right');
+
                                 setTimeout(() => {
                                     imgEl.style.transition = 'transform 0.5s ease-in-out, opacity 0.5s ease-in-out';
                                     imgEl.classList.remove('slide-in-right');
                                 }, 50);
+
                             }, 500);
+
                         }, 3500);
                     }
                 });
@@ -1209,10 +919,10 @@
                     
                     card.className = cardClass;
 
-                    // RESTAURATION FIDÈLE DU CODE ORIGINAL DE LA BALISE VIDÉO
                     const mediaHtml = `
                         <div class="media-container" onclick="${adminModeConnecte ? `ouvrirModalEditVideo(${scene.realId})` : ''}">
-                            <video class="preview-video" src="${scene.preview}" autoplay muted loop playsinline webkit-playsinline preload="auto" ontimeupdate="if(this.currentTime>=5){this.currentTime=0;}">
+                            <video class="preview-video" muted loop playsinline webkit-playsinline preload="metadata" ontimeupdate="if(this.currentTime>=5){this.currentTime=0;}">
+                                <source src="${scene.preview}" type="video/mp4">
                             </video>
                         </div>`;
 
@@ -1264,6 +974,18 @@
 
                 misesAJourCompteursTemps();
                 countdownInterval = setInterval(misesAJourCompteursTemps, 1000);
+
+                setTimeout(() => {
+                    const videoObserver = new IntersectionObserver((entries, observer) => {
+                        entries.forEach(entry => {
+                            const vid = entry.target;
+                            if (entry.isIntersecting) { vid.play().catch(e => {}); } 
+                            else { vid.pause(); }
+                        });
+                    }, { threshold: 0.2 });
+
+                    document.querySelectorAll('.preview-video').forEach(video => { videoObserver.observe(video); });
+                }, 100);
             }
         }
 
@@ -1302,7 +1024,6 @@
                     document.getElementById("admin-bar").style.display = "none";
                     document.getElementById("admin-active-banner").style.display = "none";
                     document.getElementById("admin-wipe-category-btn").style.display = "none";
-                    document.querySelectorAll('.admin-counter').forEach(el => el.style.display = 'none');
                     renderGrid();
                     alert("🔒 Mode administrateur désactivé.");
                 }
@@ -1317,13 +1038,13 @@
 
                 adminModeConnecte = true;
                 localStorage.setItem('bizi_admin_active', 'true');
+                
                 window.history.replaceState({}, document.title, window.location.pathname + '?admin=1');
 
                 document.getElementById("admin-bar").style.display = "flex";
                 document.getElementById("admin-active-banner").style.display = "block";
                 document.getElementById("admin-wipe-category-btn").style.display = "inline-block";
-                document.querySelectorAll('.admin-counter').forEach(el => el.style.display = 'inline');
-
+                
                 chargerStatistiquesAdminSecurit();
                 renderGrid();
                 alert("✅ Mode Admin activé avec succès !");
@@ -1473,11 +1194,11 @@
         function ajouterPhotosProfilAdmin(event) {
             const files = event.target.files;
             if (!files || files.length === 0) return;
-            if (adminPhotosTemp.length + files.length > 5) { alert("Maximum 5 photos autorisées !"); return; }
+            if (adminPhotosTemp.length + files.length > 5) { alert("Maximum 5 photos autorisées !"); }
             const limit = Math.min(files.length, 5 - adminPhotosTemp.length);
             for (let i = 0; i < limit; i++) {
-                inclusterFiligraneCanvas(files[i], (imgObj) => {
-                    adminPhotosTemp.push(imgObj.data);
+                inclusterFiligraneCanvas(files[i], (imageBase64) => {
+                    adminPhotosTemp.push(imageBase64);
                     rafraichirAdminThumbs();
                 });
             }
@@ -1636,6 +1357,7 @@
                 document.getElementById("profil-fichiers-input").value = "";
                 document.getElementById("preview-thumbs-box").innerHTML = "";
                 imagesSelectionnees64 = [];
+                
                 genererDescriptionAleatoire();
 
                 buttonsContainer.innerHTML = `<button class="btn-save" onclick="compresserEtPublierProfil()">Publier mon profil</button><button class="btn-close" onclick="fermerVendeurModal()">Fermer</button>`;
@@ -1747,9 +1469,6 @@
                     canvas.width = img.width;
                     canvas.height = img.height;
                     const ctx = canvas.getContext("2d");
-
-                    ctx.fillStyle = "#FFFFFF";
-                    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
                     ctx.drawImage(img, 0, 0, img.width, img.height);
                     ctx.save();
@@ -1887,6 +1606,7 @@
 
         chargerDonneesDepuisAPI();
 
+        // --- CODE STATISTIQUES ADMIN ---
         async function chargerStatistiquesAdminSecurit() {
             try {
                 const res = await fetch(API_PRESENCE_URL + '?action=dashboard');
@@ -1905,6 +1625,7 @@
             }
         }
 
+        // Vérification au chargement si l'admin était déjà connecté
         const urlParams = new URLSearchParams(window.location.search);
         if (urlParams.get('admin') === '1' || localStorage.getItem('bizi_admin_active') === 'true') {
             adminModeConnecte = true;
@@ -1919,8 +1640,6 @@
             const wipeBtn = document.getElementById("admin-wipe-category-btn");
             if (wipeBtn) { wipeBtn.style.display = "inline-block"; }
             
-            document.querySelectorAll('.admin-counter').forEach(el => el.style.display = 'inline');
-
             chargerStatistiquesAdminSecurit();
             setInterval(chargerStatistiquesAdminSecurit, 10000);
         }
