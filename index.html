@@ -81,9 +81,9 @@
         .card-vip-bronze { border: 3px solid #b45309; box-shadow: 0 0 16px rgba(180, 83, 9, 0.5); }
         .card-profil { border: 3px solid #22c55e; box-shadow: 0 0 16px rgba(34, 197, 94, 0.5); }
 
-        .media-container { width: 100%; border-radius: 8px; overflow: hidden; background: #000000; margin-bottom: 6px; aspect-ratio: 9 / 16; display: flex; align-items: center; justify-content: center; position: relative; cursor: pointer; }
+        .media-container { width: 100%; border-radius: 8px; overflow: hidden; background: #000; margin-bottom: 6px; aspect-ratio: 9 / 16; display: flex; align-items: center; justify-content: center; position: relative; cursor: pointer; }
         
-        /* RESTAURATION DE LA BALISE VIDÉO CLASSIQUE DE TON INDEX DE RÉFÉRENCE */
+        /* RESTAURATION EXACTE DE LA BALISE VIDÉO ORIGINALE */
         video.preview-video { width: 100%; height: 100%; object-fit: cover; display: block; }
 
         .profil-img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out; }
@@ -1209,11 +1209,10 @@
                     
                     card.className = cardClass;
 
-                    // RESTAURATION EXACTE DE LA BALISE VIDÉO DE TON INDEX DE RÉFÉRENCE (AVEC AUTOPLAY & LOOP FORCÉS)
+                    // RESTAURATION FIDÈLE DU CODE ORIGINAL DE LA BALISE VIDÉO
                     const mediaHtml = `
                         <div class="media-container" onclick="${adminModeConnecte ? `ouvrirModalEditVideo(${scene.realId})` : ''}">
-                            <video class="preview-video" autoplay muted loop playsinline webkit-playsinline preload="metadata" ontimeupdate="if(this.currentTime>=5){this.currentTime=0;}">
-                                <source src="${scene.preview}" type="video/mp4">
+                            <video class="preview-video" src="${scene.preview}" autoplay muted loop playsinline webkit-playsinline preload="auto" ontimeupdate="if(this.currentTime>=5){this.currentTime=0;}">
                             </video>
                         </div>`;
 
@@ -1265,16 +1264,6 @@
 
                 misesAJourCompteursTemps();
                 countdownInterval = setInterval(misesAJourCompteursTemps, 1000);
-
-                // RELANCEMENT AUTOMATIQUE DE TOUTES LES VIDÉOS APRÈS LE RENDU DE LA GRILLE
-                setTimeout(() => {
-                    document.querySelectorAll('.preview-video').forEach(video => {
-                        video.play().catch(e => {
-                            video.muted = true;
-                            video.play().catch(err => console.log("Lecture auto bloquée par le navigateur", err));
-                        });
-                    });
-                }, 100);
             }
         }
 
