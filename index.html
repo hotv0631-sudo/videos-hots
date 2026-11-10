@@ -1493,10 +1493,10 @@
                     
                     card.className = cardClass;
 
-                    // CORRECTION ICI : la balise vidéo intègre preload="auto" et src direct pour relancer la vidéo Telegram sans écran noir
+                    // CORRECTION APPLIQUÉE : attribut src direct et referrerpolicy="no-referrer" pour contourner Telegram
                     const mediaHtml = `
                         <div class="media-container" onclick="${adminModeConnecte ? `ouvrirModalEditVideo(${scene.realId})` : ''}">
-                            <video class="preview-video" src="${scene.preview}" autoplay muted loop playsinline webkit-playsinline preload="auto" ontimeupdate="if(this.currentTime>=5){this.currentTime=0;}"></video>
+                            <video class="preview-video" src="${scene.preview}" autoplay muted loop playsinline webkit-playsinline referrerpolicy="no-referrer" preload="auto" ontimeupdate="if(this.currentTime>=5){this.currentTime=0;}"></video>
                         </div>`;
 
                     const badgeHtml = getQualityBadgeHtml(scene.qualite);
@@ -1548,13 +1548,12 @@
                 misesAJourCompteursTemps();
                 countdownInterval = setInterval(misesAJourCompteursTemps, 1000);
 
-                // Lancement forcé et boucle automatique des aperçus vidéos
                 setTimeout(() => {
                     const videoObserver = new IntersectionObserver((entries) => {
                         entries.forEach(entry => {
                             const vid = entry.target;
                             if (entry.isIntersecting) {
-                                vid.play().catch(e => console.log("Lecture automatique bloquée par le navigateur:", e));
+                                vid.play().catch(e => {});
                             } else {
                                 vid.pause();
                             }
