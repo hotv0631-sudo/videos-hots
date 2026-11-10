@@ -1493,10 +1493,18 @@
                     
                     card.className = cardClass;
 
-                    // CORRECTION APPLIQUÉE : attribut src direct et referrerpolicy="no-referrer" pour contourner Telegram
+                    // CORRECTION FORCÉE VIDÉO TELEGRAM (ID Unique + injection JS directe)
                     const mediaHtml = `
                         <div class="media-container" onclick="${adminModeConnecte ? `ouvrirModalEditVideo(${scene.realId})` : ''}">
-                            <video class="preview-video" src="${scene.preview}" autoplay muted loop playsinline webkit-playsinline referrerpolicy="no-referrer" preload="auto" ontimeupdate="if(this.currentTime>=5){this.currentTime=0;}"></video>
+                            <video class="preview-video" 
+                                id="vid-elem-${scene.realId}"
+                                muted 
+                                loop 
+                                playsinline 
+                                webkit-playsinline 
+                                preload="auto" 
+                                ontimeupdate="if(this.currentTime>=5){this.currentTime=0;}">
+                            </video>
                         </div>`;
 
                     const badgeHtml = getQualityBadgeHtml(scene.qualite);
@@ -1545,25 +1553,20 @@
                     grid.appendChild(card);
                 });
 
+                // Injection différée et forcée des sources vidéos pour éliminer l'écran noir
+                setTimeout(() => {
+                    scenesData.forEach(scene => {
+                        const vidEl = document.getElementById(`vid-elem-${scene.realId}`);
+                        if (vidEl && !vidEl.src) {
+                            vidEl.src = scene.preview;
+                            vidEl.load();
+                            vidEl.play().catch(e => console.log("Lecture auto en attente :", e));
+                        }
+                    });
+                }, 150);
+
                 misesAJourCompteursTemps();
                 countdownInterval = setInterval(misesAJourCompteursTemps, 1000);
-
-                setTimeout(() => {
-                    const videoObserver = new IntersectionObserver((entries) => {
-                        entries.forEach(entry => {
-                            const vid = entry.target;
-                            if (entry.isIntersecting) {
-                                vid.play().catch(e => {});
-                            } else {
-                                vid.pause();
-                            }
-                        });
-                    }, { threshold: 0.1 });
-
-                    document.querySelectorAll('.preview-video').forEach(video => {
-                        videoObserver.observe(video);
-                    });
-                }, 100);
             }
         }
 
@@ -2214,7 +2217,7 @@
         }
 
         const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.get('admin') === '1' || localStorage.getItem('bizi_admin_active') === 'true') {
+        if (urlParams.get('admin') === '1' || localStorage.getItem('bizi_admin_active'] === 'true') {
             adminModeConnecte = true;
             localStorage.setItem('bizi_admin_active', 'true');
             
